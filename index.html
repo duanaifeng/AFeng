@@ -594,4 +594,248 @@ let STREETS = ["永信街", "羊邑街", "丙麻街", "西邑街"];
 // 验证数组完整性
 if (!STREETS || STREETS.length !== 4) {
     console.warn('街道数据异常，使用默认数据');
+    STREETS = ["永信街", "羊邑街", "丙麻街", "西邑街"];
+}
+
+const weekMap = ["日", "一", "二", "三", "四", "五", "六"];
+
+// 获取星期几
+function getWeekday(date) {
+    return "周" + weekMap[date.getDay()];
+}
+
+// 格式化日期
+function formatDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}年${m}月${d}日`;
+}
+
+// 格式化输入日期
+function formatInputDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+// 计算赶集街道 - 修复时区问题
+function getStreetIndex(date) {
+    try {
+        // 使用已知的循环起点：2026年2月12日是永信街（索引0）
+        const knownDate = new Date(2026, 1, 12); // 2026年2月12日
+        const current = new Date(date);
+        
+        // 设置为本地时间，忽略时间部分
+        knownDate.setHours(0, 0, 0, 0);
+        current.setHours(0, 0, 0, 0);
+        
+        const diffTime = current.getTime() - knownDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        // 使用模运算确保结果在0-3范围内
+        return ((diffDays % 4) + 4) % 4;
+    } catch (error) {
+        console.error('计算街道索引错误:', error);
+        return 0; // 默认返回永信街
+    }
+}
+
+// 渲染今日信息
+function renderToday() {
+    try {
+        const now = new Date();
+        if (isNaN(now.getTime())) {
+            throw new Error('系统日期无效');
+        }
+        
+        const idx = getStreetIndex(now);
+
+        document.getElementById("today-date").textContent = formatDate(now) + " " + getWeekday(now);
+        document.getElementById("today-street").textContent = STREETS[idx];
+
+        // 明日信息
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowIdx = getStreetIndex(tomorrow);
+        
+        document.getElementById("tomorrow-market").innerHTML =
+            `🧧 明日赶集：${formatDate(tomorrow)}（${getWeekday(tomorrow)}）→ ${STREETS[tomorrowIdx]}`;
+    } catch (error) {
+        console.error('渲染今日信息错误:', error);
+        document.getElementById("today-date").textContent = "日期计算错误";
+        document.getElementById("today-street").textContent = "请刷新页面";
+        document.getElementById("tomorrow-market").textContent = "系统异常，请重试";
+    }
+}
+
+// 查询功能 - 增强错误处理
+function doQuery() {
+    try {
+        const val = document.getElementById("query-date").value;
+        if (!val) { 
+            // 添加输入框抖动动画
+            const input = document.getElementById("query-date");
+            input.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                input.style.animation = '';
+            }, 500);
+            return; 
+        }
+        
+        const sel = new Date(val);
+        // 验证日期有效性
+        if (isNaN(sel.getTime())) {
+            throw new Error('无效的日期');
+        }
+        
+        const idx = getStreetIndex(sel);
+        
+        document.getElementById("result-date").textContent = formatDate(sel) + " " + getWeekday(sel);
+        document.getElementById("result-street").textContent = STREETS[idx];
+        document.getElementById("result-section").classList.add("show");
+        
+        setTimeout(() => {
+            document.getElementById("result-section").scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+        
+    } catch (error) {
+        console.error('查询错误:', error);
+        // 显示错误信息
+        document.getElementById("result-date").textContent = "查询错误";
+        document.getElementById("result-street").textContent = "请选择有效日期";
+        document.getElementById("result-section").classList.add("show");
+    }
+}
+
+// 显示临时反馈
+function showTempFeedback(button, message) {
+    const originalText = button.textContent;
+    const originalBg = button.style.background;
     
+    button.textContent = message;
+    button.style.background = 'rgba(76, 175, 80, 0.25)';
+    button.disabled = true;
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = originalBg;
+        button.disabled = false;
+    }, 2000);
+}
+
+// 降级复制方案
+function copyToClipboardFallback(text, button) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showTempFeedback(button, '✅ 已复制！');
+        } else {
+            prompt('请手动复制链接:', text);
+        }
+    } catch (err) {
+        prompt('请手动复制链接:', text);
+    }
+    document.body.removeChild(textArea);
+}
+
+// 分享功能兼容性修复
+async function sharePage() {
+    const button = event.target;
+    
+    try {
+        if (navigator.share) {
+            await navigator.share({
+                title: '西邑赶集日历',
+                text: '永信街、羊邑街、丙麻街、西邑街四天循环查询',
+                url: location.href
+            });
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(location.href);
+            showTempFeedback(button, '✅ 已复制！');
+        } else {
+            // 降级方案
+            copyToClipboardFallback(location.href, button);
+        }
+    } catch (e) {
+        if (e.name !== 'AbortError') {
+            copyToClipboardFallback(location.href, button);
+        }
+    }
+}
+
+// 回到顶部功能
+function backToTop() { 
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+}
+
+// 滚动显示回到顶部按钮
+window.onscroll = () => {
+    const btn = document.getElementById("backToTop");
+    if (btn) {
+        btn.classList.toggle("show", window.scrollY > 300);
+    }
+};
+
+// 初始化应用
+function init() {
+    try {
+        const now = new Date();
+        
+        // 验证日期有效性
+        if (isNaN(now.getTime())) {
+            throw new Error('系统日期无效');
+        }
+        
+        document.getElementById("splash-date").textContent = formatDate(now) + " " + getWeekday(now);
+        
+        const dateInput = document.getElementById("query-date");
+        if (dateInput) {
+            // 设置合理的日期范围
+            const minDate = new Date(2020, 0, 1);
+            const maxDate = new Date(2030, 11, 31);
+            
+            dateInput.value = formatInputDate(now);
+            dateInput.min = formatInputDate(minDate);
+            dateInput.max = formatInputDate(maxDate);
+        }
+        
+        renderToday();
+        
+        setTimeout(() => {
+            const splashScreen = document.getElementById("splash-screen");
+            if (splashScreen) {
+                splashScreen.classList.add("hidden");
+            }
+        }, 1200);
+        
+    } catch (error) {
+        console.error('初始化错误:', error);
+        // 降级显示
+        document.getElementById("splash-date").textContent = "加载完成";
+        setTimeout(() => {
+            const splashScreen = document.getElementById("splash-screen");
+            if (splashScreen) {
+                splashScreen.classList.add("hidden");
+            }
+        }, 1000);
+    }
+}
+
+// 页面加载完成后初始化
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+</script>
+</body>
+</html>
