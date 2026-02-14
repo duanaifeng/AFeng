@@ -533,7 +533,6 @@
     </style>
 </head>
 <body>
-
 <div id="splash-screen">
     <div class="splash-content">
         <div class="splash-title">西邑赶集日历</div>
@@ -543,7 +542,6 @@
         <div class="splash-email">Email: 88061995@qq.com</div>
     </div>
 </div>
-
 <section class="wave-section">
     <div class="app-title">西邑赶集日历</div>
     <div class="app-subtitle">
@@ -551,7 +549,6 @@
     </div>
     <button class="share-btn" onclick="sharePage()">🔗 分享网址给朋友</button>
 </section>
-
 <section class="today-section">
     <h2 class="section-title">今日赶集信息</h2>
     <div class="date-display" id="today-date">加载中...</div>
@@ -560,34 +557,28 @@
     
     <div class="tomorrow-info" id="tomorrow-market">加载中...</div>
 </section>
-
 <section class="query-section">
     <h2 class="section-title">查询其他日期</h2>
     <label class="date-label">选择日期：</label>
     <input type="date" id="query-date" class="date-input">
     <button class="query-btn" onclick="doQuery()">查询赶集街道</button>
 </section>
-
 <section class="result-section" id="result-section">
     <h2 class="section-title">查询结果</h2>
     <div class="result-date" id="result-date"></div>
     <div class="result-street" id="result-street"></div>
 </section>
-
 <section class="link-section">
     <h2 class="section-title">友情链接</h2>
     <div class="link-list">
-        <a href="https://www.baidu.com" target="_blank" class="link-item">🔍 百度</a>
+        <a href="index.html" class="link-item">🏠 我的主页</a>
         <a href="http://12122.ysepan.com" target="_blank" class="link-item">📚 网址藏经阁</a>
     </div>
 </section>
-
 <div id="backToTop" onclick="backToTop()">↑</div>
-
 <div class="footer">
     by·AFeng<br>Email: 88061995@qq.com
 </div>
-
 <script>
 // 街道数组 - 确保完整性
 let STREETS = ["永信街", "羊邑街", "丙麻街", "西邑街"];
@@ -596,14 +587,11 @@ if (!STREETS || STREETS.length !== 4) {
     console.warn('街道数据异常，使用默认数据');
     STREETS = ["永信街", "羊邑街", "丙麻街", "西邑街"];
 }
-
 const weekMap = ["日", "一", "二", "三", "四", "五", "六"];
-
 // 获取星期几
 function getWeekday(date) {
     return "周" + weekMap[date.getDay()];
 }
-
 // 格式化日期
 function formatDate(date) {
     const y = date.getFullYear();
@@ -611,7 +599,6 @@ function formatDate(date) {
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}年${m}月${d}日`;
 }
-
 // 格式化输入日期
 function formatInputDate(date) {
     const y = date.getFullYear();
@@ -619,7 +606,6 @@ function formatInputDate(date) {
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
 }
-
 // 计算赶集街道 - 修复时区问题
 function getStreetIndex(date) {
     try {
@@ -641,7 +627,6 @@ function getStreetIndex(date) {
         return 0; // 默认返回永信街
     }
 }
-
 // 渲染今日信息
 function renderToday() {
     try {
@@ -651,10 +636,8 @@ function renderToday() {
         }
         
         const idx = getStreetIndex(now);
-
         document.getElementById("today-date").textContent = formatDate(now) + " " + getWeekday(now);
         document.getElementById("today-street").textContent = STREETS[idx];
-
         // 明日信息
         const tomorrow = new Date(now);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -669,7 +652,6 @@ function renderToday() {
         document.getElementById("tomorrow-market").textContent = "系统异常，请重试";
     }
 }
-
 // 查询功能 - 增强错误处理
 function doQuery() {
     try {
@@ -708,7 +690,6 @@ function doQuery() {
         document.getElementById("result-section").classList.add("show");
     }
 }
-
 // 显示临时反馈
 function showTempFeedback(button, message) {
     const originalText = button.textContent;
@@ -724,7 +705,6 @@ function showTempFeedback(button, message) {
         button.disabled = false;
     }, 2000);
 }
-
 // 降级复制方案
 function copyToClipboardFallback(text, button) {
     const textArea = document.createElement('textarea');
@@ -746,7 +726,6 @@ function copyToClipboardFallback(text, button) {
     }
     document.body.removeChild(textArea);
 }
-
 // 分享功能兼容性修复
 async function sharePage() {
     const button = event.target;
@@ -771,12 +750,10 @@ async function sharePage() {
         }
     }
 }
-
 // 回到顶部功能
 function backToTop() { 
     window.scrollTo({ top: 0, behavior: 'smooth' }); 
 }
-
 // 滚动显示回到顶部按钮
 window.onscroll = () => {
     const btn = document.getElementById("backToTop");
@@ -784,7 +761,6 @@ window.onscroll = () => {
         btn.classList.toggle("show", window.scrollY > 300);
     }
 };
-
 // 初始化应用
 function init() {
     try {
@@ -829,7 +805,6 @@ function init() {
         }, 1000);
     }
 }
-
 // 页面加载完成后初始化
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
