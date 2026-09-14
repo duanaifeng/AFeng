@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="西邑赶集日历，查询永信街、羊邑街、丙麻街、西邑街的赶集日期">
+    <meta name="keywords" content="西邑赶集,永信街,羊邑街,丙麻街,西邑街,赶集日历,保山隆阳">
+    <meta name="theme-color" content="#05050a">
+    <title>西邑赶集日历｜永信街羊邑街丙麻街西邑街查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-red: #e63946;
+            --deep-red: #c1211c;
+            --darker-red: #8c1c13;
+            --gold: #ffd700;
+            --light-gold: #ffed4e;
+            --white: #ffffff;
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #05050a;
+            color: var(--white);
+            line-height: 1.5;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            text-align: center;
+            position: relative;
+            /* 纯渐变背景，彻底移除模糊 */
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(230, 57, 70, 0.10), transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(255, 215, 0, 0.05), transparent 60%),
+                radial-gradient(ellipse at 50% 50%, #0a0a0f 0%, #05050a 100%);
+        }
+
+        /* ============ 极简背景（无模糊，无动画） ============ */
+        .bg-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============ 主容器（手机宽度） ============ */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ 通用卡片（纯色半透明，移除毛玻璃） ============ */
+        .glass {
+            position: relative;
+            border-radius: 28px;
+            padding: 26px 18px;
+            /* 纯半透明背景，没有 blur，绝不卡顿和崩溃 */
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                0 1px 0 rgba(255, 255, 255, 0.15) inset;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* 顶部高光条（替代毛玻璃的质感） */
+        .glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                transparent 100%);
+            pointer-events: none;
+        }
+
+        /* ============ 头部 ============ */
+        .header {
+            margin-top: 16px;
+            padding: 26px 18px 22px;
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg,
+                var(--white) 0%,
+                var(--gold) 30%,
+                var(--light-gold) 50%,
+                var(--gold) 70%,
+                var(--white) 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            margin-bottom: 14px;
+        }
+
+        .street-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .street-tag {
+            display: inline-block;
+            padding: 5px 11px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 215, 0, 0.95);
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .share-btn {
+            display: inline-block;
+            background: linear-gradient(135deg,
+                rgba(230, 57, 70, 0.9) 0%,
+                rgba(193, 33, 28, 0.9) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: white;
+            padding: 11px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(230, 57, 70, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .share-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ============ 今日卡片 ============ */
+        .today-card {
+            margin-top: 20px;
+            padding: 30px 18px 24px;
+        }
+
+        .today-label {
+            display: inline-block;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: rgba(255, 215, 0, 0.9);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .today-date {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .today-lunar {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 215, 0, 0.85);
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            min-height: 0;
+        }
+
+        .today-lunar:empty {
+            display: none;
+        }
+
+        .today-street {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: 3px;
+            margin: 12px 0 8px;
+            background: linear-gradient(45deg,
+                var(--gold) 0%,
+                var(--light-gold) 25%,
+                var(--primary-red) 55%,
+                var(--gold) 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        .today-hint {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+
+        .tomorrow-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            text-align: left;
+        }
+
+        .tomorrow-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .tomorrow-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .tomorrow-street {
+            color: var(--gold);
+            font-weight: 800;
+            margin-left: 4px;
+        }
+
+        /* ============ 赶集倒计时 ============ */
+        .countdown-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 22px 0 12px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+        }
+
+        .countdown-title::before,
+        .countdown-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .countdown-item {
+            padding: 10px 2px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .countdown-item.is-today {
+            background: linear-gradient(135deg,
+                rgba(255, 215, 0, 0.15) 0%,
+                rgba(230, 57, 70, 0.15) 100%);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+        }
+
+        .countdown-street {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.75);
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .countdown-item.is-today .countdown-street {
+            color: var(--gold);
+            font-weight: 800;
+        }
+
+        .countdown-days {
+            font-size: 12px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .countdown-item.is-today .countdown-days {
+            color: var(--gold);
+        }
+
+        /* ============ 查询卡 ============ */
+        .query-card {
+            margin-top: 20px;
+            padding: 24px 18px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before,
+        .card-title::after {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);
+        }
+
+        .quick-btns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quick-btn {
+            padding: 14px 6px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--gold);
+            transition: transform 0.2s ease;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 215, 0, 0.15);
+        }
+
+        .divider-or {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .divider-or::before,
+        .divider-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            margin-bottom: 14px;
+            text-align: center;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: rgba(255, 215, 0, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .date-input::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(1.2) sepia(1) saturate(5) hue-rotate(350deg);
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .query-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg,
+                var(--primary-red) 0%,
+                var(--deep-red) 50%,
+                var(--darker-red) 100%);
+            color: white;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 5px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .query-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ============ 结果卡 ============ */
+        .result-card {
+            display: none;
+            margin-top: 20px;
+            padding: 30px 18px;
+        }
+
+        .result-card.show {
+            display: block;
+            animation: resultReveal 0.5s ease forwards;
+        }
+
+        .result-date {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .result-lunar {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 215, 0, 0.85);
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+            min-height: 0;
+        }
+
+        .result-lunar:empty {
+            display: none;
+        }
+
+        .result-street {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg,
+                var(--gold),
+                var(--light-gold),
+                var(--primary-red),
+                var(--gold));
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        /* ============ 友链卡 ============ */
+        .link-card {
+            margin-top: 20px;
+            padding: 24px 18px;
+        }
+
+        .link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .link-item {
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============ 回到顶部 ============ */
+        #backToTop {
+            position: fixed;
+            right: 16px;
+            bottom: 22px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg,
+                rgba(230, 57, 70, 0.95) 0%,
+                rgba(193, 33, 28, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 100;
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.5);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:active {
+            transform: scale(0.95);
+        }
+
+        /* ============ 页脚 ============ */
+        .footer {
+            text-align: center;
+            padding: 40px 20px 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 1px;
+            line-height: 1.9;
+        }
+
+        .footer .version {
+            display: inline-block;
+            padding: 2px 10px;
+            font-size: 11px;
+            color: rgba(255, 215, 0, 0.75);
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 10px;
+            letter-spacing: 1px;
+        }
+
+        .footer .heart {
+            color: var(--primary-red);
+            display: inline-block;
+        }
+
+        /* ============ 关键帧（极致精简，只保留必要） ============ */
+        @keyframes shimmer {
+            0%, 100% { background-position: -200% center; }
+            50% { background-position: 200% center; }
+        }
+
+        @keyframes resultReveal {
+            0% { opacity: 0; transform: translateY(16px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* ============ 入场动画 ============ */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .animate-in.visible {
+            animation: slideUpIn 0.5s ease forwards;
+        }
+
+        @keyframes slideUpIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景层（极简，不耗性能） -->
+    <div class="bg-wrap"></div>
+
+    <!-- 主容器 -->
+    <div class="container">
+
+        <!-- 头部 -->
+        <section class="glass header animate-in" data-animate>
+            <h1 class="app-title">西邑赶集日历</h1>
+            <div class="street-tags">
+                <span class="street-tag">永信街</span>
+                <span class="street-tag">羊邑街</span>
+                <span class="street-tag">丙麻街</span>
+                <span class="street-tag">西邑街</span>
+            </div>
+            <button class="share-btn" data-action="share">🔗 分享给朋友</button>
+        </section>
+
+        <!-- 今日 -->
+        <section class="glass today-card animate-in" data-animate>
+            <div class="today-label">Today · 今日赶集</div>
+            <div class="today-date" id="today-date">加载中...</div>
+            <div class="today-lunar" id="today-lunar"></div>
+            <div class="today-street" id="today-street">计算中...</div>
+            <div class="today-hint">今天赶这个街</div>
+            <div class="tomorrow-bar">
+                <span class="tomorrow-icon">🧧</span>
+                <span class="tomorrow-text" id="tomorrow-market">加载中...</span>
+            </div>
+
+            <div class="countdown-title">赶集倒计时</div>
+            <div class="countdown-grid" id="countdown-grid"></div>
+        </section>
+
+        <!-- 查询 -->
+        <section class="glass query-card animate-in" data-animate>
+            <div class="card-title">查询其他日期</div>
+            <div class="quick-btns">
+                <button class="quick-btn" data-offset="0">今天</button>
+                <button class="quick-btn" data-offset="1">明天</button>
+                <button class="quick-btn" data-offset="2">后天</button>
+            </div>
+            <div class="divider-or">或选择日期</div>
+            <input type="date" id="query-date" class="date-input" aria-label="选择要查询的日期">
+            <button class="query-btn" data-action="query">查询</button>
+        </section>
+
+        <!-- 结果 -->
+        <section class="glass result-card" id="result-section">
+            <div class="card-title">查询结果</div>
+            <div class="result-date" id="result-date"></div>
+            <div class="result-lunar" id="result-lunar"></div>
+            <div class="result-street" id="result-street"></div>
+        </section>
+
+        <!-- 友链 -->
+        <section class="glass link-card animate-in" data-animate>
+            <div class="card-title">友情链接</div>
+            <div class="link-list">
+                <a href="index.html" class="link-item" rel="noopener">🏠 我的主页</a>
+                <a href="http://12122.ysepan.com" target="_blank" rel="noopener noreferrer" class="link-item">📚 网址藏经阁</a>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            <span class="version">v3.1 · 2026.09</span><br>
+            by·AiFeng <span class="heart">♥</span><br>
+            Email: 88061995@qq.com
+        </div>
+    </div>
+
+    <!-- 回到顶部 -->
+    <button id="backToTop" data-action="backToTop" aria-label="回到顶部">↑</button>
+
+    <script>
+    (function () {
+        'use strict';
+
+        var CONFIG = {
+            streets: ["永信街", "羊邑街", "丙麻街", "西邑街"],
+            baseYear: 2026,
+            baseMonth: 2,
+            baseDay: 12,
+            cycle: 4,
+            onlineUrl: "https://duanaifeng.github.io/AFeng/ganji.html",
+            minDate: "1995-01-01",
+            maxDate: "2099-12-31"
+        };
+
+        var STREETS = (Array.isArray(CONFIG.streets) && CONFIG.streets.length === CONFIG.cycle)
+            ? CONFIG.streets
+            : ["永信街", "羊邑街", "丙麻街", "西邑街"];
+
+        var weekMap = ["日", "一", "二", "三", "四", "五", "六"];
+
+        var DOM = {};
+
+        function cacheDom() {
+            DOM.todayDate = document.getElementById('today-date');
+            DOM.todayStreet = document.getElementById('today-street');
+            DOM.todayLunar = document.getElementById('today-lunar');
+            DOM.tomorrowMarket = document.getElementById('tomorrow-market');
+            DOM.countdownGrid = document.getElementById('countdown-grid');
+            DOM.resultSection = document.getElementById('result-section');
+            DOM.resultDate = document.getElementById('result-date');
+            DOM.resultLunar = document.getElementById('result-lunar');
+            DOM.resultStreet = document.getElementById('result-street');
+            DOM.queryDate = document.getElementById('query-date');
+            DOM.backToTop = document.getElementById('backToTop');
+        }
+
+        function getBeijingParts(date) {
+            var d = date || new Date();
+            var bj = new Date(d.getTime() + 8 * 3600 * 1000);
+            return {
+                year: bj.getUTCFullYear(),
+                month: bj.getUTCMonth() + 1,
+                day: bj.getUTCDate(),
+                weekday: bj.getUTCDay()
+            };
+        }
+
+        function getBeijingDate() {
+            var p = getBeijingParts();
+            return new Date(p.year, p.month - 1, p.day);
+        }
+
+        function getWeekday(date) {
+            return "周" + weekMap[date.getDay()];
+        }
+
+        function formatDate(date) {
+            var y = date.getFullYear();
+            var m = String(date.getMonth() + 1).padStart(2, '0');
+            var d = String(date.getDate()).padStart(2, '0');
+            return y + "年" + m + "月" + d + "日";
+        }
+
+        function formatInputDate(date) {
+            var y = date.getFullYear();
+            var m = String(date.getMonth() + 1).padStart(2, '0');
+            var d = String(date.getDate()).padStart(2, '0');
+            return y + "-" + m + "-" + d;
+        }
+
+        function addDays(date, n) {
+            var d = new Date(date);
+            d.setDate(d.getDate() + n);
+            return d;
+        }
+
+        function getDateKey(date) {
+            return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        }
+
+        var LUNAR_DAY_NAMES = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+                               '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+                               '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+
+        function getLunarText(date) {
+            try {
+                var fmt = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', {
+                    month: 'long',
+                    day: 'numeric'
+                });
+                var str = fmt.format(date).replace(/\s+/g, '');
+                if (!str) return null;
+
+                if (!/^(闰)?[正二三四五六七八九十冬腊]月/.test(str)) {
+                    return null;
+                }
+
+                var m = str.match(/^(.+?)(\d{1,2})日?$/);
+                if (m) {
+                    var num = parseInt(m[2], 10);
+                    if (num >= 1 && num <= 30) {
+                        var dayText = LUNAR_DAY_NAMES[num - 1] || m[2];
+                        return '农历' + m[1] + dayText;
+                    }
+                    return null;
+                }
+
+                return '农历' + str;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function renderLunarTo(el, date) {
+            if (!el) return;
+            var text = getLunarText(date);
+            if (text) {
+                el.textContent = text;
+                el.style.display = '';
+            } else {
+                el.textContent = '';
+                el.style.display = 'none';
+            }
+        }
+
+        function getStreetIndex(date) {
+            try {
+                var base = Date.UTC(CONFIG.baseYear, CONFIG.baseMonth - 1, CONFIG.baseDay);
+                var target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+                var diffDays = Math.round((target - base) / 86400000);
+                return ((diffDays % CONFIG.cycle) + CONFIG.cycle) % CONFIG.cycle;
+            } catch (e) {
+                console.error('计算街道索引错误:', e);
+                return 0;
+            }
+        }
+
+        var lastRenderedKey = null;
+
+        function renderToday() {
+            try {
+                var today = getBeijingDate();
+                var idx = getStreetIndex(today);
+                var todayStreet = STREETS[idx];
+
+                DOM.todayDate.textContent = formatDate(today) + " " + getWeekday(today);
+                DOM.todayStreet.textContent = todayStreet;
+
+                renderLunarTo(DOM.todayLunar, today);
+
+                var tomorrow = addDays(today, 1);
+                var tIdx = getStreetIndex(tomorrow);
+                DOM.tomorrowMarket.innerHTML =
+                    "明天 " + formatDate(tomorrow).replace(/年|月/g, '.').replace('日', '') +
+                    " " + getWeekday(tomorrow) + " → <span class='tomorrow-street'>" + STREETS[tIdx] + "</span>";
+
+                renderCountdown(today, idx);
+
+                lastRenderedKey = getDateKey(today);
+            } catch (e) {
+                console.error('渲染今日信息错误:', e);
+                DOM.todayDate.textContent = "日期计算错误";
+                DOM.todayStreet.textContent = "请刷新页面";
+                DOM.tomorrowMarket.textContent = "系统异常，请重试";
+            }
+        }
+
+        function refreshIfDateChanged() {
+            var today = getBeijingDate();
+            if (lastRenderedKey !== getDateKey(today)) {
+                renderToday();
+            }
+        }
+
+        function renderCountdown(today, todayIdx) {
+            var items = [];
+            for (var i = 0; i < STREETS.length; i++) {
+                var days = ((i - todayIdx) + CONFIG.cycle) % CONFIG.cycle;
+                items.push({ name: STREETS[i], days: days });
+            }
+            items.sort(function (a, b) { return a.days - b.days; });
+
+            var html = '';
+            for (var j = 0; j < items.length; j++) {
+                var item = items[j];
+                var isToday = (item.days === 0);
+                var dayText;
+                if (item.days === 0) dayText = '今天';
+                else if (item.days === 1) dayText = '明天';
+                else dayText = item.days + '天后';
+
+                html += '<div class="countdown-item' + (isToday ? ' is-today' : '') + '">' +
+                            '<div class="countdown-street">' + item.name + '</div>' +
+                            '<div class="countdown-days">' + dayText + '</div>' +
+                        '</div>';
+            }
+            DOM.countdownGrid.innerHTML = html;
+        }
+
+        function showResult(date) {
+            var idx = getStreetIndex(date);
+            var resultStreet = STREETS[idx];
+
+            DOM.resultDate.textContent = formatDate(date) + " " + getWeekday(date);
+            DOM.resultStreet.textContent = resultStreet;
+
+            renderLunarTo(DOM.resultLunar, date);
+
+            var section = DOM.resultSection;
+            section.classList.remove("show");
+            void section.offsetWidth;
+            section.classList.add("show");
+
+            setTimeout(function () {
+                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 250);
+        }
+
+        function doQuery() {
+            var input = DOM.queryDate;
+            var val = input.value;
+            if (!val) {
+                input.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(function () { input.style.animation = ''; }, 500);
+                return;
+            }
+            var parts = val.split('-');
+            if (parts.length !== 3) return;
+            var sel = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+            if (isNaN(sel.getTime())) {
+                alert('日期无效，请重新选择');
+                return;
+            }
+            showResult(sel);
+        }
+
+        function quickQuery(offset) {
+            var d = addDays(getBeijingDate(), offset);
+            DOM.queryDate.value = formatInputDate(d);
+            showResult(d);
+        }
+
+        function showTempFeedback(button, message) {
+            if (!button) return;
+            var originalText = button.textContent;
+            button.textContent = message;
+            button.disabled = true;
+            setTimeout(function () {
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 2000);
+        }
+
+        function copyToClipboardFallback(text, button) {
+            var textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+
+            try {
+                textArea.focus();
+                textArea.select();
+                textArea.setSelectionRange(0, text.length);
+            } catch (e) { /* 忽略 */ }
+
+            var ok = false;
+            try {
+                ok = document.execCommand('copy');
+            } catch (err) {
+                ok = false;
+            }
+            document.body.removeChild(textArea);
+
+            if (ok) {
+                showTempFeedback(button, '✅ 已复制');
+            } else {
+                window.prompt('请长按复制下面的网址：', text);
+            }
+        }
+
+        function doCopy(url, button) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function () {
+                    showTempFeedback(button, '✅ 已复制');
+                }).catch(function () {
+                    copyToClipboardFallback(url, button);
+                });
+            } else {
+                copyToClipboardFallback(url, button);
+            }
+        }
+
+        function getShareUrl() {
+            if (location.protocol === 'file:') {
+                return CONFIG.onlineUrl || '';
+            }
+            return location.href;
+        }
+
+        function sharePage(button) {
+            var url = getShareUrl();
+
+            if (!url) {
+                showTempFeedback(button, '⚠️ 请先填网址');
+                setTimeout(function () {
+                    alert(
+                        '本地打开时无法分享。\n\n' +
+                        '请把页面部署到网上，\n' +
+                        '然后在代码开头的 CONFIG.onlineUrl 里填入网址。'
+                    );
+                }, 100);
+                return;
+            }
+
+            if (navigator.share) {
+                navigator.share({
+                    title: '西邑赶集日历',
+                    text: '永信街、羊邑街、丙麻街、西邑街四天循环查询',
+                    url: url
+                }).catch(function (e) {
+                    if (e && e.name === 'AbortError') return;
+                    doCopy(url, button);
+                });
+                return;
+            }
+
+            doCopy(url, button);
+        }
+
+        function backToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setupRevealAnimation() {
+            var els = document.querySelectorAll('[data-animate]');
+            if (!('IntersectionObserver' in window)) {
+                for (var i = 0; i < els.length; i++) {
+                    els[i].classList.add('visible');
+                }
+                return;
+            }
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+            els.forEach(function (el) { observer.observe(el); });
+        }
+
+        function bindEvents() {
+            var shareBtn = document.querySelector('.share-btn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', function () {
+                    sharePage(this);
+                });
+            }
+
+            var quickBtns = document.querySelectorAll('.quick-btn');
+            for (var i = 0; i < quickBtns.length; i++) {
+                (function (btn) {
+                    btn.addEventListener('click', function () {
+                        var offset = parseInt(this.getAttribute('data-offset'), 10) || 0;
+                        quickQuery(offset);
+                    });
+                })(quickBtns[i]);
+            }
+
+            var queryBtn = document.querySelector('.query-btn');
+            if (queryBtn) {
+                queryBtn.addEventListener('click', doQuery);
+            }
+
+            if (DOM.backToTop) {
+                DOM.backToTop.addEventListener('click', backToTop);
+            }
+        }
+
+        function init() {
+            cacheDom();
+
+            renderToday();
+
+            if (DOM.queryDate) {
+                var now = getBeijingDate();
+                DOM.queryDate.value = formatInputDate(now);
+                DOM.queryDate.min = CONFIG.minDate;
+                DOM.queryDate.max = CONFIG.maxDate;
+            }
+
+            bindEvents();
+            setupRevealAnimation();
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) {
+                refreshIfDateChanged();
+            }
+        });
+
+        setInterval(refreshIfDateChanged, 60000);
+
+        var scrollTimer = null;
+        window.addEventListener('scroll', function () {
+            if (scrollTimer) return;
+            scrollTimer = setTimeout(function () {
+                if (DOM.backToTop) {
+                    if (window.scrollY > 300) DOM.backToTop.classList.add("show");
+                    else DOM.backToTop.classList.remove("show");
+                }
+                scrollTimer = null;
+            }, 100);
+        }, { passive: true });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>
