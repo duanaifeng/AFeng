@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<title>怀旧小游戏</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 60%, #060a15 100%);
+    background-attachment: fixed;
+    color: #e2e8f0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ================= 视图切换 ================= */
+  .view {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .view.active { opacity: 1; pointer-events: auto; }
+
+  /* ================= 菜单页 ================= */
+  #menuView {
+    padding: calc(18px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 18px;
+    align-items: center;
+  }
+  #menuView.active { display: flex; }
+
+  .header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border-radius: 14px;
+    background: rgba(30, 41, 59, .7);
+    border: 1px solid rgba(71, 85, 105, .55);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .4),
+                inset 0 1px 0 rgba(255, 255, 255, .06);
+  }
+  .logo-icon { font-size: 24px; line-height: 1; }
+  .logo-text {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 50%, #0284c7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle { font-size: 12px; color: #64748b; letter-spacing: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+  @media (min-width: 620px) {
+    .grid { grid-template-columns: repeat(4, 1fr); max-width: 900px; gap: 14px; }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 10px 14px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(30, 41, 59, .9), rgba(15, 23, 42, .9));
+    border: 1px solid rgba(71, 85, 105, .55);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .45),
+                inset 0 1px 0 rgba(255, 255, 255, .06);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform .12s ease, border-color .18s ease, box-shadow .18s ease;
+    aspect-ratio: 1 / 1.15;
+    animation: cardIn .45s cubic-bezier(.34, 1.4, .64, 1) backwards;
+  }
+  .card:nth-child(1) { animation-delay: .02s; }
+  .card:nth-child(2) { animation-delay: .06s; }
+  .card:nth-child(3) { animation-delay: .10s; }
+  .card:nth-child(4) { animation-delay: .14s; }
+  .card:nth-child(5) { animation-delay: .18s; }
+  .card:nth-child(6) { animation-delay: .22s; }
+  .card:nth-child(7) { animation-delay: .26s; }
+  .card:nth-child(8) { animation-delay: .30s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(14px) scale(.94); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--c) 0%, transparent 65%);
+    opacity: .16;
+    transition: opacity .25s ease;
+    pointer-events: none;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 14%; right: 14%; bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--c);
+    box-shadow: 0 0 12px var(--c);
+    opacity: .75;
+  }
+  .card:hover {
+    border-color: var(--c);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .5),
+                0 0 0 1px var(--c) inset,
+                0 0 22px -4px var(--c);
+  }
+  .card:hover::before { opacity: .32; }
+  .card:active { transform: scale(.955); }
+
+  .icon-wrap {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: var(--c-soft);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 0 0 0 1px var(--c-border), 0 0 18px -4px var(--c);
+    transition: transform .25s ease;
+  }
+  .card:hover .icon-wrap { transform: scale(1.08); }
+  .icon { font-size: 28px; line-height: 1; filter: drop-shadow(0 0 8px var(--c)); }
+
+  .name { font-size: 15px; font-weight: 700; color: #f1f5f9; letter-spacing: 1px; margin-top: 2px; }
+  .desc { font-size: 10px; color: #94a3b8; line-height: 1.35; text-align: center; padding: 0 2px; }
+
+  .tag {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 8px;
+    background: var(--c-soft); color: var(--c);
+    border: 1px solid var(--c-border);
+    letter-spacing: .5px;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 12px;
+    font-size: 11px; color: #475569;
+    text-align: center; letter-spacing: 1px; line-height: 1.8;
+  }
+  .footer .dot { display: inline-block; margin: 0 6px; color: #334155; }
+
+  @media (max-width: 360px) {
+    .grid { gap: 10px; }
+    .card { padding: 12px 8px; aspect-ratio: 1 / 1.18; }
+    .icon-wrap { width: 46px; height: 46px; }
+    .icon { font-size: 24px; }
+    .name { font-size: 13px; }
+    .desc { font-size: 9px; }
+    .logo-text { font-size: 17px; letter-spacing: 2px; }
+  }
+  @media (max-height: 640px) {
+    #menuView { gap: 12px; padding-top: calc(12px + env(safe-area-inset-top)); }
+    .card { aspect-ratio: 1 / 1.05; padding: 10px 8px; gap: 5px; }
+    .icon-wrap { width: 44px; height: 44px; }
+    .icon { font-size: 22px; }
+    .name { font-size: 13px; }
+    .desc { display: none; }
+  }
+
+  /* ================= 游戏页 ================= */
+  #gameView { padding: 0; }
+  #gameView.active { display: flex; }
+
+  .game-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+    background: rgba(15, 23, 42, .95);
+    border-bottom: 1px solid rgba(51, 65, 85, .7);
+    flex-shrink: 0;
+    z-index: 5;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #7dd3fc;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-btn:active { transform: scale(.95); background: rgba(51, 65, 85, .95); }
+
+  .game-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: 1px;
+  }
+
+  #gameFrame {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #0b1120;
+    min-height: 0;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= 菜单页 ================= -->
+  <div class="view active" id="menuView">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🕹️</span>
+        <span class="logo-text">怀旧小游戏</span>
+      </div>
+      <div class="subtitle">8 款经典 · 点击即玩</div>
+    </header>
+
+    <main class="grid">
+      <div class="card" data-game="打砖块.html" data-title="打砖块"
+           style="--c:#38bdf8; --c-soft:rgba(56,189,248,.15); --c-border:rgba(56,189,248,.35);">
+        <span class="tag">经典</span>
+        <div class="icon-wrap"><span class="icon">🧱</span></div>
+        <div class="name">打砖块</div>
+        <div class="desc">挡板反弹 · 消除砖块</div>
+      </div>
+
+      <div class="card" data-game="俄罗斯方块.html" data-title="俄罗斯方块"
+           style="--c:#a78bfa; --c-soft:rgba(167,139,250,.15); --c-border:rgba(167,139,250,.35);">
+        <span class="tag">消除</span>
+        <div class="icon-wrap"><span class="icon">🎮</span></div>
+        <div class="name">俄罗斯方块</div>
+        <div class="desc">方块下落 · 消行得分</div>
+      </div>
+
+      <div class="card" data-game="赛车游戏.html" data-title="赛车游戏"
+           style="--c:#fbbf24; --c-soft:rgba(251,191,36,.15); --c-border:rgba(251,191,36,.35);">
+        <span class="tag">竞速</span>
+        <div class="icon-wrap"><span class="icon">🏎️</span></div>
+        <div class="name">赛车游戏</div>
+        <div class="desc">三车道 · 极速飙车</div>
+      </div>
+
+      <div class="card" data-game="飞机大战.html" data-title="飞机大战"
+           style="--c:#22d3ee; --c-soft:rgba(34,211,238,.15); --c-border:rgba(34,211,238,.35);">
+        <span class="tag">射击</span>
+        <div class="icon-wrap"><span class="icon">✈️</span></div>
+        <div class="name">飞机大战</div>
+        <div class="desc">10 关闯关 · 打飞机</div>
+      </div>
+
+      <div class="card" data-game="坦克大战.html" data-title="坦克大战"
+           style="--c:#ef4444; --c-soft:rgba(239,68,68,.15); --c-border:rgba(239,68,68,.35);">
+        <span class="tag">策略</span>
+        <div class="icon-wrap"><span class="icon">🎯</span></div>
+        <div class="name">坦克大战</div>
+        <div class="desc">砖墙攻防 · 草丛水池</div>
+      </div>
+
+      <div class="card" data-game="贪吃蛇.html" data-title="贪吃蛇"
+           style="--c:#4ade80; --c-soft:rgba(74,222,128,.15); --c-border:rgba(74,222,128,.35);">
+        <span class="tag">休闲</span>
+        <div class="icon-wrap"><span class="icon">🐍</span></div>
+        <div class="name">贪吃蛇</div>
+        <div class="desc">4 档难度 · 越吃越长</div>
+      </div>
+
+      <div class="card" data-game="推箱子.html" data-title="推箱子"
+           style="--c:#fb923c; --c-soft:rgba(251,146,60,.15); --c-border:rgba(251,146,60,.35);">
+        <span class="tag">解谜</span>
+        <div class="icon-wrap"><span class="icon">📦</span></div>
+        <div class="name">推箱子</div>
+        <div class="desc">100 关 · 烧脑推箱</div>
+      </div>
+
+      <div class="card" data-game="五子棋.html" data-title="五子棋"
+           style="--c:#f472b6; --c-soft:rgba(244,114,182,.15); --c-border:rgba(244,114,182,.35);">
+        <span class="tag">对弈</span>
+        <div class="icon-wrap"><span class="icon">⚫</span></div>
+        <div class="name">五子棋</div>
+        <div class="desc">4 档 AI · 人机对战</div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      8 款经典小游戏 <span class="dot">·</span> 支持触屏 / 键盘 <span class="dot">·</span> 点击即玩
+    </footer>
+  </div>
+
+  <!-- ================= 游戏页 ================= -->
+  <div class="view" id="gameView">
+    <div class="game-bar">
+      <button class="back-btn" id="backBtn">← 返回菜单</button>
+      <span class="game-title" id="gameTitle"></span>
+    </div>
+    <iframe id="gameFrame" allowfullscreen></iframe>
+  </div>
+
+<script>
+  const menuView  = document.getElementById('menuView');
+  const gameView  = document.getElementById('gameView');
+  const gameFrame = document.getElementById('gameFrame');
+  const gameTitle = document.getElementById('gameTitle');
+  const backBtn   = document.getElementById('backBtn');
+
+  // 点击卡片 → 打开游戏
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const file  = card.dataset.game;
+      const title = card.dataset.title || '';
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate(12); } catch (_) {}
+      }
+
+      gameTitle.textContent = title;
+      gameFrame.src = file;
+      menuView.classList.remove('active');
+      gameView.classList.add('active');
+
+      // 尝试进入全屏（点击即用户手势）
+      if (gameView.requestFullscreen) {
+        gameView.requestFullscreen().catch(() => {});
+      } else if (gameView.webkitRequestFullscreen) {
+        try { gameView.webkitRequestFullscreen(); } catch (_) {}
+      }
+    });
+  });
+
+  // 返回菜单
+  backBtn.addEventListener('click', () => {
+    gameFrame.src = 'about:blank';
+    gameView.classList.remove('active');
+    menuView.classList.add('active');
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else if (document.webkitFullscreenElement) {
+      try { document.webkitExitFullscreen(); } catch (_) {}
+    }
+  });
+</script>
+</body>
+</html>
