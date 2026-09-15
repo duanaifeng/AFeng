@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<title>怀旧小游戏</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 60%, #060a15 100%);
+    background-attachment: fixed;
+    color: #e2e8f0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ================= 视图切换 ================= */
+  .view {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  .view.active { opacity: 1; pointer-events: auto; }
+
+  /* ================= 菜单页 ================= */
+  #menuView {
+    padding: calc(18px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 18px;
+    align-items: center;
+  }
+  #menuView.active { display: flex; }
+
+  .header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border-radius: 14px;
+    background: rgba(30, 41, 59, .7);
+    border: 1px solid rgba(71, 85, 105, .55);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .4),
+                inset 0 1px 0 rgba(255, 255, 255, .06);
+  }
+  .logo-icon { font-size: 24px; line-height: 1; }
+  .logo-text {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 50%, #0284c7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle { font-size: 12px; color: #64748b; letter-spacing: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+  @media (min-width: 620px) {
+    .grid { grid-template-columns: repeat(4, 1fr); max-width: 900px; gap: 14px; }
+  }
+  @media (min-width: 1100px) {
+    .grid { grid-template-columns: repeat(5, 1fr); max-width: 1100px; }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 10px 14px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(30, 41, 59, .9), rgba(15, 23, 42, .9));
+    border: 1px solid rgba(71, 85, 105, .55);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .45),
+                inset 0 1px 0 rgba(255, 255, 255, .06);
+    cursor: pointer;
+    overflow: hidden;
+    font-family: inherit;
+    color: inherit;
+    text-align: center;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: transform .12s ease, border-color .18s ease, box-shadow .18s ease;
+    aspect-ratio: 1 / 1.15;
+    animation: cardIn .45s cubic-bezier(.34, 1.4, .64, 1) backwards;
+  }
+  .card:nth-child(1)  { animation-delay: .02s; }
+  .card:nth-child(2)  { animation-delay: .06s; }
+  .card:nth-child(3)  { animation-delay: .10s; }
+  .card:nth-child(4)  { animation-delay: .14s; }
+  .card:nth-child(5)  { animation-delay: .18s; }
+  .card:nth-child(6)  { animation-delay: .22s; }
+  .card:nth-child(7)  { animation-delay: .26s; }
+  .card:nth-child(8)  { animation-delay: .30s; }
+  .card:nth-child(9)  { animation-delay: .34s; }
+  .card:nth-child(10) { animation-delay: .38s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(14px) scale(.94); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--c) 0%, transparent 65%);
+    opacity: .16;
+    transition: opacity .25s ease;
+    pointer-events: none;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 14%; right: 14%; bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--c);
+    box-shadow: 0 0 12px var(--c);
+    opacity: .75;
+  }
+  .card:hover,
+  .card:focus-visible {
+    border-color: var(--c);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .5),
+                0 0 0 1px var(--c) inset,
+                0 0 22px -4px var(--c);
+    outline: none;
+  }
+  .card:hover::before,
+  .card:focus-visible::before { opacity: .32; }
+  .card:active { transform: scale(.955); }
+
+  .icon-wrap {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: var(--c-soft);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 0 0 0 1px var(--c-border), 0 0 18px -4px var(--c);
+    transition: transform .25s ease;
+  }
+  .card:hover .icon-wrap,
+  .card:focus-visible .icon-wrap { transform: scale(1.08); }
+  .icon { font-size: 28px; line-height: 1; filter: drop-shadow(0 0 8px var(--c)); }
+
+  .name { font-size: 15px; font-weight: 700; color: #f1f5f9; letter-spacing: 1px; margin-top: 2px; }
+  .desc { font-size: 10px; color: #94a3b8; line-height: 1.35; text-align: center; padding: 0 2px; }
+
+  .tag {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 8px;
+    background: var(--c-soft); color: var(--c);
+    border: 1px solid var(--c-border);
+    letter-spacing: .5px;
+  }
+
+  /* ================= 页脚 ================= */
+  .footer {
+    margin-top: auto;
+    padding-top: 16px;
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .footer-slogan {
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  .footer-slogan .dot { display: inline-block; margin: 0 6px; color: #334155; }
+
+  .footer-poem {
+    margin-bottom: 16px;
+    line-height: 1.95;
+  }
+  .footer-poem p {
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: 1px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(71, 85, 105, .35);
+  }
+
+  .mail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color .2s ease, transform .15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mail-btn:active { transform: scale(0.96); }
+  .mail-btn:hover,
+  .mail-btn:focus-visible { color: #7dd3fc; outline: none; }
+  .mail-btn .mail-icon { font-size: 14px; line-height: 1; }
+  .mail-btn.copied { color: #4ade80; }
+
+  .author {
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .author .heart {
+    color: #f472b6;
+    display: inline-block;
+    margin-left: 2px;
+  }
+
+  @media (max-width: 360px) {
+    .grid { gap: 10px; }
+    .card { padding: 12px 8px; aspect-ratio: 1 / 1.18; }
+    .icon-wrap { width: 46px; height: 46px; }
+    .icon { font-size: 24px; }
+    .name { font-size: 13px; }
+    .desc { font-size: 9px; }
+    .logo-text { font-size: 17px; letter-spacing: 2px; }
+    .footer-poem p { font-size: 11.5px; }
+    .mail-btn, .author { font-size: 11px; }
+  }
+  @media (max-height: 640px) {
+    #menuView { gap: 12px; padding-top: calc(12px + env(safe-area-inset-top)); }
+    .card { aspect-ratio: 1 / 1.05; padding: 10px 8px; gap: 5px; }
+    .icon-wrap { width: 44px; height: 44px; }
+    .icon { font-size: 22px; }
+    .name { font-size: 13px; }
+    .desc { display: none; }
+  }
+
+  /* ================= 游戏页 ================= */
+  #gameView { padding: 0; }
+  #gameView.active { display: flex; }
+
+  .game-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+    background: rgba(15, 23, 42, .95);
+    border-bottom: 1px solid rgba(51, 65, 85, .7);
+    flex-shrink: 0;
+    z-index: 5;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #7dd3fc;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-btn:active { transform: scale(.95); background: rgba(51, 65, 85, .95); }
+
+  .game-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: 1px;
+  }
+
+  .frame-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: #0b1120;
+  }
+
+  #gameFrame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #0b1120;
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  #gameFrame.loaded { opacity: 1; }
+
+  .loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: radial-gradient(circle at 50% 40%, #1e293b 0%, #0b1120 70%);
+    z-index: 2;
+    transition: opacity .3s ease, visibility .3s ease;
+  }
+  .loading.hide { opacity: 0; visibility: hidden; }
+
+  .spinner {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 3px solid rgba(56, 189, 248, .18);
+    border-top-color: #38bdf8;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 13px;
+    color: #94a3b8;
+    letter-spacing: 1px;
+  }
+  .loading-text b { color: #7dd3fc; font-weight: 700; }
+</style>
+</head>
+<body>
+
+  <!-- ================= 菜单页 ================= -->
+  <div class="view active" id="menuView">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🕹️</span>
+        <span class="logo-text">怀旧小游戏</span>
+      </div>
+      <div class="subtitle">10 款经典 · 点击即玩</div>
+    </header>
+
+    <main class="grid">
+      <button class="card" data-game="打砖块.html"
+           style="--c:#38bdf8; --c-soft:rgba(56,189,248,.15); --c-border:rgba(56,189,248,.35);">
+        <span class="tag">经典</span>
+        <div class="icon-wrap"><span class="icon">🧱</span></div>
+        <div class="name">打砖块</div>
+        <div class="desc">挡板反弹 · 消除砖块</div>
+      </button>
+
+      <button class="card" data-game="俄罗斯方块.html"
+           style="--c:#a78bfa; --c-soft:rgba(167,139,250,.15); --c-border:rgba(167,139,250,.35);">
+        <span class="tag">消除</span>
+        <div class="icon-wrap"><span class="icon">🎮</span></div>
+        <div class="name">俄罗斯方块</div>
+        <div class="desc">方块下落 · 消行得分</div>
+      </button>
+
+      <button class="card" data-game="赛车游戏.html"
+           style="--c:#fbbf24; --c-soft:rgba(251,191,36,.15); --c-border:rgba(251,191,36,.35);">
+        <span class="tag">竞速</span>
+        <div class="icon-wrap"><span class="icon">🏎️</span></div>
+        <div class="name">赛车游戏</div>
+        <div class="desc">三车道 · 极速飙车</div>
+      </button>
+
+      <button class="card" data-game="飞机大战.html"
+           style="--c:#22d3ee; --c-soft:rgba(34,211,238,.15); --c-border:rgba(34,211,238,.35);">
+        <span class="tag">射击</span>
+        <div class="icon-wrap"><span class="icon">✈️</span></div>
+        <div class="name">飞机大战</div>
+        <div class="desc">10 关闯关 · 打飞机</div>
+      </button>
+
+      <button class="card" data-game="坦克大战.html"
+           style="--c:#ef4444; --c-soft:rgba(239,68,68,.15); --c-border:rgba(239,68,68,.35);">
+        <span class="tag">策略</span>
+        <div class="icon-wrap"><span class="icon">🎯</span></div>
+        <div class="name">坦克大战</div>
+        <div class="desc">砖墙攻防 · 草丛水池</div>
+      </button>
+
+      <button class="card" data-game="贪吃蛇.html"
+           style="--c:#4ade80; --c-soft:rgba(74,222,128,.15); --c-border:rgba(74,222,128,.35);">
+        <span class="tag">休闲</span>
+        <div class="icon-wrap"><span class="icon">🐍</span></div>
+        <div class="name">贪吃蛇</div>
+        <div class="desc">4 档难度 · 越吃越长</div>
+      </button>
+
+      <button class="card" data-game="推箱子.html"
+           style="--c:#fb923c; --c-soft:rgba(251,146,60,.15); --c-border:rgba(251,146,60,.35);">
+        <span class="tag">解谜</span>
+        <div class="icon-wrap"><span class="icon">📦</span></div>
+        <div class="name">推箱子</div>
+        <div class="desc">100 关 · 烧脑推箱</div>
+      </button>
+
+      <button class="card" data-game="五子棋.html"
+           style="--c:#f472b6; --c-soft:rgba(244,114,182,.15); --c-border:rgba(244,114,182,.35);">
+        <span class="tag">对弈</span>
+        <div class="icon-wrap"><span class="icon">⚫</span></div>
+        <div class="name">五子棋</div>
+        <div class="desc">4 档 AI · 人机对战</div>
+      </button>
+
+      <!-- ===== 第 9 位：斗地主 ===== -->
+      <button class="card" data-game="斗地主.html"
+           style="--c:#f87171; --c-soft:rgba(248,113,113,.15); --c-border:rgba(248,113,113,.35);">
+        <span class="tag">牌类</span>
+        <div class="icon-wrap"><span class="icon">🃏</span></div>
+        <div class="name">斗地主</div>
+        <div class="desc">3 人 · 抢地主</div>
+      </button>
+
+      <!-- ===== 第 10 位（最后）：保山幺子分 ===== -->
+      <button class="card" data-game="保山幺子分.html"
+           style="--c:#facc15; --c-soft:rgba(250,204,21,.15); --c-border:rgba(250,204,21,.35);">
+        <span class="tag">牌类</span>
+        <div class="icon-wrap">
+          <span class="icon" style="font-size:16px;line-height:1.05;display:grid;grid-template-columns:1fr 1fr;text-align:center;gap:1px;">
+            <span>♠</span><span style="color:#ef4444;">♥</span>
+            <span style="color:#ef4444;">♦</span><span>♣</span>
+          </span>
+        </div>
+        <div class="name">保山幺子分</div>
+        <div class="desc">2v2 · 叫分埋底</div>
+      </button>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-slogan">
+        10 款经典小游戏 <span class="dot">·</span> 支持触屏 / 键盘 <span class="dot">·</span> 点击即玩
+      </div>
+
+      <div class="footer-poem">
+        <p>新作随缘，不敢许诺；</p>
+        <p>若君期待，不妨来信。</p>
+        <p>一纸邮件，胜过千句催更！</p>
+      </div>
+
+      <div class="footer-bottom">
+        <button class="mail-btn" id="mailBtn" type="button" aria-label="复制邮箱地址">
+          <span class="mail-icon">📧</span>
+          <span class="mail-text">88061995@qq.com</span>
+        </button>
+        <span class="author">by·AiFeng <span class="heart">♥</span></span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= 游戏页 ================= -->
+  <div class="view" id="gameView">
+    <div class="game-bar">
+      <button class="back-btn" id="backBtn">← 返回菜单</button>
+      <span class="game-title" id="gameTitle"></span>
+    </div>
+
+    <div class="frame-wrap">
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">正在加载 <b id="loadingName"></b>…</div>
+      </div>
+      <iframe id="gameFrame" allowfullscreen allow="fullscreen"></iframe>
+    </div>
+  </div>
+
+<script>
+  const menuView  = document.getElementById('menuView');
+  const gameView  = document.getElementById('gameView');
+  const gameFrame = document.getElementById('gameFrame');
+  const gameTitle = document.getElementById('gameTitle');
+  const backBtn   = document.getElementById('backBtn');
+  const loading   = document.getElementById('loading');
+  const loadingName = document.getElementById('loadingName');
+  const mailBtn   = document.getElementById('mailBtn');
+
+  const EMAIL = '88061995@qq.com';
+  let currentGame = null;
+  const isGameOpen = () => gameView.classList.contains('active');
+
+  /* ---------- 全屏工具 ---------- */
+  function enterFullscreen(el) {
+    const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (fn) { try { fn.call(el).catch?.(() => {}); } catch (_) {} }
+  }
+  function exitFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {});
+    } else if (document.webkitFullscreenElement) {
+      try { document.webkitExitFullscreen(); } catch (_) {}
+    }
+  }
+
+  /* ---------- 打开游戏 ---------- */
+  function openGame(file, title) {
+    currentGame = file;
+    gameTitle.textContent = title;
+    loadingName.textContent = title;
+
+    loading.classList.remove('hide');
+    gameFrame.classList.remove('loaded');
+    gameFrame.src = file;
+
+    menuView.classList.remove('active');
+    gameView.classList.add('active');
+
+    enterFullscreen(gameView);
+    history.pushState({ game: file }, '', location.hash || '#game');
+  }
+
+  /* ---------- 返回菜单 ---------- */
+  function goMenu(fromPopstate) {
+    currentGame = null;
+    gameFrame.src = 'about:blank';
+    gameFrame.classList.remove('loaded');
+    loading.classList.remove('hide');
+
+    gameView.classList.remove('active');
+    menuView.classList.add('active');
+
+    exitFullscreen();
+
+    if (!fromPopstate && history.state?.game) {
+      history.back();
+    }
+  }
+
+  /* ---------- 邮箱点击复制 ---------- */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onCopySuccess).catch(() => {
+        onCopyResult(fallbackCopy(text));
+      });
+    } else {
+      onCopyResult(fallbackCopy(text));
+    }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;background:transparent;opacity:0;';
+    document.body.appendChild(ta);
+    let ok = false;
+    try {
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      ok = document.execCommand('copy');
+    } catch (_) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function onCopySuccess() { onCopyResult(true); }
+  function onCopyResult(ok) {
+    if (!mailBtn) return;
+    const textEl = mailBtn.querySelector('.mail-text');
+    const iconEl = mailBtn.querySelector('.mail-icon');
+    if (!textEl || !iconEl) return;
+
+    if (mailBtn._copyTimer) clearTimeout(mailBtn._copyTimer);
+
+    if (ok) {
+      mailBtn.classList.add('copied');
+      iconEl.textContent = '✅';
+      textEl.textContent = '已复制';
+      mailBtn._copyTimer = setTimeout(() => {
+        mailBtn.classList.remove('copied');
+        iconEl.textContent = '📧';
+        textEl.textContent = EMAIL;
+      }, 1600);
+    } else {
+      window.prompt('请手动复制邮箱地址：', EMAIL);
+    }
+  }
+
+  /* ---------- 事件绑定 ---------- */
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const file  = card.dataset.game;
+      const title = card.querySelector('.name')?.textContent?.trim() || '游戏';
+
+      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (_) {} }
+
+      openGame(file, title);
+    });
+  });
+
+  backBtn.addEventListener('click', () => goMenu(false));
+
+  if (mailBtn) {
+    mailBtn.addEventListener('click', () => copyText(EMAIL));
+  }
+
+  gameFrame.addEventListener('load', () => {
+    if (gameFrame.src === 'about:blank') return;
+    requestAnimationFrame(() => {
+      loading.classList.add('hide');
+      gameFrame.classList.add('loaded');
+    });
+  });
+
+  window.addEventListener('popstate', () => {
+    if (isGameOpen()) goMenu(true);
+  });
+</script>
+</body>
+</html>
