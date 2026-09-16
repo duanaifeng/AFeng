@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a2e18">
+<title>保山幺子分 2v2</title>
+<link rel="manifest" id="pwaManifest">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: radial-gradient(circle at 50% 30%, #1e6b3a, #0a2e18 80%);
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  color: #fff;
+  display: flex; justify-content: center; align-items: center;
+}
+#app {
+  width: 100%; max-width: 1000px; height: 100%; max-height: 100vh;
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+}
+#app.player-turn::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 100;
+  animation: playerTurnGlow 1.6s ease-in-out infinite;
+}
+@keyframes playerTurnGlow {
+  0%, 100% { box-shadow: inset 0 0 30px rgba(255,230,109,0); }
+  50% { box-shadow: inset 0 0 70px rgba(255,230,109,0.35); }
+}
+#startScreen {
+  position: absolute; inset: 0; background: rgba(0,0,0,.92); z-index: 200;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 20px; overflow-y: auto;
+}
+#startScreen.hidden { display: none; }
+#startScreen h1 {
+  font-size: 38px; color: #ffe66d;
+  text-shadow: 0 4px 16px #000, 0 0 30px #ffb347; letter-spacing: 8px;
+}
+#startScreen .sub { color: #9fd6a8; font-size: 13px; letter-spacing: 3px; }
+.diff-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.diff-btn {
+  padding: 11px 24px; font-size: 15px; font-weight: bold;
+  border: 2px solid #ffe66d; border-radius: 40px;
+  background: transparent; color: #ffe66d; cursor: pointer; transition: .2s; font-family: inherit;
+}
+.diff-btn:hover, .diff-btn.active {
+  background: #ffe66d; color: #1a1a1a; box-shadow: 0 0 24px #ffe66d;
+}
+#rulesBox {
+  max-width: 620px; width: 100%; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,230,109,.3); border-radius: 14px;
+  padding: 12px 18px; font-size: 12px; line-height: 1.7; color: #cfe6d0;
+  max-height: 32vh; overflow-y: auto;
+}
+#rulesBox h3 { color: #ffe66d; font-size: 14px; margin-bottom: 6px; letter-spacing: 2px; text-align: center; }
+#rulesBox p { margin: 3px 0; }
+#rulesBox b { color: #ffd966; }
+#beginBtn {
+  padding: 13px 50px; font-size: 19px; font-weight: bold; border: none; border-radius: 50px;
+  background: linear-gradient(135deg, #ffb347, #ffcc33); color: #4a2a00;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(255,180,70,.5);
+  letter-spacing: 4px; transition: .2s;
+}
+#beginBtn:hover { transform: scale(1.05); }
+#beginBtn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.fs-btn {
+  padding: 10px 34px; font-size: 15px; font-weight: bold;
+  border: 2px solid #9fd6a8; border-radius: 40px; background: transparent;
+  color: #9fd6a8; cursor: pointer; font-family: inherit; letter-spacing: 3px; transition: .2s;
+}
+.fs-btn:hover { background: #9fd6a8; color: #0a2e18; }
+#statsEntryBtn {
+  padding: 10px 34px; font-size: 15px; font-weight: bold;
+  border: 2px solid #ffe66d; border-radius: 40px; background: rgba(255,230,109,.08);
+  color: #ffe66d; cursor: pointer; font-family: inherit; letter-spacing: 3px; transition: .2s;
+}
+#statsEntryBtn:hover { background: #ffe66d; color: #0a2e18; }
+
+#table { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; padding: 6px; gap: 6px; }
+.seat-north { display: flex; justify-content: center; flex-shrink: 0; }
+.seat-box {
+  background: rgba(0,0,0,.4); border-radius: 12px; padding: 6px 10px;
+  border: 2px solid rgba(255,255,255,.12);
+  display: flex; gap: 8px; align-items: center; min-width: 200px;
+  transition: .25s; position: relative;
+}
+.seat-box.active-turn { border-color: #ffe66d; animation: seatPulse 1.4s ease-in-out infinite; }
+@keyframes seatPulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(255,230,109,.75); }
+  50% { box-shadow: 0 0 34px rgba(255,230,109,1), 0 0 60px rgba(255,230,109,.4); }
+}
+.seat-box.teammate { border-color: rgba(76,154,255,.5); }
+.seat-box.opponent { border-color: rgba(179,32,42,.5); }
+.seat-box.landlord-seat { box-shadow: 0 0 14px rgba(255,179,71,.55); background: rgba(80,40,0,.55); }
+.seat-box.thinking::before {
+  content: '💭'; position: absolute; top: -16px; right: -8px; font-size: 22px;
+  animation: bubbleFloat 0.9s ease-in-out infinite alternate;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); z-index: 5;
+}
+@keyframes bubbleFloat {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-5px) scale(1.12); }
+}
+.seat-box.win-flash { animation: winFlash 1.2s ease-out; }
+@keyframes winFlash {
+  0% { box-shadow: 0 0 0 rgba(255,230,109,0); }
+  40% { box-shadow: 0 0 50px rgba(255,230,109,1), 0 0 90px rgba(255,230,109,.6); transform: scale(1.06); }
+  100% { box-shadow: 0 0 0 rgba(255,230,109,0); transform: scale(1); }
+}
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: bold; color: #fff; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.6), inset 0 -2px 4px rgba(0,0,0,.3);
+  border: 2px solid rgba(255,255,255,.6);
+}
+.avatar.human { background: linear-gradient(135deg, #ff8a4c, #d94a2e); }
+.avatar.teammate { background: linear-gradient(135deg, #4c9aff, #2e5fd9); }
+.avatar.opp1 { background: linear-gradient(135deg, #e74c3c, #a93226); }
+.avatar.opp2 { background: linear-gradient(135deg, #9b59b6, #6c3483); }
+.seat-info { display: flex; flex-direction: column; gap: 2px; }
+.seat-name-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.seat-name { font-size: 13px; font-weight: bold; color: #ffe66d; }
+.seat-role {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  background: #2e7d4f; color: #d4ffd4;
+}
+.seat-role.landlord { background: #b3202a; color: #ffd4d4; }
+.seat-count { font-size: 11px; color: #9fd6a8; }
+.seat-played { display: flex; gap: 2px; flex-wrap: wrap; min-height: 34px; align-items: center; margin-left: 8px; }
+#middleRow { flex: 1; display: flex; gap: 6px; min-height: 0; }
+.seat-west, .seat-east { width: 120px; display: flex; align-items: center; flex-shrink: 0; }
+.seat-west { justify-content: flex-start; }
+.seat-east { justify-content: flex-end; }
+.seat-west .seat-box, .seat-east .seat-box {
+  flex-direction: column; align-items: center; text-align: center; min-width: 110px; padding: 8px 6px;
+}
+.seat-west .seat-played, .seat-east .seat-played { margin-left: 0; margin-top: 4px; justify-content: center; }
+#centerArea {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; background: rgba(0,0,0,.2); border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08); padding: 8px; min-width: 0; overflow: hidden;
+}
+#trumpBar {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; align-items: center;
+  background: rgba(0,0,0,.5); padding: 4px 14px; border-radius: 20px;
+  border: 1px solid rgba(255,230,109,.3); white-space: nowrap;
+}
+.trump-label { font-size: 11px; color: #9fd6a8; }
+.trump-suit { font-size: 18px; font-weight: bold; }
+.trump-suit.red { color: #ff6b6b; }
+.trump-suit.black { color: #fff; }
+.trump-suit.none { color: #666; font-size: 12px; }
+#bottomCards { position: absolute; top: 8px; right: 10px; display: flex; gap: 3px; align-items: center; }
+.bottom-label { font-size: 11px; color: #9fd6a8; margin-right: 4px; }
+#scoreBar {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 14px; align-items: center;
+  background: rgba(0,0,0,.55); padding: 4px 16px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.15); white-space: nowrap;
+}
+.score-item { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+.score-label { color: #9fd6a8; }
+.score-value { font-weight: bold; font-size: 16px; }
+.score-value.team-a { color: #4c9aff; }
+.score-value.team-b { color: #ff6b6b; }
+.score-target { color: #ffe66d; font-size: 11px; }
+#lastPlayArea { display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 2; }
+.play-hint {
+  font-size: 14px; color: #ffe66d; letter-spacing: 1px; font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,230,109,.6);
+}
+.play-cards { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; min-height: 60px; align-items: center; }
+#lastRoundArea {
+  margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 6px 12px; background: rgba(0,0,0,.35); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+#lastRoundArea:empty { display: none; }
+.last-round-label { font-size: 11px; color: #9fd6a8; letter-spacing: 1px; }
+.last-round-cards { display: flex; gap: 6px; align-items: flex-end; }
+.lr-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.lr-seat { font-size: 10px; color: #9fd6a8; }
+.lr-seat.winner { color: #ffe66d; font-weight: bold; }
+.lr-item .card { cursor: default; }
+.lr-item.winner .card { border-color: #ffe66d; box-shadow: 0 0 8px rgba(255,230,109,.7); }
+.card-fly { animation: flyIn .38s cubic-bezier(.22,1.2,.36,1); }
+@keyframes flyIn {
+  from {
+    transform: translate(var(--fly-x, 0px), var(--fly-y, -30px)) scale(.6) rotate(var(--fly-r, 0deg));
+    opacity: 0;
+  }
+  to { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+}
+.score-float {
+  position: absolute; font-size: 20px; font-weight: bold; color: #ffe66d;
+  text-shadow: 0 0 12px #ffb347; pointer-events: none;
+  animation: floatUp 1.2s ease-out forwards; z-index: 20;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+.fly-score {
+  position: fixed; font-size: 26px; font-weight: bold; color: #ffe66d;
+  text-shadow: 0 0 18px #ffb347, 0 0 36px #ffb347;
+  pointer-events: none; z-index: 500;
+  transition: left 0.95s cubic-bezier(.45,0,.25,1),
+              top 0.95s cubic-bezier(.45,0,.25,1),
+              opacity 0.95s ease-in, font-size 0.95s ease-in;
+}
+#humanArea {
+  background: rgba(0,0,0,.45); border-radius: 16px 16px 0 0;
+  border-top: 2px solid rgba(255,230,109,.35);
+  display: flex; flex-direction: column; flex-shrink: 0;
+  padding: 6px 8px 4px; position: relative; transition: .3s;
+}
+#humanArea.active-turn {
+  border-top-color: #ffe66d;
+  box-shadow: 0 0 30px rgba(255,230,109,.5), inset 0 10px 30px rgba(255,230,109,.15);
+}
+#humanArea.win-flash { animation: winFlash 1.2s ease-out; }
+.human-info { display: flex; align-items: center; gap: 8px; padding: 0 4px 4px; flex-shrink: 0; }
+.human-name { font-size: 14px; font-weight: bold; color: #ffe66d; }
+.human-role { font-size: 10px; padding: 2px 10px; border-radius: 10px; background: #2e7d4f; color: #d4ffd4; }
+.human-role.landlord { background: #b3202a; color: #ffd4d4; }
+#handRow { display: flex; gap: 10px; align-items: flex-start; }
+.hand-block { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.hand-block + .hand-block { border-left: 1px dashed rgba(255,255,255,.25); padding-left: 10px; }
+.hand-label { font-size: 10px; color: #9fd6a8; letter-spacing: 1px; }
+.hand-label.teammate { color: #4c9aff; }
+.hand-label.mine { color: #ffe66d; }
+#humanHand, #teammateHand {
+  display: flex; justify-content: center; align-content: flex-start; flex-wrap: wrap;
+  gap: 3px; padding: 2px 0; min-height: 62px;
+}
+#actionBar {
+  display: flex; justify-content: center; gap: 8px; padding: 8px 0 14px;
+  flex-wrap: wrap; flex-shrink: 0;
+  background: rgba(0,0,0,.35); border-top: 1px solid rgba(255,230,109,.15);
+}
+.act-btn {
+  padding: 10px 20px; font-size: 14px; font-weight: bold;
+  border: none; border-radius: 28px; cursor: pointer;
+  font-family: inherit; transition: .15s; letter-spacing: 1px;
+}
+.act-btn:active { transform: scale(.95); }
+#playBtn { background: linear-gradient(135deg, #ffb347, #ffcc33); color: #4a2a00; }
+#buryBtn { background: #6c3483; color: #e8d4ff; }
+#counterBtn { background: #2c5c3e; color: #b8ffcc; }
+#historyBtn { background: #2c3e50; color: #ffe66d; }
+#menuBtn { background: #4a3a1a; color: #ffe66d; }
+.act-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+.card {
+  width: 50px; height: 72px; background: #fff; border-radius: 6px;
+  position: relative; color: #222; font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,.5); border: 1px solid #ccc;
+  cursor: pointer; transition: transform .12s, box-shadow .12s;
+  flex-shrink: 0; overflow: hidden;
+}
+.card.red { color: #d40000; }
+.card.black { color: #111; }
+.card .corner { position: absolute; top: 2px; left: 3px; display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.card .corner .r { font-size: 14px; font-weight: 800; }
+.card .corner .s { font-size: 12px; margin-top: 1px; }
+.card .center-suit { position: absolute; bottom: 4px; right: 4px; font-size: 22px; line-height: 1; opacity: .9; }
+.card.selected { transform: translateY(-14px); box-shadow: 0 8px 20px rgba(255,230,109,.8); border-color: #ffe66d; }
+.card.small { width: 32px; height: 46px; border-radius: 4px; }
+.card.small .corner { top: 1px; left: 2px; }
+.card.small .corner .r { font-size: 10px; }
+.card.small .corner .s { font-size: 9px; }
+.card.small .center-suit { font-size: 14px; bottom: 2px; right: 2px; }
+.card.back {
+  background: repeating-linear-gradient(45deg, #b3202a, #b3202a 6px, #8f1a22 6px, #8f1a22 12px);
+  border: 2px solid #fff;
+}
+.card.back::after {
+  content: "?"; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); color: rgba(255,255,255,.8); font-size: 22px; font-weight: bold;
+}
+.card.small.back::after { font-size: 14px; }
+.card.dim { opacity: .45; }
+.card-tag {
+  position: absolute; top: 2px; right: 2px;
+  font-size: 10px; font-weight: bold; padding: 1px 4px;
+  border-radius: 4px; line-height: 1.1; z-index: 3; pointer-events: none;
+}
+.card-tag.tag-bottom { background: #ffcc33; color: #4a2a00; }
+.card-tag.tag-trump { background: #b3202a; color: #ffd4d4; }
+.card-tag.tag-side { background: rgba(0,0,0,.45); color: #ddd; }
+#bidModal {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  z-index: 180; display: none; flex-direction: column; align-items: center; gap: 12px;
+  padding: 18px 26px; background: rgba(0,0,0,.85);
+  border: 1px solid rgba(255,230,109,.4); border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  max-width: 560px; width: 92%; animation: modalIn 0.25s ease-out;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+#bidModal.show { display: flex; }
+#bidModal .title { font-size: 20px; color: #ffe66d; font-weight: bold; letter-spacing: 2px; }
+#bidModal .current { font-size: 13px; color: #9fd6a8; }
+#bidModal .tip { font-size: 11px; color: #ffb347; min-height: 14px; }
+#bidModal .bid-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.bid-btn {
+  padding: 9px 18px; font-size: 14px; font-weight: bold;
+  border: 2px solid #ffe66d; border-radius: 30px;
+  background: rgba(0,0,0,.5); color: #ffe66d; cursor: pointer;
+  font-family: inherit; transition: .2s;
+}
+.bid-btn:hover { background: #ffe66d; color: #1a1a1a; }
+.bid-btn.pass { border-color: #9fd6a8; color: #9fd6a8; }
+.bid-btn.pass:hover { background: #9fd6a8; color: #0a2e18; }
+.bid-btn:disabled { opacity: .25; cursor: not-allowed; }
+#toast {
+  position: absolute; top: 42%; left: 50%;
+  transform: translate(-50%, -50%) scale(.8);
+  background: rgba(0,0,0,.9); color: #ffe66d;
+  padding: 14px 30px; border-radius: 14px;
+  font-size: 17px; font-weight: bold; letter-spacing: 2px;
+  opacity: 0; pointer-events: none; transition: .25s; z-index: 150;
+  border: 1px solid rgba(255,230,109,.4); text-align: center; max-width: 80%;
+}
+#toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+#resultModal {
+  position: absolute; inset: 0; background: rgba(0,0,0,.9); z-index: 190;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px; border-radius: 12px; padding: 20px;
+}
+#resultModal.show { display: flex; animation: modalIn 0.35s ease-out; }
+#resultModal .title { font-size: 46px; font-weight: bold; letter-spacing: 8px; }
+#resultModal .title.win { color: #ffe66d; text-shadow: 0 0 30px #ffb347; animation: titlePop 0.6s ease-out; }
+#resultModal .title.lose { color: #ff6b6b; text-shadow: 0 0 30px #b3202a; animation: titlePop 0.6s ease-out; }
+@keyframes titlePop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+#resultModal .detail { font-size: 15px; color: #9fd6a8; line-height: 1.9; text-align: center; }
+#resultModal .detail b { color: #ffe66d; }
+#resultModal .btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+#resultModal button {
+  padding: 12px 40px; font-size: 17px; font-weight: bold;
+  border: none; border-radius: 40px;
+  background: linear-gradient(135deg, #ffb347, #ffcc33); color: #4a2a00;
+  cursor: pointer; font-family: inherit;
+}
+#resultModal button.secondary { background: transparent; border: 2px solid #9fd6a8; color: #9fd6a8; }
+.drawer {
+  position: absolute; top: 0; right: 0; width: 340px; max-width: 92%; height: 100%;
+  background: rgba(8,18,12,.97); border-left: 1px solid rgba(255,230,109,.35);
+  z-index: 195; display: none; flex-direction: column;
+  box-shadow: -10px 0 36px rgba(0,0,0,.7);
+}
+.drawer.show { display: flex; animation: slideIn 0.25s ease-out; }
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.drawer-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; border-bottom: 1px solid rgba(255,230,109,.25);
+  color: #ffe66d; font-weight: bold; letter-spacing: 2px; flex-shrink: 0;
+}
+.drawer-header button {
+  background: transparent; border: none; color: #ffe66d; font-size: 22px;
+  cursor: pointer; line-height: 1; padding: 0 6px; font-family: inherit;
+}
+.drawer-body {
+  flex: 1; overflow-y: auto; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.history-round { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 8px 10px; }
+.history-round.current { border-color: rgba(255,230,109,.5); background: rgba(255,230,109,.06); }
+.history-round .hr-head { display: flex; justify-content: space-between; font-size: 11px; color: #9fd6a8; margin-bottom: 6px; }
+.history-round .hr-head b { color: #ffe66d; }
+.history-round .hr-plays { display: flex; flex-direction: column; gap: 4px; }
+.hr-row { display: flex; align-items: center; gap: 6px; padding: 2px 4px; border-radius: 6px; }
+.hr-row.winner { background: rgba(255,230,109,.1); border: 1px solid rgba(255,230,109,.4); }
+.hr-seat-name { width: 46px; font-size: 11px; color: #9fd6a8; flex-shrink: 0; }
+.hr-row.winner .hr-seat-name { color: #ffe66d; font-weight: bold; }
+.hr-cards { display: flex; gap: 3px; }
+.hr-tag { margin-left: auto; font-size: 10px; color: #ffe66d; padding: 1px 6px; background: rgba(255,230,109,.15); border-radius: 8px; }
+.drawer-empty { color: #666; text-align: center; padding: 40px 0; font-size: 13px; }
+.counter-legend {
+  display: flex; gap: 14px; justify-content: center; align-items: center;
+  font-size: 11px; color: #cfe6d0;
+  padding: 8px 0; margin-bottom: 6px;
+  background: rgba(0,0,0,.25); border-radius: 8px;
+}
+.cl-item { display: flex; align-items: center; gap: 4px; }
+.cl-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.cl-dot.d { background: #666; }
+.cl-dot.m { background: #9fd6a8; }
+.cl-dot.o { background: #ffcc99; }
+.counter-suit-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 10px; margin-bottom: 6px;
+}
+.counter-suit-icon { font-size: 24px; width: 30px; text-align: center; flex-shrink: 0; }
+.counter-suit-icon.red { color: #ff6b6b; }
+.counter-suit-icon.black { color: #fff; }
+.counter-rank-list { flex: 1; display: flex; gap: 3px; flex-wrap: wrap; }
+.counter-rank {
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 26px; padding: 3px 2px;
+  background: rgba(0,0,0,.35); border-radius: 6px;
+  font-size: 10px; line-height: 1.1;
+}
+.counter-rank.point { background: rgba(255,230,109,.08); border: 1px solid rgba(255,230,109,.3); }
+.counter-rank.point .cr-rank { color: #ffe66d; font-weight: 900; }
+.counter-rank .cr-rank { font-size: 13px; font-weight: bold; }
+.counter-rank .cr-status {
+  width: 10px; height: 10px; border-radius: 50%; margin-top: 3px;
+  display: inline-block;
+}
+.counter-rank .cr-status.status-done { background: #666; }
+.counter-rank .cr-status.status-mine { background: #9fd6a8; box-shadow: 0 0 6px rgba(159,214,168,.8); }
+.counter-rank .cr-status.status-other { background: #ffcc99; }
+.counter-summary {
+  font-size: 12px; color: #cfe6d0;
+  padding: 10px 12px; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,230,109,.25); border-radius: 10px; line-height: 1.9;
+}
+.counter-summary b { color: #ffe66d; }
+.counter-summary .pt-line { display: flex; justify-content: space-between; }
+.counter-summary .pt-line.done b { color: #aaa; }
+.counter-summary .pt-line.mine b { color: #9fd6a8; }
+.counter-summary .pt-line.other b { color: #ffcc99; }
+.counter-summary .pt-total {
+  margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,.15);
+  display: flex; justify-content: space-between; font-weight: bold;
+}
+.counter-title { font-size: 13px; color: #ffe66d; font-weight: bold; letter-spacing: 2px; margin-top: 6px; margin-bottom: 6px; }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 8px; }
+.stat-card {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,230,109,.25);
+  border-radius: 12px; padding: 12px 10px; text-align: center;
+}
+.stat-card .sc-label { font-size: 11px; color: #9fd6a8; letter-spacing: 1px; }
+.stat-card .sc-value { font-size: 26px; font-weight: 900; color: #ffe66d; margin-top: 4px; text-shadow: 0 0 18px rgba(255,230,109,.5); }
+.stat-card .sc-sub { font-size: 10px; color: #ffb347; margin-top: 2px; }
+.stat-title { font-size: 13px; color: #ffe66d; font-weight: bold; letter-spacing: 2px; margin: 12px 0 6px; }
+.recent-list { display: flex; flex-direction: column; gap: 6px; }
+.recent-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 10px; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px; font-size: 12px;
+}
+.recent-item .ri-left { color: #9fd6a8; }
+.recent-item .ri-result { font-weight: bold; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+.recent-item .ri-result.win { background: linear-gradient(135deg, #ffb347, #ffcc33); color: #4a2a00; }
+.recent-item .ri-result.lose { background: #4a1a1a; color: #ff9999; }
+#replayOverlay {
+  position: absolute; inset: 0; z-index: 185; display: none;
+  align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(0,0,0,.55), rgba(0,0,0,.85));
+  pointer-events: none;
+}
+#replayOverlay.show { display: flex; animation: replayFadeIn .25s ease-out; }
+@keyframes replayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.replay-content {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 18px 24px; background: rgba(0,0,0,.88);
+  border: 1px solid rgba(255,230,109,.5); border-radius: 18px;
+  box-shadow: 0 12px 60px rgba(0,0,0,.8), 0 0 60px rgba(255,180,70,.25);
+}
+.replay-title { font-size: 16px; color: #ffe66d; letter-spacing: 3px; font-weight: bold; }
+.replay-cards-row { display: flex; gap: 16px; align-items: flex-end; justify-content: center; }
+.replay-slot {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  opacity: 0; animation: replayCardIn .3s ease-out forwards;
+}
+@keyframes replayCardIn {
+  from { opacity: 0; transform: translateY(-20px) scale(.7); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.replay-slot.winner .card {
+  border-color: #ffe66d;
+  box-shadow: 0 0 24px rgba(255,230,109,1), 0 0 40px rgba(255,230,109,.6);
+  transform: scale(1.08);
+}
+.replay-slot .rs-name { font-size: 11px; color: #9fd6a8; }
+.replay-slot.winner .rs-name { color: #ffe66d; font-weight: bold; text-shadow: 0 0 10px rgba(255,230,109,.8); }
+.replay-verdict { font-size: 14px; color: #ffe66d; font-weight: bold; letter-spacing: 2px; margin-top: 4px; }
+
+/* ============ 发牌动画 ============ */
+@keyframes cardDealIn {
+  from {
+    transform: translate(0, -180px) scale(0.5) rotate(-15deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0) scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+.card.dealing {
+  animation: cardDealIn 0.45s cubic-bezier(.22,1.2,.36,1);
+}
+.dealing-hint {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px; font-weight: bold;
+  color: #ffe66d;
+  text-shadow: 0 0 10px rgba(255,230,109,.6);
+  letter-spacing: 1px;
+  pointer-events: none;
+  z-index: 50;
+  animation: dealHintPulse 1s ease-in-out infinite;
+}
+@keyframes dealHintPulse {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+@media (max-width: 700px) {
+  #startScreen h1 { font-size: 28px; letter-spacing: 6px; }
+  .diff-btn { padding: 8px 16px; font-size: 13px; }
+  #beginBtn { padding: 11px 32px; font-size: 16px; }
+  .fs-btn, #statsEntryBtn { padding: 8px 24px; font-size: 13px; }
+  #rulesBox { font-size: 11px; max-height: 28vh; }
+  .seat-west, .seat-east { width: 80px; }
+  .seat-west .seat-box, .seat-east .seat-box { min-width: 74px; padding: 6px 4px; }
+  .avatar { width: 32px; height: 32px; font-size: 14px; }
+  .seat-name { font-size: 11px; }
+  .seat-count { font-size: 10px; }
+  .card { width: 38px; height: 56px; }
+  .card .corner .r { font-size: 11px; }
+  .card .corner .s { font-size: 9px; }
+  .card .center-suit { font-size: 16px; bottom: 3px; right: 3px; }
+  .card.small { width: 24px; height: 36px; }
+  .card.small .center-suit { font-size: 10px; }
+  .act-btn { padding: 8px 12px; font-size: 12px; }
+  .human-name { font-size: 12px; }
+  #trumpBar { padding: 2px 10px; }
+  .trump-suit { font-size: 15px; }
+  #scoreBar { padding: 2px 10px; gap: 10px; }
+  .score-value { font-size: 14px; }
+  #bidModal { padding: 14px 18px; gap: 10px; }
+  #bidModal .title { font-size: 18px; }
+  .bid-btn { padding: 8px 14px; font-size: 13px; }
+  .drawer { width: 100%; max-width: 100%; }
+  .hr-seat-name { width: 38px; font-size: 10px; }
+  .fly-score { font-size: 20px; }
+  .replay-cards-row { gap: 8px; }
+  .replay-slot .card { width: 32px; height: 46px; }
+  .replay-slot .card .corner .r { font-size: 10px; }
+  .replay-slot .card .corner .s { font-size: 9px; }
+  .replay-slot .card .center-suit { font-size: 14px; }
+  .stat-card .sc-value { font-size: 22px; }
+  .counter-rank { min-width: 24px; padding: 2px 1px; }
+  .counter-rank .cr-rank { font-size: 11px; }
+  .counter-rank .cr-status { width: 8px; height: 8px; }
+  .dealing-hint { font-size: 13px; letter-spacing: 1px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="startScreen">
+    <h1>保 山 幺 子 分</h1>
+    <div class="sub">2 v 2 · 南北 vs 东西</div>
+    <div class="diff-row" id="diffRow">
+      <button class="diff-btn" data-diff="easy">入门</button>
+      <button class="diff-btn" data-diff="normal">普通</button>
+      <button class="diff-btn" data-diff="hard">困难</button>
+      <button class="diff-btn" data-diff="hell">地狱</button>
+    </div>
+
+    <div id="rulesBox">
+      <h3>📜 规则说明</h3>
+      <p><b>【用牌】</b>52 张，A/10=10 分，5=5 分，共 100 分。</p>
+      <p><b>【方位】</b>南=你，东=下家，北=队友，西=上家。南北一队，东西一队。</p>
+      <p><b>【顺序】</b>逆时针：南→东→北→西→南。</p>
+      <p><b>【发牌/叫牌起手位】</b>第一局从东开始，每局逆时针移一位。</p>
+      <p><b>【叫分】</b>70 起叫，5 分递增，最高 100。叫 100 立即结束；全过则起手位以 70 强制当庄。</p>
+      <p><b>【3A / 4A】</b>3A 必须叫一次；4A 必须打底牌。</p>
+      <p><b>【主牌】</b>庄家单击手牌选中后点「定主」，该牌花色即为主牌。</p>
+      <p><b>【埋底】</b>庄家拿 4 张底牌，从 16 张中选 4 张埋。</p>
+      <p><b>【出牌】</b>庄家先出，逆时针跟牌。每次 1 张。有同花色必须跟；无则主牌杀或随便垫。</p>
+      <p><b>【牌力】</b>A>K>Q>J>10>…>3>2。主牌 > 所有副牌；副牌只有首出花色能赢。</p>
+      <p><b>【胜负】</b>庄家方吃分 ≥ 叫分则庄家赢，否则闲家赢。闲家一分未吃为光头。</p>
+      <p><b>【双打】</b>谁叫 100 分，谁接管队友的牌，一人打两家。</p>
+    </div>
+
+    <button id="beginBtn" disabled>开 始 游 戏</button>
+    <button id="statsEntryBtn">🏆 战 绩 统 计</button>
+    <button id="startFsBtn" class="fs-btn">进 入 全 屏</button>
+  </div>
+
+  <div id="table">
+    <div class="seat-north">
+      <div class="seat-box teammate" id="seatNorth">
+        <div class="avatar teammate">北</div>
+        <div class="seat-info">
+          <div class="seat-name-row">
+            <span class="seat-name" id="nameNorth">北（队友）</span>
+            <span class="seat-role" id="roleNorth" style="display:none;"></span>
+          </div>
+          <div class="seat-count" id="countNorth">剩余 12 张</div>
+        </div>
+        <div class="seat-played" id="playedNorth"></div>
+      </div>
+    </div>
+
+    <div id="middleRow">
+      <div class="seat-west">
+        <div class="seat-box opponent" id="seatWest">
+          <div class="avatar opp2">西</div>
+          <div class="seat-info">
+            <div class="seat-name-row">
+              <span class="seat-name" id="nameWest">西（上家）</span>
+              <span class="seat-role" id="roleWest" style="display:none;"></span>
+            </div>
+            <div class="seat-count" id="countWest">剩余 12 张</div>
+          </div>
+          <div class="seat-played" id="playedWest"></div>
+        </div>
+      </div>
+
+      <div id="centerArea">
+        <div id="trumpBar">
+          <span class="trump-label">主牌</span>
+          <span class="trump-suit none" id="trumpDisplay">未定</span>
+        </div>
+
+        <div id="bottomCards">
+          <span class="bottom-label">底牌</span>
+          <div id="bottomCardsInner" style="display:flex;gap:3px;"></div>
+        </div>
+
+        <div id="lastPlayArea">
+          <div class="play-hint" id="playHint">准备开始...</div>
+          <div class="play-cards" id="lastPlayCards"></div>
+        </div>
+
+        <div id="lastRoundArea"></div>
+
+        <div id="scoreBar">
+          <div class="score-item">
+            <span class="score-label">南北</span>
+            <span class="score-value team-a" id="scoreA">0</span>
+          </div>
+          <div class="score-target" id="scoreTarget">目标 --</div>
+          <div class="score-item">
+            <span class="score-value team-b" id="scoreB">0</span>
+            <span class="score-label">东西</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="seat-east">
+        <div class="seat-box opponent" id="seatEast">
+          <div class="avatar opp1">东</div>
+          <div class="seat-info">
+            <div class="seat-name-row">
+              <span class="seat-name" id="nameEast">东（下家）</span>
+              <span class="seat-role" id="roleEast" style="display:none;"></span>
+            </div>
+            <div class="seat-count" id="countEast">剩余 12 张</div>
+          </div>
+          <div class="seat-played" id="playedEast"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="humanArea">
+      <div class="human-info">
+        <div class="avatar human">南</div>
+        <span class="human-name">你（南）</span>
+        <span class="human-role" id="roleHuman" style="display:none;"></span>
+      </div>
+
+      <div id="handRow">
+        <div class="hand-block">
+          <div class="hand-label mine" id="labelMine">我的手牌</div>
+          <div id="humanHand"></div>
+        </div>
+        <div class="hand-block" id="teammateBlock" style="display:none;">
+          <div class="hand-label teammate">队友手牌（双打）</div>
+          <div id="teammateHand"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="actionBar">
+      <button class="act-btn" id="playBtn" disabled>出牌</button>
+      <button class="act-btn" id="buryBtn" disabled>埋底</button>
+      <button class="act-btn" id="counterBtn">记牌</button>
+      <button class="act-btn" id="historyBtn">历史</button>
+      <button class="act-btn" id="menuBtn">菜单</button>
+    </div>
+
+  </div>
+
+  <div id="bidModal">
+    <div class="title">叫 分</div>
+    <div class="current" id="bidCurrent">当前最高：无</div>
+    <div class="tip" id="bidTip"></div>
+    <div class="bid-btns" id="bidBtns"></div>
+  </div>
+
+  <div id="resultModal">
+    <div class="title" id="resultTitle"></div>
+    <div class="detail" id="resultDetail"></div>
+    <div class="btn-row">
+      <button id="nextRoundBtn">下一局</button>
+      <button id="backMenuBtn" class="secondary">返回菜单</button>
+    </div>
+  </div>
+
+  <div id="historyPanel" class="drawer">
+    <div class="drawer-header">
+      <span>📜 出牌历史</span>
+      <button id="historyClose">×</button>
+    </div>
+    <div id="historyList" class="drawer-body"></div>
+  </div>
+
+  <div id="counterPanel" class="drawer">
+    <div class="drawer-header">
+      <span>📊 记牌器</span>
+      <button id="counterClose">×</button>
+    </div>
+    <div id="counterBody" class="drawer-body"></div>
+  </div>
+
+  <div id="statsPanel" class="drawer">
+    <div class="drawer-header">
+      <span>🏆 战绩统计</span>
+      <button id="statsClose">×</button>
+    </div>
+    <div id="statsBody" class="drawer-body"></div>
+  </div>
+
+  <div id="replayOverlay">
+    <div class="replay-content">
+      <div class="replay-title" id="replayTitle">本轮出牌</div>
+      <div class="replay-cards-row" id="replayCards"></div>
+      <div class="replay-verdict" id="replayVerdict"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+
+const SUITS = ['♠','♥','♦','♣'];
+const SUIT_RED = { '♥':true, '♦':true };
+const RANK_LABEL = { 14:'A', 13:'K', 12:'Q', 11:'J', 10:'10', 9:'9', 8:'8', 7:'7', 6:'6', 5:'5', 4:'4', 3:'3', 2:'2' };
+const POINTS = { 'A':10, '10':10, '5':5 };
+
+const SEAT_NAMES = ['南（你）', '东（下家）', '北（队友）', '西（上家）'];
+const SEAT_SHORT = ['南', '东', '北', '西'];
+const TEAM = { 0:'NS', 1:'EW', 2:'NS', 3:'EW' };
+const SEAT_FLY_DIR = {
+  0: { x: 0, y: 160, r: -12 },
+  1: { x: 220, y: 0, r: 12 },
+  2: { x: 0, y: -160, r: 12 },
+  3: { x: -220, y: 0, r: -12 },
+};
+
+const T_BID_AI = 1500;
+const T_PLAY_AI = 2200;
+const T_TRUMP_AI = 1200;
+const T_BURY_AI = 1200;
+const T_ROUND_END = 1200;
+
+const PLAYER_ADVANTAGE = {
+  easy:   { poolSize: 44, guarantee: { 'A':3, 'K':3, 'Q':2, 'J':1, '10':2, '9':1 } },
+  normal: { poolSize: 38, guarantee: { 'A':2, 'K':2, 'Q':2, 'J':1, '10':2, '9':1 } },
+  hard:   { poolSize: 32, guarantee: { 'A':1, 'K':1, 'Q':1, 'J':1, '10':1, '9':1 } },
+  hell:   { poolSize: 26, guarantee: { 'A':1, 'K':1, '10':1 } },
+};
+
+const STATS_KEY = 'baoshan_stats_v1';
+
+function randInt(n){ return Math.floor(Math.random()*n); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=randInt(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function cardPoints(c){ return POINTS[c.rank] || 0; }
+function isPointCard(c){ return !!POINTS[c.rank]; }
+
+function defaultStats(){
+  return { totalGames: 0, humanWins: 0, nsWins: 0, ewWins: 0, guangtouCount: 0, maxBid: 0, doubleCount: 0, recent: [] };
+}
+function loadStats(){
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    if(!raw) return defaultStats();
+    return Object.assign(defaultStats(), JSON.parse(raw));
+  } catch(e) { return defaultStats(); }
+}
+function saveStats(s){
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { audioCtx = null; }
+  }
+  if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function playBeep(freq, duration, type='sine', vol=0.08){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  try {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+const SFX = {
+  click:  () => playBeep(900, 0.05, 'square', 0.05),
+  play:   () => { playBeep(520, 0.08, 'square', 0.07); setTimeout(()=>playBeep(680,0.08,'square',0.05), 40); },
+  bid:    () => { playBeep(440, 0.1); setTimeout(()=>playBeep(660,0.14), 90); },
+  pass:   () => playBeep(280, 0.14, 'sine', 0.06),
+  turn:   () => { playBeep(660, 0.1); setTimeout(()=>playBeep(880,0.15), 100); setTimeout(()=>playBeep(1100,0.12), 220); },
+  score:  () => { [523,659,784].forEach((f,i)=>setTimeout(()=>playBeep(f,0.14), i*80)); },
+  win:    () => { [523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>playBeep(f,0.25,'sine',0.1), i*130)); },
+  lose:   () => { [440,392,330,262].forEach((f,i)=>setTimeout(()=>playBeep(f,0.28,'sine',0.09), i*160)); },
+  select: () => playBeep(800, 0.03, 'triangle', 0.04),
+  replay: () => playBeep(1046, 0.06, 'sine', 0.05),
+};
+
+const G = {
+  difficulty: 'normal',
+  hands: [[],[],[],[]],
+  bottom: [], buries: [],
+  trumpSuit: null, dealer: -1, bidValue: 0,
+  firstSeat: 0, currentSeat: 0, phase: 'idle',
+  roundCards: [], lastRoundCards: [], lastRoundWinner: -1, lastRoundPoints: 0,
+  roundHistory: [],
+  teamScore: { NS:0, EW:0 },
+  selected: new Set(),
+  humanControlSeats: [0],
+  doubleMode: false, doubleOwner: -1,
+  nextFirstSeat: 1,
+  bidPtr: 0, bidOrder: [], bidPassStreak: 0,
+  hasBidThisRound: [false,false,false,false],
+  currentBidder: -1,
+  played: [],
+};
+
+/* ============ 发牌动画进度 ============ */
+let dealStep = 12;
+let dealAnimTimer = null;
+
+const $ = id => document.getElementById(id);
+const app = $('app');
+const startScreen = $('startScreen');
+const diffRow = $('diffRow');
+const beginBtn = $('beginBtn');
+const statsEntryBtn = $('statsEntryBtn');
+const seatNorth = $('seatNorth'), seatWest = $('seatWest'), seatEast = $('seatEast');
+const nameNorth = $('nameNorth'), nameWest = $('nameWest'), nameEast = $('nameEast');
+const roleNorth = $('roleNorth'), roleWest = $('roleWest'), roleEast = $('roleEast');
+const countNorth = $('countNorth'), countWest = $('countWest'), countEast = $('countEast');
+const playedNorth = $('playedNorth'), playedWest = $('playedWest'), playedEast = $('playedEast');
+const trumpDisplay = $('trumpDisplay');
+const bottomCardsInner = $('bottomCardsInner');
+const playHint = $('playHint'), lastPlayCards = $('lastPlayCards');
+const lastRoundArea = $('lastRoundArea');
+const scoreA = $('scoreA'), scoreB = $('scoreB'), scoreTarget = $('scoreTarget');
+const humanHand = $('humanHand'), teammateHand = $('teammateHand');
+const teammateBlock = $('teammateBlock'), humanArea = $('humanArea');
+const roleHuman = $('roleHuman');
+const playBtn = $('playBtn'), buryBtn = $('buryBtn'), menuBtn = $('menuBtn');
+const bidModal = $('bidModal'), bidCurrent = $('bidCurrent'), bidTip = $('bidTip'), bidBtns = $('bidBtns');
+const resultModal = $('resultModal'), resultTitle = $('resultTitle'), resultDetail = $('resultDetail');
+const nextRoundBtn = $('nextRoundBtn'), backMenuBtn = $('backMenuBtn');
+const toast = $('toast'), startFsBtn = $('startFsBtn');
+const historyPanel = $('historyPanel'), historyList = $('historyList');
+const counterPanel = $('counterPanel'), counterBody = $('counterBody');
+const statsPanel = $('statsPanel'), statsBody = $('statsBody');
+const replayOverlay = $('replayOverlay'), replayCards = $('replayCards');
+const replayVerdict = $('replayVerdict');
+
+function isFullscreen(){ return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement); }
+function toggleFullscreen(){
+  const el = document.documentElement;
+  if(!isFullscreen()){
+    if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if(el.msRequestFullscreen) el.msRequestFullscreen();
+  } else {
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if(document.msExitFullscreen) document.msExitFullscreen();
+  }
+}
+startFsBtn.addEventListener('click', ()=>{ SFX.click(); toggleFullscreen(); });
+document.addEventListener('fullscreenchange', ()=>{
+  startFsBtn.textContent = isFullscreen() ? '退 出 全 屏' : '进 入 全 屏';
+});
+
+function cardEl(c, small){
+  const div = document.createElement('div');
+  div.className = 'card' + (small?' small':'');
+  div.classList.add(SUIT_RED[c.suit] ? 'red' : 'black');
+  const corner = document.createElement('div');
+  corner.className = 'corner';
+  corner.innerHTML = `<span class="r">${RANK_LABEL[c.value]}</span><span class="s">${c.suit}</span>`;
+  const cs = document.createElement('div');
+  cs.className = 'center-suit';
+  cs.textContent = c.suit;
+  div.appendChild(corner); div.appendChild(cs);
+  div.dataset.id = c.id;
+  return div;
+}
+function backEl(small){
+  const d = document.createElement('div');
+  d.className = 'card' + (small?' small':'') + ' back';
+  return d;
+}
+function addTagToCard(el, tag){
+  const t = document.createElement('div');
+  t.className = 'card-tag tag-' + (tag==='底'?'bottom':tag==='主'?'trump':'side');
+  t.textContent = tag;
+  el.appendChild(t);
+}
+
+let toastTimer = null;
+function showToast(msg, ms=1400){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), ms);
+}
+function setHint(text, cards, fromSeat){
+  playHint.textContent = text;
+  lastPlayCards.innerHTML = '';
+  if(cards && cards.length>0){
+    cards.forEach(c=>{
+      const el = cardEl(c, false);
+      el.classList.add('card-fly');
+      if(fromSeat !== undefined && SEAT_FLY_DIR[fromSeat]){
+        const d = SEAT_FLY_DIR[fromSeat];
+        el.style.setProperty('--fly-x', d.x + 'px');
+        el.style.setProperty('--fly-y', d.y + 'px');
+        el.style.setProperty('--fly-r', d.r + 'deg');
+      }
+      lastPlayCards.appendChild(el);
+    });
+  }
+}
+
+function getSeatEl(seat){
+  if(seat === 0) return humanArea;
+  if(seat === 1) return seatEast;
+  if(seat === 2) return seatNorth;
+  if(seat === 3) return seatWest;
+  return null;
+}
+function flashSeat(seat){
+  const el = getSeatEl(seat);
+  if(!el) return;
+  el.classList.remove('win-flash');
+  void el.offsetWidth;
+  el.classList.add('win-flash');
+  setTimeout(()=>el.classList.remove('win-flash'), 1300);
+}
+function flyScoreToWinner(seat, text){
+  const startEl = $('scoreBar');
+  const endEl = getSeatEl(seat);
+  if(!startEl || !endEl) return;
+  const sr = startEl.getBoundingClientRect();
+  const er = endEl.getBoundingClientRect();
+  const s = document.createElement('div');
+  s.className = 'fly-score';
+  s.textContent = text;
+  s.style.left = (sr.left + sr.width/2) + 'px';
+  s.style.top = (sr.top + sr.height/2) + 'px';
+  s.style.transform = 'translate(-50%, -50%)';
+  document.body.appendChild(s);
+  requestAnimationFrame(()=>{
+    s.style.left = (er.left + er.width/2) + 'px';
+    s.style.top = (er.top + er.height/2) + 'px';
+    s.style.opacity = '0';
+    s.style.fontSize = '38px';
+  });
+  setTimeout(()=>s.remove(), 1100);
+}
+
+function playReplay(roundCards, winnerSeat, points, callback){
+  replayCards.innerHTML = '';
+  replayVerdict.textContent = '';
+  replayOverlay.classList.add('show');
+
+  const cards = roundCards.slice();
+  let i = 0;
+  function step(){
+    if(i >= cards.length){
+      setTimeout(()=>{
+        replayVerdict.textContent = `${SEAT_SHORT[winnerSeat]} 收本轮 ${points} 分`;
+        replayCards.querySelectorAll('.replay-slot').forEach(s => {
+          if(parseInt(s.dataset.seat, 10) === winnerSeat) s.classList.add('winner');
+        });
+        setTimeout(()=>{
+          replayOverlay.classList.remove('show');
+          if(callback) callback();
+        }, 900);
+      }, 200);
+      return;
+    }
+    const rc = cards[i];
+    const slot = document.createElement('div');
+    slot.className = 'replay-slot';
+    slot.dataset.seat = rc.seat;
+    const cardBox = document.createElement('div');
+    rc.cards.forEach(c => cardBox.appendChild(cardEl(c, true)));
+    const nameEl = document.createElement('div');
+    nameEl.className = 'rs-name';
+    nameEl.textContent = SEAT_SHORT[rc.seat];
+    slot.appendChild(cardBox); slot.appendChild(nameEl);
+    replayCards.appendChild(slot);
+    SFX.replay();
+    i++;
+    setTimeout(step, 320);
+  }
+  step();
+}
+
+function renderLastRound(){
+  lastRoundArea.innerHTML = '';
+  if(!G.lastRoundCards || G.lastRoundCards.length === 0) return;
+  const label = document.createElement('div');
+  label.className = 'last-round-label';
+  label.textContent = `上一轮：${SEAT_SHORT[G.lastRoundWinner]} 收 ${G.lastRoundPoints} 分`;
+  lastRoundArea.appendChild(label);
+  const cardsRow = document.createElement('div');
+  cardsRow.className = 'last-round-cards';
+  const bySeat = {};
+  G.lastRoundCards.forEach(rc=>{ bySeat[rc.seat] = rc.cards; });
+  for(let s=0; s<4; s++){
+    if(!bySeat[s]) continue;
+    const item = document.createElement('div');
+    item.className = 'lr-item' + (s === G.lastRoundWinner ? ' winner' : '');
+    const seatLabel = document.createElement('div');
+    seatLabel.className = 'lr-seat' + (s === G.lastRoundWinner ? ' winner' : '');
+    seatLabel.textContent = SEAT_SHORT[s];
+    item.appendChild(seatLabel);
+    bySeat[s].forEach(c=>item.appendChild(cardEl(c, true)));
+    cardsRow.appendChild(item);
+  }
+  lastRoundArea.appendChild(cardsRow);
+}
+
+function renderHistory(){
+  historyList.innerHTML = '';
+  if(G.roundHistory.length === 0){
+    historyList.innerHTML = '<div class="drawer-empty">暂无出牌记录</div>';
+    return;
+  }
+  G.roundHistory.slice().reverse().forEach(rd => {
+    const div = document.createElement('div');
+    const isCurrent = G.roundCards.length > 0 && rd.num === G.roundHistory.length;
+    div.className = 'history-round' + (isCurrent ? ' current' : '');
+    const head = document.createElement('div');
+    head.className = 'hr-head';
+    head.innerHTML =
+      `<span>第 ${rd.num} 轮${isCurrent ? '（进行中）' : ''}</span>` +
+      `<span>赢家 <b>${SEAT_SHORT[rd.winner]}</b> · 收 ${rd.points} 分</span>`;
+    div.appendChild(head);
+    const plays = document.createElement('div');
+    plays.className = 'hr-plays';
+    const bySeat = {};
+    rd.plays.forEach(p => { bySeat[p.seat] = p.cards; });
+    for(let s = 0; s < 4; s++){
+      if(!bySeat[s]) continue;
+      const row = document.createElement('div');
+      row.className = 'hr-row' + (s === rd.winner ? ' winner' : '');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'hr-seat-name';
+      nameEl.textContent = SEAT_SHORT[s];
+      row.appendChild(nameEl);
+      const cardsEl = document.createElement('div');
+      cardsEl.className = 'hr-cards';
+      bySeat[s].forEach(c => cardsEl.appendChild(cardEl(c, true)));
+      row.appendChild(cardsEl);
+      if(s === rd.winner){
+        const tag = document.createElement('span');
+        tag.className = 'hr-tag';
+        tag.textContent = rd.points > 0 ? `+${rd.points}` : '收牌';
+        row.appendChild(tag);
+      }
+      plays.appendChild(row);
+    }
+    div.appendChild(plays);
+    historyList.appendChild(div);
+  });
+}
+
+function renderCounter(){
+  const mineSet = new Set(G.hands[0].map(c => c.suit + '_' + c.rank));
+  const doneSet = new Set(G.played.map(c => c.suit + '_' + c.rank));
+  if(G.phase === 'over'){
+    G.buries.forEach(c => doneSet.add(c.suit + '_' + c.rank));
+  }
+
+  const RANKS = ['A','K','Q','J','10','9','8','7','6','5','4','3','2'];
+
+  let html = `<div class="counter-legend">
+    <span class="cl-item"><span class="cl-dot d"></span>已出</span>
+    <span class="cl-item"><span class="cl-dot m"></span>我方</span>
+    <span class="cl-item"><span class="cl-dot o"></span>其他</span>
+  </div>`;
+
+  html += '<div class="counter-title">各花色状态</div>';
+  for(const s of SUITS){
+    const isRed = SUIT_RED[s];
+    html += `<div class="counter-suit-row">
+      <div class="counter-suit-icon ${isRed?'red':'black'}">${s}</div>
+      <div class="counter-rank-list">`;
+    for(const r of RANKS){
+      const k = s + '_' + r;
+      let status = 'status-other';
+      if(mineSet.has(k)) status = 'status-mine';
+      else if(doneSet.has(k)) status = 'status-done';
+      const isPoint = (r === 'A' || r === '10' || r === '5');
+      html += `<div class="counter-rank${isPoint?' point':''}">
+        <div class="cr-rank">${r}</div>
+        <div class="cr-status ${status}"></div>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+
+  let donePts = 0, minePts = 0, otherPts = 0;
+  for(const s of SUITS){
+    for(const r of ['A','10','5']){
+      const pts = r === '5' ? 5 : 10;
+      const k = s + '_' + r;
+      if(mineSet.has(k)) minePts += pts;
+      else if(doneSet.has(k)) donePts += pts;
+      else otherPts += pts;
+    }
+  }
+  const total = donePts + minePts + otherPts;
+
+  html += `<div class="counter-summary">
+    <div class="counter-title">📌 分牌追踪（A/10=10 分，5=5 分）</div>
+    <div class="pt-line done"><span>已出</span><b>${donePts} 分</b></div>
+    <div class="pt-line mine"><span>我方持有</span><b>${minePts} 分</b></div>
+    <div class="pt-line other"><span>其他家可能持有</span><b>${otherPts} 分</b></div>
+    <div class="pt-total"><span>合计</span><b>${total} 分 / 100</b></div>
+  </div>`;
+
+  counterBody.innerHTML = html;
+}
+
+function renderStats(){
+  const s = loadStats();
+  const winRate = s.totalGames > 0 ? Math.round(s.humanWins / s.totalGames * 100) : 0;
+
+  let html = '<div class="counter-title">总体战绩</div>';
+  html += '<div class="stats-grid">';
+  html += `<div class="stat-card"><div class="sc-label">总对局</div><div class="sc-value">${s.totalGames}</div></div>`;
+  html += `<div class="stat-card"><div class="sc-label">胜率</div><div class="sc-value">${winRate}%</div><div class="sc-sub">${s.humanWins} 胜</div></div>`;
+  html += `<div class="stat-card"><div class="sc-label">南北胜</div><div class="sc-value">${s.nsWins}</div></div>`;
+  html += `<div class="stat-card"><div class="sc-label">东西胜</div><div class="sc-value">${s.ewWins}</div></div>`;
+  html += `<div class="stat-card"><div class="sc-label">光头次数</div><div class="sc-value">${s.guangtouCount}</div></div>`;
+  html += `<div class="stat-card"><div class="sc-label">双打次数</div><div class="sc-value">${s.doubleCount}</div></div>`;
+  html += `<div class="stat-card" style="grid-column: span 2;"><div class="sc-label">最高叫分</div><div class="sc-value">${s.maxBid || 0}</div></div>`;
+  html += '</div>';
+
+  html += '<div class="stat-title">最近对局</div>';
+  if(s.recent.length === 0){
+    html += '<div class="drawer-empty">暂无记录</div>';
+  } else {
+    html += '<div class="recent-list">';
+    s.recent.slice().reverse().forEach(r => {
+      const cls = r.win ? 'win' : 'lose';
+      const txt = r.win ? '胜' : '负';
+      html += `<div class="recent-item">
+        <span class="ri-left">${r.dealerTeam} 庄 · 叫 ${r.bid} · 南北 ${r.nsScore} : 东西 ${r.ewScore}${r.guangtou?' · 光头':''}</span>
+        <span class="ri-result ${cls}">${txt}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+  statsBody.innerHTML = html;
+}
+function recordGame(){
+  const s = loadStats();
+  const dealerTeam = TEAM[G.dealer] === 'NS' ? '南北' : '东西';
+  const oppTeam = TEAM[G.dealer] === 'NS' ? 'EW' : 'NS';
+  const dealerScore = G.teamScore[TEAM[G.dealer]];
+  const oppScore = G.teamScore[oppTeam];
+  const landlordWin = dealerScore >= G.bidValue;
+  const humanWin = (TEAM[G.dealer] === 'NS') ? landlordWin : !landlordWin;
+  const guangtou = oppScore === 0;
+
+  s.totalGames++;
+  if(humanWin) s.humanWins++;
+  if(TEAM[G.dealer] === 'NS' && landlordWin) s.nsWins++;
+  if(TEAM[G.dealer] === 'EW' && landlordWin) s.ewWins++;
+  if(TEAM[G.dealer] === 'EW' && !landlordWin) s.nsWins++;
+  if(TEAM[G.dealer] === 'NS' && !landlordWin) s.ewWins++;
+  if(guangtou) s.guangtouCount++;
+  if(G.doubleMode) s.doubleCount++;
+  if(G.bidValue > s.maxBid) s.maxBid = G.bidValue;
+
+  s.recent.push({
+    dealerTeam, bid: G.bidValue,
+    nsScore: G.teamScore.NS, ewScore: G.teamScore.EW,
+    win: humanWin, guangtou, double: G.doubleMode,
+  });
+  if(s.recent.length > 20) s.recent = s.recent.slice(-20);
+  saveStats(s);
+}
+
+function makeDeck(){
+  const deck = [];
+  let id = 0;
+  for(const s of SUITS){
+    for(let v=2; v<=14; v++){
+      deck.push({ id:id++, suit:s, value:v, rank:RANK_LABEL[v] });
+    }
+  }
+  return deck;
+}
+function suitOrder(suit){
+  if(suit === G.trumpSuit) return -1;
+  return SUITS.indexOf(suit);
+}
+function sortHand(hand){
+  hand.sort((a,b)=>{
+    const sa = suitOrder(a.suit), sb = suitOrder(b.suit);
+    if(sa !== sb) return sa - sb;
+    return b.value - a.value;
+  });
+}
+function countAces(seat){ return G.hands[seat].filter(c=>c.rank === 'A').length; }
+function estimateHand(hand){
+  let est = 0;
+  hand.forEach(c=>{
+    if(c.rank === 'A') est += 12;
+    else if(c.rank === 'K') est += 6;
+    else if(c.rank === 'Q') est += 4;
+    else if(c.rank === 'J') est += 2;
+    if(c.rank === '10') est += 6;
+    if(c.rank === '5') est += 3;
+  });
+  return est;
+}
+function scoreCardValue(c){
+  let s = c.value * 1.2;
+  if(c.rank === 'A') s += 35;
+  else if(c.rank === 'K') s += 20;
+  else if(c.rank === 'Q') s += 10;
+  else if(c.rank === 'J') s += 5;
+  if(c.rank === '10') s += 12;
+  if(c.rank === '5')  s += 6;
+  return s;
+}
+function dealWithAdvantage(deck, diff){
+  const adv = PLAYER_ADVANTAGE[diff] || PLAYER_ADVANTAGE.normal;
+  const sorted = deck.slice().sort((a,b) => scoreCardValue(b) - scoreCardValue(a));
+  const strongPool = sorted.slice(0, adv.poolSize);
+  const weakPool   = sorted.slice(adv.poolSize);
+  const playerCards = [];
+  const usedIds = new Set();
+  function takeByRank(rank, n){
+    if(n <= 0) return;
+    const candidates = strongPool.filter(c => c.rank === rank && !usedIds.has(c.id));
+    shuffle(candidates);
+    candidates.slice(0, n).forEach(c => { playerCards.push(c); usedIds.add(c.id); });
+  }
+  for(const rank of ['A','K','Q','J','10','9']){
+    if(playerCards.length >= 12) break;
+    takeByRank(rank, adv.guarantee[rank] || 0);
+  }
+  const rest = strongPool.filter(c => !usedIds.has(c.id));
+  shuffle(rest);
+  while(playerCards.length < 12 && rest.length > 0){
+    const c = rest.pop(); playerCards.push(c); usedIds.add(c.id);
+  }
+  if(playerCards.length < 12){
+    const backup = weakPool.filter(c => !usedIds.has(c.id));
+    shuffle(backup);
+    while(playerCards.length < 12 && backup.length > 0){
+      const c = backup.pop(); playerCards.push(c); usedIds.add(c.id);
+    }
+  }
+  const remaining = deck.filter(c => !usedIds.has(c.id));
+  shuffle(remaining);
+  return { playerCards, remaining };
+}
+
+function deal(){
+  const deck = makeDeck();
+  for(let i=0;i<4;i++) G.hands[i] = [];
+  G.bottom = []; G.buries = [];
+  G.trumpSuit = null; G.dealer = -1; G.bidValue = 0;
+  G.roundCards = []; G.lastRoundCards = [];
+  G.lastRoundWinner = -1; G.lastRoundPoints = 0;
+  G.roundHistory = [];
+  G.teamScore = { NS:0, EW:0 };
+  G.selected.clear();
+  G.doubleMode = false; G.doubleOwner = -1;
+  G.humanControlSeats = [0];
+  G.hasBidThisRound = [false,false,false,false];
+  G.currentBidder = -1;
+  G.played = [];
+
+  G.firstSeat = G.nextFirstSeat;
+  G.nextFirstSeat = (G.nextFirstSeat + 1) % 4;
+
+  const { playerCards, remaining } = dealWithAdvantage(deck, G.difficulty);
+  G.hands[0] = playerCards.slice();
+
+  let ptr = 0;
+  for(let r=0; r<12; r++){
+    for(let k=1; k<4; k++){
+      G.hands[k].push(remaining[ptr++]);
+    }
+  }
+  G.bottom = remaining.slice(ptr, ptr+4);
+
+  for(let i=0;i<4;i++) sortHand(G.hands[i]);
+
+  G.phase = 'bid';
+  dealStep = 0;
+  // 不设置 playHint 文字，只清空，避免与 dealing-hint 重复
+  playHint.textContent = '';
+  lastPlayCards.innerHTML = '';
+  renderAll();
+  SFX.bid();
+
+  setTimeout(() => {
+    startDealAnimation(() => {
+      setHint('发牌完成，开始叫分...');
+      startBid();
+    });
+  }, 300);
+}
+
+/* ============ 发牌动画（约 3 秒） ============ */
+function startDealAnimation(callback){
+  dealStep = 0;
+  renderAll();
+
+  const hintEl = document.createElement('div');
+  hintEl.className = 'dealing-hint';
+  hintEl.textContent = '发 牌 中...';
+  document.getElementById('centerArea').appendChild(hintEl);
+
+  let i = 0;
+  const total = 12;
+  const interval = 250;     // 12 × 250ms = 3 秒
+  dealAnimTimer = setInterval(() => {
+    i++;
+    dealStep = i;
+    renderAll();
+    playBeep(780 + Math.random()*200, 0.035, 'sine', 0.03);
+
+    const cards = humanHand.querySelectorAll('.card');
+    if(cards.length > 0){
+      const last = cards[cards.length - 1];
+      last.classList.remove('dealing');
+      void last.offsetWidth;
+      last.classList.add('dealing');
+    }
+
+    if(i >= total){
+      clearInterval(dealAnimTimer);
+      dealAnimTimer = null;
+      dealStep = 12;
+      renderAll();
+      setTimeout(() => {
+        hintEl.remove();
+        if(callback) callback();
+      }, 400);
+    }
+  }, interval);
+}
+
+function getBidConstraints(seat){
+  const aces = countAces(seat);
+  const mustBidOnce = aces >= 3 && !G.hasBidThisRound[seat];
+  const mustFollow4A = aces === 4 && G.currentBidder >= 0 && G.currentBidder !== seat;
+  return { mustBidOnce, mustFollow4A };
+}
+function startBid(){
+  G.bidOrder = [];
+  for(let k=0;k<4;k++) G.bidOrder.push((G.firstSeat + k) % 4);
+  G.bidPtr = 0; G.bidPassStreak = 0; G.bidValue = 0;
+  G.currentBidder = -1;
+  G.hasBidThisRound = [false,false,false,false];
+  G.phase = 'bid';
+  nextBidTurn();
+}
+function nextBidTurn(){
+  if(G.bidValue >= 100){ endBid(); return; }
+  if(G.currentBidder >= 0 && G.bidPassStreak >= 3){ endBid(); return; }
+  if(G.currentBidder < 0 && G.bidPassStreak >= 4){ endBid(); return; }
+  const seat = G.bidOrder[G.bidPtr];
+  G.currentSeat = seat;
+  renderActive();
+  const cons = getBidConstraints(seat);
+  if(seat === 0){
+    showBidModal(cons);
+  } else {
+    setTimeout(()=>{
+      const bid = aiDecideBid(seat, cons);
+      doBid(seat, bid);
+    }, T_BID_AI);
+  }
+}
+function showBidModal(cons){
+  bidCurrent.textContent = G.bidValue > 0
+    ? `当前最高：${G.bidValue} 分（${SEAT_SHORT[G.currentBidder]}）`
+    : '当前最高：无';
+  if(cons.mustFollow4A) bidTip.textContent = '你持有 4 张 A，必须跟叫到成为庄家';
+  else if(cons.mustBidOnce) bidTip.textContent = '你持有 3 张 A，本轮必须至少叫一次';
+  else bidTip.textContent = '';
+
+  bidBtns.innerHTML = '';
+  const minBid = Math.max(70, G.bidValue + 5);
+  for(let v=70; v<=100; v+=5){
+    if(v < minBid) continue;
+    const b = document.createElement('button');
+    b.className = 'bid-btn';
+    b.textContent = v;
+    b.onclick = ()=>{ SFX.click(); bidModal.classList.remove('show'); doBid(0, v); };
+    bidBtns.appendChild(b);
+  }
+  const passB = document.createElement('button');
+  passB.className = 'bid-btn pass';
+  passB.textContent = '过';
+  passB.disabled = cons.mustBidOnce || cons.mustFollow4A;
+  passB.onclick = ()=>{ SFX.click(); bidModal.classList.remove('show'); doBid(0, 0); };
+  bidBtns.appendChild(passB);
+  bidModal.classList.add('show');
+  updateButtons();
+}
+function doBid(seat, value){
+  if(value > 0){
+    G.bidValue = value; G.currentBidder = seat;
+    G.bidPassStreak = 0; G.hasBidThisRound[seat] = true;
+    setHint(`${SEAT_NAMES[seat]} 叫 ${value} 分`);
+    SFX.bid();
+  } else {
+    G.bidPassStreak++;
+    setHint(`${SEAT_NAMES[seat]} 过`);
+    SFX.pass();
+  }
+  renderActive();
+  if(value === 100){ setTimeout(()=>endBid(), 700); return; }
+  if(G.currentBidder >= 0 && G.bidPassStreak >= 3){ setTimeout(()=>endBid(), 700); return; }
+  if(G.currentBidder < 0 && G.bidPassStreak >= 4){ setTimeout(()=>endBid(), 700); return; }
+  G.bidPtr = (G.bidPtr + 1) % 4;
+  setTimeout(()=>nextBidTurn(), 700);
+}
+function endBid(){
+  if(G.bidValue === 0){
+    G.dealer = G.firstSeat; G.bidValue = 70;
+    setHint(`${SEAT_NAMES[G.dealer]} 全过，以 70 分强制当庄`);
+  } else {
+    G.dealer = G.currentBidder;
+  }
+  if(G.bidValue === 100){
+    G.doubleMode = true; G.doubleOwner = G.dealer;
+    if(G.dealer === 0) G.humanControlSeats = [0, 2];
+    else if(G.dealer === 2) G.humanControlSeats = [];
+    else G.humanControlSeats = [0];
+  } else {
+    G.doubleMode = false;
+    G.humanControlSeats = [0];
+  }
+  renderAll();
+  G.phase = 'trump';
+  G.currentSeat = G.dealer;
+  renderActive();
+  if(G.dealer === 0){
+    setHint('单击选中一张牌，然后点「定主」确认');
+    renderAll();
+  } else {
+    setTimeout(()=>{
+      const suit = aiChooseTrump(G.dealer);
+      doChooseTrump(suit);
+    }, T_TRUMP_AI);
+  }
+}
+function doChooseTrump(suit){
+  G.trumpSuit = suit;
+  G.selected.clear();
+  setHint(`${SEAT_NAMES[G.dealer]} 定主牌：${suit}`);
+  renderTrump();
+  G.hands[G.dealer] = G.hands[G.dealer].concat(G.bottom);
+  // 定主后对所有 4 家重新排序（主牌排最前）
+  for(let i = 0; i < 4; i++) sortHand(G.hands[i]);
+  renderAll();
+  G.phase = 'bury';
+  G.currentSeat = G.dealer;
+  renderActive();
+  setHint(`${SEAT_NAMES[G.dealer]} 拿底牌，准备埋底`);
+  setTimeout(()=>{
+    if(G.dealer === 0){
+      showToast('请从手牌中选 4 张埋底');
+      renderHumanHand();
+      updateButtons();
+    } else {
+      const buries = aiChooseBury(G.dealer);
+      doBury(buries);
+    }
+  }, T_BURY_AI);
+}
+
+let pendingBurySig = null;
+let pendingBuryTimer = null;
+function doBury(cards){
+  const seat = G.dealer;
+  const ids = new Set(cards.map(c=>c.id));
+  G.hands[seat] = G.hands[seat].filter(c=>!ids.has(c.id));
+  G.buries = cards; G.bottom = cards.slice();
+  G.phase = 'play';
+  G.currentSeat = G.dealer;
+  G.roundCards = [];
+  G.selected.clear();
+  renderAll();
+  const hasPoint = cards.some(isPointCard);
+  setHint(hasPoint ? `${SEAT_NAMES[seat]} 埋底完成（含分牌）` : `${SEAT_NAMES[seat]} 埋底完成`);
+  renderActive();
+  setTimeout(()=>startTurn(), 800);
+}
+
+function renderTrump(){
+  if(!G.trumpSuit){
+    trumpDisplay.textContent = '未定';
+    trumpDisplay.className = 'trump-suit none';
+  } else {
+    trumpDisplay.textContent = G.trumpSuit;
+    trumpDisplay.className = 'trump-suit ' + (SUIT_RED[G.trumpSuit] ? 'red':'black');
+  }
+}
+function renderAll(){
+  renderSeat(1, nameEast, countEast, playedEast, seatEast);
+  renderSeat(2, nameNorth, countNorth, playedNorth, seatNorth);
+  renderSeat(3, nameWest, countWest, playedWest, seatWest);
+  renderTrump();
+  renderBottom();
+  renderScores();
+  renderHumanHand();
+  renderTeammateHand();
+  renderRoles();
+  renderLastRound();
+  if(historyPanel.classList.contains('show')) renderHistory();
+  if(counterPanel.classList.contains('show')) renderCounter();
+}
+function renderSeat(seat, nameEl, countEl, playedEl, boxEl){
+  nameEl.textContent = SEAT_NAMES[seat];
+  const n = Math.min(dealStep, G.hands[seat].length);
+  countEl.textContent = `剩余 ${n} 张`;
+  playedEl.innerHTML = '';
+  const rc = G.roundCards.find(r=>r.seat===seat);
+  if(rc) rc.cards.forEach(c=>playedEl.appendChild(cardEl(c, true)));
+  boxEl.classList.toggle('landlord-seat', G.dealer === seat);
+}
+function renderBottom(){
+  bottomCardsInner.innerHTML = '';
+  G.bottom.forEach(c=>{
+    bottomCardsInner.appendChild(G.phase === 'over' ? cardEl(c, true) : backEl(true));
+  });
+}
+function renderScores(){
+  scoreA.textContent = G.teamScore.NS;
+  scoreB.textContent = G.teamScore.EW;
+  scoreTarget.textContent = G.bidValue > 0 ? `目标 ${G.bidValue}` : '目标 --';
+}
+function renderRoles(){
+  const isNSDealer = (G.dealer === 0 || G.dealer === 2);
+  const nsText = isNSDealer ? '庄家' : '闲家';
+  const ewText = isNSDealer ? '闲家' : '庄家';
+  const nsClass = isNSDealer ? 'seat-role landlord' : 'seat-role';
+  const ewClass = !isNSDealer ? 'seat-role landlord' : 'seat-role';
+  const humanClass = isNSDealer ? 'human-role landlord' : 'human-role';
+
+  roleHuman.textContent = nsText; roleHuman.className = humanClass; roleHuman.style.display = 'inline-block';
+  roleNorth.textContent = nsText; roleNorth.className = nsClass; roleNorth.style.display = 'inline-block';
+  roleEast.textContent = ewText; roleEast.className = ewClass; roleEast.style.display = 'inline-block';
+  roleWest.textContent = ewText; roleWest.className = ewClass; roleWest.style.display = 'inline-block';
+}
+function renderActive(){
+  const boxes = { 1: seatEast, 2: seatNorth, 3: seatWest };
+  const isHumanTurnNow = G.phase === 'play' && isHumanControl(G.currentSeat);
+
+  [1,2,3].forEach(seat=>{
+    const box = boxes[seat];
+    if(!box) return;
+    const active = G.currentSeat === seat && G.phase !== 'over';
+    box.classList.toggle('active-turn', active);
+    box.classList.toggle('thinking', active && G.phase === 'play');
+  });
+  const myActive = G.currentSeat === 0 && G.phase !== 'over';
+  humanArea.classList.toggle('active-turn', myActive);
+  app.classList.toggle('player-turn', isHumanTurnNow);
+}
+
+function isHumanControl(seat){ return G.humanControlSeats.includes(seat); }
+function isHumanTurn(){ return G.phase === 'play' && isHumanControl(G.currentSeat); }
+
+function renderHumanHand(){
+  humanHand.innerHTML = '';
+  const myHand = G.hands[0];
+  const n = Math.min(dealStep, myHand.length);
+  const isBuryPhase = G.phase === 'bury' && G.dealer === 0;
+  const isMyPlayTurn = G.phase === 'play' && G.currentSeat === 0 && isHumanControl(0);
+  const canSelect = (G.phase === 'trump' && G.dealer === 0) || isBuryPhase || isMyPlayTurn;
+  const showSuitTag = G.trumpSuit !== null;
+  const showBottomTag = isBuryPhase;
+  const bottomIds = new Set(G.bottom.map(c=>c.id));
+
+  for(let i = 0; i < n; i++){
+    const c = myHand[i];
+    const el = cardEl(c);
+    if(G.selected.has(c.id)) el.classList.add('selected');
+    if(!canSelect) el.classList.add('dim');
+    if(showBottomTag && bottomIds.has(c.id)){
+      addTagToCard(el, '底');
+    } else if(showSuitTag){
+      addTagToCard(el, c.suit === G.trumpSuit ? '主' : '副');
+    }
+    el.onclick = ()=>handleHandClick(c, 'self');
+    humanHand.appendChild(el);
+  }
+}
+function renderTeammateHand(){
+  const showTeammate = G.doubleMode && G.doubleOwner === 0;
+  teammateBlock.style.display = showTeammate ? 'flex' : 'none';
+  if(!showTeammate) return;
+  teammateHand.innerHTML = '';
+  const canSelect = G.phase === 'play' && G.currentSeat === 2 && isHumanControl(2);
+  const showSuitTag = G.trumpSuit !== null;
+  G.hands[2].forEach(c=>{
+    const el = cardEl(c);
+    if(G.selected.has(c.id)) el.classList.add('selected');
+    if(!canSelect) el.classList.add('dim');
+    if(showSuitTag){
+      addTagToCard(el, c.suit === G.trumpSuit ? '主' : '副');
+    }
+    el.onclick = ()=>handleHandClick(c, 'teammate');
+    teammateHand.appendChild(el);
+  });
+}
+function handleHandClick(card, source){
+  const isTrumpPhase = G.phase === 'trump' && G.dealer === 0;
+  const isBuryPhase = G.phase === 'bury' && G.dealer === 0;
+  const isSelfPlay = source === 'self' && G.phase === 'play' && G.currentSeat === 0 && isHumanControl(0);
+  const isMatePlay = source === 'teammate' && G.phase === 'play' && G.currentSeat === 2 && isHumanControl(2);
+
+  if(isTrumpPhase){
+    G.selected.clear(); G.selected.add(card.id); SFX.select();
+  } else if(isBuryPhase){
+    if(G.selected.has(card.id)){ G.selected.delete(card.id); SFX.select(); }
+    else {
+      if(G.selected.size >= 4){ showToast('只能选 4 张'); return; }
+      G.selected.add(card.id); SFX.select();
+    }
+  } else if(isSelfPlay || isMatePlay){
+    G.selected.clear(); G.selected.add(card.id); SFX.select();
+  } else return;
+
+  renderHumanHand(); renderTeammateHand(); updateButtons();
+}
+
+function startTurn(){
+  G.selected.clear();
+  renderAll();
+  renderActive();
+  const seat = G.currentSeat;
+  if(isHumanTurn()){
+    setHint('轮到你出牌');
+    SFX.turn();
+    updateButtons();
+  } else {
+    setHint(`${SEAT_NAMES[seat]} 思考中...`);
+    updateButtons();
+    setTimeout(()=>aiPlay(seat), T_PLAY_AI);
+  }
+}
+function isValidPlay(cards, seat){
+  if(!cards || cards.length === 0) return { ok:false, msg:'没有选牌' };
+  if(cards.length !== 1) return { ok:false, msg:'每次只能出 1 张牌' };
+  const hand = G.hands[seat];
+  const card = cards[0];
+  if(G.roundCards.length === 0) return { ok:true };
+  const leadSuit = G.roundCards[0].cards[0].suit;
+  if(hand.some(c=>c.suit === leadSuit) && card.suit !== leadSuit){
+    return { ok:false, msg:`必须跟 ${leadSuit}` };
+  }
+  return { ok:true };
+}
+function analyzePlay(cards){
+  return { isTrump: cards[0].suit === G.trumpSuit, top: cards[0].value, suit: cards[0].suit };
+}
+function comparePlay(a, b, leadSuit){
+  if(a.isTrump && !b.isTrump) return 1;
+  if(!a.isTrump && b.isTrump) return -1;
+  if(a.isTrump && b.isTrump) return a.top - b.top;
+  const aLead = a.suit === leadSuit, bLead = b.suit === leadSuit;
+  if(aLead && !bLead) return 1;
+  if(!aLead && bLead) return -1;
+  if(!aLead && !bLead) return 0;
+  return a.top - b.top;
+}
+function playCards(seat, cards){
+  if(G.roundCards.length === 0){
+    G.lastRoundCards = []; G.lastRoundWinner = -1; G.lastRoundPoints = 0;
+  }
+  const ids = new Set(cards.map(c=>c.id));
+  G.hands[seat] = G.hands[seat].filter(c=>!ids.has(c.id));
+  G.roundCards.push({ seat, cards });
+  cards.forEach(c => G.played.push(c));
+
+  renderAll();
+  setHint(`${SEAT_NAMES[seat]} 出牌`, cards, seat);
+  SFX.play();
+
+  if(G.roundCards.length === 4){
+    setTimeout(()=>endRound(), T_ROUND_END);
+  } else {
+    G.currentSeat = (seat + 1) % 4;
+    setTimeout(()=>startTurn(), 500);
+  }
+}
+function endRound(){
+  const leadSuit = G.roundCards[0].cards[0].suit;
+  let bestSeat = G.roundCards[0].seat;
+  let best = analyzePlay(G.roundCards[0].cards);
+  for(let i=1;i<G.roundCards.length;i++){
+    const rc = G.roundCards[i];
+    const a = analyzePlay(rc.cards);
+    if(comparePlay(a, best, leadSuit) > 0){ best = a; bestSeat = rc.seat; }
+  }
+
+  let pts = 0;
+  G.roundCards.forEach(rc=>{ rc.cards.forEach(c=>{ pts += cardPoints(c); }); });
+  const snapShot = G.roundCards.slice();
+
+  if(pts > 0){
+    G.teamScore[TEAM[bestSeat]] += pts;
+    flyScoreToWinner(bestSeat, `+${pts}`);
+    SFX.score();
+  }
+  flashSeat(bestSeat);
+
+  G.roundHistory.push({
+    num: G.roundHistory.length + 1,
+    plays: G.roundCards.map(rc => ({ seat: rc.seat, cards: rc.cards.slice() })),
+    winner: bestSeat, points: pts, leadSuit,
+  });
+
+  G.lastRoundCards = snapShot;
+  G.lastRoundWinner = bestSeat;
+  G.lastRoundPoints = pts;
+  G.roundCards = [];
+  G.currentSeat = bestSeat;
+
+  renderAll();
+
+  setTimeout(()=>{
+    playReplay(snapShot, bestSeat, pts, ()=>{
+      const finished = [0,1,2,3].filter(s=>G.hands[s].length === 0);
+      if(finished.length > 0){ endGame(); return; }
+      startTurn();
+    });
+  }, 200);
+}
+
+function updateButtons(){
+  const phase = G.phase;
+  const isTrumpPhase = phase === 'trump' && G.dealer === 0;
+  const isBuryPhase = phase === 'bury' && G.dealer === 0;
+  const canConfirmTrump = isTrumpPhase && G.selected.size === 1;
+  const canPlay = phase === 'play' && isHumanTurn() && G.selected.size === 1;
+  const canBury = isBuryPhase && G.selected.size === 4;
+  playBtn.disabled = !(canConfirmTrump || canPlay);
+  playBtn.textContent = canConfirmTrump ? '定主' : '出牌';
+  buryBtn.disabled = !canBury;
+}
+
+function endGame(){
+  G.phase = 'over';
+  let buryPoints = 0;
+  G.buries.forEach(c=>{ buryPoints += cardPoints(c); });
+  if(buryPoints > 0){
+    const oppTeam = TEAM[G.dealer] === 'NS' ? 'EW' : 'NS';
+    G.teamScore[oppTeam] += buryPoints;
+  }
+  const dealerTeam = TEAM[G.dealer];
+  const dealerScore = G.teamScore[dealerTeam];
+  const oppTeam = dealerTeam === 'NS' ? 'EW' : 'NS';
+  const oppScore = G.teamScore[oppTeam];
+  const landlordWin = dealerScore >= G.bidValue;
+  const guangtou = oppScore === 0;
+  const humanWin = (dealerTeam === 'NS') ? landlordWin : !landlordWin;
+
+  recordGame();
+
+  resultTitle.textContent = humanWin ? '胜 利' : '失 败';
+  resultTitle.className = 'title ' + (humanWin ? 'win' : 'lose');
+
+  let detail = '';
+  detail += `庄家：${SEAT_NAMES[G.dealer]}（${dealerTeam==='NS'?'南北':'东西'}）<br>`;
+  detail += `叫分：<b>${G.bidValue}</b> 分<br>`;
+  detail += `南北吃分：<b>${G.teamScore.NS}</b> 分<br>`;
+  detail += `东西吃分：<b>${G.teamScore.EW}</b> 分<br>`;
+  if(buryPoints > 0) detail += `底牌含分：<b>${buryPoints}</b> 分归对手<br>`;
+  if(guangtou) detail += `<b>光头！</b>闲家一分未吃<br>`;
+  detail += `<br>${landlordWin ? '庄家达标，庄家赢' : '庄家未达标，闲家赢'}`;
+
+  resultDetail.innerHTML = detail;
+  resultModal.classList.add('show');
+  updateButtons();
+  renderAll();
+  setTimeout(()=>{ humanWin ? SFX.win() : SFX.lose(); }, 200);
+}
+
+nextRoundBtn.onclick = ()=>{ SFX.click(); resultModal.classList.remove('show'); deal(); };
+backMenuBtn.onclick = ()=>{
+  SFX.click();
+  resultModal.classList.remove('show');
+  closeAllDrawers();
+  startScreen.classList.remove('hidden');
+  G.phase = 'idle';
+  renderAll();
+};
+menuBtn.onclick = ()=>{
+  if(G.phase === 'idle') return;
+  if(confirm('返回主菜单？当前牌局将丢失。')){
+    SFX.click();
+    closeAllDrawers();
+    startScreen.classList.remove('hidden');
+    G.phase = 'idle';
+    renderAll();
+  }
+};
+
+function closeAllDrawers(){
+  historyPanel.classList.remove('show');
+  counterPanel.classList.remove('show');
+  statsPanel.classList.remove('show');
+}
+$('historyBtn').onclick = ()=>{ SFX.click(); renderHistory(); historyPanel.classList.add('show'); };
+$('historyClose').onclick = ()=>{ SFX.click(); historyPanel.classList.remove('show'); };
+$('counterBtn').onclick = ()=>{ SFX.click(); renderCounter(); counterPanel.classList.add('show'); };
+$('counterClose').onclick = ()=>{ SFX.click(); counterPanel.classList.remove('show'); };
+$('statsClose').onclick = ()=>{
+  SFX.click();
+  statsPanel.classList.remove('show');
+  if(G.phase === 'idle') startScreen.classList.remove('hidden');
+};
+statsEntryBtn.onclick = ()=>{
+  SFX.click();
+  renderStats();
+  startScreen.classList.add('hidden');
+  statsPanel.classList.add('show');
+};
+
+playBtn.onclick = ()=>{
+  if(G.phase === 'trump' && G.dealer === 0 && G.selected.size === 1){
+    SFX.click();
+    const card = G.hands[0].find(c => G.selected.has(c.id));
+    if(card){ doChooseTrump(card.suit); }
+    return;
+  }
+  if(!isHumanTurn()) return;
+  const seat = G.currentSeat;
+  const hand = G.hands[seat];
+  const selected = hand.filter(c=>G.selected.has(c.id));
+  if(selected.length === 0){ showToast('请选牌'); return; }
+  const v = isValidPlay(selected, seat);
+  if(!v.ok){ showToast(v.msg); return; }
+  SFX.click();
+  G.selected.clear();
+  playCards(seat, selected);
+};
+buryBtn.onclick = ()=>{
+  if(G.phase !== 'bury' || G.dealer !== 0) return;
+  if(G.selected.size !== 4){ showToast('请选 4 张埋底'); return; }
+  const cards = G.hands[0].filter(c=>G.selected.has(c.id));
+  const hasPoint = cards.some(isPointCard);
+  const sig = cards.map(c=>c.id).sort((a,b)=>a-b).join(',');
+  if(hasPoint && pendingBurySig !== sig){
+    pendingBurySig = sig;
+    SFX.click();
+    showToast('⚠️ 所选含分牌，埋下后归对手！再点一次确认', 2200);
+    clearTimeout(pendingBuryTimer);
+    pendingBuryTimer = setTimeout(()=>{ if(pendingBurySig === sig) pendingBurySig = null; }, 2500);
+    return;
+  }
+  pendingBurySig = null;
+  clearTimeout(pendingBuryTimer);
+  SFX.click();
+  G.selected.clear();
+  doBury(cards);
+};
+
+function aiDecideBid(seat, cons){
+  const hand = G.hands[seat];
+  const lvl = G.difficulty;
+  const minNext = Math.max(70, G.bidValue + 5);
+  if(cons.mustFollow4A) return Math.min(100, minNext);
+  if(cons.mustBidOnce){
+    if(lvl === 'easy') return minNext;
+    const est = estimateHand(hand);
+    let want = Math.round(Math.max(70, Math.min(100, est + 20)) / 5) * 5;
+    return Math.min(100, Math.max(want, minNext));
+  }
+  if(lvl === 'easy'){
+    if(G.bidValue >= 100) return 0;
+    return Math.random() < 0.4 ? minNext : 0;
+  }
+  const est = estimateHand(hand);
+  let noise = 0;
+  if(lvl === 'normal') noise = randInt(15) - 7;
+  else if(lvl === 'hard') noise = randInt(8) - 4;
+  let want = Math.round(Math.max(70, Math.min(100, est + 20 + noise)) / 5) * 5;
+  want = Math.max(70, Math.min(100, want));
+  if(want <= G.bidValue) return 0;
+  if(lvl === 'hell' && est >= 80) return 100;
+  return Math.max(want, minNext);
+}
+function aiChooseTrump(seat){
+  const hand = G.hands[seat];
+  const stat = { '♠':{n:0,p:0}, '♥':{n:0,p:0}, '♦':{n:0,p:0}, '♣':{n:0,p:0} };
+  hand.forEach(c=>{
+    stat[c.suit].n++;
+    stat[c.suit].p += (c.rank==='A'?4:c.rank==='K'?3:c.rank==='Q'?2:c.rank==='J'?1:0);
+  });
+  let best = '♠', bestScore = -1;
+  for(const s of SUITS){
+    const sc = stat[s].n * 2 + stat[s].p;
+    if(sc > bestScore){ bestScore = sc; best = s; }
+  }
+  return best;
+}
+function aiChooseBury(seat){
+  const hand = G.hands[seat];
+  const lvl = G.difficulty;
+  const sorted = hand.slice().sort((a,b)=>{
+    const aP = isPointCard(a)?1:0, bP = isPointCard(b)?1:0;
+    if(aP !== bP) return aP - bP;
+    const aT = a.suit === G.trumpSuit ? 1 : 0;
+    const bT = b.suit === G.trumpSuit ? 1 : 0;
+    if(aT !== bT) return aT - bT;
+    return a.value - b.value;
+  });
+  if(lvl === 'hard' || lvl === 'hell'){
+    const nonTrump = hand.filter(c => c.suit !== G.trumpSuit);
+    const suitCount = {};
+    nonTrump.forEach(c => { suitCount[c.suit] = (suitCount[c.suit]||0) + 1; });
+    const scoreCardBury = (c)=>{
+      let sc = c.value;
+      if(isPointCard(c)) sc += 100;
+      if(c.suit === G.trumpSuit) sc += 50;
+      if(suitCount[c.suit] === 1) sc -= 20;
+      return sc;
+    };
+    return hand.slice().sort((a,b)=>scoreCardBury(a) - scoreCardBury(b)).slice(0,4);
+  }
+  return sorted.slice(0, 4);
+}
+function aiPlay(seat){
+  if(G.phase !== 'play' || G.currentSeat !== seat) return;
+  const hand = G.hands[seat];
+  if(hand.length === 0){
+    G.currentSeat = (seat+1)%4;
+    setTimeout(()=>startTurn(), 300);
+    return;
+  }
+  const card = aiChoosePlay(seat);
+  if(!card){ playCards(seat, [hand[hand.length-1]]); return; }
+  playCards(seat, [card]);
+}
+function getCurrentWinner(){
+  if(G.roundCards.length === 0) return null;
+  const leadSuit = G.roundCards[0].cards[0].suit;
+  let best = G.roundCards[0];
+  let bestA = analyzePlay(best.cards);
+  for(let i=1;i<G.roundCards.length;i++){
+    const rc = G.roundCards[i];
+    const a = analyzePlay(rc.cards);
+    if(comparePlay(a, bestA, leadSuit) > 0){ best = rc; bestA = a; }
+  }
+  return { seat: best.seat, ...bestA };
+}
+function cardBeats(card, bestInfo, leadSuit){
+  const a = { isTrump: card.suit === G.trumpSuit, top: card.value, suit: card.suit };
+  return comparePlay(a, bestInfo, leadSuit) > 0;
+}
+function aiChoosePlay(seat){
+  const hand = G.hands[seat];
+  if(hand.length === 0) return null;
+  const lvl = G.difficulty;
+  if(G.roundCards.length === 0) return aiChooseLead(seat, hand, lvl);
+
+  const leadSuit = G.roundCards[0].cards[0].suit;
+  const leadIsTrump = leadSuit === G.trumpSuit;
+  const winner = getCurrentWinner();
+  const winnerIsTeammate = TEAM[winner.seat] === TEAM[seat];
+
+  const followSuit = hand.filter(c => c.suit === leadSuit);
+  const trumpCards = hand.filter(c => c.suit === G.trumpSuit);
+  const others = hand.filter(c => c.suit !== leadSuit && c.suit !== G.trumpSuit);
+
+  if(followSuit.length > 0){
+    const sorted = followSuit.slice().sort((a,b)=>a.value-b.value);
+    if(winnerIsTeammate && lvl !== 'easy'){
+      const pts = sorted.filter(isPointCard);
+      if(pts.length) return pts[0];
+      return sorted[0];
+    }
+    const winners = sorted.filter(c => cardBeats(c, winner, leadSuit));
+    if(winners.length > 0 && lvl !== 'easy') return winners[0];
+    if(lvl === 'hard' || lvl === 'hell'){
+      const nonPt = sorted.filter(c => !isPointCard(c));
+      if(nonPt.length > 0) return nonPt[0];
+    }
+    if(lvl === 'easy') return sorted[sorted.length - 1];
+    return sorted[0];
+  }
+
+  if(leadIsTrump){
+    if(trumpCards.length > 0){
+      const sorted = trumpCards.slice().sort((a,b)=>a.value-b.value);
+      if(winnerIsTeammate && lvl !== 'easy'){
+        const pts = sorted.filter(isPointCard);
+        if(pts.length) return pts[0];
+        return sorted[0];
+      }
+      return sorted[0];
+    }
+    return others.slice().sort((a,b)=>a.value-b.value)[0];
+  }
+
+  if(trumpCards.length > 0){
+    const sorted = trumpCards.slice().sort((a,b)=>a.value-b.value);
+    if(winnerIsTeammate && lvl !== 'easy'){
+      const pts = sorted.filter(isPointCard);
+      if(pts.length) return pts[0];
+      return sorted[0];
+    }
+    if(lvl !== 'easy'){
+      const killers = sorted.filter(c => cardBeats(c, winner, leadSuit));
+      if(killers.length > 0) return killers[0];
+    }
+    const nonPt = sorted.filter(c => !isPointCard(c));
+    return nonPt.length > 0 ? nonPt[0] : sorted[0];
+  }
+
+  const sorted = others.slice().sort((a,b)=>a.value-b.value);
+  if(winnerIsTeammate && lvl !== 'easy'){
+    const pts = sorted.filter(isPointCard);
+    if(pts.length) return pts[0];
+  }
+  if((lvl === 'hard' || lvl === 'hell') && !winnerIsTeammate){
+    const nonPt = sorted.filter(c => !isPointCard(c));
+    if(nonPt.length > 0) return nonPt[0];
+  }
+  return sorted[0];
+}
+function aiChooseLead(seat, hand, lvl){
+  const nonTrump = hand.filter(c => c.suit !== G.trumpSuit);
+  const pool = nonTrump.length > 0 ? nonTrump : hand;
+  const sorted = pool.slice().sort((a,b)=>{
+    const aP = isPointCard(a)?1:0, bP = isPointCard(b)?1:0;
+    if(aP !== bP) return aP - bP;
+    return a.value - b.value;
+  });
+  if(lvl === 'easy') return pool[randInt(pool.length)];
+  return sorted[0];
+}
+
+diffRow.querySelectorAll('.diff-btn').forEach(btn=>{
+  btn.onclick = ()=>{
+    SFX.click();
+    diffRow.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    G.difficulty = btn.dataset.diff;
+    beginBtn.disabled = false;
+  };
+});
+beginBtn.onclick = ()=>{
+  ensureAudio();
+  SFX.click();
+  startScreen.classList.add('hidden');
+  G.nextFirstSeat = 1;
+  deal();
+};
+diffRow.querySelector('[data-diff="normal"]').classList.add('active');
+G.difficulty = 'normal';
+beginBtn.disabled = false;
+
+(function initPWA(){
+  const manifest = {
+    name: "保山幺子分 2v2", short_name: "幺子分",
+    start_url: ".", display: "standalone",
+    background_color: "#0a2e18", theme_color: "#1e6b3a",
+    orientation: "portrait",
+    icons: [{
+      src: "data:image/svg+xml;base64," + btoa(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffe66d"/>
+            <stop offset="1" stop-color="#ffb347"/>
+          </linearGradient></defs>
+          <rect width="192" height="192" rx="36" fill="#1e6b3a"/>
+          <text x="96" y="118" font-size="96" font-family="sans-serif" font-weight="900"
+                text-anchor="middle" fill="url(#g)">幺</text>
+        </svg>`
+      ),
+      sizes: "192x192", type: "image/svg+xml"
+    }]
+  };
+  try {
+    const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+    $('pwaManifest').setAttribute('href', URL.createObjectURL(blob));
+  } catch(e) {}
+
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    try {
+      const swCode = `self.addEventListener('install', e=>self.skipWaiting());
+        self.addEventListener('activate', e=>self.clients.claim());
+        self.addEventListener('fetch', e=>{});`;
+      const blob = new Blob([swCode], {type:'text/javascript'});
+      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+    } catch(e) {}
+  }
+})();
+
+})();
+</script>
+</body>
+</html>
