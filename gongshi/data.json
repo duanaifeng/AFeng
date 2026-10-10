@@ -1,0 +1,19 @@
+{
+  "currentMode": "full",
+  "full": {
+    "settings": {
+      "baseSalary": 2300
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {}
+  },
+  "temp": {
+    "settings": {
+      "rate": 20
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {}
+  }
+}
