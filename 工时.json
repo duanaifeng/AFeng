@@ -1,4 +1,23 @@
 {
   "currentMode": "temp",
-  "records": {}
+  "records": {
+    "2026-10-10": {
+      "mode": "temp",
+      "temp": {
+        "rate": 20,
+        "records": [
+          {
+            "id": "1791620940953-x9ghds",
+            "hours": 8,
+            "rate": 20,
+            "timestamp": 1791620940953
+          }
+        ]
+      },
+      "full": {
+        "baseSalary": 5000,
+        "records": []
+      }
+    }
+  }
 }
