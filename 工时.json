@@ -6,7 +6,17 @@
     },
     "customHolidays": {},
     "allowances": [],
-    "records": {}
+    "records": {
+      "2026-10-10": {
+        "id": "1791637618396-nd2mjc",
+        "att": "work",
+        "hours": 8.5,
+        "shift": "白班",
+        "hourlyRate": 13.218390804597702,
+        "dailySalary": 105.74712643678161,
+        "timestamp": 1791637618396
+      }
+    }
   },
   "temp": {
     "settings": {
