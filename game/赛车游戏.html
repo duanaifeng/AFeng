@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>彩色赛车 · 童年回忆</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 60%, #060a15 100%);
+    color: #e2e8f0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(5px + env(safe-area-inset-top)) 8px calc(30px + env(safe-area-inset-bottom));
+    gap: 6px;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hud {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    align-items: center;
+    width: 100%;
+    max-width: 720px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    background: rgba(30, 41, 59, .8);
+    border: 1px solid rgba(71, 85, 105, .55);
+    border-radius: 9px;
+    padding: 4px 9px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #94a3b8;
+    white-space: nowrap;
+    min-height: 26px;
+  }
+
+  .stat b {
+    color: #f1f5f9;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mileage-stat b { color: #38bdf8; }
+  .speed-stat b { color: #fbbf24; }
+  .lives-stat b { color: #4ade80; }
+
+  .btn-sm {
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #7dd3fc;
+    border-radius: 9px;
+    padding: 4px 9px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .btn-sm:active { transform: scale(.94); }
+
+  .board-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 720px;
+    padding: 8px;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, .72);
+    border: 1px solid rgba(51, 65, 85, .8);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .55),
+                inset 0 1px 0 rgba(255, 255, 255, .05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #gameCanvas {
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .5);
+    touch-action: none;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 6, 23, .88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 10;
+  }
+
+  .overlay.show { opacity: 1; pointer-events: auto; }
+
+  .overlay-card {
+    text-align: center;
+    padding: 20px 26px;
+    transform: scale(.85);
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+    max-width: 90%;
+    width: 300px;
+    background: #1e293b;
+    border-radius: 16px;
+    border: 1px solid #334155;
+  }
+
+  .overlay.show .overlay-card { transform: scale(1); }
+
+  .overlay-emoji { font-size: 42px; line-height: 1; margin-bottom: 6px; }
+
+  .overlay-card h2 {
+    font-size: 22px;
+    color: #fbbf24;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .overlay-card p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  .overlay-btns { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+
+  .help-list {
+    text-align: left;
+    display: inline-block;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 2;
+    margin: 4px 0;
+  }
+  .help-list b {
+    display: inline-block;
+    min-width: 72px;
+    color: #7dd3fc;
+    font-weight: 700;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #cbd5e1;
+    border-radius: 9px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
+
+  .btn:hover  { background: rgba(51, 65, 85, .95); color: #f1f5f9; }
+  .btn:active { transform: scale(.95); }
+
+  .btn.primary {
+    background: linear-gradient(160deg, #38bdf8, #0284c7);
+    border-color: #0ea5e9;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .btn.primary:hover { filter: brightness(1.12); }
+
+  .gamepad {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 640px;
+    padding: 0 4px;
+    gap: 20px;
+    flex-shrink: 0;
+    margin-bottom: 6px;
+  }
+
+  .dpad {
+    display: grid;
+    grid-template-columns: repeat(2, var(--dp));
+    grid-template-rows: repeat(2, var(--dp));
+    gap: 10px;
+    --dp: 90px;
+    flex-shrink: 0;
+  }
+
+  .dpad button {
+    background: linear-gradient(180deg, #2f3f55 0%, #232f42 100%);
+    border: none;
+    color: #7dd3fc;
+    font-size: 40px;
+    cursor: pointer;
+    touch-action: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .07s, background .1s, box-shadow .1s;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, .12),
+                0 5px 10px rgba(0, 0, 0, .5);
+    user-select: none;
+    border-radius: 18px;
+  }
+
+  .dpad button:active,
+  .dpad button.pressed {
+    background: linear-gradient(180deg, #3d5372 0%, #2a3950 100%);
+    transform: scale(.93);
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, .55),
+                0 0 22px rgba(56, 189, 248, .65);
+    color: #bae6fd;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .actions .btn-pause {
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #fff;
+    background: radial-gradient(circle at 34% 28%, #93c5fd, #2563eb 62%, #1e3a8a);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .55),
+                inset 0 2px 0 rgba(255, 255, 255, .3),
+                inset 0 -3px 8px rgba(0, 0, 0, .3);
+    touch-action: manipulation;
+    transition: transform .08s, filter .08s;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+  }
+
+  .actions .btn-pause:active {
+    transform: scale(.93);
+    filter: brightness(1.25);
+  }
+
+  .actions .btn-boost {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    background: radial-gradient(circle at 34% 28%, #fcd34d, #d97706 62%, #78350f);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .6),
+                inset 0 3px 0 rgba(255, 255, 255, .35),
+                inset 0 -4px 10px rgba(0, 0, 0, .35);
+    touch-action: none;
+    transition: transform .07s, filter .08s;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    user-select: none;
+    line-height: 1.2;
+  }
+
+  .actions .btn-boost:active,
+  .actions .btn-boost.boosting {
+    transform: scale(.9);
+    filter: brightness(1.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .7),
+                inset 0 3px 10px rgba(0, 0, 0, .3),
+                0 0 32px rgba(251, 191, 36, .9);
+  }
+
+  .toast {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(56, 189, 248, 0.96);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.5);
+    white-space: nowrap;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 4px 6px calc(24px + env(safe-area-inset-bottom)); gap: 4px; }
+    .stat { padding: 3px 7px; font-size: 10px; min-height: 24px; }
+    .stat b { font-size: 12px; }
+    .btn-sm { padding: 3px 7px; font-size: 11px; }
+    .btn { padding: 5px 10px; font-size: 11px; }
+    .gamepad { gap: 12px; margin-bottom: 4px; max-width: 500px; }
+
+    .dpad { --dp: 80px; gap: 8px; }
+    .dpad button { font-size: 36px; }
+
+    .actions { gap: 10px; }
+    .actions .btn-pause { width: 90px; height: 36px; font-size: 13px; }
+    .actions .btn-boost { width: 124px; height: 124px; font-size: 18px; }
+
+    .help-list { font-size: 12px; line-height: 1.9; }
+    .help-list b { min-width: 64px; }
+    .overlay-card { width: 280px; padding: 18px 20px; }
+  }
+
+  @media (max-width: 400px) {
+    .dpad { --dp: 72px; gap: 8px; }
+    .dpad button { font-size: 32px; }
+  }
+
+  @media (max-width: 380px) {
+    .btn { padding: 5px 9px; font-size: 11px; }
+    .overlay-card { width: 250px; }
+
+    .dpad { --dp: 66px; gap: 6px; }
+    .dpad button { font-size: 28px; border-radius: 16px; }
+
+    .actions { gap: 8px; }
+    .actions .btn-pause { width: 80px; height: 34px; font-size: 12px; }
+    .actions .btn-boost { width: 110px; height: 110px; font-size: 16px; }
+  }
+
+  @media (max-width: 330px) {
+    .stat { padding: 2px 6px; font-size: 9px; }
+    .stat b { font-size: 11px; }
+    .overlay-card { width: 230px; padding: 16px 16px; }
+
+    .dpad { --dp: 60px; gap: 5px; }
+    .dpad button { font-size: 24px; border-radius: 14px; }
+
+    .actions { gap: 6px; }
+    .actions .btn-pause { width: 70px; height: 30px; font-size: 11px; }
+    .actions .btn-boost { width: 96px; height: 96px; font-size: 14px; }
+  }
+
+  @media (min-width: 560px) {
+    .board-wrap { max-width: 640px; }
+    .gamepad { max-width: 720px; gap: 32px; }
+    .btn { padding: 8px 18px; font-size: 14px; }
+    .stat { padding: 5px 12px; font-size: 12px; }
+    .stat b { font-size: 14px; }
+    .btn-sm { padding: 5px 12px; font-size: 13px; }
+
+    .dpad { --dp: 110px; gap: 12px; }
+    .dpad button { font-size: 48px; border-radius: 22px; }
+
+    .actions { gap: 14px; }
+    .actions .btn-pause { width: 116px; height: 46px; font-size: 16px; }
+    .actions .btn-boost { width: 164px; height: 164px; font-size: 24px; }
+  }
+
+  @media (max-height: 620px) {
+    body { gap: 4px; }
+    .gamepad { margin-bottom: 2px; }
+
+    .dpad { --dp: 80px; gap: 8px; }
+    .dpad button { font-size: 34px; }
+
+    .actions { gap: 8px; }
+    .actions .btn-pause { width: 84px; height: 34px; font-size: 12px; }
+    .actions .btn-boost { width: 116px; height: 116px; font-size: 17px; }
+  }
+
+  @media (max-height: 520px) {
+    .toolbar .btn { padding: 5px 10px; font-size: 11px; }
+    body { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+
+    .dpad { --dp: 66px; gap: 6px; }
+    .dpad button { font-size: 28px; }
+
+    .actions { gap: 6px; }
+    .actions .btn-pause { width: 72px; height: 30px; font-size: 11px; }
+    .actions .btn-boost { width: 96px; height: 96px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hud">
+    <div class="stat mileage-stat"><span>里程</span><b id="mileageNum">0.0 km</b></div>
+    <div class="stat speed-stat"><span>等级</span><b id="speedLevel">1</b></div>
+    <div class="stat lives-stat"><span>生命</span><b id="livesNum">3</b></div>
+    <button class="btn-sm" id="fsBtn">⛶ 全屏</button>
+  </div>
+
+  <div class="board-wrap" id="boardWrap">
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="overlay" id="overlay">
+      <div class="overlay-card">
+        <div class="overlay-emoji" id="overlayEmoji">⏸</div>
+        <h2 id="overlayTitle">已暂停</h2>
+        <p id="overlayText"></p>
+        <div class="overlay-btns">
+          <button class="btn" id="overlayBtn1">继续</button>
+          <button class="btn primary" id="overlayBtn2">重新开始</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="helpOverlay">
+      <div class="overlay-card">
+        <div class="overlay-emoji">🏎️</div>
+        <h2>使用说明</h2>
+        <div class="help-list">
+          <div><b>◀ ▶</b> 左右变道</div>
+          <div><b>加速</b> 按住持续加速</div>
+          <div><b>暂停</b> 暂停 / 继续</div>
+          <div><b>键盘</b> ←→ 移动 · 空格加速</div>
+          <div><b>键盘</b> P暂停 · R重开 · F全屏</div>
+          <div><b>升级</b> 每累计 1 公里升一级</div>
+          <div><b>奖励</b> 每 5 级 +1 生命 · 速度提升</div>
+          <div><b>目标</b> 尽可能跑更远，命完结束</div>
+        </div>
+        <div class="overlay-btns">
+          <button class="btn primary" id="helpClose">知道了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" id="restartBtn">重新开始</button>
+    <button class="btn" id="helpBtn">使用说明</button>
+  </div>
+
+  <div class="gamepad">
+    <div class="dpad">
+      <button class="left"  id="leftBtn">◀</button>
+      <button class="right" id="rightBtn">▶</button>
+    </div>
+
+    <div class="actions">
+      <button class="btn-pause" id="pauseBtn">暂停</button>
+      <button class="btn-boost" id="boostBtn">加速</button>
+    </div>
+  </div>
+
+<script>
+/* =========================================================
+   1. 常量
+   ========================================================= */
+const BASE_W = 320;
+const BASE_H = 480;
+
+/* 车道缩窄：左右各留 70 */
+const ROAD_LEFT = 70;
+const ROAD_RIGHT = BASE_W - 70;
+const ROAD_W = ROAD_RIGHT - ROAD_LEFT;   /* 180 */
+const LANES = 3;
+const LANE_W = ROAD_W / LANES;           /* 60 */
+
+/* 玩家车放大 */
+const PLAYER_W = 34;
+const PLAYER_H = 50;
+const PLAYER_MOVE_SPEED = 200;
+
+const BASE_SPEED = 1.5;
+const SPEED_PER_LEVEL = 0.2;
+const MAX_BASE_SPEED = 7;
+
+const BOOST_RATE = 0.1;
+const MIN_BOOST = 1.0;
+const MAX_BOOST = 1.5;
+
+const INIT_LIVES = 3;
+
+const METERS_PER_KM = 1000;
+const MILEAGE_RATE = 0.36;
+
+const LEVELS_PER_EXTRA_LIFE = 5;
+
+const LANE_COLORS = [
+  { body: '#fbbf24', dark: '#b45309', light: '#fde68a' },
+  { body: '#22c55e', dark: '#15803d', light: '#86efac' },
+  { body: '#3b82f6', dark: '#1e40af', light: '#93c5fd' }
+];
+
+const ENCOURAGE_TEXTS = [
+  '比上一次多跑了点，离车神更进一步！',
+  '这次发挥不错，下次一定能跑更远！',
+  '已经很厉害了，继续加油！',
+  '离车神就差一点点，再来一局！',
+  '手感越来越好了，保持下去！',
+  '就差一点点就能突破自己了！',
+  '不错不错，再练练就是车神了！',
+  '这段路你跑得挺稳的嘛！'
+];
+
+/* =========================================================
+   2. DOM 引用
+   ========================================================= */
+const boardWrapEl = document.getElementById('boardWrap');
+const canvas      = document.getElementById('gameCanvas');
+const ctx         = canvas.getContext('2d');
+const mileageEl   = document.getElementById('mileageNum');
+const speedEl     = document.getElementById('speedLevel');
+const livesEl     = document.getElementById('livesNum');
+const fsBtn       = document.getElementById('fsBtn');
+const overlay     = document.getElementById('overlay');
+const overlayEmoji= document.getElementById('overlayEmoji');
+const overlayTitle= document.getElementById('overlayTitle');
+const overlayText = document.getElementById('overlayText');
+const overlayBtn1 = document.getElementById('overlayBtn1');
+const overlayBtn2 = document.getElementById('overlayBtn2');
+const helpOverlay = document.getElementById('helpOverlay');
+const helpClose   = document.getElementById('helpClose');
+const helpBtn     = document.getElementById('helpBtn');
+const restartBtn  = document.getElementById('restartBtn');
+const pauseBtn    = document.getElementById('pauseBtn');
+const boostBtn    = document.getElementById('boostBtn');
+const leftBtn     = document.getElementById('leftBtn');
+const rightBtn    = document.getElementById('rightBtn');
+
+/* =========================================================
+   3. 游戏状态
+   ========================================================= */
+let player = { x: BASE_W / 2, y: BASE_H - 100, lane: 1 };
+let obstacles = [];
+let particles = [];
+
+let mileage = 0;
+let nextLevelKm = 1;
+
+let lives = INIT_LIVES;
+let level = 1;
+
+let boostMul = MIN_BOOST;
+let boosting = false;
+
+let gameOver = false;
+let paused = false;
+
+let gameTime = 0;
+
+let lastTime = 0;
+let rafId = null;
+let timeAccum = 0;
+
+let scale = 1;
+let canvasW = BASE_W;
+let canvasH = BASE_H;
+
+let keyLeft = false, keyRight = false;
+
+let spawnTimer = 0;
+const BASE_SPAWN_INTERVAL = 1000;
+const SPAWN_REDUCE_PER_LEVEL = 40;
+const MIN_SPAWN_INTERVAL = 450;
+
+/* =========================================================
+   4. 自适应画布
+   ========================================================= */
+function resizeCanvas() {
+  const style = getComputedStyle(boardWrapEl);
+  const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+  const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+
+  const availW = boardWrapEl.clientWidth  - padX;
+  const availH = boardWrapEl.clientHeight - padY;
+
+  if (availW <= 0 || availH <= 0) return;
+
+  const ratio = BASE_W / BASE_H;
+  let w = availW;
+  let h = w / ratio;
+  if (h > availH) {
+    h = availH;
+    w = h * ratio;
+  }
+
+  canvasW = Math.floor(w);
+  canvasH = Math.floor(h);
+  scale = canvasW / BASE_W;
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = Math.floor(canvasW * dpr);
+  canvas.height = Math.floor(canvasH * dpr);
+  canvas.style.width  = canvasW + 'px';
+  canvas.style.height = canvasH + 'px';
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.scale(scale, scale);
+
+  draw();
+}
+
+/* =========================================================
+   5. 绘制
+   ========================================================= */
+function draw() {
+  const grassGrad = ctx.createLinearGradient(0, 0, 0, BASE_H);
+  grassGrad.addColorStop(0, '#2d5a2d');
+  grassGrad.addColorStop(1, '#1e3d1e');
+  ctx.fillStyle = grassGrad;
+  ctx.fillRect(0, 0, BASE_W, BASE_H);
+
+  ctx.strokeStyle = 'rgba(20, 60, 20, 0.4)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 40; i++) {
+    const gy = (i * 47 + timeAccum * 0.05) % BASE_H;
+    ctx.beginPath();
+    ctx.moveTo(0, gy);
+    ctx.lineTo(ROAD_LEFT - 6, gy + 3);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(ROAD_RIGHT + 6, gy + 2);
+    ctx.lineTo(BASE_W, gy);
+    ctx.stroke();
+  }
+
+  const roadGrad = ctx.createLinearGradient(0, 0, 0, BASE_H);
+  roadGrad.addColorStop(0, '#3a3f47');
+  roadGrad.addColorStop(0.5, '#2c3038');
+  roadGrad.addColorStop(1, '#3a3f47');
+  ctx.fillStyle = roadGrad;
+  ctx.fillRect(ROAD_LEFT, 0, ROAD_W, BASE_H);
+
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 30; i++) {
+    const ly = (i * 32 + timeAccum * 0.6) % BASE_H;
+    ctx.beginPath();
+    ctx.moveTo(ROAD_LEFT, ly);
+    ctx.lineTo(ROAD_RIGHT, ly);
+    ctx.stroke();
+  }
+
+  /* 车道虚线：暗灰静止 */
+  ctx.strokeStyle = 'rgba(100, 110, 120, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([12, 16]);
+  ctx.lineDashOffset = 0;
+  for (let i = 1; i < LANES; i++) {
+    const lx = ROAD_LEFT + i * LANE_W;
+    ctx.beginPath();
+    ctx.moveTo(lx, 0);
+    ctx.lineTo(lx, BASE_H);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  /* 路肩暗灰线 */
+  ctx.strokeStyle = 'rgba(120, 130, 140, 0.45)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(ROAD_LEFT + 1, 0);
+  ctx.lineTo(ROAD_LEFT + 1, BASE_H);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(ROAD_RIGHT - 1, 0);
+  ctx.lineTo(ROAD_RIGHT - 1, BASE_H);
+  ctx.stroke();
+
+  for (const o of obstacles) drawObstacleCar(o);
+  if (!gameOver) drawPlayerCar();
+
+  for (const p of particles) {
+    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  if (boosting && !gameOver) {
+    const lineCount = Math.min(30, Math.floor((boostMul - 1) * 20) + 8);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < lineCount; i++) {
+      const sx = ROAD_LEFT + Math.random() * ROAD_W;
+      const sy = Math.random() * BASE_H;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(sx, sy + 25);
+      ctx.stroke();
+    }
+  }
+}
+
+/* 障碍车：和玩家车一样大小 34×50 */
+function drawObstacleCar(o) {
+  const colors = LANE_COLORS[o.lane % LANE_COLORS.length];
+  const x = o.x;
+  const y = o.y;
+  const w = o.w;
+  const h = o.h;
+
+  /* 阴影 */
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+  ctx.fillRect(x + 2, y + h - 2, w, 4);
+
+  /* 车底 */
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(x - 1, y + 2, w + 2, h - 4);
+
+  /* 车身主体 */
+  const bodyGrad = ctx.createLinearGradient(x, y, x + w, y);
+  bodyGrad.addColorStop(0, colors.dark);
+  bodyGrad.addColorStop(0.4, colors.body);
+  bodyGrad.addColorStop(0.7, colors.body);
+  bodyGrad.addColorStop(1, colors.dark);
+  ctx.fillStyle = bodyGrad;
+  ctx.fillRect(x, y + 2, w, h - 4);
+
+  /* 车头圆角 */
+  ctx.fillStyle = colors.body;
+  ctx.beginPath();
+  ctx.moveTo(x + 4, y + 2);
+  ctx.lineTo(x + w - 4, y + 2);
+  ctx.lineTo(x + w - 1, y + 7);
+  ctx.lineTo(x + 1, y + 7);
+  ctx.closePath();
+  ctx.fill();
+
+  /* 车顶深色 */
+  ctx.fillStyle = colors.dark;
+  ctx.fillRect(x + 4, y + 13, w - 8, h - 26);
+
+  /* 前窗 */
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(x + 6, y + 15, w - 12, 9);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+  ctx.fillRect(x + 7, y + 16, w - 14, 2);
+
+  /* 后窗 */
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(x + 6, y + h - 20, w - 12, 8);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+  ctx.fillRect(x + 7, y + h - 19, w - 14, 1);
+
+  /* 前灯 */
+  ctx.fillStyle = colors.light;
+  ctx.fillRect(x + 3, y + 4, 6, 4);
+  ctx.fillRect(x + w - 9, y + 4, 6, 4);
+
+  /* 后灯 */
+  ctx.fillStyle = '#fb923c';
+  ctx.fillRect(x + 3, y + h - 6, 6, 4);
+  ctx.fillRect(x + w - 9, y + h - 6, 6, 4);
+
+  /* 轮胎 */
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(x - 3, y + 11, 4, 11);
+  ctx.fillRect(x + w - 1, y + 11, 4, 11);
+  ctx.fillRect(x - 3, y + h - 22, 4, 11);
+  ctx.fillRect(x + w - 1, y + h - 22, 4, 11);
+
+  /* 高光 */
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+  ctx.fillRect(x + 2, y, w - 4, 1);
+}
+
+/* 玩家车：34×50 多色 */
+function drawPlayerCar() {
+  const w = PLAYER_W;
+  const h = PLAYER_H;
+  const x = player.x - w / 2;
+  const y = player.y - h / 2;
+
+  /* 阴影 */
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+  ctx.fillRect(x + 2, y + h - 2, w, 4);
+
+  /* 车底 */
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(x - 1, y + 2, w + 2, h - 4);
+
+  /* 车身主体红色渐变 */
+  const bodyGrad = ctx.createLinearGradient(x, y, x + w, y);
+  bodyGrad.addColorStop(0, '#b91c1c');
+  bodyGrad.addColorStop(0.4, '#ef4444');
+  bodyGrad.addColorStop(0.7, '#dc2626');
+  bodyGrad.addColorStop(1, '#991b1b');
+  ctx.fillStyle = bodyGrad;
+  ctx.fillRect(x, y + 2, w, h - 4);
+
+  /* 车头圆角 */
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.moveTo(x + 4, y + 2);
+  ctx.lineTo(x + w - 4, y + 2);
+  ctx.lineTo(x + w - 1, y + 7);
+  ctx.lineTo(x + 1, y + 7);
+  ctx.closePath();
+  ctx.fill();
+
+  /* 车顶深红 */
+  ctx.fillStyle = '#7f1d1d';
+  ctx.fillRect(x + 4, y + 13, w - 8, h - 26);
+
+  /* 前窗蓝色 */
+  ctx.fillStyle = '#38bdf8';
+  ctx.fillRect(x + 6, y + 15, w - 12, 9);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+  ctx.fillRect(x + 7, y + 16, w - 14, 2);
+
+  /* 后窗蓝色 */
+  ctx.fillStyle = '#0ea5e9';
+  ctx.fillRect(x + 6, y + h - 20, w - 12, 8);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+  ctx.fillRect(x + 7, y + h - 19, w - 14, 1);
+
+  /* 前灯黄色 */
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillRect(x + 3, y + 4, 6, 4);
+  ctx.fillRect(x + w - 9, y + 4, 6, 4);
+
+  /* 后灯橙色 */
+  ctx.fillStyle = '#fb923c';
+  ctx.fillRect(x + 3, y + h - 6, 6, 4);
+  ctx.fillRect(x + w - 9, y + h - 6, 6, 4);
+
+  /* 轮胎黑色 */
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(x - 3, y + 11, 4, 11);
+  ctx.fillRect(x + w - 1, y + 11, 4, 11);
+  ctx.fillRect(x - 3, y + h - 22, 4, 11);
+  ctx.fillRect(x + w - 1, y + h - 22, 4, 11);
+
+  /* 加速尾焰 */
+  if (boosting) {
+    const flameLen = 10 + Math.random() * 12 + (boostMul - 1) * 10;
+    const flameGrad = ctx.createLinearGradient(player.x, y + h, player.x, y + h + flameLen);
+    flameGrad.addColorStop(0, 'rgba(251, 191, 36, 0.95)');
+    flameGrad.addColorStop(0.5, 'rgba(239, 68, 68, 0.8)');
+    flameGrad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+    ctx.fillStyle = flameGrad;
+    ctx.beginPath();
+    ctx.moveTo(player.x - 8, y + h - 3);
+    ctx.lineTo(player.x, y + h + flameLen);
+    ctx.lineTo(player.x + 8, y + h - 3);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
+/* =========================================================
+   6. 游戏逻辑
+   ========================================================= */
+function getBaseSpeed() {
+  return Math.min(
+    MAX_BASE_SPEED,
+    BASE_SPEED + (level - 1) * SPEED_PER_LEVEL
+  );
+}
+
+function spawnObstacle() {
+  const lane = Math.floor(Math.random() * LANES);
+  const laneCenter = ROAD_LEFT + lane * LANE_W + LANE_W / 2;
+
+  /* 和玩家车一样大 */
+  const w = PLAYER_W;
+  const h = PLAYER_H;
+
+  /* 车道内随机偏移，不超过车道 15% */
+  const maxOffset = LANE_W * 0.15;
+  const offset = (Math.random() - 0.5) * 2 * maxOffset;
+
+  const x = laneCenter - w / 2 + offset;
+
+  const baseSpeed = getBaseSpeed();
+  const speed = baseSpeed + Math.random() * 0.8;
+
+  obstacles.push({
+    x: x,
+    y: -h - 20,
+    w: w,
+    h: h,
+    lane: lane,
+    speed: speed
+  });
+}
+
+function loseLife() {
+  lives--;
+  updateLives();
+
+  for (let i = 0; i < 25; i++) {
+    particles.push({
+      x: player.x + (Math.random() - 0.5) * 40,
+      y: player.y + (Math.random() - 0.5) * 40,
+      vx: (Math.random() - 0.5) * 5,
+      vy: (Math.random() - 0.5) * 5,
+      r: 1 + Math.random() * 3,
+      life: 1,
+      maxLife: 1,
+      color: Math.random() < 0.5 ? '#ef4444' : '#fbbf24'
+    });
+  }
+
+  if (lives <= 0) {
+    gameOver = true;
+    showGameOver();
+    return;
+  }
+
+  player.x = ROAD_LEFT + LANE_W * 1.5;
+  player.lane = 1;
+  showToast('撞车了！剩余 ' + lives + ' 条命');
+}
+
+function updateLives() {
+  livesEl.textContent = lives;
+}
+
+function updateHUD() {
+  const km = mileage / METERS_PER_KM;
+  mileageEl.textContent = km.toFixed(1) + ' km';
+  speedEl.textContent = level;
+  livesEl.textContent = lives;
+}
+
+/* =========================================================
+   7. 更新
+   ========================================================= */
+function update(dt) {
+  timeAccum += dt * 1000;
+
+  if (paused || gameOver) return;
+
+  gameTime += dt;
+
+  if (boosting) {
+    boostMul += BOOST_RATE * dt;
+    if (boostMul > MAX_BOOST) boostMul = MAX_BOOST;
+  } else {
+    boostMul -= BOOST_RATE * dt;
+    if (boostMul < MIN_BOOST) boostMul = MIN_BOOST;
+  }
+
+  const speedMul = boostMul;
+
+  if (keyLeft)  player.x -= PLAYER_MOVE_SPEED * dt;
+  if (keyRight) player.x += PLAYER_MOVE_SPEED * dt;
+
+  player.x = Math.max(ROAD_LEFT + PLAYER_W / 2 + 2,
+             Math.min(ROAD_RIGHT - PLAYER_W / 2 - 2, player.x));
+
+  const currentBaseSpeed = getBaseSpeed();
+  mileage += currentBaseSpeed * speedMul * MILEAGE_RATE * dt * 60;
+
+  const currentKm = mileage / METERS_PER_KM;
+  if (currentKm >= nextLevelKm) {
+    const oldLevel = level;
+    const gained = Math.floor(currentKm - nextLevelKm) + 1;
+    nextLevelKm += gained;
+    level += gained;
+
+    const oldLifeBonus = Math.floor((oldLevel - 1) / LEVELS_PER_EXTRA_LIFE);
+    const newLifeBonus = Math.floor((level - 1) / LEVELS_PER_EXTRA_LIFE);
+    const lifeGained = newLifeBonus - oldLifeBonus;
+
+    if (lifeGained > 0) {
+      lives += lifeGained;
+      updateLives();
+      showToast('行驶 ' + currentKm.toFixed(1) + ' km · 升 ' + gained + ' 级！生命 +' + lifeGained);
+    } else {
+      showToast('行驶 ' + currentKm.toFixed(1) + ' km · 升 ' + gained + ' 级！');
+    }
+  }
+
+  spawnTimer += dt * 1000;
+  const currentSpawn = Math.max(
+    MIN_SPAWN_INTERVAL,
+    BASE_SPAWN_INTERVAL - (level - 1) * SPAWN_REDUCE_PER_LEVEL
+  );
+  if (spawnTimer >= currentSpawn) {
+    spawnTimer = 0;
+    spawnObstacle();
+  }
+
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    const o = obstacles[i];
+    o.y += o.speed * speedMul * dt * 60;
+
+    const dx = Math.abs(o.x + o.w / 2 - player.x);
+    const dy = Math.abs(o.y + o.h / 2 - player.y);
+    if (dx < (o.w + PLAYER_W) / 2 - 4 && dy < (o.h + PLAYER_H) / 2 - 4) {
+      obstacles.splice(i, 1);
+      loseLife();
+      if (gameOver) return;
+      continue;
+    }
+
+    if (o.y > BASE_H + 50) {
+      obstacles.splice(i, 1);
+    }
+  }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx * dt * 60;
+    p.y += p.vy * dt * 60;
+    p.life -= dt * 2.5;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+
+  updateHUD();
+}
+
+/* =========================================================
+   8. 游戏循环
+   ========================================================= */
+function loop(t) {
+  rafId = requestAnimationFrame(loop);
+
+  if (!lastTime) lastTime = t;
+  let dt = (t - lastTime) / 1000;
+  lastTime = t;
+
+  dt = Math.min(dt, 0.05);
+
+  update(dt);
+  draw();
+}
+
+/* =========================================================
+   9. 暂停 / 结束
+   ========================================================= */
+function togglePause() {
+  if (gameOver) return;
+  paused = !paused;
+  pauseBtn.textContent = paused ? '继续' : '暂停';
+
+  if (paused) {
+    overlayEmoji.textContent = '⏸';
+    overlayTitle.textContent = '已暂停';
+    overlayTitle.style.color = '#fbbf24';
+    overlayText.textContent = '';
+    overlayBtn1.textContent = '继续';
+    overlayBtn1.onclick = togglePause;
+    overlayBtn2.textContent = '重新开始';
+    overlayBtn2.onclick = resetGame;
+    overlay.classList.add('show');
+  } else {
+    overlay.classList.remove('show');
+    lastTime = 0;
+  }
+}
+
+function showGameOver() {
+  const km = (mileage / METERS_PER_KM).toFixed(1);
+  const encourage = ENCOURAGE_TEXTS[Math.floor(Math.random() * ENCOURAGE_TEXTS.length)];
+
+  overlayEmoji.textContent = '🏁';
+  overlayTitle.textContent = '恭喜你！';
+  overlayTitle.style.color = '#fbbf24';
+  overlayText.innerHTML =
+    '本次里程 <span style="color:#38bdf8;font-size:18px;font-weight:700">' + km + ' km</span>' +
+    '<br><span style="color:#cbd5e1">' + encourage + '</span>';
+  overlayBtn1.textContent = '再来一局';
+  overlayBtn1.onclick = resetGame;
+  overlayBtn2.textContent = '关闭';
+  overlayBtn2.onclick = () => overlay.classList.remove('show');
+  overlay.classList.add('show');
+}
+
+/* =========================================================
+   10. 重新开始
+   ========================================================= */
+function resetGame() {
+  mileage = 0;
+  nextLevelKm = 1;
+  lives = INIT_LIVES;
+  level = 1;
+  boostMul = MIN_BOOST;
+  gameOver = false;
+  paused = false;
+  boosting = false;
+  gameTime = 0;
+  spawnTimer = 0;
+  obstacles = [];
+  particles = [];
+
+  player.x = ROAD_LEFT + LANE_W * 1.5;
+  player.y = BASE_H - 100;
+  player.lane = 1;
+
+  overlay.classList.remove('show');
+  pauseBtn.textContent = '暂停';
+  boostBtn.classList.remove('boosting');
+
+  updateHUD();
+
+  showToast('赛车开始！');
+  lastTime = 0;
+}
+
+/* =========================================================
+   11. 全屏
+   ========================================================= */
+function isFullscreen() {
+  return !!(document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement);
+}
+
+function toggleFullscreen() {
+  const el = document.documentElement;
+  if (!isFullscreen()) {
+    const req = el.requestFullscreen ||
+                el.webkitRequestFullscreen ||
+                el.mozRequestFullScreen ||
+                el.msRequestFullscreen;
+    if (req) { const p = req.call(el); if (p && p.catch) p.catch(() => {}); }
+  } else {
+    const exit = document.exitFullscreen ||
+                 document.webkitExitFullscreen ||
+                 document.mozCancelFullScreen ||
+                 document.msExitFullscreen;
+    if (exit) { const p = exit.call(document); if (p && p.catch) p.catch(() => {}); }
+  }
+}
+
+function updateFsBtn() {
+  fsBtn.textContent = isFullscreen() ? '⛶ 退出' : '⛶ 全屏';
+}
+
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+.forEach(ev => document.addEventListener(ev, () => {
+  updateFsBtn();
+  setTimeout(resizeCanvas, 60);
+  setTimeout(resizeCanvas, 300);
+}));
+
+/* =========================================================
+   12. Toast
+   ========================================================= */
+function showToast(text) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+/* =========================================================
+   13. 按钮绑定
+   ========================================================= */
+function bindHoldButton(el, onStart, onEnd, initialDelay = 100, repeatDelay = 20) {
+  let timeout = null;
+  let interval = null;
+  let active = false;
+
+  const start = (e) => {
+    e.preventDefault();
+    active = true;
+    onStart();
+    el.classList.add('pressed');
+    timeout = setTimeout(() => {
+      if (!active) return;
+      interval = setInterval(() => {
+        if (active) onStart();
+      }, repeatDelay);
+    }, initialDelay);
+  };
+
+  const stop = () => {
+    if (!active) return;
+    active = false;
+    clearTimeout(timeout);
+    clearInterval(interval);
+    timeout = null;
+    interval = null;
+    el.classList.remove('pressed');
+    onEnd();
+  };
+
+  el.addEventListener('pointerdown', start);
+  el.addEventListener('pointerup', stop);
+  el.addEventListener('pointerleave', stop);
+  el.addEventListener('pointercancel', stop);
+  el.addEventListener('contextmenu', e => e.preventDefault());
+  el.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+  el.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+}
+
+bindHoldButton(leftBtn,  () => { keyLeft = true; },  () => { keyLeft = false; });
+bindHoldButton(rightBtn, () => { keyRight = true; }, () => { keyRight = false; });
+
+function bindBoost() {
+  let active = false;
+
+  const start = (e) => {
+    e.preventDefault();
+    active = true;
+    boosting = true;
+    boostBtn.classList.add('boosting');
+  };
+
+  const stop = () => {
+    if (!active) return;
+    active = false;
+    boosting = false;
+    boostBtn.classList.remove('boosting');
+  };
+
+  boostBtn.addEventListener('pointerdown', start);
+  boostBtn.addEventListener('pointerup', stop);
+  boostBtn.addEventListener('pointerleave', stop);
+  boostBtn.addEventListener('pointercancel', stop);
+  boostBtn.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+  boostBtn.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+}
+
+/* =========================================================
+   14. 事件绑定
+   ========================================================= */
+pauseBtn.addEventListener('click', togglePause);
+restartBtn.addEventListener('click', resetGame);
+helpBtn.addEventListener('click', () => helpOverlay.classList.add('show'));
+helpClose.addEventListener('click', () => helpOverlay.classList.remove('show'));
+fsBtn.addEventListener('click', toggleFullscreen);
+
+window.addEventListener('keydown', e => {
+  const k = e.key;
+
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); keyLeft = true; return; }
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') { e.preventDefault(); keyRight = true; return; }
+
+  if (k === ' ') {
+    e.preventDefault();
+    if (!gameOver && !paused) {
+      boosting = true;
+      boostBtn.classList.add('boosting');
+    }
+    return;
+  }
+  if (k === 'p' || k === 'P') { e.preventDefault(); togglePause(); return; }
+  if (k === 'r' || k === 'R') { e.preventDefault(); resetGame(); return; }
+  if (k === 'f' || k === 'F') { e.preventDefault(); toggleFullscreen(); return; }
+});
+
+window.addEventListener('keyup', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') keyLeft = false;
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') keyRight = false;
+  if (k === ' ') {
+    boosting = false;
+    boostBtn.classList.remove('boosting');
+  }
+});
+
+/* =========================================================
+   15. 自适应
+   ========================================================= */
+if (window.ResizeObserver) {
+  new ResizeObserver(() => resizeCanvas()).observe(boardWrapEl);
+}
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+  setTimeout(resizeCanvas, 200);
+  setTimeout(resizeCanvas, 500);
+});
+
+/* =========================================================
+   16. 启动
+   ========================================================= */
+bindBoost();
+updateHUD();
+updateFsBtn();
+
+requestAnimationFrame(() => {
+  resizeCanvas();
+  lastTime = 0;
+  rafId = requestAnimationFrame(loop);
+});
+</script>
+</body>
+</html>

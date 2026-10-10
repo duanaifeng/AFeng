@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>打砖块 · Breakout</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 60%, #060a15 100%);
+    color: #e2e8f0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(5px + env(safe-area-inset-top)) 8px calc(30px + env(safe-area-inset-bottom));
+    gap: 6px;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ---------- 顶部数据 ---------- */
+  .hud {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    align-items: center;
+    width: 100%;
+    max-width: 720px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    background: rgba(30, 41, 59, .8);
+    border: 1px solid rgba(71, 85, 105, .55);
+    border-radius: 9px;
+    padding: 4px 9px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #94a3b8;
+    white-space: nowrap;
+    min-height: 26px;
+  }
+
+  .stat b {
+    color: #f1f5f9;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lives-stat {
+    min-width: 116px;
+    justify-content: flex-start;
+  }
+
+  .life-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f87171;
+    box-shadow: 0 0 5px rgba(248, 113, 113, .7);
+    margin-right: 2px;
+    transition: opacity .2s, transform .2s;
+  }
+  .life-dot.lost {
+    opacity: .2;
+    box-shadow: none;
+    transform: scale(.8);
+  }
+
+  .btn-sm {
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #7dd3fc;
+    border-radius: 9px;
+    padding: 4px 9px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    touch-action: manipulation;
+    white-space: nowrap;
+  }
+  .btn-sm:active { transform: scale(.94); }
+
+  /* ---------- 画布区 ---------- */
+  .board-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 720px;
+    padding: 8px;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, .72);
+    border: 1px solid rgba(51, 65, 85, .8);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .55),
+                inset 0 1px 0 rgba(255, 255, 255, .05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #breakoutCanvas {
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .5);
+    touch-action: none;
+  }
+
+  /* ---------- 覆盖层 ---------- */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 6, 23, .86);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    border-radius: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 10;
+  }
+
+  .overlay.show { opacity: 1; pointer-events: auto; }
+
+  .overlay-card {
+    text-align: center;
+    padding: 20px 26px;
+    transform: scale(.85);
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+    max-width: 90%;
+    width: 300px;
+  }
+
+  .overlay.show .overlay-card { transform: scale(1); }
+
+  .overlay-emoji { font-size: 42px; line-height: 1; margin-bottom: 6px; }
+
+  .overlay-card h2 {
+    font-size: 22px;
+    color: #4ade80;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .overlay-card p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .overlay-btns { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+
+  .help-list {
+    text-align: left;
+    display: inline-block;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 2;
+    margin: 4px 0;
+  }
+  .help-list b {
+    display: inline-block;
+    min-width: 72px;
+    color: #7dd3fc;
+    font-weight: 700;
+  }
+
+  /* ---------- 工具栏 ---------- */
+  .toolbar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    border: 1px solid rgba(71, 85, 105, .8);
+    background: rgba(30, 41, 59, .9);
+    color: #cbd5e1;
+    border-radius: 9px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
+
+  .btn:hover  { background: rgba(51, 65, 85, .95); color: #f1f5f9; }
+  .btn:active { transform: scale(.95); }
+
+  .btn.primary {
+    background: linear-gradient(160deg, #38bdf8, #0284c7);
+    border-color: #0ea5e9;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .btn.primary:hover { filter: brightness(1.12); }
+
+  /* =========================================================
+     复古掌机手柄区
+     ========================================================= */
+  .gamepad {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 520px;
+    padding: 0 4px;
+    gap: 16px;
+    flex-shrink: 0;
+    margin-bottom: 6px;
+  }
+
+  /* ---- 左侧：暂停 / 发射 圆形按钮 ---- */
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+    width: 116px;
+    height: 116px;
+    flex-shrink: 0;
+  }
+
+  .actions button {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #fff;
+    touch-action: manipulation;
+    transition: transform .08s, filter .08s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .55),
+                inset 0 2px 0 rgba(255, 255, 255, .3),
+                inset 0 -3px 8px rgba(0, 0, 0, .3);
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    line-height: 1.15;
+  }
+
+  .actions button:active {
+    transform: scale(.9);
+    filter: brightness(1.3);
+  }
+
+  .actions .btn-pause {
+    grid-area: 1 / 2;
+    background: radial-gradient(circle at 34% 28%, #93c5fd, #2563eb 62%, #1e3a8a);
+  }
+
+  .actions .btn-launch {
+    grid-area: 2 / 1;
+    background: radial-gradient(circle at 34% 28%, #86efac, #16a34a 62%, #14532d);
+  }
+
+  /* =========================================================
+     左右方向键（加大版）
+     ========================================================= */
+  .arrow-pad {
+    display: flex;
+    gap: 14px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .arrow-btn {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #7dd3fc;
+    background: linear-gradient(180deg, #2f3f55 0%, #232f42 100%);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .55),
+                inset 0 2px 0 rgba(255, 255, 255, .12),
+                inset 0 -4px 10px rgba(0, 0, 0, .35);
+    transition: transform .07s, background .1s, box-shadow .1s;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    user-select: none;
+  }
+
+  .arrow-btn:active,
+  .arrow-btn.pressed {
+    background: linear-gradient(180deg, #3d5372 0%, #2a3950 100%);
+    transform: scale(.93);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .6),
+                inset 0 3px 8px rgba(0, 0, 0, .55),
+                0 0 22px rgba(56, 189, 248, .55);
+    color: #bae6fd;
+  }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(56, 189, 248, 0.96);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.5);
+    white-space: nowrap;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ---------- 小屏适配 ---------- */
+  @media (max-width: 420px) {
+    body { padding: 4px 6px calc(24px + env(safe-area-inset-bottom)); gap: 4px; }
+    .stat { padding: 3px 7px; font-size: 10px; min-height: 24px; }
+    .stat b { font-size: 12px; }
+    .lives-stat { min-width: 104px; }
+    .btn-sm { padding: 3px 7px; font-size: 11px; }
+    .btn { padding: 5px 10px; font-size: 11px; }
+    .actions { width: 102px; height: 102px; gap: 7px; }
+    .actions button { font-size: 11px; }
+    .gamepad { gap: 10px; margin-bottom: 4px; max-width: 460px; }
+
+    .arrow-pad { gap: 10px; }
+    .arrow-btn { width: 84px; height: 84px; font-size: 34px; border-radius: 20px; }
+
+    .help-list { font-size: 12px; line-height: 1.9; }
+    .help-list b { min-width: 64px; }
+    .overlay-card { width: 270px; padding: 18px 20px; }
+  }
+
+  @media (max-width: 360px) {
+    .actions { width: 90px; height: 90px; gap: 6px; }
+    .actions button { font-size: 10px; }
+    .btn { padding: 5px 9px; font-size: 11px; }
+    .overlay-card { width: 250px; }
+
+    .arrow-pad { gap: 8px; }
+    .arrow-btn { width: 72px; height: 72px; font-size: 30px; border-radius: 18px; }
+  }
+
+  @media (max-width: 320px) {
+    .actions { width: 80px; height: 80px; gap: 5px; }
+    .actions button { font-size: 9px; }
+    .stat { padding: 2px 6px; font-size: 9px; }
+    .stat b { font-size: 11px; }
+    .overlay-card { width: 230px; padding: 16px 16px; }
+
+    .arrow-pad { gap: 6px; }
+    .arrow-btn { width: 62px; height: 62px; font-size: 26px; border-radius: 15px; }
+  }
+
+  @media (min-width: 500px) {
+    .board-wrap { max-width: 640px; }
+    .gamepad { max-width: 600px; gap: 28px; }
+    .actions { width: 140px; height: 140px; gap: 10px; }
+    .actions button { font-size: 14px; }
+    .btn { padding: 8px 18px; font-size: 14px; }
+    .stat { padding: 5px 12px; font-size: 12px; }
+    .stat b { font-size: 14px; }
+    .btn-sm { padding: 5px 12px; font-size: 13px; }
+
+    .arrow-pad { gap: 18px; }
+    .arrow-btn { width: 116px; height: 116px; font-size: 48px; border-radius: 26px; }
+  }
+
+  @media (max-height: 620px) {
+    body { gap: 4px; }
+    .gamepad { margin-bottom: 2px; }
+    .actions { width: 96px; height: 96px; gap: 6px; }
+    .actions button { font-size: 10px; }
+
+    .arrow-btn { width: 80px; height: 80px; font-size: 32px; border-radius: 19px; }
+    .arrow-pad { gap: 10px; }
+  }
+
+  @media (max-height: 520px) {
+    .actions { width: 82px; height: 82px; gap: 5px; }
+    .actions button { font-size: 9px; }
+    .toolbar .btn { padding: 5px 10px; font-size: 11px; }
+    body { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+
+    .arrow-btn { width: 68px; height: 68px; font-size: 28px; border-radius: 16px; }
+    .arrow-pad { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hud">
+    <div class="stat"><span>分数</span><b id="scoreNum">0</b></div>
+    <div class="stat"><span>最高</span><b id="bestNum">0</b></div>
+    <div class="stat"><span>关卡</span><b id="levelNum">1</b></div>
+    <div class="stat lives-stat">
+      <span>生命</span>
+      <span id="livesBox">
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+      </span>
+    </div>
+    <button class="btn-sm" id="fsBtn">⛶ 全屏</button>
+  </div>
+
+  <div class="board-wrap" id="boardWrap">
+    <canvas id="breakoutCanvas"></canvas>
+
+    <div class="overlay" id="overlay">
+      <div class="overlay-card">
+        <div class="overlay-emoji" id="overlayEmoji">⏸</div>
+        <h2 id="overlayTitle">已暂停</h2>
+        <p id="overlayText"></p>
+        <div class="overlay-btns">
+          <button class="btn" id="overlayBtn1">继续</button>
+          <button class="btn primary" id="overlayBtn2">重新开始</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="helpOverlay">
+      <div class="overlay-card">
+        <div class="overlay-emoji">🎮</div>
+        <h2>使用说明</h2>
+        <div class="help-list">
+          <div><b>◀ ▶</b> 左右移动挡板</div>
+          <div><b>发射</b> 发射小球</div>
+          <div><b>暂停</b> 暂停 / 继续</div>
+          <div><b>点击画布</b> 发射小球</div>
+          <div><b>键盘</b> ←→ 移动挡板</div>
+          <div><b>键盘</b> 空格发射 · P暂停</div>
+          <div><b>键盘</b> R重开 · F全屏</div>
+          <div><b>目标</b> 消除所有砖块过关</div>
+        </div>
+        <div class="overlay-btns">
+          <button class="btn primary" id="helpClose">知道了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" id="restartBtn">重新开始</button>
+    <button class="btn" id="helpBtn">使用说明</button>
+  </div>
+
+  <!-- 复古掌机手柄 -->
+  <div class="gamepad">
+    <div class="actions">
+      <button class="btn-pause"  id="pauseBtn">暂停</button>
+      <button class="btn-launch" id="launchBtn">发射</button>
+    </div>
+
+    <!-- 加大版左右方向键 -->
+    <div class="arrow-pad">
+      <button class="arrow-btn" id="leftBtn">◀</button>
+      <button class="arrow-btn" id="rightBtn">▶</button>
+    </div>
+  </div>
+
+<script>
+/* =========================================================
+   1. 常量
+   ========================================================= */
+const BASE_W = 400;
+const BASE_H = 520;
+const PADDLE_W = 76;
+const PADDLE_H = 12;
+const PADDLE_Y_OFFSET = 34;
+const BALL_R = 6;
+const BALL_SPEED = 4.6;
+const BALL_SPEED_MAX = 8.5;
+const BRICK_ROWS = 6;
+const BRICK_COLS = 8;
+const BRICK_GAP = 4;
+const BRICK_TOP = 56;
+const BRICK_SIDE = 12;
+const BRICK_H = 18;
+
+const MAX_LIVES = 5;
+
+const BRICK_COLORS = [
+  ['#f87171', '#b91c1c'],
+  ['#fb923c', '#c2410c'],
+  ['#fbbf24', '#b45309'],
+  ['#4ade80', '#15803d'],
+  ['#38bdf8', '#0369a1'],
+  ['#a78bfa', '#6d28d9']
+];
+
+/* =========================================================
+   2. DOM 引用
+   ========================================================= */
+const boardWrapEl = document.getElementById('boardWrap');
+const canvas      = document.getElementById('breakoutCanvas');
+const ctx         = canvas.getContext('2d');
+const scoreEl     = document.getElementById('scoreNum');
+const bestEl      = document.getElementById('bestNum');
+const levelEl     = document.getElementById('levelNum');
+const livesBox    = document.getElementById('livesBox');
+const fsBtn       = document.getElementById('fsBtn');
+const overlay     = document.getElementById('overlay');
+const overlayEmoji= document.getElementById('overlayEmoji');
+const overlayTitle= document.getElementById('overlayTitle');
+const overlayText = document.getElementById('overlayText');
+const overlayBtn1 = document.getElementById('overlayBtn1');
+const overlayBtn2 = document.getElementById('overlayBtn2');
+const helpOverlay = document.getElementById('helpOverlay');
+const helpClose   = document.getElementById('helpClose');
+const helpBtn     = document.getElementById('helpBtn');
+const restartBtn  = document.getElementById('restartBtn');
+const pauseBtn    = document.getElementById('pauseBtn');
+const launchBtn   = document.getElementById('launchBtn');
+const leftBtn     = document.getElementById('leftBtn');
+const rightBtn    = document.getElementById('rightBtn');
+
+/* =========================================================
+   3. 游戏状态
+   ========================================================= */
+let score = 0;
+let best = parseInt(localStorage.getItem('breakout_best') || '0', 10);
+let level = 1;
+let lives = MAX_LIVES;
+let maxLives = MAX_LIVES;
+
+let paddle = { x: BASE_W / 2 - PADDLE_W / 2, y: BASE_H - PADDLE_Y_OFFSET };
+let ball = { x: BASE_W / 2, y: BASE_H - PADDLE_Y_OFFSET - BALL_R - 2, vx: 0, vy: 0 };
+let bricks = [];
+let particles = [];
+
+let paused = false;
+let gameOver = false;
+let levelClear = false;
+let ballAttached = true;
+let lastTime = 0;
+let rafId = null;
+
+let scale = 1;
+let canvasW = BASE_W;
+let canvasH = BASE_H;
+
+// 左右按键状态
+let leftPressed = false;
+let rightPressed = false;
+const PADDLE_SPEED = 7.5;
+
+/* =========================================================
+   4. 砖块生成
+   ========================================================= */
+function buildBricks() {
+  bricks = [];
+  const totalW = BASE_W - BRICK_SIDE * 2;
+  const brickW = (totalW - (BRICK_COLS - 1) * BRICK_GAP) / BRICK_COLS;
+
+  for (let r = 0; r < BRICK_ROWS; r++) {
+    for (let c = 0; c < BRICK_COLS; c++) {
+      const hp = level >= 3 && r < 2 ? 2 : 1;
+      bricks.push({
+        x: BRICK_SIDE + c * (brickW + BRICK_GAP),
+        y: BRICK_TOP + r * (BRICK_H + BRICK_GAP),
+        w: brickW,
+        h: BRICK_H,
+        hp: hp,
+        maxHp: hp,
+        colorIdx: r,
+        alive: true
+      });
+    }
+  }
+}
+
+/* =========================================================
+   5. 自适应画布
+   ========================================================= */
+function resizeCanvas() {
+  const style = getComputedStyle(boardWrapEl);
+  const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+  const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+
+  const availW = boardWrapEl.clientWidth  - padX;
+  const availH = boardWrapEl.clientHeight - padY;
+
+  if (availW <= 0 || availH <= 0) return;
+
+  const ratio = BASE_W / BASE_H;
+  let w = availW;
+  let h = w / ratio;
+  if (h > availH) {
+    h = availH;
+    w = h * ratio;
+  }
+
+  canvasW = Math.floor(w);
+  canvasH = Math.floor(h);
+  scale = canvasW / BASE_W;
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = Math.floor(canvasW * dpr);
+  canvas.height = Math.floor(canvasH * dpr);
+  canvas.style.width  = canvasW + 'px';
+  canvas.style.height = canvasH + 'px';
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.scale(scale, scale);
+
+  draw();
+}
+
+/* =========================================================
+   6. 绘制
+   ========================================================= */
+function draw() {
+  const bg = ctx.createLinearGradient(0, 0, 0, BASE_H);
+  bg.addColorStop(0, '#0b1120');
+  bg.addColorStop(1, '#0f172a');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, BASE_W, BASE_H);
+
+  ctx.strokeStyle = 'rgba(51, 65, 85, 0.25)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= BASE_W; x += 40) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, BASE_H); ctx.stroke();
+  }
+  for (let y = 0; y <= BASE_H; y += 40) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(BASE_W, y); ctx.stroke();
+  }
+
+  for (const b of bricks) {
+    if (!b.alive) continue;
+    const [light, dark] = BRICK_COLORS[b.colorIdx % BRICK_COLORS.length];
+    const grad = ctx.createLinearGradient(b.x, b.y, b.x, b.y + b.h);
+    grad.addColorStop(0, light);
+    grad.addColorStop(1, dark);
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(b.x, b.y, b.w, b.h);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fillRect(b.x, b.y, b.w, 2);
+
+    if (b.maxHp > 1 && b.hp > 1) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(b.x + 1, b.y + 1, b.w - 2, b.h - 2);
+    }
+  }
+
+  for (const p of particles) {
+    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  const pGrad = ctx.createLinearGradient(0, paddle.y, 0, paddle.y + PADDLE_H);
+  pGrad.addColorStop(0, '#7dd3fc');
+  pGrad.addColorStop(0.5, '#38bdf8');
+  pGrad.addColorStop(1, '#0369a1');
+  ctx.fillStyle = pGrad;
+  roundRect(ctx, paddle.x, paddle.y, PADDLE_W, PADDLE_H, 6);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  roundRect(ctx, paddle.x + 2, paddle.y + 1, PADDLE_W - 4, 3, 2);
+  ctx.fill();
+
+  if (!gameOver) {
+    const ballGrad = ctx.createRadialGradient(
+      ball.x - BALL_R * 0.4, ball.y - BALL_R * 0.4, BALL_R * 0.2,
+      ball.x, ball.y, BALL_R
+    );
+    ballGrad.addColorStop(0, '#ffffff');
+    ballGrad.addColorStop(0.6, '#bae6fd');
+    ballGrad.addColorStop(1, '#38bdf8');
+
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, BALL_R, 0, Math.PI * 2);
+    ctx.fillStyle = ballGrad;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, BALL_R + 3, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  if (ballAttached && !gameOver && !paused) {
+    ctx.fillStyle = 'rgba(148, 163, 184, 0.85)';
+    ctx.font = 'bold 13px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('点击画布或按「发射」发射小球', BASE_W / 2, BASE_H - 12);
+  }
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+/* =========================================================
+   7. 游戏逻辑
+   ========================================================= */
+function launchBall() {
+  if (gameOver || paused) return;
+  if (!ballAttached) return;
+
+  ballAttached = false;
+
+  const angle = (-Math.PI / 2) + (Math.random() - 0.5) * (Math.PI / 3);
+  const speed = BALL_SPEED * (1 + (level - 1) * 0.08);
+  ball.vx = Math.cos(angle) * speed;
+  ball.vy = Math.sin(angle) * speed;
+}
+
+function resetBall() {
+  ballAttached = true;
+  ball.x = paddle.x + PADDLE_W / 2;
+  ball.y = paddle.y - BALL_R - 2;
+  ball.vx = 0;
+  ball.vy = 0;
+}
+
+function loseLife() {
+  lives--;
+  updateLives();
+  spawnParticles(ball.x, ball.y, '#f87171', 16);
+
+  if (lives <= 0) {
+    gameOver = true;
+    showGameOver();
+    return;
+  }
+
+  resetBall();
+  showToast('失去一条命 · 剩余 ' + lives);
+}
+
+function nextLevel() {
+  level++;
+  levelEl.textContent = level;
+  buildBricks();
+  resetBall();
+
+  showToast('第 ' + level + ' 关！');
+
+  paused = false;
+  overlay.classList.remove('show');
+  lastTime = 0;
+}
+
+function updateLives() {
+  const dots = livesBox.querySelectorAll('.life-dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('lost', i >= lives);
+  });
+}
+
+function spawnParticles(x, y, color, count) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 3;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      r: 1.5 + Math.random() * 2.5,
+      color,
+      life: 1,
+      maxLife: 1
+    });
+  }
+}
+
+function updateParticles(dt) {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx * dt * 60;
+    p.y += p.vy * dt * 60;
+    p.vy += 0.15 * dt * 60;
+    p.life -= dt * 1.8;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+}
+
+/* =========================================================
+   8. 物理更新
+   ========================================================= */
+function update(dt) {
+  if (paused || gameOver) return;
+
+  if (leftPressed) {
+    paddle.x -= PADDLE_SPEED * dt * 60;
+  }
+  if (rightPressed) {
+    paddle.x += PADDLE_SPEED * dt * 60;
+  }
+
+  paddle.x = Math.max(0, Math.min(BASE_W - PADDLE_W, paddle.x));
+
+  if (ballAttached) {
+    ball.x = paddle.x + PADDLE_W / 2;
+    ball.y = paddle.y - BALL_R - 2;
+    return;
+  }
+
+  const steps = Math.ceil(Math.hypot(ball.vx, ball.vy) / BALL_R);
+  const stepVx = ball.vx / steps;
+  const stepVy = ball.vy / steps;
+
+  for (let s = 0; s < steps; s++) {
+    ball.x += stepVx * dt * 60;
+    ball.y += stepVy * dt * 60;
+
+    if (ball.x - BALL_R < 0) {
+      ball.x = BALL_R;
+      ball.vx = Math.abs(ball.vx);
+      spawnParticles(ball.x, ball.y, '#38bdf8', 4);
+    }
+    if (ball.x + BALL_R > BASE_W) {
+      ball.x = BASE_W - BALL_R;
+      ball.vx = -Math.abs(ball.vx);
+      spawnParticles(ball.x, ball.y, '#38bdf8', 4);
+    }
+
+    if (ball.y - BALL_R < 0) {
+      ball.y = BALL_R;
+      ball.vy = Math.abs(ball.vy);
+      spawnParticles(ball.x, ball.y, '#38bdf8', 4);
+    }
+
+    if (ball.y - BALL_R > BASE_H) {
+      loseLife();
+      return;
+    }
+
+    if (ball.vy > 0 &&
+        ball.y + BALL_R >= paddle.y &&
+        ball.y - BALL_R <= paddle.y + PADDLE_H &&
+        ball.x + BALL_R >= paddle.x &&
+        ball.x - BALL_R <= paddle.x + PADDLE_W) {
+
+      ball.y = paddle.y - BALL_R;
+
+      const hitPos = (ball.x - (paddle.x + PADDLE_W / 2)) / (PADDLE_W / 2);
+      const angle = hitPos * (Math.PI / 3);
+      const speed = Math.min(Math.hypot(ball.vx, ball.vy) * 1.01, BALL_SPEED_MAX * (1 + (level - 1) * 0.06));
+
+      ball.vx = Math.sin(angle) * speed;
+      ball.vy = -Math.cos(angle) * speed;
+
+      if (Math.abs(ball.vy) < 1.2) {
+        ball.vy = ball.vy < 0 ? -1.2 : 1.2;
+      }
+
+      spawnParticles(ball.x, paddle.y, '#7dd3fc', 5);
+      break;
+    }
+
+    let hitBrick = false;
+    for (const b of bricks) {
+      if (!b.alive) continue;
+
+      if (ball.x + BALL_R > b.x &&
+          ball.x - BALL_R < b.x + b.w &&
+          ball.y + BALL_R > b.y &&
+          ball.y - BALL_R < b.y + b.h) {
+
+        const overlapL = (ball.x + BALL_R) - b.x;
+        const overlapR = (b.x + b.w) - (ball.x - BALL_R);
+        const overlapT = (ball.y + BALL_R) - b.y;
+        const overlapB = (b.y + b.h) - (ball.y - BALL_R);
+        const minX = Math.min(overlapL, overlapR);
+        const minY = Math.min(overlapT, overlapB);
+
+        if (minX < minY) {
+          ball.vx = -ball.vx;
+          ball.x += (overlapL < overlapR) ? -minX : minX;
+        } else {
+          ball.vy = -ball.vy;
+          ball.y += (overlapT < overlapB) ? -minY : minY;
+        }
+
+        b.hp--;
+        const [light, dark] = BRICK_COLORS[b.colorIdx % BRICK_COLORS.length];
+        spawnParticles(ball.x, ball.y, light, b.hp <= 0 ? 10 : 4);
+
+        if (b.hp <= 0) {
+          b.alive = false;
+          score += 10 * level;
+          if (score > best) {
+            best = score;
+            localStorage.setItem('breakout_best', best);
+          }
+          updateHUD();
+        } else {
+          score += 2 * level;
+          if (score > best) {
+            best = score;
+            localStorage.setItem('breakout_best', best);
+          }
+          updateHUD();
+        }
+
+        hitBrick = true;
+        break;
+      }
+    }
+
+    if (hitBrick) break;
+  }
+
+  if (bricks.every(b => !b.alive) && !levelClear) {
+    levelClear = true;
+    setTimeout(() => {
+      levelClear = false;
+      nextLevel();
+    }, 500);
+  }
+
+  updateParticles(dt);
+}
+
+function updateHUD() {
+  scoreEl.textContent = score;
+  bestEl.textContent  = best;
+  levelEl.textContent = level;
+}
+
+/* =========================================================
+   9. 游戏循环
+   ========================================================= */
+function loop(t) {
+  rafId = requestAnimationFrame(loop);
+
+  if (!lastTime) lastTime = t;
+  let dt = (t - lastTime) / 1000;
+  lastTime = t;
+
+  dt = Math.min(dt, 0.05);
+
+  update(dt);
+  draw();
+}
+
+/* =========================================================
+   10. 暂停 / 结束
+   ========================================================= */
+function togglePause() {
+  if (gameOver) return;
+  paused = !paused;
+  pauseBtn.textContent = paused ? '继续' : '暂停';
+
+  if (paused) {
+    overlayEmoji.textContent = '⏸';
+    overlayTitle.textContent = '已暂停';
+    overlayTitle.style.color = '#4ade80';
+    overlayText.textContent = '';
+    overlayBtn1.textContent = '继续';
+    overlayBtn1.onclick = togglePause;
+    overlayBtn2.textContent = '重新开始';
+    overlayBtn2.onclick = resetGame;
+    overlay.classList.add('show');
+  } else {
+    overlay.classList.remove('show');
+    lastTime = 0;
+  }
+}
+
+function showGameOver() {
+  overlayEmoji.textContent = '💀';
+  overlayTitle.textContent = '游戏结束';
+  overlayTitle.style.color = '#f87171';
+  overlayText.textContent = '本局分数：' + score + ' · 到达第 ' + level + ' 关';
+  overlayBtn1.textContent = '再来一局';
+  overlayBtn1.onclick = resetGame;
+  overlayBtn2.textContent = '关闭';
+  overlayBtn2.onclick = () => overlay.classList.remove('show');
+  overlay.classList.add('show');
+}
+
+/* =========================================================
+   11. 重新开始
+   ========================================================= */
+function resetGame() {
+  score = 0;
+  level = 1;
+  lives = maxLives;
+  gameOver = false;
+  paused = false;
+  levelClear = false;
+  particles = [];
+
+  paddle.x = BASE_W / 2 - PADDLE_W / 2;
+  resetBall();
+  buildBricks();
+  updateLives();
+  updateHUD();
+
+  pauseBtn.textContent = '暂停';
+  overlay.classList.remove('show');
+
+  showToast('游戏开始！剩余 ' + lives + ' 条命');
+  lastTime = 0;
+}
+
+/* =========================================================
+   12. 长按连发（左右按键）
+   ========================================================= */
+function bindHoldButton(el, onStart, onEnd, initialDelay = 110, repeatDelay = 22) {
+  let timeout = null;
+  let interval = null;
+  let active = false;
+
+  const start = (e) => {
+    e.preventDefault();
+    active = true;
+    onStart();
+    el.classList.add('pressed');
+    timeout = setTimeout(() => {
+      if (!active) return;
+      interval = setInterval(() => {
+        if (active) onStart();
+      }, repeatDelay);
+    }, initialDelay);
+  };
+
+  const stop = () => {
+    if (!active) return;
+    active = false;
+    clearTimeout(timeout);
+    clearInterval(interval);
+    timeout = null;
+    interval = null;
+    el.classList.remove('pressed');
+    onEnd();
+  };
+
+  el.addEventListener('pointerdown', start);
+  el.addEventListener('pointerup', stop);
+  el.addEventListener('pointerleave', stop);
+  el.addEventListener('pointercancel', stop);
+  el.addEventListener('contextmenu', e => e.preventDefault());
+
+  // 阻止触摸滚动
+  el.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+  el.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+}
+
+bindHoldButton(leftBtn,
+  () => { leftPressed = true; },
+  () => { leftPressed = false; },
+  100, 20
+);
+
+bindHoldButton(rightBtn,
+  () => { rightPressed = true; },
+  () => { rightPressed = false; },
+  100, 20
+);
+
+/* =========================================================
+   13. 全屏
+   ========================================================= */
+function isFullscreen() {
+  return !!(document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement);
+}
+
+function toggleFullscreen() {
+  const el = document.documentElement;
+  if (!isFullscreen()) {
+    const req = el.requestFullscreen ||
+                el.webkitRequestFullscreen ||
+                el.mozRequestFullScreen ||
+                el.msRequestFullscreen;
+    if (req) { const p = req.call(el); if (p && p.catch) p.catch(() => {}); }
+  } else {
+    const exit = document.exitFullscreen ||
+                 document.webkitExitFullscreen ||
+                 document.mozCancelFullScreen ||
+                 document.msExitFullscreen;
+    if (exit) { const p = exit.call(document); if (p && p.catch) p.catch(() => {}); }
+  }
+}
+
+function updateFsBtn() {
+  fsBtn.textContent = isFullscreen() ? '⛶ 退出' : '⛶ 全屏';
+}
+
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+.forEach(ev => document.addEventListener(ev, () => {
+  updateFsBtn();
+  setTimeout(resizeCanvas, 60);
+  setTimeout(resizeCanvas, 300);
+}));
+
+/* =========================================================
+   14. Toast
+   ========================================================= */
+function showToast(text) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 1600);
+}
+
+/* =========================================================
+   15. 事件绑定
+   ========================================================= */
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (gameOver) return;
+  if (ballAttached) launchBall();
+});
+
+pauseBtn.addEventListener('click', togglePause);
+launchBtn.addEventListener('click', () => {
+  if (gameOver) return;
+  if (ballAttached) launchBall();
+});
+
+restartBtn.addEventListener('click', resetGame);
+helpBtn.addEventListener('click', () => helpOverlay.classList.add('show'));
+helpClose.addEventListener('click', () => helpOverlay.classList.remove('show'));
+fsBtn.addEventListener('click', toggleFullscreen);
+
+window.addEventListener('keydown', e => {
+  const k = e.key;
+
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') {
+    e.preventDefault();
+    leftPressed = true;
+    return;
+  }
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') {
+    e.preventDefault();
+    rightPressed = true;
+    return;
+  }
+  if (k === ' ' || k === 'Enter') {
+    e.preventDefault();
+    if (ballAttached && !gameOver && !paused) launchBall();
+    return;
+  }
+  if (k === 'p' || k === 'P') { e.preventDefault(); togglePause(); return; }
+  if (k === 'r' || k === 'R') { e.preventDefault(); resetGame(); return; }
+  if (k === 'f' || k === 'F') { e.preventDefault(); toggleFullscreen(); return; }
+});
+
+window.addEventListener('keyup', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') {
+    leftPressed = false;
+  }
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') {
+    rightPressed = false;
+  }
+});
+
+/* =========================================================
+   16. 自适应
+   ========================================================= */
+if (window.ResizeObserver) {
+  new ResizeObserver(() => resizeCanvas()).observe(boardWrapEl);
+}
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+  setTimeout(resizeCanvas, 200);
+  setTimeout(resizeCanvas, 500);
+});
+
+/* =========================================================
+   17. 启动
+   ========================================================= */
+updateHUD();
+updateLives();
+buildBricks();
+resetBall();
+updateFsBtn();
+
+requestAnimationFrame(() => {
+  resizeCanvas();
+  lastTime = 0;
+  rafId = requestAnimationFrame(loop);
+});
+</script>
+</body>
+</html>
