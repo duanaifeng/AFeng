@@ -1,5 +1,5 @@
 {
-  "currentMode": "temp",
+  "currentMode": "full",
   "full": {
     "settings": {
       "baseSalary": 2300
@@ -38,6 +38,11 @@
         "hours": 15,
         "shift": "白班",
         "timestamp": 1791638717928
+      },
+      "2026-10-10": {
+        "id": "1791638749181-44gdu7",
+        "att": "leave",
+        "timestamp": 1791638749181
       }
     }
   }
