@@ -1,8 +1,8 @@
 {
-  "currentMode": "temp",
+  "currentMode": "full",
   "records": {
     "2026-10-10": {
-      "mode": "temp",
+      "mode": "full",
       "temp": {
         "rate": 20,
         "records": [
