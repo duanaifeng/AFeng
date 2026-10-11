@@ -1,8 +1,8 @@
 {
-  "currentMode": "temp",
+  "currentMode": "full",
   "full": {
     "settings": {
-      "baseSalary": 2500,
+      "baseSalary": 3,
       "__userSet": true
     },
     "customHolidays": {},
