@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="西邑赶集日历，查询永信街、羊邑街、丙麻街、西邑街的赶集日期">
+<meta name="keywords" content="西邑赶集,永信街,羊邑街,丙麻街,西邑街,赶集日历,保山隆阳">
+<meta name="theme-color" content="#f0f4fc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0f1a" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="赶集日历">
+<link rel="apple-touch-icon" href="/AFeng/ico/192.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏮</text></svg>">
+<title>西邑赶集日历｜永信街羊邑街丙麻街西邑街查询</title>
+<script>
+(function () {
+  var path = location.pathname;
+  if (/\.html?$/i.test(path)) path = path.replace(/[^\/]*$/, '');
+  else if (!/\/$/.test(path)) path += '/';
+  var scope = location.origin + path;
+  var manifest = {
+    name: "西邑赶集日历",
+    short_name: "赶集日历",
+    description: "永信街、羊邑街、丙麻街、西邑街四天循环查询",
+    start_url: scope,
+    scope: scope,
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#f0f4fc",
+    theme_color: "#22c55e",
+    lang: "zh-CN",
+    icons: [
+      { src: "/AFeng/ico/192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/AFeng/ico/512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/AFeng/ico/192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+      { src: "/AFeng/ico/512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }
+    ]
+  };
+  try {
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  } catch (e) {}
+})();
+</script>
+<style>
+/* ============================================================
+   设计令牌
+   ============================================================ */
+:root{
+  --bg:#f0f4fc;
+  --bg-2:#e6edf8;
+  --surface:rgba(255,255,255,.72);
+  --surface-2:rgba(255,255,255,.9);
+  --surface-hover:rgba(255,255,255,.98);
+  --border:rgba(96,165,250,.18);
+  --border-hover:rgba(96,165,250,.4);
+  --text:#1e293b;
+  --text-2:#475569;
+  --text-3:#94a3b8;
+  --shadow:0 10px 30px rgba(15,40,90,.10);
+  --shadow-sm:0 4px 14px rgba(15,40,90,.07);
+  --shadow-lg:0 24px 56px -18px rgba(37,99,235,.30);
+  --glow-1:rgba(96,165,250,.16);
+  --glow-2:rgba(56,189,248,.11);
+  --glow-3:rgba(129,140,248,.11);
+  --ring:rgba(96,165,250,.15);
+  --card-shine:rgba(96,165,250,.45);
+  --grid-line:rgba(96,165,250,.09);
+  --grad-brand:linear-gradient(135deg,#7dd3fc 0%,#60a5fa 45%,#3b82f6 100%);
+  --grad-text:linear-gradient(45deg,#1e293b 0%,#2563eb 25%,#3b82f6 55%,#2563eb 75%,#1e293b 100%);
+  --accent:#2563eb;
+  --accent-2:#3b82f6;
+  --accent-soft:rgba(96,165,250,.12);
+  --accent-border:rgba(96,165,250,.3);
+  --toast-bg:rgba(255,255,255,.96);
+  --toast-fg:#1d4ed8;
+  --toast-bd:rgba(96,165,250,.4);
+
+  --green-1:#4ade80;
+  --green-2:#22c55e;
+  --green-3:#16a34a;
+  --green-4:#15803d;
+  --green-glow:rgba(34,197,94,.45);
+  --green-glow-soft:rgba(34,197,94,.2);
+  --green-soft:rgba(34,197,94,.10);
+  --green-border:rgba(34,197,94,.32);
+
+  --fest-red-1:#ff6b6b;
+  --fest-red-2:#e63946;
+  --fest-red-3:#c1211c;
+  --fest-red-4:#8c1c13;
+  --fest-gold:#ffd700;
+  --fest-gold-2:#ffed4e;
+  --fest-gold-3:#b8860b;
+}
+html.dark{
+  --bg:#0a0f1a;
+  --bg-2:#0e1524;
+  --surface:rgba(147,197,253,.035);
+  --surface-2:rgba(147,197,253,.06);
+  --surface-hover:rgba(147,197,253,.09);
+  --border:rgba(147,197,253,.09);
+  --border-hover:rgba(96,165,250,.26);
+  --text:#e4edfa;
+  --text-2:#9db0cb;
+  --text-3:#6b7d99;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --shadow-sm:0 4px 14px rgba(0,0,0,.28);
+  --shadow-lg:0 24px 56px -18px rgba(0,0,0,.7);
+  --glow-1:rgba(59,130,246,.20);
+  --glow-2:rgba(56,189,248,.15);
+  --glow-3:rgba(129,140,248,.13);
+  --ring:rgba(96,165,250,.2);
+  --card-shine:rgba(147,197,253,.55);
+  --grid-line:rgba(96,165,250,.10);
+  --grad-text:linear-gradient(45deg,#fff 0%,#93c5fd 25%,#38bdf8 55%,#93c5fd 75%,#fff 100%);
+  --accent:#8ad4ff;
+  --accent-2:#60a5fa;
+  --accent-soft:rgba(96,165,250,.14);
+  --accent-border:rgba(96,165,250,.28);
+  --toast-bg:rgba(18,32,52,.96);
+  --toast-fg:#8affef;
+  --toast-bd:rgba(140,220,255,.5);
+
+  --green-1:#86efac;
+  --green-2:#4ade80;
+  --green-3:#22c55e;
+  --green-4:#16a34a;
+  --green-glow:rgba(74,222,128,.55);
+  --green-glow-soft:rgba(74,222,128,.3);
+  --green-soft:rgba(74,222,128,.12);
+  --green-border:rgba(74,222,128,.35);
+
+  --fest-red-1:#ff8a8a;
+  --fest-red-2:#ff5c6c;
+  --fest-red-3:#e63946;
+  --fest-red-4:#c1211c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { color-scheme: light; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html.dark { color-scheme: dark; }
+html { scroll-behavior: smooth; }
+html.perf-lite { scroll-behavior: auto; }
+html, body { overflow-x: hidden; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'HarmonyOS Sans SC', 'HarmonyOS Sans', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  text-align: center;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background .45s ease, color .45s ease;
+}
+
+/* ============ 背景层 ============ */
+.bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-gradient {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(1100px 700px at 12% -12%, var(--glow-1), transparent 65%),
+    radial-gradient(900px 620px at 92% 6%, var(--glow-2), transparent 62%),
+    linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
+  transition: background .45s ease;
+}
+.bg-blobs { position: absolute; inset: 0; filter: blur(90px); opacity: .85; }
+.blob { position: absolute; border-radius: 50%; animation: blobFloat 22s ease-in-out infinite; }
+.blob.b1 { width: 420px; height: 420px; background: radial-gradient(circle, var(--glow-1), transparent 70%); top: -100px; left: -80px; }
+.blob.b2 { width: 480px; height: 480px; background: radial-gradient(circle, var(--glow-2), transparent 70%); top: -60px; right: -140px; animation-delay: -5s; }
+.blob.b3 { width: 380px; height: 380px; background: radial-gradient(circle, var(--glow-3), transparent 70%); bottom: -100px; left: -60px; animation-delay: -10s; }
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-20px) scale(1.08); }
+  66% { transform: translate(-20px,30px) scale(.95); }
+}
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 28%, transparent 84%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 28%, transparent 84%);
+}
+.bg-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(15,40,90,.05) 100%);
+}
+html.dark .bg-vignette {
+  background: radial-gradient(ellipse at 50% 40%, transparent 42%, rgba(0,0,0,.55) 100%);
+}
+
+html.perf-lite .bg-blobs,
+html.perf-lite .bg-grid,
+html.perf-lite .bg-vignette { display: none; }
+html.perf-lite .bg-gradient { background: var(--bg); }
+html.perf-lite .glass { box-shadow: var(--shadow-sm); }
+html.perf-lite .animate-in { opacity: 1 !important; transform: none !important; animation: none !important; }
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ 玻璃卡片 ============ */
+.glass {
+  position: relative;
+  border-radius: 24px;
+  padding: 24px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,255,255,.25) inset;
+  overflow: hidden;
+  text-align: center;
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  transition: background .45s ease, border-color .45s ease, box-shadow .35s ease;
+}
+html.dark .glass { box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,255,255,.03) inset; }
+.glass::before {
+  content: '';
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-shine), transparent);
+  pointer-events: none;
+}
+
+/* ============ Header（灯笼） ============ */
+.header { margin-top: 16px; padding: 34px 18px 22px; position: relative; }
+
+.lantern {
+  position: absolute;
+  top: 0;
+  width: 34px;
+  height: 46px;
+  pointer-events: none;
+  z-index: 3;
+  transform-origin: top center;
+  animation: lanternSwing 4.5s ease-in-out infinite;
+}
+.lantern.left { left: 14px; }
+.lantern.right { right: 14px; animation-delay: -2.25s; }
+.lantern .cord {
+  position: absolute;
+  top: -8px; left: 50%;
+  width: 1.5px; height: 10px;
+  background: linear-gradient(180deg, transparent, var(--fest-red-2));
+  transform: translateX(-50%);
+}
+.lantern .body {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 30px; height: 34px;
+  background: radial-gradient(ellipse at 32% 30%, var(--fest-red-1) 0%, var(--fest-red-2) 42%, var(--fest-red-4) 100%);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow:
+    0 0 16px rgba(230,57,70,.55),
+    0 0 32px rgba(230,57,70,.3),
+    inset -3px -3px 8px rgba(0,0,0,.28),
+    inset 3px 3px 8px rgba(255,200,100,.4);
+}
+html.dark .lantern .body {
+  box-shadow:
+    0 0 20px rgba(255,92,108,.7),
+    0 0 40px rgba(230,57,70,.4),
+    inset -3px -3px 8px rgba(0,0,0,.28),
+    inset 3px 3px 8px rgba(255,200,100,.4);
+}
+.lantern .body::before,
+.lantern .body::after {
+  content: '';
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 20px; height: 3px;
+  background: linear-gradient(90deg, var(--fest-gold-3), var(--fest-gold), var(--fest-gold-3));
+  border-radius: 2px;
+}
+.lantern .body::before { top: -2px; }
+.lantern .body::after { bottom: -2px; }
+.lantern .word {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--fest-gold);
+  text-shadow: 0 0 6px rgba(255,215,0,.7);
+  line-height: 1;
+}
+.lantern .tassel {
+  position: absolute;
+  top: 34px; left: 50%;
+  width: 3px; height: 12px;
+  background: linear-gradient(180deg, var(--fest-gold), var(--fest-gold-3));
+  transform: translateX(-50%);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255,215,0,.6);
+}
+.lantern .tassel::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 6px; height: 8px;
+  background: radial-gradient(ellipse at 50% 30%, var(--fest-gold-2), var(--fest-gold-3));
+  border-radius: 50% 50% 60% 60%;
+}
+@keyframes lanternSwing {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50% { transform: rotate(3.5deg); }
+}
+
+.app-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.firecracker {
+  font-size: 24px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(230,57,70,.4));
+  animation: crackerShake 2.4s ease-in-out infinite;
+  user-select: none;
+}
+.firecracker.right { animation-delay: -1.2s; }
+@keyframes crackerShake {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.08); }
+}
+
+.app-title {
+  font-size: 26px; font-weight: 900; letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1.3;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .app-title {
+    background: var(--grad-text);
+    background-size: 280% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 9s ease-in-out infinite;
+  }
+}
+
+.street-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.street-tag {
+  display: inline-block; padding: 5px 12px;
+  font-size: 12px; font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 20px; letter-spacing: 1px;
+  transition: background .3s ease, border-color .3s ease, color .3s ease;
+}
+.share-btn {
+  display: inline-block;
+  background: var(--grad-brand);
+  background-size: 200% 100%;
+  border: none;
+  color: #fff; padding: 11px 26px;
+  border-radius: 30px; font-size: 14px; font-weight: 700;
+  cursor: pointer; letter-spacing: 1px;
+  box-shadow: 0 6px 18px rgba(59,130,246,.35);
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+  font-family: inherit;
+}
+.share-btn:hover { filter: brightness(1.08); box-shadow: 0 8px 24px rgba(59,130,246,.45); }
+.share-btn:active { transform: scale(0.97); }
+
+/* ============ 今日卡片 ============ */
+.today-card {
+  margin-top: 20px; padding: 28px 18px 22px;
+  background:
+    linear-gradient(180deg, var(--green-soft) 0%, transparent 40%),
+    var(--surface);
+  position: relative;
+}
+
+.corner-cracker {
+  position: absolute;
+  font-size: 18px;
+  line-height: 1;
+  opacity: .85;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 2px 6px rgba(230,57,70,.35));
+  animation: crackerShake 2.8s ease-in-out infinite;
+}
+.corner-cracker.tl { top: 12px; left: 14px; transform-origin: bottom right; }
+.corner-cracker.tr { top: 12px; right: 14px; transform-origin: bottom left; animation-delay: -1.4s; }
+
+.today-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; letter-spacing: 3px;
+  color: var(--green-3);
+  text-transform: uppercase;
+  margin-bottom: 10px; font-weight: 800;
+}
+html.dark .today-label { color: var(--green-2); }
+.today-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green-1);
+  box-shadow: 0 0 8px var(--green-1);
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 3px var(--green-soft), 0 0 8px var(--green-1); }
+  50% { transform: scale(1.3); box-shadow: 0 0 0 6px rgba(34,197,94,0), 0 0 14px var(--green-1); }
+}
+.today-date {
+  font-size: 15px; font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+.today-lunar {
+  font-size: 12.5px; font-weight: 600;
+  color: var(--green-3);
+  letter-spacing: 1.5px; margin-bottom: 6px; min-height: 0;
+}
+html.dark .today-lunar { color: var(--green-2); }
+.today-lunar:empty { display: none; }
+
+.today-street {
+  font-size: 58px; font-weight: 900; line-height: 1.1; letter-spacing: 3px;
+  margin: 14px 0 8px;
+  color: var(--green-3);
+  filter: drop-shadow(0 0 20px var(--green-glow))
+          drop-shadow(0 0 6px var(--green-glow-soft));
+  animation: greenPulse 2.4s ease-in-out infinite;
+  will-change: filter;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .today-street {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 35%, #16a34a 70%, #22c55e 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 6s ease-in-out infinite,
+               greenPulse 2.4s ease-in-out infinite;
+  }
+  html.dark .today-street {
+    background: linear-gradient(135deg, #86efac 0%, #4ade80 40%, #22c55e 70%, #86efac 100%);
+    background-size: 300% 100%;
+  }
+}
+@keyframes greenPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 18px var(--green-glow))
+            drop-shadow(0 0 5px var(--green-glow-soft));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px var(--green-glow))
+            drop-shadow(0 0 14px var(--green-glow-soft));
+  }
+}
+
+.today-hint {
+  font-size: 12px;
+  color: var(--green-3);
+  letter-spacing: 2px; margin-bottom: 16px;
+  font-weight: 700;
+  opacity: .85;
+}
+html.dark .today-hint { color: var(--green-2); }
+
+/* ============ 精确倒计时 ============ */
+.exact-countdown {
+  margin: 12px 0 4px;
+  padding: 14px 12px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  transition: background .4s ease, border-color .4s ease;
+}
+.exact-label {
+  font-size: 12px;
+  color: var(--text-2);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.exact-label span { color: var(--accent); font-weight: 800; }
+.exact-timer {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.exact-num {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--accent);
+  min-width: 2ch;
+  text-align: center;
+  line-height: 1;
+  text-shadow: 0 0 12px var(--accent-soft);
+}
+.exact-unit {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-right: 4px;
+  letter-spacing: .5px;
+  font-weight: 600;
+}
+
+/* ============ 明天条 ============ */
+.tomorrow-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(230,57,70,.06) 0%, var(--surface-2) 60%);
+  border: 1px solid var(--border);
+  text-align: left;
+  margin-top: 14px;
+  transition: background .4s ease, border-color .4s ease;
+}
+.tomorrow-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(230,57,70,.35));
+  animation: lanternSwing 4.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+.tomorrow-text {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--text);
+  letter-spacing: .5px; line-height: 1.4;
+}
+.tomorrow-street { color: var(--accent); font-weight: 900; margin-left: 4px; }
+
+/* ============ 未来 7 天 ============ */
+.week-strip-title {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 20px 0 10px;
+  font-size: 12px; letter-spacing: 3px;
+  color: var(--text-3); font-weight: 700;
+}
+.week-strip-title::before, .week-strip-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.week-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.week-strip::-webkit-scrollbar { display: none; }
+.week-item {
+  flex: 0 0 auto;
+  min-width: 74px;
+  padding: 10px 6px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  text-align: center;
+  scroll-snap-align: start;
+  transition: transform .2s ease, background .3s ease, border-color .3s ease;
+}
+.week-item:active { transform: scale(.96); }
+.week-item.is-today {
+  background: var(--green-soft);
+  border-color: var(--green-border);
+  box-shadow: 0 0 14px var(--green-glow-soft);
+}
+.week-day {
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: .5px;
+  margin-bottom: 3px;
+  font-weight: 700;
+}
+.week-item.is-today .week-day { color: var(--green-3); }
+html.dark .week-item.is-today .week-day { color: var(--green-2); }
+.week-date {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.week-street {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .3px;
+}
+.week-item.is-today .week-street { color: var(--green-3); }
+html.dark .week-item.is-today .week-street { color: var(--green-2); }
+
+/* ============ 4 街倒计时 ============ */
+.countdown-title {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 20px 0 12px;
+  font-size: 12px; letter-spacing: 3px;
+  color: var(--text-3); font-weight: 700;
+}
+.countdown-title::before, .countdown-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.countdown-item {
+  padding: 10px 2px; border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.countdown-item.is-today {
+  background: var(--green-soft);
+  border-color: var(--green-border);
+  box-shadow: 0 0 12px var(--green-glow-soft);
+}
+.countdown-street {
+  font-size: 11px; color: var(--text-2);
+  letter-spacing: .5px; margin-bottom: 5px; font-weight: 700;
+}
+.countdown-item.is-today .countdown-street { color: var(--green-3); font-weight: 800; }
+html.dark .countdown-item.is-today .countdown-street { color: var(--green-2); }
+.countdown-days { font-size: 12px; font-weight: 800; color: var(--text); }
+.countdown-item.is-today .countdown-days { color: var(--green-3); }
+html.dark .countdown-item.is-today .countdown-days { color: var(--green-2); }
+
+.today-note {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: .5px;
+  font-weight: 500;
+}
+
+/* ============ 查询卡片 ============ */
+.query-card { margin-top: 20px; padding: 24px 18px; }
+.card-title {
+  font-size: 15px; font-weight: 800; letter-spacing: 3px;
+  color: var(--text);
+  margin-bottom: 20px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.card-title::before, .card-title::after {
+  content: ''; display: inline-block; width: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+}
+.quick-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.quick-btn {
+  padding: 14px 6px; border-radius: 14px;
+  font-size: 14px; font-weight: 800; letter-spacing: 1px;
+  cursor: pointer;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  font-family: inherit;
+}
+.quick-btn:hover { background: var(--surface-hover); border-color: var(--border-hover); }
+.quick-btn:active { transform: scale(.96); }
+.quick-btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.divider-or {
+  display: flex; align-items: center; gap: 12px;
+  margin: 8px 0 20px;
+  font-size: 12px; color: var(--text-3); letter-spacing: 2px;
+  font-weight: 600;
+}
+.divider-or::before, .divider-or::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.date-input {
+  width: 100%; padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 16px; font-weight: 600; letter-spacing: 1px;
+  background: var(--surface-2);
+  color: var(--text); margin-bottom: 14px;
+  text-align: center;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  font-family: inherit;
+  -webkit-appearance: none; appearance: none;
+}
+.date-input:focus {
+  outline: none;
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: .65;
+  filter: invert(0.45) sepia(1) saturate(4) hue-rotate(185deg);
+}
+html.dark .date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) sepia(1) saturate(4) hue-rotate(170deg);
+  opacity: .9;
+}
+.query-btn {
+  width: 100%; padding: 17px;
+  background: var(--grad-brand);
+  background-size: 200% 100%;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px; font-weight: 800; letter-spacing: 5px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(59,130,246,.35);
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+  font-family: inherit;
+}
+.query-btn:hover { filter: brightness(1.08); box-shadow: 0 8px 26px rgba(59,130,246,.45); }
+.query-btn:active { transform: scale(.98); }
+
+/* ============ 规则卡 ============ */
+.rule-card { margin-top: 20px; padding: 24px 18px; }
+.rule-text {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.95;
+  letter-spacing: .3px;
+  text-align: left;
+  margin-bottom: 14px;
+}
+.rule-text:last-child { margin-bottom: 0; }
+.rule-text .hl { color: var(--accent); font-weight: 800; }
+
+/* ============ 结果卡片 ============ */
+.result-card {
+  max-height: 0;
+  opacity: 0;
+  padding: 0 18px;
+  margin-top: 0;
+  border-width: 0;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(.2,.9,.3,1),
+              opacity .35s ease,
+              padding .4s ease,
+              margin-top .4s ease,
+              border-width .3s ease;
+}
+.result-card.show {
+  max-height: 620px;
+  opacity: 1;
+  padding: 28px 18px 22px;
+  margin-top: 20px;
+  border-width: 1px;
+  background:
+    linear-gradient(180deg, var(--green-soft) 0%, transparent 40%),
+    var(--surface);
+}
+.result-date {
+  font-size: 16px; color: var(--text-2);
+  letter-spacing: 1.5px; margin-bottom: 6px;
+  font-weight: 600;
+}
+.result-lunar {
+  font-size: 12.5px; font-weight: 600;
+  color: var(--green-3);
+  letter-spacing: 1.5px; margin-bottom: 14px; min-height: 0;
+}
+html.dark .result-lunar { color: var(--green-2); }
+.result-lunar:empty { display: none; }
+
+.result-street {
+  font-size: 46px; font-weight: 900; letter-spacing: 3px;
+  color: var(--green-3);
+  margin-bottom: 18px;
+  line-height: 1.1;
+  filter: drop-shadow(0 0 20px var(--green-glow))
+          drop-shadow(0 0 6px var(--green-glow-soft));
+  animation: greenPulse 2.4s ease-in-out infinite;
+  will-change: filter;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .result-street {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 35%, #16a34a 70%, #22c55e 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 6s ease-in-out infinite,
+               greenPulse 2.4s ease-in-out infinite;
+  }
+  html.dark .result-street {
+    background: linear-gradient(135deg, #86efac 0%, #4ade80 40%, #22c55e 70%, #86efac 100%);
+    background-size: 300% 100%;
+  }
+}
+
+.result-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.result-nav button {
+  padding: 12px 8px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  font-family: inherit;
+}
+.result-nav button:hover { background: var(--surface-hover); border-color: var(--border-hover); }
+.result-nav button:active { transform: scale(.96); }
+
+/* ============ 其他项目 ============ */
+.link-card { margin-top: 20px; padding: 24px 18px; }
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.link-item {
+  flex: 1 1 calc(50% - 4px);
+  max-width: calc(50% - 4px);
+  min-width: 0;
+  padding: 12px 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: .5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.link-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+.link-item:active { background: var(--surface-hover); }
+
+.link-item.feedback {
+  flex: 1 1 100%;
+  max-width: 100%;
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--text);
+  cursor: pointer;
+}
+.link-item.feedback:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.link-item.feedback:active { background: var(--surface-hover); }
+
+.feedback-tip {
+  display: none;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--accent);
+  line-height: 1.6;
+  letter-spacing: .5px;
+  font-weight: 600;
+}
+.feedback-tip.show { display: block; }
+
+/* ============ 回到顶部 ============ */
+#backToTop {
+  position: fixed; right: 16px; bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  width: 50px; height: 50px;
+  padding: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--accent-2);
+  display: grid; place-items: center;
+  font-size: 20px; font-weight: 700;
+  cursor: pointer;
+  opacity: 0; visibility: hidden;
+  z-index: 100;
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  transition: opacity .3s ease, visibility .3s ease, transform .2s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+#backToTop.show { opacity: 1; visibility: visible; }
+#backToTop:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateY(-3px) scale(1.06); }
+#backToTop:active { transform: translateY(-1px) scale(.95); }
+#backToTop .ring {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+#backToTop .ring circle { fill: none; stroke-width: 2.5; }
+#backToTop .ring .ring-bg { stroke: var(--border); }
+#backToTop .ring .ring-fg {
+  stroke: var(--accent-2);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--accent-soft));
+  transition: stroke-dashoffset .08s linear;
+}
+#backToTop .arrow {
+  position: relative;
+  z-index: 1;
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* ============ 页脚 ============ */
+.footer {
+  text-align: center; padding: 40px 20px 20px;
+  font-size: 13px; color: var(--text-3);
+  letter-spacing: 1px; line-height: 1.9;
+}
+.footer .version {
+  display: inline-block; padding: 2px 10px;
+  font-size: 11px; color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 10px; letter-spacing: 1px;
+  font-weight: 700;
+}
+.footer .heart { color: #ef4444; display: inline-block; }
+.footer a { color: var(--text-2); text-decoration: none; }
+.footer a:hover { color: var(--text); }
+
+/* ============ Toast ============ */
+.toast-container {
+  position: fixed;
+  left: 50%;
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+  max-width: 90vw;
+}
+.toast {
+  padding: 11px 22px;
+  border-radius: 24px;
+  background: var(--toast-bg);
+  border: 1px solid var(--toast-bd);
+  color: var(--toast-fg);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  box-shadow: 0 12px 32px -8px rgba(15,40,90,.25), 0 0 0 1px rgba(255,255,255,.3) inset;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .28s ease, transform .34s cubic-bezier(.2,.9,.3,1.4);
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+html.dark .toast { box-shadow: 0 12px 32px -8px rgba(0,0,0,.8), 0 0 30px rgba(56,189,248,.3); }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-color: rgba(239,68,68,.5); color: #ef4444; }
+html.dark .toast.error { color: #fca5a5; border-color: rgba(239,68,68,.4); }
+
+/* ============================================================
+   离线遮罩层（内置）
+   ============================================================ */
+.offline-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(20px + env(safe-area-inset-top)) 14px calc(20px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(1100px 700px at 12% -12%, var(--glow-1), transparent 65%),
+    radial-gradient(900px 620px at 92% 6%, var(--glow-2), transparent 62%),
+    linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.offline-mask.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.offline-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 22px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.25) inset;
+  overflow: hidden;
+  text-align: center;
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  animation: offlineCardIn .5s cubic-bezier(.2,.9,.3,1);
+}
+html.dark .offline-card { box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,.03) inset; }
+
+.offline-card::before {
+  content: '';
+  position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-shine), transparent);
+  pointer-events: none;
+}
+
+@keyframes offlineCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.offline-lantern {
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 3;
+  transform-origin: top center;
+  animation: lanternSwing 4.5s ease-in-out infinite;
+}
+.offline-lantern.left  { left: 14px; }
+.offline-lantern.right { right: 14px; animation-delay: -2.25s; }
+.offline-lantern .cord {
+  position: absolute;
+  top: -8px; left: 50%;
+  width: 1.5px; height: 10px;
+  background: linear-gradient(180deg, transparent, var(--fest-red-2));
+  transform: translateX(-50%);
+}
+.offline-lantern .body {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 24px; height: 28px;
+  background: radial-gradient(ellipse at 32% 30%, var(--fest-red-1) 0%, var(--fest-red-2) 42%, var(--fest-red-4) 100%);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow:
+    0 0 12px rgba(230,57,70,.45),
+    inset -2px -2px 6px rgba(0,0,0,.28),
+    inset 2px 2px 6px rgba(255,200,100,.4);
+  opacity: .6;
+}
+.offline-lantern .body::before,
+.offline-lantern .body::after {
+  content: '';
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 15px; height: 2px;
+  background: linear-gradient(90deg, var(--fest-gold-3), var(--fest-gold), var(--fest-gold-3));
+  border-radius: 2px;
+}
+.offline-lantern .body::before { top: -2px; }
+.offline-lantern .body::after  { bottom: -2px; }
+.offline-lantern .word {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--fest-gold);
+  text-shadow: 0 0 5px rgba(255,215,0,.7);
+  line-height: 1;
+}
+.offline-lantern .tassel {
+  position: absolute;
+  top: 28px; left: 50%;
+  width: 2px; height: 9px;
+  background: linear-gradient(180deg, var(--fest-gold), var(--fest-gold-3));
+  transform: translateX(-50%);
+  border-radius: 2px;
+  opacity: .7;
+}
+.offline-lantern .tassel::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 6px;
+  background: radial-gradient(ellipse at 50% 30%, var(--fest-gold-2), var(--fest-gold-3));
+  border-radius: 50% 50% 60% 60%;
+}
+
+.offline-icon-wrap {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(239,68,68,.12), transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.offline-icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(239,68,68,.32);
+  opacity: .55;
+}
+.offline-icon-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(239,68,68,.3);
+  opacity: .35;
+  animation: offlineRingSpin 16s linear infinite;
+}
+@keyframes offlineRingSpin {
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
+}
+.offline-icon {
+  font-size: 42px;
+  line-height: 1;
+  animation: offlineFloat 2.6s ease-in-out infinite;
+}
+@keyframes offlineFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.offline-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .offline-title {
+    background: var(--grad-text);
+    background-size: 280% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 9s ease-in-out infinite;
+  }
+}
+
+.offline-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.9;
+  letter-spacing: .3px;
+  margin-bottom: 18px;
+}
+
+.offline-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(239,68,68,.10);
+  border: 1px solid rgba(239,68,68,.32);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ef4444;
+  margin-bottom: 20px;
+  transition: background .35s ease, border-color .35s ease, color .35s ease;
+}
+html.dark .offline-status { color: #f87171; }
+.offline-status.online {
+  background: var(--green-soft);
+  border-color: var(--green-border);
+  color: var(--green-3);
+}
+html.dark .offline-status.online { color: var(--green-2); }
+
+.offline-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: offlineDotBlink 1.4s ease-in-out infinite;
+}
+.offline-status.online .dot {
+  background: var(--green-2);
+  box-shadow: 0 0 10px var(--green-2);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes offlineDotBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
+}
+
+.offline-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease, background .3s ease, border-color .3s ease;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.offline-btn.primary {
+  background: var(--grad-brand);
+  background-size: 200% 100%;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(59,130,246,.35);
+}
+.offline-btn.primary:hover  { filter: brightness(1.08); box-shadow: 0 8px 26px rgba(59,130,246,.45); }
+.offline-btn.primary:active { transform: scale(.97); }
+
+.offline-btn.ghost {
+  margin-top: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 13px;
+  padding: 11px 18px;
+}
+.offline-btn.ghost:hover  { background: var(--surface-hover); border-color: var(--border-hover); color: var(--text); }
+.offline-btn.ghost:active { transform: scale(.97); }
+
+.offline-tip {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.8;
+  letter-spacing: .3px;
+}
+.offline-tip b { color: var(--accent); font-weight: 800; }
+
+html.perf-lite .offline-lantern,
+html.perf-lite .offline-icon,
+html.perf-lite .offline-status .dot,
+html.perf-lite .offline-icon-wrap::after { animation: none !important; }
+html.perf-lite .offline-card { animation: none; }
+html.perf-lite .offline-title { animation: none; }
+
+/* ============ 响应式 ============ */
+@media (max-width: 360px) {
+  .link-item { font-size: 12px; padding: 10px 4px; gap: 3px; border-radius: 11px; }
+  .today-street { font-size: 50px; }
+  .result-street { font-size: 40px; }
+  .exact-num { font-size: 19px; }
+  .week-item { min-width: 66px; }
+  .app-title { font-size: 22px; letter-spacing: 1.5px; }
+  .lantern { width: 28px; height: 40px; }
+  .lantern .body { width: 26px; height: 30px; }
+  .lantern .body::before, .lantern .body::after { width: 17px; }
+  .lantern .word { font-size: 11px; }
+  .lantern .tassel { top: 30px; height: 10px; }
+  .lantern.left { left: 8px; }
+  .lantern.right { right: 8px; }
+  .firecracker { font-size: 20px; }
+  .offline-card { padding: 26px 18px 20px; border-radius: 20px; }
+  .offline-title { font-size: 18px; }
+  .offline-icon-wrap { width: 78px; height: 78px; }
+  .offline-icon { font-size: 36px; }
+  .offline-btn { font-size: 13px; padding: 12px 16px; }
+  .offline-btn.ghost { font-size: 12px; padding: 10px 14px; }
+}
+
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 200% 50%; }
+}
+@keyframes slideUpIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.animate-in { opacity: 0; transform: translateY(24px); }
+.animate-in.visible { animation: slideUpIn .55s cubic-bezier(.2,.9,.3,1) forwards; }
+
+html.perf-lite .lantern,
+html.perf-lite .firecracker,
+html.perf-lite .corner-cracker,
+html.perf-lite .tomorrow-icon {
+  animation: none !important;
+}
+html.perf-lite .today-street,
+html.perf-lite .result-street {
+  animation: gradientFlow 6s ease-in-out infinite !important;
+  filter: none;
+}
+html.perf-lite .today-label::before { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .lantern,
+  .firecracker,
+  .corner-cracker,
+  .tomorrow-icon,
+  .today-street,
+  .result-street,
+  .offline-lantern,
+  .offline-icon,
+  .offline-status .dot,
+  .offline-icon-wrap::after { animation: none !important; }
+  .animate-in { opacity: 1; transform: none; animation: none; }
+  .offline-card { animation: none; }
+  .offline-title { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-gradient"></div>
+  <div class="bg-blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div class="bg-grid"></div>
+  <div class="bg-vignette"></div>
+</div>
+
+<div class="container">
+
+    <section class="glass header animate-in" data-animate>
+        <div class="lantern left" aria-hidden="true">
+            <span class="cord"></span>
+            <span class="body"><span class="word">福</span></span>
+            <span class="tassel"></span>
+        </div>
+        <div class="lantern right" aria-hidden="true">
+            <span class="cord"></span>
+            <span class="body"><span class="word">春</span></span>
+            <span class="tassel"></span>
+        </div>
+
+        <div class="app-title-wrap">
+            <span class="firecracker" aria-hidden="true">🧨</span>
+            <h1 class="app-title">西邑赶集日历</h1>
+            <span class="firecracker right" aria-hidden="true">🧨</span>
+        </div>
+
+        <div class="street-tags">
+            <span class="street-tag">永信街</span>
+            <span class="street-tag">羊邑街</span>
+            <span class="street-tag">丙麻街</span>
+            <span class="street-tag">西邑街</span>
+        </div>
+        <button class="share-btn" type="button" aria-label="分享本页面">🔗 分享给朋友</button>
+    </section>
+
+    <section class="glass today-card animate-in" data-animate>
+        <span class="corner-cracker tl" aria-hidden="true">🧨</span>
+        <span class="corner-cracker tr" aria-hidden="true">🧨</span>
+
+        <div class="today-label">Today · 今日赶集</div>
+        <div class="today-date" id="today-date">加载中...</div>
+        <div class="today-lunar" id="today-lunar"></div>
+        <div class="today-street" id="today-street">计算中...</div>
+        <div class="today-hint">今天赶这个街</div>
+
+        <div class="exact-countdown" id="exactCountdown">
+            <div class="exact-label">距 <span id="exactStreet">--</span> 开市还有</div>
+            <div class="exact-timer">
+                <span class="exact-num" id="exactD">0</span><span class="exact-unit">天</span>
+                <span class="exact-num" id="exactH">00</span><span class="exact-unit">时</span>
+                <span class="exact-num" id="exactM">00</span><span class="exact-unit">分</span>
+                <span class="exact-num" id="exactS">00</span><span class="exact-unit">秒</span>
+            </div>
+        </div>
+
+        <div class="tomorrow-bar">
+            <span class="tomorrow-icon" aria-hidden="true">🏮</span>
+            <span class="tomorrow-text" id="tomorrow-market">加载中...</span>
+        </div>
+
+        <div class="week-strip-title">未来 7 天</div>
+        <div class="week-strip" id="weekStrip"></div>
+
+        <div class="countdown-title">赶集倒计时</div>
+        <div class="countdown-grid" id="countdown-grid"></div>
+
+        <div class="today-note">如果显示不对，请检查手机日期是否准确</div>
+    </section>
+
+    <section class="glass query-card animate-in" data-animate>
+        <div class="card-title">查询其他日期</div>
+        <div class="quick-btns">
+            <button class="quick-btn" data-offset="0" type="button">今天</button>
+            <button class="quick-btn" data-offset="1" type="button">明天</button>
+            <button class="quick-btn" data-offset="2" type="button">后天</button>
+        </div>
+        <div class="divider-or">或选择日期</div>
+        <input type="date" id="query-date" class="date-input" aria-label="选择要查询的日期">
+        <button class="query-btn" type="button">查询</button>
+    </section>
+
+    <section class="glass rule-card animate-in" data-animate>
+        <div class="card-title">赶集规律</div>
+        <p class="rule-text">西邑片区四个街市按 <span class="hl">四天一轮</span> 循环，依次为 <span class="hl">永信街 → 羊邑街 → 丙麻街 → 西邑街</span>，循环往复，风雨无阻。</p>
+        <p class="rule-text">本页可查询 <span class="hl">1995 年 1 月 1 日</span> 至 <span class="hl">2099 年 12 月 31 日</span> 之间任意日期的赶集街市，日期与农历均按 <span class="hl">北京时间</span> 计算，海外访问同样准确。</p>
+    </section>
+
+    <section class="glass result-card" id="result-section" aria-live="polite" aria-atomic="true">
+        <div class="card-title">查询结果</div>
+        <div class="result-date" id="result-date"></div>
+        <div class="result-lunar" id="result-lunar"></div>
+        <div class="result-street" id="result-street"></div>
+        <div class="result-nav">
+            <button type="button" id="resultPrev" aria-label="查询前一天">← 前一天</button>
+            <button type="button" id="resultNext" aria-label="查询后一天">后一天 →</button>
+        </div>
+    </section>
+
+    <section class="glass link-card animate-in" data-animate>
+        <div class="card-title">其他项目</div>
+        <div class="link-list">
+            <a href="https://duanaifeng.github.io/AFeng/" target="_blank" rel="noopener noreferrer" class="link-item">🏠 我的主页</a>
+            <a href="https://duanaifeng.github.io/AFeng/daohang/" target="_blank" rel="noopener noreferrer" class="link-item">🧭 资源导航</a>
+            <a href="https://duanaifeng.github.io/AFeng/game/" target="_blank" rel="noopener noreferrer" class="link-item">🕹️ 怀旧小游戏</a>
+            <a href="https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888" target="_blank" rel="noopener noreferrer" class="link-item">🔧 电脑维护工具</a>
+            <a href="javascript:void(0)" id="feedbackBtn" class="link-item feedback" role="button" tabindex="0">📮 反馈建议</a>
+        </div>
+        <div class="feedback-tip" id="feedbackTip">
+            邮箱已复制：<b>88061995@qq.com</b><br>
+            请打开邮箱 App，粘贴到收件人后发送
+        </div>
+    </section>
+
+    <div class="footer">
+        <span class="version">v3.1 · 2026.10</span><br>
+        by·AiFeng <span class="heart">♥</span><br>
+        Email: 88061995@qq.com
+    </div>
+</div>
+
+<!-- ============ 离线遮罩层 ============ -->
+<div class="offline-mask" id="offlineMask" role="alert" aria-live="assertive">
+  <div class="offline-card">
+
+    <div class="offline-lantern left" aria-hidden="true">
+      <span class="cord"></span>
+      <span class="body"><span class="word">福</span></span>
+      <span class="tassel"></span>
+    </div>
+    <div class="offline-lantern right" aria-hidden="true">
+      <span class="cord"></span>
+      <span class="body"><span class="word">春</span></span>
+      <span class="tassel"></span>
+    </div>
+
+    <div class="offline-icon-wrap">
+      <div class="offline-icon">📡</div>
+    </div>
+
+    <h2 class="offline-title">网络连接不可用</h2>
+    <p class="offline-desc">
+      当前设备没有连接到网络，<br>
+      请检查 Wi-Fi 或移动数据后重试
+    </p>
+
+    <div class="offline-status" id="offlineStatus">
+      <span class="dot"></span>
+      <span id="offlineStatusText">离线</span>
+    </div>
+
+    <button class="offline-btn primary" id="offlineRetryBtn" type="button">🔄 重新加载</button>
+    <button class="offline-btn ghost" id="offlineCloseBtn" type="button">← 继续浏览</button>
+
+    <div class="offline-tip">
+      网络恢复后会自动关闭此提示<br>
+      <b>西邑赶集日历</b>
+    </div>
+
+  </div>
+</div>
+
+<button id="backToTop" aria-label="回到顶部" type="button">
+    <svg class="ring" viewBox="0 0 50 50" aria-hidden="true">
+        <circle class="ring-bg" cx="25" cy="25" r="22"></circle>
+        <circle class="ring-fg" cx="25" cy="25" r="22"></circle>
+    </svg>
+    <span class="arrow" aria-hidden="true">↑</span>
+</button>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ============================================================
+   西邑赶集日历 v3.1
+   ============================================================ */
+(function () {
+    'use strict';
+
+    var CONFIG = {
+        streets: ["永信街", "羊邑街", "丙麻街", "西邑街"],
+        baseYear: 2026, baseMonth: 2, baseDay: 12,
+        cycle: 4,
+        marketOpenHour: 8,
+        onlineUrl: "https://duanaifeng.github.io/AFeng/ganji.html",
+        minDate: "1995-01-01",
+        maxDate: "2099-12-31"
+    };
+    var FEEDBACK_EMAIL = '88061995@qq.com';
+    var LAST_QUERY_KEY = '__ganji_last_query__';
+
+    var STREETS = CONFIG.streets;
+    var weekMap = ["日", "一", "二", "三", "四", "五", "六"];
+    var DOM = {};
+
+    /* ===== 0. 低端机性能检测 ===== */
+    (function () {
+        var lite = false;
+        var search = window.location.search || '';
+        if (/[?&]full=1/.test(search)) { lite = false; }
+        else if (/[?&]lite=1/.test(search)) { lite = true; }
+        else {
+            if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4) lite = true;
+            if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4) lite = true;
+            if (navigator.connection && navigator.connection.saveData === true) lite = true;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) lite = true;
+            var ua = navigator.userAgent || '';
+            if (/iPhone OS (7|8|9|10|11|12)_/.test(ua)) lite = true;
+            var hasMemInfo = typeof navigator.deviceMemory === 'number';
+            var hasCpuInfo = typeof navigator.hardwareConcurrency === 'number';
+            if (!hasMemInfo && !hasCpuInfo) {
+                var w = Math.min(window.screen ? window.screen.width : 9999, window.screen ? window.screen.height : 9999);
+                if (w <= 360) lite = true;
+            }
+        }
+        if (lite) document.documentElement.classList.add('perf-lite');
+    })();
+
+    /* ===== 1. 主题跟随系统 ===== */
+    (function () {
+        var root = document.documentElement;
+        var mq = null;
+        try { mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null; } catch (e) {}
+        function apply(isDark) {
+            if (isDark) root.classList.add('dark');
+            else root.classList.remove('dark');
+        }
+        if (mq) {
+            apply(mq.matches);
+            var listener = function (e) { apply(e.matches); };
+            if (mq.addEventListener) mq.addEventListener('change', listener);
+            else if (mq.addListener) mq.addListener(listener);
+        }
+    })();
+
+    /* ===== 2. 工具函数 ===== */
+    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function cacheDom() {
+        DOM.todayDate = document.getElementById('today-date');
+        DOM.todayStreet = document.getElementById('today-street');
+        DOM.todayLunar = document.getElementById('today-lunar');
+        DOM.tomorrowMarket = document.getElementById('tomorrow-market');
+        DOM.countdownGrid = document.getElementById('countdown-grid');
+        DOM.weekStrip = document.getElementById('weekStrip');
+        DOM.resultSection = document.getElementById('result-section');
+        DOM.resultDate = document.getElementById('result-date');
+        DOM.resultLunar = document.getElementById('result-lunar');
+        DOM.resultStreet = document.getElementById('result-street');
+        DOM.resultPrev = document.getElementById('resultPrev');
+        DOM.resultNext = document.getElementById('resultNext');
+        DOM.queryDate = document.getElementById('query-date');
+        DOM.backToTop = document.getElementById('backToTop');
+        DOM.exactStreet = document.getElementById('exactStreet');
+        DOM.exactD = document.getElementById('exactD');
+        DOM.exactH = document.getElementById('exactH');
+        DOM.exactM = document.getElementById('exactM');
+        DOM.exactS = document.getElementById('exactS');
+        DOM.toastContainer = document.getElementById('toastContainer');
+    }
+
+    function getBeijingParts(date) {
+        var d = date || new Date();
+        var bj = new Date(d.getTime() + 8 * 3600 * 1000);
+        return { year: bj.getUTCFullYear(), month: bj.getUTCMonth() + 1, day: bj.getUTCDate() };
+    }
+    function getBeijingDate() {
+        var p = getBeijingParts();
+        return new Date(p.year, p.month - 1, p.day);
+    }
+    function getWeekday(date) { return "周" + weekMap[date.getDay()]; }
+    function formatDate(date) {
+        return date.getFullYear() + "年" + pad2(date.getMonth() + 1) + "月" + pad2(date.getDate()) + "日";
+    }
+    function formatInputDate(date) {
+        return date.getFullYear() + "-" + pad2(date.getMonth() + 1) + "-" + pad2(date.getDate());
+    }
+    function addDays(date, n) {
+        var d = new Date(date); d.setDate(d.getDate() + n); return d;
+    }
+    function getDateKey(date) {
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+
+    /* ===== 3. 农历（内置表） ===== */
+    var LUNAR_DAY_NAMES = [
+        '初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+        '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+        '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'
+    ];
+    var LUNAR_MONTH_NAMES = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+
+    var LUNAR_INFO = [
+        0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+        0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+        0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+        0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+        0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+        0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+        0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+        0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+        0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+        0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+        0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+        0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+        0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+        0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+        0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+        0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,
+        0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,
+        0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,
+        0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,
+        0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,
+        0x0d520
+    ];
+
+    function lunarLeapMonth(y) { return LUNAR_INFO[y - 1900] & 0xf; }
+    function lunarLeapDays(y) {
+        if (lunarLeapMonth(y)) return (LUNAR_INFO[y - 1900] & 0x10000) ? 30 : 29;
+        return 0;
+    }
+    function lunarMonthDays(y, m) { return (LUNAR_INFO[y - 1900] & (0x10000 >> m)) ? 30 : 29; }
+    function lunarYearDays(y) {
+        var sum = 348;
+        for (var i = 0x8000; i > 0x8; i >>= 1) sum += (LUNAR_INFO[y - 1900] & i) ? 1 : 0;
+        return sum + lunarLeapDays(y);
+    }
+
+    function solarToLunar(date) {
+        var base = Date.UTC(1900, 0, 31);
+        var target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+        var offset = Math.round((target - base) / 86400000);
+        if (offset < 0 || offset > 80000) return null;
+
+        var year = 1900;
+        while (year < 2101 && offset > 0) {
+            var days = lunarYearDays(year);
+            if (offset < days) break;
+            offset -= days;
+            year++;
+        }
+
+        var leap = lunarLeapMonth(year);
+        var isLeap = false;
+        var month = 1;
+        while (month <= 12) {
+            var md;
+            if (leap > 0 && month === leap + 1 && !isLeap) {
+                isLeap = true;
+                md = lunarLeapDays(year);
+                month--;
+            } else {
+                md = lunarMonthDays(year, month);
+            }
+            if (offset < md) break;
+            offset -= md;
+            if (isLeap && month === leap) isLeap = false;
+            month++;
+        }
+
+        var day = offset + 1;
+        return {
+            month: month,
+            day: day,
+            isLeap: isLeap,
+            monthName: (isLeap ? '闰' : '') + LUNAR_MONTH_NAMES[month - 1] + '月',
+            dayName: LUNAR_DAY_NAMES[day - 1] || ''
+        };
+    }
+
+    function getLunarText(date) {
+        try {
+            var l = solarToLunar(date);
+            if (l) return '农历' + l.monthName + l.dayName;
+        } catch (e) {}
+        return null;
+    }
+
+    function renderLunarTo(el, date) {
+        if (!el) return;
+        var text = getLunarText(date);
+        if (text) { el.textContent = text; el.style.display = ''; }
+        else { el.textContent = ''; el.style.display = 'none'; }
+    }
+
+    /* ===== 5. 赶集算法 ===== */
+    function getStreetIndex(date) {
+        try {
+            var base = Date.UTC(CONFIG.baseYear, CONFIG.baseMonth - 1, CONFIG.baseDay);
+            var target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+            var diffDays = Math.round((target - base) / 86400000);
+            return ((diffDays % CONFIG.cycle) + CONFIG.cycle) % CONFIG.cycle;
+        } catch (e) { return 0; }
+    }
+
+    /* ===== 6. Toast ===== */
+    function showToast(msg, isError) {
+        if (!DOM.toastContainer) return;
+        var t = document.createElement('div');
+        t.className = 'toast' + (isError ? ' error' : '');
+        t.textContent = msg;
+        DOM.toastContainer.appendChild(t);
+        requestAnimationFrame(function () { t.classList.add('show'); });
+        setTimeout(function () {
+            t.classList.remove('show');
+            setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 350);
+        }, 1800);
+    }
+
+    /* ===== 7. 今日渲染 ===== */
+    var lastRenderedKey = null;
+
+    function renderToday() {
+        try {
+            var today = getBeijingDate();
+            var idx = getStreetIndex(today);
+            var todayStreet = STREETS[idx];
+
+            DOM.todayDate.textContent = formatDate(today) + " " + getWeekday(today);
+            DOM.todayStreet.textContent = todayStreet;
+            renderLunarTo(DOM.todayLunar, today);
+
+            var tomorrow = addDays(today, 1);
+            var tIdx = getStreetIndex(tomorrow);
+            DOM.tomorrowMarket.innerHTML =
+                "明天 " + formatDate(tomorrow).replace(/年|月/g, '.').replace('日', '') +
+                " " + getWeekday(tomorrow) + " → <span class='tomorrow-street'>" + STREETS[tIdx] + "</span>";
+
+            renderCountdown(idx);
+            renderWeekStrip(today);
+            updateExactCountdown();
+            lastRenderedKey = getDateKey(today);
+        } catch (e) {
+            DOM.todayDate.textContent = "日期计算错误";
+            DOM.todayStreet.textContent = "请刷新页面";
+            DOM.tomorrowMarket.textContent = "系统异常，请重试";
+        }
+    }
+
+    function refreshIfDateChanged() {
+        if (lastRenderedKey !== getDateKey(getBeijingDate())) {
+            renderToday();
+            if (DOM.queryDate) {
+                DOM.queryDate.value = formatInputDate(getBeijingDate());
+            }
+        }
+    }
+
+    function renderCountdown(todayIdx) {
+        var items = [];
+        for (var i = 0; i < STREETS.length; i++) {
+            var days = ((i - todayIdx) + CONFIG.cycle) % CONFIG.cycle;
+            items.push({ name: STREETS[i], days: days });
+        }
+        items.sort(function (a, b) { return a.days - b.days; });
+
+        var html = '';
+        for (var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var isToday = (item.days === 0);
+            var dayText = item.days === 0 ? '今天' : (item.days === 1 ? '明天' : item.days + '天后');
+            html += '<div class="countdown-item' + (isToday ? ' is-today' : '') + '">' +
+                        '<div class="countdown-street">' + item.name + '</div>' +
+                        '<div class="countdown-days">' + dayText + '</div>' +
+                    '</div>';
+        }
+        DOM.countdownGrid.innerHTML = html;
+    }
+
+    function renderWeekStrip(today) {
+        if (!DOM.weekStrip) return;
+        var html = '';
+        for (var i = 0; i < 7; i++) {
+            var d = addDays(today, i);
+            var sIdx = getStreetIndex(d);
+            var isToday = (i === 0);
+            var dayLabel = i === 0 ? '今天' : (i === 1 ? '明天' : getWeekday(d));
+            var dateLabel = pad2(d.getMonth() + 1) + '.' + pad2(d.getDate());
+            html += '<div class="week-item' + (isToday ? ' is-today' : '') + '">' +
+                        '<div class="week-day">' + dayLabel + '</div>' +
+                        '<div class="week-date">' + dateLabel + '</div>' +
+                        '<div class="week-street">' + STREETS[sIdx] + '</div>' +
+                    '</div>';
+        }
+        DOM.weekStrip.innerHTML = html;
+    }
+
+    /* ===== 8. 精确倒计时 ===== */
+    var exactTimer = null;
+
+    function calcExactCountdown() {
+        var realNow = new Date();
+        var today = getBeijingDate();
+
+        var target = new Date(today);
+        target.setHours(CONFIG.marketOpenHour, 0, 0, 0);
+        if (realNow >= target) target = addDays(target, 1);
+
+        var targetIdx = getStreetIndex(target);
+        var ms = target.getTime() - realNow.getTime();
+        if (ms < 0) ms = 0;
+
+        var totalSec = Math.floor(ms / 1000);
+        var days = Math.floor(totalSec / 86400);
+        var rest = totalSec - days * 86400;
+        var hours = Math.floor(rest / 3600);
+        rest -= hours * 3600;
+        var mins = Math.floor(rest / 60);
+        var secs = rest - mins * 60;
+
+        return {
+            street: STREETS[targetIdx],
+            d: days, h: hours, m: mins, s: secs
+        };
+    }
+
+    function updateExactCountdown() {
+        if (!DOM.exactD) return;
+        try {
+            var r = calcExactCountdown();
+            DOM.exactStreet.textContent = r.street;
+            DOM.exactD.textContent = r.d;
+            DOM.exactH.textContent = pad2(r.h);
+            DOM.exactM.textContent = pad2(r.m);
+            DOM.exactS.textContent = pad2(r.s);
+        } catch (e) {}
+    }
+
+    function startExactTimer() {
+        stopExactTimer();
+        updateExactCountdown();
+        exactTimer = setInterval(updateExactCountdown, 1000);
+    }
+    function stopExactTimer() {
+        if (exactTimer) { clearInterval(exactTimer); exactTimer = null; }
+    }
+
+    /* ===== 9. 查询与结果 ===== */
+    var currentResultDate = null;
+
+    function showResult(date) {
+        currentResultDate = date;
+        var idx = getStreetIndex(date);
+        DOM.resultDate.textContent = formatDate(date) + " " + getWeekday(date);
+        DOM.resultStreet.textContent = STREETS[idx];
+        renderLunarTo(DOM.resultLunar, date);
+
+        try { localStorage.setItem(LAST_QUERY_KEY, formatInputDate(date)); } catch (e) {}
+
+        var section = DOM.resultSection;
+        if (!section.classList.contains('show')) {
+            section.classList.add('show');
+            setTimeout(function () {
+                try { section.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            }, 300);
+        } else {
+            section.style.transition = 'none';
+            section.classList.remove('show');
+            void section.offsetWidth;
+            section.style.transition = '';
+            section.classList.add('show');
+            setTimeout(function () {
+                try { section.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            }, 250);
+        }
+    }
+
+    function hideResult() {
+        if (DOM.resultSection) DOM.resultSection.classList.remove('show');
+        currentResultDate = null;
+    }
+
+    function doQuery() {
+        var input = DOM.queryDate;
+        var val = input.value;
+        if (!val) {
+            input.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(function () { input.style.animation = ''; }, 500);
+            showToast('请先选择日期', true);
+            return;
+        }
+        var parts = val.split('-');
+        if (parts.length !== 3) { showToast('日期格式错误', true); return; }
+        var sel = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        if (isNaN(sel.getTime())) { showToast('日期无效', true); return; }
+        showResult(sel);
+    }
+
+    function quickQuery(offset) {
+        var d = addDays(getBeijingDate(), offset);
+        DOM.queryDate.value = formatInputDate(d);
+        showResult(d);
+    }
+
+    function shiftResult(delta) {
+        if (!currentResultDate) return;
+        var next = addDays(currentResultDate, delta);
+        DOM.queryDate.value = formatInputDate(next);
+        showResult(next);
+    }
+
+    /* ===== 10. 分享 ===== */
+    function showTempFeedback(button, message) {
+        if (!button) return;
+        var originalText = button.textContent;
+        button.textContent = message;
+        button.disabled = true;
+        setTimeout(function () {
+            button.textContent = originalText;
+            button.disabled = false;
+        }, 2000);
+    }
+
+    function copyFallback(text, button) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;box-shadow:none;background:transparent;opacity:0;';
+        document.body.appendChild(ta);
+        var ok = false;
+        try { ta.focus(); ta.select(); ta.setSelectionRange(0, text.length); ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        if (ok) {
+            showTempFeedback(button, '✅ 已复制');
+            showToast('网址已复制');
+        } else {
+            window.prompt('请长按复制下面的网址：', text);
+        }
+    }
+
+    function doCopy(url, button) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function () {
+                showTempFeedback(button, '✅ 已复制');
+                showToast('网址已复制');
+            }).catch(function () { copyFallback(url, button); });
+        } else {
+            copyFallback(url, button);
+        }
+    }
+
+    function getShareUrl() {
+        if (location.protocol === 'file:') return CONFIG.onlineUrl || '';
+        return location.href;
+    }
+
+    function sharePage(button) {
+        var url = getShareUrl();
+        if (!url) {
+            showTempFeedback(button, '⚠️ 请先填网址');
+            setTimeout(function () { showToast('本地打开时无法分享，请先部署到网上', true); }, 100);
+            return;
+        }
+        if (navigator.share) {
+            try {
+                var p = navigator.share({
+                    title: '西邑赶集日历',
+                    text: '永信街、羊邑街、丙麻街、西邑街四天循环查询',
+                    url: url
+                });
+                if (p && typeof p.catch === 'function') {
+                    p.catch(function (e) {
+                        if (e && e.name === 'AbortError') return;
+                        doCopy(url, button);
+                    });
+                }
+                return;
+            } catch (err) {}
+        }
+        doCopy(url, button);
+    }
+
+    /* ===== 11. 反馈 ===== */
+    function copyEmail(email) {
+        return new Promise(function (resolve) {
+            var ta = document.createElement('textarea');
+            ta.value = email;
+            ta.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;box-shadow:none;background:transparent;opacity:0;';
+            document.body.appendChild(ta);
+            var ok = false;
+            try { ta.focus(); ta.select(); ta.setSelectionRange(0, email.length); ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            document.body.removeChild(ta);
+            if (ok) { resolve(true); return; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(function () { resolve(true); }).catch(function () { resolve(false); });
+            } else {
+                resolve(false);
+            }
+        });
+    }
+
+    function openFeedback() {
+        var btn = document.getElementById('feedbackBtn');
+        var tip = document.getElementById('feedbackTip');
+        if (!btn) return;
+        if (btn.dataset.busy === '1') return;
+        btn.dataset.busy = '1';
+
+        var originalHTML = btn.innerHTML;
+        copyEmail(FEEDBACK_EMAIL).then(function (ok) {
+            if (ok) {
+                btn.innerHTML = '✅ 邮箱已复制';
+                showToast('邮箱已复制');
+                if (tip) {
+                    tip.innerHTML = '邮箱已复制：<b>88061995@qq.com</b><br>请打开邮箱 App，粘贴到收件人后发送';
+                    tip.classList.add('show');
+                    setTimeout(function () { tip.classList.remove('show'); }, 8000);
+                }
+                setTimeout(function () {
+                    btn.innerHTML = originalHTML;
+                    btn.dataset.busy = '0';
+                }, 2000);
+            } else {
+                if (tip) {
+                    tip.innerHTML = '请手动复制邮箱：<b>88061995@qq.com</b><br>然后打开邮箱 App 发送';
+                    tip.classList.add('show');
+                    setTimeout(function () { tip.classList.remove('show'); }, 8000);
+                }
+                showToast('请手动复制邮箱', true);
+                btn.dataset.busy = '0';
+            }
+        });
+    }
+
+    /* ===== 12. 回到顶部 ===== */
+    var backTopCirc = 0;
+    var backTopFg = null;
+    function setupBackTop() {
+        var btn = DOM.backToTop;
+        if (!btn) return;
+        backTopFg = btn.querySelector('.ring-fg');
+        if (backTopFg) {
+            var R = 22;
+            backTopCirc = 2 * Math.PI * R;
+            backTopFg.style.strokeDasharray = backTopCirc;
+            backTopFg.style.strokeDashoffset = backTopCirc;
+        }
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    function updateBackTop() {
+        var btn = DOM.backToTop;
+        if (!btn) return;
+        var y = window.scrollY || window.pageYOffset || 0;
+        var max = Math.max(1, (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight);
+        var p = Math.max(0, Math.min(1, y / max));
+        if (backTopFg) backTopFg.style.strokeDashoffset = backTopCirc * (1 - p);
+        if (y > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+    }
+
+    /* ===== 13. 入场动画 ===== */
+    function setupReveal() {
+        var els = document.querySelectorAll('[data-animate]');
+        if (!('IntersectionObserver' in window) || document.documentElement.classList.contains('perf-lite')) {
+            for (var i = 0; i < els.length; i++) els[i].classList.add('visible');
+            return;
+        }
+        var observer = new IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) {
+                    entries[i].target.classList.add('visible');
+                    observer.unobserve(entries[i].target);
+                }
+            }
+        }, { threshold: 0.08 });
+        for (var j = 0; j < els.length; j++) observer.observe(els[j]);
+    }
+
+    /* ===== 14. 键盘快捷键 ===== */
+    function isTyping(el) {
+        if (!el) return false;
+        var t = el.tagName;
+        return t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || el.isContentEditable;
+    }
+
+    function bindKeyboard() {
+        document.addEventListener('keydown', function (e) {
+            var key = e.key || '';
+            var active = document.activeElement;
+
+            if (key === '/' && !isTyping(active)) {
+                e.preventDefault();
+                DOM.queryDate.focus();
+                return;
+            }
+            if (key === 'Escape') {
+                if (DOM.resultSection.classList.contains('show')) { hideResult(); return; }
+                if (active === DOM.queryDate) DOM.queryDate.blur();
+                return;
+            }
+            if (DOM.resultSection.classList.contains('show') && !isTyping(active)) {
+                if (key === 'ArrowLeft') { e.preventDefault(); shiftResult(-1); }
+                else if (key === 'ArrowRight') { e.preventDefault(); shiftResult(1); }
+            }
+            if (active === DOM.queryDate && (key === 'Enter' || e.keyCode === 13)) {
+                e.preventDefault();
+                doQuery();
+            }
+        });
+    }
+
+    /* ===== 15. 事件绑定 ===== */
+    function bindEvents() {
+        var shareBtn = document.querySelector('.share-btn');
+        if (shareBtn) shareBtn.addEventListener('click', function () { sharePage(this); });
+
+        var quickBtns = document.querySelectorAll('.quick-btn');
+        for (var i = 0; i < quickBtns.length; i++) {
+            (function (btn) {
+                btn.addEventListener('click', function () {
+                    var offset = parseInt(this.getAttribute('data-offset'), 10) || 0;
+                    quickQuery(offset);
+                });
+            })(quickBtns[i]);
+        }
+
+        var queryBtn = document.querySelector('.query-btn');
+        if (queryBtn) queryBtn.addEventListener('click', doQuery);
+
+        if (DOM.resultPrev) DOM.resultPrev.addEventListener('click', function () { shiftResult(-1); });
+        if (DOM.resultNext) DOM.resultNext.addEventListener('click', function () { shiftResult(1); });
+
+        var feedbackBtn = document.getElementById('feedbackBtn');
+        if (feedbackBtn) feedbackBtn.addEventListener('click', openFeedback);
+
+        var scrollTicking = false;
+        window.addEventListener('scroll', function () {
+            if (scrollTicking) return;
+            scrollTicking = true;
+            requestAnimationFrame(function () {
+                updateBackTop();
+                scrollTicking = false;
+            });
+        }, { passive: true });
+    }
+
+    /* ===== 16. 可见性管理 ===== */
+    var refreshTimer = null;
+    function startRefreshTimer() {
+        stopRefreshTimer();
+        refreshTimer = setInterval(refreshIfDateChanged, 60000);
+    }
+    function stopRefreshTimer() {
+        if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+    }
+
+    function bindVisibility() {
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                stopExactTimer();
+                stopRefreshTimer();
+            } else {
+                refreshIfDateChanged();
+                startExactTimer();
+                startRefreshTimer();
+            }
+        });
+    }
+
+    /* ============================================================
+       离线遮罩控制
+       ============================================================ */
+    var OfflineMask = (function () {
+        'use strict';
+
+        var maskEl      = null;
+        var statusEl    = null;
+        var statusText  = null;
+        var retryBtn    = null;
+        var closeBtn    = null;
+
+        var autoRetryTimer = null;
+        var AUTO_RETRY_DELAY = 3000;
+        var isShowing = false;
+        var userClosed = false;
+
+        function init() {
+            maskEl     = document.getElementById('offlineMask');
+            statusEl   = document.getElementById('offlineStatus');
+            statusText = document.getElementById('offlineStatusText');
+            retryBtn   = document.getElementById('offlineRetryBtn');
+            closeBtn   = document.getElementById('offlineCloseBtn');
+
+            if (!maskEl) return;
+
+            retryBtn.addEventListener('click', function () {
+                if (navigator.onLine) {
+                    hide();
+                    return;
+                }
+                retryBtn.disabled = true;
+                retryBtn.textContent = '⏳ 检测中…';
+                probeOnline(function (ok) {
+                    retryBtn.disabled = false;
+                    retryBtn.textContent = '🔄 重新加载';
+                    if (ok) { hide(); }
+                    else { statusText.textContent = '仍然离线'; }
+                });
+            });
+
+            closeBtn.addEventListener('click', function () {
+                userClosed = true;
+                hide();
+            });
+
+            window.addEventListener('online',  onOnline);
+            window.addEventListener('offline', onOffline);
+
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden) {
+                    if (navigator.onLine) hide();
+                    else if (!userClosed) show();
+                }
+            });
+
+            if (!navigator.onLine) {
+                show();
+                startAutoRetry();
+            }
+        }
+
+        function show() {
+            if (!maskEl || isShowing) return;
+            isShowing = true;
+            maskEl.classList.add('show');
+            if (statusEl)   statusEl.classList.remove('online');
+            if (statusText) statusText.textContent = '离线';
+        }
+
+        function hide() {
+            if (!maskEl || !isShowing) return;
+            isShowing = false;
+            maskEl.classList.remove('show');
+            stopAutoRetry();
+        }
+
+        function onOnline() {
+            if (statusEl)   statusEl.classList.add('online');
+            if (statusText) statusText.textContent = '已连接';
+            setTimeout(hide, 600);
+        }
+
+        function onOffline() {
+            if (userClosed) return;
+            show();
+            startAutoRetry();
+        }
+
+        function probeOnline(callback) {
+            var img = new Image();
+            var done = false;
+            var timer = setTimeout(function () {
+                if (done) return;
+                done = true;
+                callback(false);
+            }, 2500);
+
+            img.onload = function () {
+                if (done) return;
+                done = true;
+                clearTimeout(timer);
+                callback(true);
+            };
+            img.onerror = function () {
+                if (done) return;
+                done = true;
+                clearTimeout(timer);
+                callback(false);
+            };
+            img.src = 'https://www.baidu.com/favicon.ico?_=' + Date.now();
+        }
+
+        function startAutoRetry() {
+            stopAutoRetry();
+            autoRetryTimer = setInterval(function () {
+                if (navigator.onLine) {
+                    onOnline();
+                    return;
+                }
+                probeOnline(function (ok) {
+                    if (ok) onOnline();
+                });
+            }, AUTO_RETRY_DELAY);
+        }
+
+        function stopAutoRetry() {
+            if (autoRetryTimer) {
+                clearInterval(autoRetryTimer);
+                autoRetryTimer = null;
+            }
+        }
+
+        return {
+            init: init,
+            show: show,
+            hide: hide
+        };
+    })();
+
+    /* ===== 17. 初始化 ===== */
+    function init() {
+        cacheDom();
+        OfflineMask.init();
+
+        var last = null;
+        try { last = localStorage.getItem(LAST_QUERY_KEY); } catch (e) {}
+        var defaultDate = getBeijingDate();
+
+        if (DOM.queryDate) {
+            DOM.queryDate.min = CONFIG.minDate;
+            DOM.queryDate.max = CONFIG.maxDate;
+            if (last && /^\d{4}-\d{2}-\d{2}$/.test(last)) {
+                DOM.queryDate.value = last;
+            } else {
+                DOM.queryDate.value = formatInputDate(defaultDate);
+            }
+        }
+
+        renderToday();
+        setupBackTop();
+        updateBackTop();
+        bindEvents();
+        bindKeyboard();
+        bindVisibility();
+        setupReveal();
+
+        startExactTimer();
+        startRefreshTimer();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+</body>
+</html>
