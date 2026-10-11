@@ -2,7 +2,7 @@
   "currentMode": "full",
   "full": {
     "settings": {
-      "baseSalary": 3,
+      "baseSalary": 0,
       "__userSet": true
     },
     "customHolidays": {},
