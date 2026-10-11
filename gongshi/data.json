@@ -7,7 +7,17 @@
     },
     "customHolidays": {},
     "allowances": [],
-    "records": {}
+    "records": {
+      "2026-10-12": {
+        "id": "1791735032606-s9fuct",
+        "att": "work",
+        "hours": 12,
+        "shift": "白班",
+        "hourlyRate": 13.218390804597702,
+        "dailySalary": 105.74712643678161,
+        "timestamp": 1791735032606
+      }
+    }
   },
   "temp": {
     "settings": {
