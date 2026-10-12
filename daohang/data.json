@@ -267,18 +267,6 @@
     ]
   },
   {
-    "category": "测试",
-    "icon": "📝",
-    "color": "#60a5fa",
-    "items": [
-      {
-        "name": "还是测试",
-        "url": "https://www.baidu.com",
-        "desc": "就是测试呀"
-      }
-    ]
-  },
-  {
     "category": "其·他",
     "icon": "📌",
     "color": "#94a3b8",
