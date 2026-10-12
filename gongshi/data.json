@@ -15,6 +15,14 @@
     },
     "customHolidays": {},
     "allowances": [],
-    "records": {}
+    "records": {
+      "2026-10-12": {
+        "id": "1791822492487-4lw49u",
+        "att": "work",
+        "hours": 8,
+        "shift": "白班",
+        "timestamp": 1791822492487
+      }
+    }
   }
 }
