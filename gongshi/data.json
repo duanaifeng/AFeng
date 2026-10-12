@@ -1,0 +1,20 @@
+{
+  "version": 6,
+  "currentMode": "temp",
+  "full": {
+    "settings": {
+      "baseSalary": null
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {}
+  },
+  "temp": {
+    "settings": {
+      "rate": null
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {}
+  }
+}
