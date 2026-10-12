@@ -1,5 +1,5 @@
 {
-  "currentMode": "temp",
+  "currentMode": "full",
   "full": {
     "settings": {
       "baseSalary": 2300,
@@ -16,6 +16,15 @@
         "hourlyRate": 13.218390804597702,
         "dailySalary": 105.74712643678161,
         "timestamp": 1791735032606
+      },
+      "2026-10-09": {
+        "id": "1791776571356-mogi94",
+        "att": "work",
+        "hours": 12,
+        "shift": "夜班",
+        "hourlyRate": 13.218390804597702,
+        "dailySalary": 105.74712643678161,
+        "timestamp": 1791776571356
       }
     }
   },
@@ -35,5 +44,6 @@
         "timestamp": 1791735051603
       }
     }
-  }
+  },
+  "version": 6
 }
