@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f0f4fc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0f1a" media="(prefers-color-scheme: dark)">
+<meta name="description" content="西邑赶集日历：永信街、羊邑街、丙麻街、西邑街四天循环查询。">
+<meta name="keywords" content="西邑赶集,永信街,羊邑街,丙麻街,西邑街,保山隆阳">
+<meta name="robots" content="index,follow">
+<meta name="author" content="AiFeng">
+<link rel="canonical" href="https://duanaifeng.github.io/AFeng/ganji.html">
+<meta property="og:title" content="西邑乡赶集日历">
+<meta property="og:description" content="四街循环，按天查询，赶集不迷路">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duanaifeng.github.io/AFeng/ganji.html">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏮</text></svg>">
+<link rel="apple-touch-icon" href="/AFeng/ico/192.png">
+<title>西邑乡赶集日历 · AiFeng</title>
+<script>
+(function () {
+  'use strict';
+  try {
+    var path = location.pathname;
+    if (/\.html?$/i.test(path)) path = path.replace(/[^\/]*$/, '');
+    else if (!/\/$/.test(path)) path += '/';
+    var scope = location.origin + path;
+    var manifest = {
+      name: '西邑乡赶集日历',
+      short_name: '赶集日历',
+      description: '永信街、羊邑街、丙麻街、西邑街四天循环',
+      start_url: scope, scope: scope,
+      display: 'standalone', orientation: 'portrait',
+      background_color: '#f0f4fc', theme_color: '#60a5fa',
+      lang: 'zh-CN',
+      icons: [
+        { src: '/AFeng/ico/192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/ico/512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/ico/192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+        { src: '/AFeng/ico/512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+      ]
+    };
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json;charset=utf-8,' +
+                encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  } catch (e) {}
+  var lite = false;
+  try {
+    var s = location.search || '';
+    if (/[?&]full=1/.test(s)) lite = false;
+    else if (/[?&]lite=1/.test(s)) lite = true;
+    else {
+      if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4) lite = true;
+      if (typeof navigator.hardwareConcurrency === 'number' &&
+          navigator.hardwareConcurrency > 0 &&
+          navigator.hardwareConcurrency <= 4) lite = true;
+      if (navigator.connection && navigator.connection.saveData) lite = true;
+      if (window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches) lite = true;
+    }
+  } catch (e) { lite = true; }
+  if (lite) document.documentElement.classList.add('perf-lite');
+  window.__AF_LITE__ = lite;
+  try {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+/* ============================================================
+ * 01. 令牌（与主页 / 导航 / 游戏 / 工时一致）
+ * ============================================================ */
+:root {
+  --k-blue-100:#dbeafe;--k-blue-200:#bfdbfe;--k-blue-300:#93c5fd;
+  --k-blue-400:#60a5fa;--k-blue-500:#3b82f6;--k-blue-600:#2563eb;--k-blue-700:#1d4ed8;
+  --k-cyan-300:#67e8f9;--k-cyan-400:#38bdf8;--k-cyan-500:#0ea5e9;
+  --k-indigo-300:#a5b4fc;--k-indigo-400:#818cf8;--k-indigo-500:#6366f1;
+  --k-violet-400:#a78bfa;--k-violet-500:#8b5cf6;
+  --k-green-300:#86efac;--k-green-400:#4ade80;--k-green-500:#22c55e;--k-green-600:#16a34a;
+  --k-amber-300:#fcd34d;--k-amber-400:#fbbf24;--k-amber-500:#f59e0b;--k-amber-600:#d97706;
+  --k-red-300:#fca5a5;--k-red-400:#f87171;--k-red-500:#ef4444;--k-red-600:#dc2626;
+  --k-orange-400:#fb923c;--k-orange-500:#ea580c;
+  --k-slate-50:#f8fafc;--k-slate-100:#f1f5f9;--k-slate-200:#e2e8f0;
+  --k-slate-300:#cbd5e1;--k-slate-400:#94a3b8;--k-slate-500:#64748b;
+  --k-slate-600:#475569;--k-slate-700:#334155;--k-slate-800:#1e293b;
+  --k-slate-900:#0f172a;--k-slate-950:#0a0f1a;
+  --k-navy-800:#0e1524;--k-navy-900:#0b1120;
+  --k-gold-300:#fcd34d;--k-gold-400:#fbbf24;--k-gold-500:#f59e0b;--k-gold-600:#d97706;
+  --k-white:#fff;
+
+  --bg:#f0f4fc;--bg-2:#e6edf8;
+  --surface:rgba(255,255,255,.72);
+  --surface-2:rgba(255,255,255,.90);
+  --surface-3:#ffffff;
+  --text-1:#0f172a;--text-2:#475569;--text-3:#64748b;
+  --border-1:rgba(59,130,246,.14);
+  --border-2:rgba(59,130,246,.32);
+  --accent:#2563eb;--accent-hover:#1d4ed8;
+  --accent-soft:rgba(59,130,246,.10);
+  --accent-glow:rgba(59,130,246,.30);
+  --accent-tint:rgba(59,130,246,.06);
+  --glow-blue:rgba(96,165,250,.22);
+  --glow-cyan:rgba(56,189,248,.15);
+  --glow-indigo:rgba(129,140,248,.13);
+  --grid-line:rgba(59,130,246,.07);
+  --shine:rgba(255,255,255,.85);
+
+  /* 交通灯语义色（只用于今日 / 结果卡片） */
+  --sig-green:#16a34a;--sig-green-soft:rgba(34,197,94,.10);--sig-green-tint:rgba(34,197,94,.05);
+  --sig-amber:#d97706;--sig-amber-soft:rgba(217,119,6,.10);--sig-amber-tint:rgba(217,119,6,.05);
+  --sig-red:#dc2626;--sig-red-soft:rgba(220,38,38,.08);--sig-red-tint:rgba(220,38,38,.04);
+  --sig-gray:#64748b;--sig-gray-soft:rgba(100,116,139,.10);--sig-gray-tint:rgba(100,116,139,.05);
+
+  --festive:#c0392b;
+  --gold:#d4a017;
+  --gold-bright:#f0c96b;
+
+  --radius-xs:4px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:22px;
+  --dur-instant:80ms;--dur-fast:140ms;--dur:220ms;--dur-slow:360ms;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --ease-spring:cubic-bezier(.34,1.4,.64,1);
+  --focus-ring:0 0 0 3px rgba(59,130,246,.26);
+  --shadow-sm:0 1px 2px rgba(15,40,90,.05),0 2px 8px rgba(15,40,90,.05);
+  --shadow-md:0 2px 4px rgba(15,40,90,.05),0 8px 24px rgba(15,40,90,.08);
+  --shadow-lg:0 4px 12px rgba(15,40,90,.06),0 20px 48px rgba(37,99,235,.14);
+  --container-max:1120px;
+  --container-pad-x:20px;
+}
+html.dark {
+  --bg:#0a0f1a;--bg-2:#0e1524;
+  --surface:rgba(147,197,253,.045);
+  --surface-2:rgba(147,197,253,.07);
+  --surface-3:rgba(147,197,253,.10);
+  --text-1:#e4edfa;--text-2:#9db0cb;--text-3:#8ba3c2;
+  --border-1:rgba(147,197,253,.10);
+  --border-2:rgba(96,165,250,.28);
+  --accent:#60a5fa;--accent-hover:#93c5fd;
+  --accent-soft:rgba(96,165,250,.14);
+  --accent-glow:rgba(96,165,250,.42);
+  --accent-tint:rgba(96,165,250,.08);
+  --glow-blue:rgba(59,130,246,.26);
+  --glow-cyan:rgba(56,189,248,.18);
+  --glow-indigo:rgba(129,140,248,.16);
+  --grid-line:rgba(96,165,250,.08);
+  --shine:rgba(147,197,253,.28);
+
+  --sig-green:#4ade80;--sig-green-soft:rgba(74,222,128,.14);--sig-green-tint:rgba(74,222,128,.06);
+  --sig-amber:#fbbf24;--sig-amber-soft:rgba(251,191,36,.14);--sig-amber-tint:rgba(251,191,36,.06);
+  --sig-red:#f87171;--sig-red-soft:rgba(248,113,113,.12);--sig-red-tint:rgba(248,113,113,.05);
+  --sig-gray:#94a3b8;--sig-gray-soft:rgba(148,163,184,.14);--sig-gray-tint:rgba(148,163,184,.06);
+
+  --festive:#e07a5f;
+  --gold:#f0c96b;
+  --gold-bright:#fcd34d;
+
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3);
+  --shadow-md:0 2px 4px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.5);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 20px 48px rgba(0,0,0,.7);
+  --focus-ring:0 0 0 3px rgba(96,165,250,.4);
+}
+
+/* ============================================================
+ * 02. 重置
+ * ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{color-scheme:light;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+html.dark{color-scheme:dark}
+html.perf-lite{scroll-behavior:auto}
+html,body{overflow-x:hidden}
+body{
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,'HarmonyOS Sans SC','HarmonyOS Sans','Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei',Arial,sans-serif;
+  font-size:15px;line-height:1.6;
+  color:var(--text-1);background:var(--bg);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  transition:background var(--dur-slow) var(--ease),color var(--dur-slow) var(--ease);
+  display:flex;flex-direction:column;align-items:center;
+}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius-sm)}
+::selection{background:var(--accent-soft);color:var(--text-1)}
+@media (min-width:1024px){
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:10px;border:2px solid var(--bg)}
+  ::-webkit-scrollbar-thumb:hover{background:var(--accent-glow)}
+}
+.skip-link{position:absolute;left:12px;top:-64px;z-index:10000;padding:10px 18px;border-radius:var(--radius-md);background:var(--accent);color:#fff;font-weight:700;font-size:14px;text-decoration:none;transition:top var(--dur-fast) var(--ease)}
+.skip-link:focus{top:12px}
+
+/* ============================================================
+ * 03. 背景层
+ * ============================================================ */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-gradient{position:absolute;inset:0;background:
+  radial-gradient(1000px 640px at 10% -10%,var(--glow-blue),transparent 62%),
+  radial-gradient(840px 560px at 92% 4%,var(--glow-cyan),transparent 60%),
+  radial-gradient(720px 520px at 60% 100%,var(--glow-indigo),transparent 65%),
+  linear-gradient(165deg,var(--bg) 0%,var(--bg-2) 58%,var(--bg) 100%);
+  transition:background var(--dur-slow) var(--ease)}
+.bg-grid{position:absolute;inset:0;background-image:
+  linear-gradient(var(--grid-line) 1px,transparent 1px),
+  linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse at 50% 30%,#000 28%,transparent 84%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 28%,transparent 84%)}
+.bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 46%,rgba(15,40,90,.06) 100%)}
+html.dark .bg-vignette{background:radial-gradient(ellipse at 50% 40%,transparent 42%,rgba(0,0,0,.55) 100%)}
+#particleCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
+html.perf-lite .bg-grid,html.perf-lite .bg-vignette,html.perf-lite #particleCanvas{display:none}
+html.perf-lite .bg-gradient{background:var(--bg)}
+
+/* ============================================================
+ * 04. 容器
+ * ============================================================ */
+.page{position:relative;z-index:2;width:100%;max-width:var(--container-max);padding:0 var(--container-pad-x);display:flex;flex-direction:column}
+@media (max-width:480px){.page{--container-pad-x:16px}}
+@media (min-width:768px){.page{--container-pad-x:32px}}
+@media (min-width:1024px){.page{--container-pad-x:48px}}
+
+/* ============================================================
+ * 05. Hero · 灯笼 + 鞭炮 + 居中标题
+ * ============================================================ */
+.hero{padding:32px 0 24px;position:relative}
+@media (min-width:768px){.hero{padding:48px 0 32px}}
+@media (min-width:1024px){.hero{padding:64px 0 40px}}
+
+.hero-card{
+  position:relative;
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border:1px solid var(--border-1);
+  padding:52px 24px 32px;
+  overflow:hidden;
+  text-align:center;
+  box-shadow:var(--shadow-md),0 0 0 1px var(--shine) inset;
+  transition:box-shadow var(--dur-slow) var(--ease),border-color var(--dur-slow) var(--ease);
+}
+html.dark .hero-card{box-shadow:var(--shadow-md),0 0 0 1px rgba(255,255,255,.03) inset}
+.hero-card::before{
+  content:'';position:absolute;top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent-glow),transparent);
+  pointer-events:none;
+}
+@media (min-width:1024px){.hero-card{padding:64px 48px 40px}}
+
+.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px}
+.brand-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  font-size:11.5px;letter-spacing:.16em;
+  color:var(--text-3);font-weight:700;
+}
+.brand-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft),0 0 12px var(--accent-glow);
+  animation:brandPulse 2.6s ease-in-out infinite;
+}
+@keyframes brandPulse{
+  0%,100%{box-shadow:0 0 0 4px var(--accent-soft),0 0 12px var(--accent-glow)}
+  50%{box-shadow:0 0 0 8px transparent,0 0 20px var(--accent-glow)}
+}
+.title-cn{
+  font-size:clamp(30px,4.6vw,54px);
+  font-weight:900;
+  letter-spacing:.06em;
+  line-height:1.15;
+  color:var(--text-1);
+  font-family:'Songti SC','STSong','SimSun',serif;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .title-cn{
+    background:linear-gradient(135deg,var(--accent) 0%,var(--k-cyan-400) 50%,var(--accent) 100%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:titleFlow 9s ease-in-out infinite;
+  }
+}
+@keyframes titleFlow{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+.title-en{
+  font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  font-size:clamp(11px,1.3vw,14px);
+  font-weight:700;
+  letter-spacing:.42em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-top:-4px;
+  opacity:.85;
+}
+.subtitle{
+  font-size:13.5px;
+  color:var(--text-3);
+  font-weight:500;
+  letter-spacing:.02em;
+  line-height:1.6;
+  margin-top:2px;
+}
+@media (min-width:1024px){.subtitle{font-size:14.5px}}
+
+/* 街名 chips —— 修复：圆点垂直居中 + 左侧留呼吸空间 */
+.street-chips{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:10px;list-style:none;margin-top:14px;
+}
+.street-chip{
+  position:relative;
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;
+  padding:9px 16px 9px 24px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  transition:all var(--dur) var(--ease);
+  min-width:88px;
+}
+.street-chip::before{
+  content:'';
+  position:absolute;
+  left:11px;
+  top:50%;
+  transform:translateY(-50%);
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 6px var(--accent-glow);
+}
+.street-chip-cn{
+  font-size:13px;font-weight:800;
+  color:var(--text-1);
+  letter-spacing:.02em;
+  line-height:1.2;
+}
+.street-chip-en{
+  font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:.22em;
+  color:var(--accent);
+  text-transform:uppercase;
+  opacity:.8;
+  line-height:1;
+}
+@media (hover:hover) and (pointer:fine){
+  .street-chip:hover{transform:translateY(-2px);border-color:var(--border-2);box-shadow:var(--shadow-sm)}
+}
+
+/* 灯笼 + 鞭炮装饰 */
+.deco{position:absolute;top:0;width:80px;height:200px;pointer-events:none;z-index:3;display:flex;flex-direction:column;align-items:center}
+.deco--left{left:14px}
+.deco--right{right:14px}
+@media (min-width:1024px){
+  .deco{width:110px;height:240px}
+  .deco--left{left:36px}
+  .deco--right{right:36px}
+}
+@media (max-width:520px){
+  .deco{width:56px;height:150px}
+  .deco--left{left:8px}
+  .deco--right{right:8px}
+}
+
+.lantern{
+  position:relative;
+  width:48px;height:60px;
+  transform-origin:top center;
+  animation:lanternSwing 4.5s ease-in-out infinite;
+  flex:0 0 auto;
+}
+.deco--right .lantern{animation-delay:-2.25s}
+.lantern::before{
+  content:'';position:absolute;
+  top:-10px;left:50%;
+  width:2px;height:12px;
+  background:linear-gradient(180deg,transparent,var(--festive));
+  transform:translateX(-50%);
+}
+.lantern-body{
+  position:absolute;top:0;left:50%;
+  width:44px;height:52px;
+  background:radial-gradient(ellipse at 30% 28%,#ff9d8a 0%,#e63946 38%,var(--festive) 65%,#8c1c13 100%);
+  border-radius:50%;
+  transform:translateX(-50%);
+  box-shadow:
+    0 0 20px rgba(230,57,70,.6),
+    0 0 42px rgba(230,57,70,.3),
+    inset -4px -4px 10px rgba(0,0,0,.32),
+    inset 4px 4px 10px rgba(255,220,140,.5);
+  display:flex;align-items:center;justify-content:center;
+}
+html.dark .lantern-body{
+  background:radial-gradient(ellipse at 30% 28%,#ffb3a0 0%,#e63946 38%,var(--festive) 65%,#8c1c13 100%);
+  box-shadow:
+    0 0 24px rgba(255,138,122,.8),
+    0 0 48px rgba(230,57,70,.45),
+    inset -4px -4px 10px rgba(0,0,0,.32),
+    inset 4px 4px 10px rgba(255,220,140,.5);
+}
+.lantern-body::before,
+.lantern-body::after{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  width:28px;height:3.5px;
+  background:linear-gradient(90deg,var(--k-gold-600),var(--k-gold-400),var(--k-gold-600));
+  border-radius:2px;
+  box-shadow:0 0 6px rgba(251,191,36,.6);
+}
+.lantern-body::before{top:-2px}
+.lantern-body::after{bottom:-2px}
+.lantern-word{
+  font-size:17px;font-weight:900;
+  color:var(--k-gold-300);
+  text-shadow:0 0 8px rgba(251,191,36,.9),0 0 16px rgba(251,191,36,.6);
+  line-height:1;
+  font-family:'Songti SC','STSong',serif;
+}
+.lantern-tassel{
+  position:absolute;top:52px;left:50%;
+  width:4px;height:16px;
+  background:linear-gradient(180deg,var(--k-gold-400),var(--k-gold-600));
+  transform:translateX(-50%);
+  border-radius:2px;
+  box-shadow:0 0 8px rgba(251,191,36,.7);
+}
+.lantern-tassel::after{
+  content:'';position:absolute;bottom:-8px;left:50%;
+  transform:translateX(-50%);
+  width:8px;height:10px;
+  background:radial-gradient(ellipse at 50% 30%,var(--k-gold-300),var(--k-gold-600));
+  border-radius:50% 50% 60% 60%;
+}
+@keyframes lanternSwing{
+  0%,100%{transform:rotate(-3.5deg)}
+  50%{transform:rotate(3.5deg)}
+}
+
+.firecracker{
+  width:24px;margin-top:14px;opacity:1;
+  filter:drop-shadow(0 0 6px rgba(240,201,107,.55));
+}
+.firecracker svg{width:100%;height:auto;display:block}
+.fc-line{stroke:var(--gold);stroke-width:1.4;fill:none;stroke-linecap:round}
+.fc-dot{fill:var(--gold-bright);filter:drop-shadow(0 0 3px rgba(240,201,107,.9))}
+.fc-spark{fill:var(--k-gold-300);animation:sparkFade 2.4s ease-in-out infinite}
+.fc-spark:nth-child(9){animation-delay:0s}
+.fc-spark:nth-child(10){animation-delay:.6s}
+.fc-spark:nth-child(11){animation-delay:1.2s}
+.fc-spark:nth-child(12){animation-delay:1.8s}
+@keyframes sparkFade{
+  0%,100%{opacity:.4}
+  50%{opacity:1}
+}
+@media (max-width:520px){
+  .lantern{width:36px;height:46px}
+  .lantern-body{width:34px;height:40px}
+  .lantern-body::before,.lantern-body::after{width:22px}
+  .lantern-word{font-size:13px}
+  .lantern-tassel{top:40px;height:13px}
+  .firecracker{width:18px;margin-top:10px}
+}
+
+/* ============================================================
+ * 06. 今日卡片 · 交通灯（始终绿灯）
+ * ============================================================ */
+.today-card{
+  --signal:var(--sig-green);
+  --signal-soft:var(--sig-green-soft);
+  --signal-tint:var(--sig-green-tint);
+  position:relative;
+  padding:28px 24px 24px;
+  border-radius:var(--radius-xl);
+  background:linear-gradient(180deg,var(--signal-tint) 0%,transparent 45%),var(--surface);
+  border:1px solid var(--border-1);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:var(--shadow-md),0 0 0 1px var(--shine) inset;
+  overflow:hidden;
+  text-align:center;
+  margin-bottom:14px;
+  transition:background var(--dur-slow) var(--ease),border-color var(--dur-slow) var(--ease);
+}
+html.dark .today-card{box-shadow:var(--shadow-md),0 0 0 1px rgba(255,255,255,.03) inset}
+.today-card::before{
+  content:'';position:absolute;top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--signal),transparent);
+  opacity:.4;pointer-events:none;
+}
+@media (min-width:1024px){.today-card{padding:36px 32px 32px}}
+
+.signal-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:ui-monospace,'SF Mono','Menlo',monospace;
+  font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--signal);
+  margin-bottom:14px;
+  padding:4px 12px;
+  border-radius:100px;
+  background:var(--signal-soft);
+  border:1px solid var(--signal-soft);
+}
+.signal-dot{
+  display:inline-block;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--signal);
+  box-shadow:0 0 0 3px var(--signal-soft),0 0 10px var(--signal);
+  animation:signalPulse 2.4s ease-in-out infinite;
+}
+@keyframes signalPulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 3px var(--signal-soft),0 0 10px var(--signal)}
+  50%{transform:scale(1.15);box-shadow:0 0 0 6px transparent,0 0 16px var(--signal)}
+}
+
+.today-date{
+  font-size:14.5px;font-weight:700;
+  color:var(--text-2);
+  letter-spacing:.02em;
+  margin-bottom:5px;
+  font-variant-numeric:tabular-nums;
+}
+.today-lunar{
+  font-size:12.5px;font-weight:600;
+  color:var(--signal);
+  letter-spacing:.06em;
+  margin-bottom:10px;
+  min-height:1.4em;
+}
+.today-lunar:empty{display:none}
+
+.street-display{
+  margin:12px 0;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.street-cn-big{
+  font-size:clamp(48px,10vw,76px);
+  font-weight:900;
+  letter-spacing:.04em;
+  line-height:1.05;
+  color:var(--signal);
+  font-variant-numeric:tabular-nums;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .street-cn-big{
+    background:linear-gradient(135deg,var(--signal) 0%,color-mix(in srgb,var(--signal) 60%,white) 50%,var(--signal) 100%);
+    background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:titleFlow 6s ease-in-out infinite;
+  }
+}
+.street-en-small{
+  font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  font-size:12px;font-weight:700;
+  letter-spacing:.32em;
+  color:var(--signal);
+  text-transform:uppercase;
+  opacity:.85;
+}
+.today-hint{
+  font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--signal);
+  opacity:.85;
+}
+
+.exact-countdown{
+  margin-top:22px;
+  padding:14px 16px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  text-align:center;
+}
+.exact-label{
+  font-size:11.5px;font-weight:700;
+  letter-spacing:.04em;
+  color:var(--text-3);
+  margin-bottom:10px;
+  line-height:1.5;
+}
+.exact-label b{color:var(--signal);font-weight:800;letter-spacing:.02em}
+.exact-timer{
+  display:flex;align-items:baseline;justify-content:center;
+  gap:2px;
+  font-variant-numeric:tabular-nums;
+}
+.exact-num{
+  font-size:22px;font-weight:800;
+  color:var(--signal);
+  letter-spacing:-.02em;
+  min-width:1.6ch;
+  text-align:center;
+  line-height:1;
+}
+@media (min-width:1024px){.exact-num{font-size:26px}}
+.exact-unit{
+  font-size:10.5px;font-weight:700;
+  color:var(--text-3);
+  letter-spacing:.04em;
+  margin:0 6px 0 2px;
+}
+.exact-unit:last-child{margin-right:0}
+
+/* ============================================================
+ * 07. 明天提示
+ * ============================================================ */
+.tomorrow-bar{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  border-radius:var(--radius-md);
+  background:var(--surface);
+  border:1px solid var(--border-1);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:var(--shadow-sm);
+  margin-bottom:14px;
+  text-align:left;
+}
+.tomorrow-icon{flex:0 0 auto;font-size:18px;line-height:1}
+.tomorrow-text{
+  flex:1;min-width:0;
+  font-size:13px;font-weight:600;
+  color:var(--text-2);
+  line-height:1.5;
+  font-variant-numeric:tabular-nums;
+}
+.tomorrow-street{color:var(--accent);font-weight:800;margin-left:4px}
+
+/* ============================================================
+ * 08. 通用卡片（蓝色主调）
+ * ============================================================ */
+.card{
+  position:relative;
+  padding:20px;
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  border:1px solid var(--border-1);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:var(--shadow-sm),0 0 0 1px var(--shine) inset;
+  margin-bottom:14px;
+  transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+html.dark .card{box-shadow:var(--shadow-sm),0 0 0 1px rgba(255,255,255,.03) inset}
+@media (hover:hover) and (pointer:fine){.card:hover{border-color:var(--border-2)}}
+@media (min-width:1024px){.card{padding:26px 28px;margin-bottom:18px}}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.card-head-icon{
+  flex:0 0 auto;
+  width:32px;height:32px;
+  border-radius:var(--radius-sm);
+  background:var(--accent-soft);
+  border:1px solid var(--border-1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;line-height:1;
+}
+.card-head-title{
+  font-size:14px;font-weight:800;
+  letter-spacing:.02em;
+  color:var(--text-1);
+  line-height:1.4;
+}
+.card-head-rule{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border-2),var(--border-1) 60%,transparent);
+}
+
+/* ============================================================
+ * 09. 未来 7 天
+ * ============================================================ */
+.week-strip{
+  display:flex;gap:8px;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  padding:2px 2px 10px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.week-strip::-webkit-scrollbar{display:none}
+@media (min-width:1024px){
+  .week-strip{display:grid;grid-template-columns:repeat(7,1fr);overflow:visible;padding:0;gap:10px}
+}
+.week-item{
+  flex:0 0 auto;
+  min-width:80px;
+  padding:12px 8px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  text-align:center;
+  scroll-snap-align:start;
+  transition:all var(--dur) var(--ease);
+}
+@media (min-width:1024px){.week-item{min-width:0}}
+.week-item.today{
+  background:var(--sig-green-soft);
+  border-color:var(--sig-green);
+  box-shadow:0 0 14px var(--sig-green-soft);
+}
+.week-day{
+  font-size:10.5px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-3);
+  margin-bottom:4px;
+  font-variant-numeric:tabular-nums;
+}
+.week-item.today .week-day{color:var(--sig-green)}
+.week-date{
+  font-size:11.5px;font-weight:700;
+  color:var(--text-3);
+  margin-bottom:7px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em;
+}
+.week-street-cn{
+  font-size:13px;font-weight:800;
+  color:var(--text-1);
+  letter-spacing:.02em;
+  line-height:1.2;
+  margin-bottom:3px;
+}
+.week-item.today .week-street-cn{color:var(--sig-green)}
+.week-street-en{
+  font-family:ui-monospace,'SF Mono','Menlo',monospace;
+  font-size:8.5px;font-weight:700;
+  letter-spacing:.16em;
+  color:var(--text-3);
+  text-transform:uppercase;
+  opacity:.75;
+  line-height:1;
+}
+.week-item.today .week-street-en{color:var(--sig-green);opacity:.9}
+
+/* ============================================================
+ * 10. 四街倒计时
+ * ============================================================ */
+.countdown-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:6px;list-style:none;
+}
+@media (min-width:1024px){.countdown-grid{gap:12px}}
+.countdown-item{
+  padding:12px 4px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  text-align:center;
+  transition:all var(--dur) var(--ease);
+}
+.countdown-item.today{
+  background:var(--sig-green-soft);
+  border-color:var(--sig-green);
+  box-shadow:0 0 12px var(--sig-green-soft);
+}
+.countdown-street{
+  font-size:11.5px;font-weight:700;
+  color:var(--text-2);
+  letter-spacing:.02em;
+  margin-bottom:3px;
+  line-height:1.2;
+}
+.countdown-street-en{
+  font-family:ui-monospace,'SF Mono','Menlo',monospace;
+  font-size:8px;font-weight:700;
+  letter-spacing:.16em;
+  color:var(--text-3);
+  text-transform:uppercase;
+  opacity:.7;
+  margin-bottom:7px;
+  line-height:1;
+}
+.countdown-item.today .countdown-street,
+.countdown-item.today .countdown-street-en{color:var(--sig-green);opacity:1}
+.countdown-days{
+  font-size:13px;font-weight:800;
+  color:var(--text-1);
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em;
+  line-height:1.2;
+}
+.countdown-item.today .countdown-days{color:var(--sig-green)}
+@media (min-width:1024px){
+  .countdown-item{padding:18px 8px}
+  .countdown-street{font-size:12.5px}
+  .countdown-street-en{font-size:9px}
+  .countdown-days{font-size:15px}
+}
+
+/* ============================================================
+ * 11. 查询区
+ * ============================================================ */
+.quick-btns{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-bottom:16px;
+}
+.quick-btn{
+  padding:12px 8px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  color:var(--text-2);
+  font-family:inherit;font-size:13px;font-weight:700;
+  letter-spacing:.02em;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .quick-btn:hover{background:var(--accent-soft);border-color:var(--border-2);color:var(--accent)}
+}
+.quick-btn:active{transform:scale(.97)}
+.divider-text{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-3);
+  margin:0 0 14px;
+}
+.divider-text::before,.divider-text::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-1),transparent);
+}
+.date-input{
+  width:100%;padding:14px 16px;
+  border-radius:var(--radius-md);
+  border:1px solid var(--border-1);
+  background:var(--surface-2);
+  color:var(--text-1);
+  font-family:inherit;font-size:15px;font-weight:700;
+  letter-spacing:.04em;text-align:center;
+  outline:none;margin-bottom:12px;
+  font-variant-numeric:tabular-nums;
+  -webkit-appearance:none;appearance:none;
+  transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.date-input:focus-visible{border-color:var(--accent);box-shadow:0 0 0 3px var(--focus-ring)}
+.date-input::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.5}
+html.dark .date-input::-webkit-calendar-picker-indicator{filter:invert(1)}
+.query-btn{
+  width:100%;padding:15px;
+  border-radius:var(--radius-md);
+  border:none;background:var(--accent);
+  color:#fff;font-family:inherit;
+  font-size:14.5px;font-weight:800;
+  letter-spacing:.08em;cursor:pointer;
+  box-shadow:0 6px 18px var(--accent-glow);
+  transition:all var(--dur) var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .query-btn:hover{background:var(--accent-hover)}
+}
+.query-btn:active{transform:scale(.985)}
+
+@media (min-width:1024px){
+  .query-rules-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .query-rules-row .card{margin-bottom:0}
+}
+
+/* ============================================================
+ * 12. 规则
+ * ============================================================ */
+.rule-text{
+  font-size:13px;color:var(--text-2);
+  line-height:1.85;margin-bottom:12px;
+  text-align:left;
+}
+.rule-text:last-child{margin-bottom:0}
+.rule-text b{color:var(--accent);font-weight:800}
+@media (min-width:1024px){.rule-text{font-size:14px}}
+
+/* ============================================================
+ * 13. 结果卡片 · 交通灯语义
+ * ============================================================ */
+.result-card{
+  --signal:var(--accent);
+  --signal-soft:var(--accent-soft);
+  --signal-tint:var(--accent-tint);
+  max-height:0;opacity:0;
+  padding:0 20px;
+  margin-top:0;margin-bottom:0;
+  border-width:0;
+  overflow:hidden;
+  transition:max-height .5s var(--ease),opacity .35s var(--ease),padding .4s var(--ease),margin-bottom .4s var(--ease),border-width .3s var(--ease);
+}
+.result-card[data-signal="today"]{
+  --signal:var(--sig-green);
+  --signal-soft:var(--sig-green-soft);
+  --signal-tint:var(--sig-green-tint);
+}
+.result-card[data-signal="future"]{
+  --signal:var(--sig-amber);
+  --signal-soft:var(--sig-amber-soft);
+  --signal-tint:var(--sig-amber-tint);
+}
+.result-card[data-signal="past"]{
+  --signal:var(--sig-red);
+  --signal-soft:var(--sig-red-soft);
+  --signal-tint:var(--sig-red-tint);
+}
+.result-card[data-signal="archive"]{
+  --signal:var(--sig-gray);
+  --signal-soft:var(--sig-gray-soft);
+  --signal-tint:var(--sig-gray-tint);
+}
+.result-card.show{
+  max-height:680px;opacity:1;
+  padding:24px 22px 20px;
+  margin-bottom:14px;
+  border-width:1px;
+  background:linear-gradient(180deg,var(--signal-tint) 0%,transparent 45%),var(--surface);
+  border-color:var(--border-1);
+  border-radius:var(--radius-lg);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:var(--shadow-sm),0 0 0 1px var(--shine) inset;
+}
+@media (min-width:1024px){
+  .result-card.show{padding:32px 32px 26px;margin-bottom:18px}
+}
+.result-card.show::before{
+  content:'';position:absolute;top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--signal),transparent);
+  opacity:.45;pointer-events:none;
+}
+.result-signal-tag{
+  display:flex;justify-content:center;margin-bottom:14px;
+}
+.result-signal-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;border-radius:100px;
+  background:var(--signal-soft);
+  border:1px solid var(--signal-soft);
+  color:var(--signal);
+  font-family:ui-monospace,'SF Mono','Menlo',monospace;
+  font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.result-signal-pill .signal-dot{width:7px;height:7px}
+.result-date{
+  font-size:14px;font-weight:700;
+  color:var(--text-2);
+  letter-spacing:.02em;margin-bottom:5px;
+  text-align:center;
+  font-variant-numeric:tabular-nums;
+}
+.result-lunar{
+  font-size:12.5px;font-weight:600;
+  color:var(--signal);
+  letter-spacing:.06em;margin-bottom:14px;
+  text-align:center;
+  min-height:1.4em;
+}
+.result-lunar:empty{display:none}
+.result-street-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin-bottom:18px;
+}
+.result-street{
+  font-size:clamp(40px,7vw,64px);
+  font-weight:900;letter-spacing:.04em;
+  text-align:center;line-height:1.05;
+  color:var(--signal);
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .result-street{
+    background:linear-gradient(135deg,var(--signal) 0%,color-mix(in srgb,var(--signal) 60%,white) 50%,var(--signal) 100%);
+    background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:titleFlow 6s ease-in-out infinite;
+  }
+}
+.result-street-en{
+  font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  font-size:11px;font-weight:700;
+  letter-spacing:.3em;
+  color:var(--signal);
+  text-transform:uppercase;
+  opacity:.75;
+}
+.result-nav{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;padding-top:16px;
+  border-top:1px solid var(--border-1);
+}
+.result-nav button{
+  padding:12px 8px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  color:var(--text-2);
+  font-family:inherit;font-size:12.5px;font-weight:700;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .result-nav button:hover{background:var(--accent-soft);border-color:var(--border-2);color:var(--accent)}
+}
+.result-nav button:active{transform:scale(.97)}
+
+/* ============================================================
+ * 14. 其他项目
+ * ============================================================ */
+.link-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:8px;list-style:none;
+}
+@media (min-width:1024px){.link-grid{grid-template-columns:repeat(4,1fr);gap:12px}}
+.link-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  border-radius:var(--radius-md);
+  background:var(--surface-2);
+  border:1px solid var(--border-1);
+  text-decoration:none;color:var(--text-1);
+  font-size:12.5px;font-weight:700;
+  transition:all var(--dur) var(--ease);
+  min-width:0;
+}
+@media (hover:hover) and (pointer:fine){
+  .link-item:hover{background:var(--accent-soft);border-color:var(--border-2);transform:translateY(-2px)}
+}
+.link-item:active{transform:translateY(0)}
+.link-icon{font-size:15px;line-height:1;flex:0 0 auto}
+.link-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.link-item.feedback{cursor:pointer;border-color:var(--border-2)}
+.feedback-tip{
+  display:none;margin-top:10px;
+  font-size:12px;color:var(--accent);
+  line-height:1.6;letter-spacing:.02em;
+  font-weight:600;padding:12px 14px;
+  border-radius:var(--radius-md);
+  background:var(--accent-soft);
+  border:1px solid var(--border-1);
+}
+.feedback-tip.show{display:block}
+.feedback-tip b{color:var(--text-1);font-weight:800}
+
+/* ============================================================
+ * 15. 页脚
+ * ============================================================ */
+.footer{
+  padding:36px 0 48px;margin-top:16px;
+  border-top:1px solid var(--border-1);
+  display:flex;flex-direction:column;align-items:center;
+  gap:10px;text-align:center;
+}
+@media (min-width:1024px){.footer{padding:48px 0 64px}}
+.footer-version{
+  display:inline-block;
+  font-family:ui-monospace,'SF Mono','Menlo',monospace;
+  font-size:11px;font-weight:700;
+  letter-spacing:.1em;color:var(--accent);
+  padding:3px 10px;border-radius:var(--radius-xs);
+  background:var(--accent-soft);
+  border:1px solid var(--border-1);
+}
+.footer-line{
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;justify-content:center;
+  font-size:12.5px;color:var(--text-3);
+}
+.footer-line a{
+  color:var(--text-2);text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:color var(--dur-fast) var(--ease),border-color var(--dur-fast) var(--ease);
+}
+.footer-line a:hover,.footer-line a:focus-visible{
+  color:var(--accent);border-bottom-color:var(--accent);
+}
+.footer-heart{color:var(--festive);display:inline-block}
+
+/* ============================================================
+ * 16. 回到顶部
+ * ============================================================ */
+.back-top{
+  position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  width:48px;height:48px;padding:0;
+  border:1px solid var(--border-1);
+  border-radius:50%;
+  background:var(--surface-2);
+  color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:100;
+  opacity:0;visibility:hidden;
+  transform:translateY(12px);
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+  box-shadow:var(--shadow-md);
+  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease),visibility var(--dur) var(--ease),color var(--dur-fast) var(--ease),border-color var(--dur-fast) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.back-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+@media (hover:hover) and (pointer:fine){
+  .back-top:hover{color:var(--accent-hover);border-color:var(--border-2);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+}
+.back-top:active{transform:scale(.94)}
+.back-top .ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
+.back-top .ring circle{fill:none;stroke-width:2.5}
+.back-top .ring .ring-bg{stroke:var(--border-1)}
+.back-top .ring .ring-fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 80ms linear}
+.back-top .arrow{position:relative;z-index:1;width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media (min-width:1024px){
+  .back-top{right:32px;bottom:calc(32px + env(safe-area-inset-bottom,0px));width:52px;height:52px}
+}
+
+/* ============================================================
+ * 17. Toast
+ * ============================================================ */
+.toast{
+  position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));
+  transform:translate(-50%,16px);
+  padding:11px 20px;border-radius:var(--radius-md);
+  background:var(--surface-3);
+  border:1px solid var(--border-2);
+  color:var(--text-1);
+  font-size:12.5px;font-weight:700;
+  letter-spacing:.01em;
+  box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);
+  z-index:10000;
+  white-space:nowrap;max-width:calc(100vw - 48px);
+  overflow:hidden;text-overflow:ellipsis;
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.error{color:var(--k-red-600);border-color:rgba(220,38,38,.4)}
+html.dark .toast.error{color:var(--k-red-300)}
+
+/* ============================================================
+ * 18. 响应式
+ * ============================================================ */
+@media (max-width:480px){
+  .hero-card{padding:24px 18px 22px;border-radius:var(--radius-lg)}
+  .title-cn{font-size:26px;letter-spacing:.04em}
+  .title-en{letter-spacing:.32em;font-size:10.5px}
+  .subtitle{font-size:12.5px}
+  .today-card{padding:24px 18px 20px;border-radius:var(--radius-lg)}
+  .street-cn-big{font-size:48px}
+  .exact-num{font-size:18px}
+  .exact-unit{font-size:9.5px;margin:0 4px 0 2px}
+  .card{padding:16px;border-radius:var(--radius-md);margin-bottom:12px}
+  .card-head{margin-bottom:14px}
+  .week-item{min-width:72px;padding:10px 6px}
+  .week-street-cn{font-size:12px}
+  .week-street-en{font-size:7.5px;letter-spacing:.12em}
+  .countdown-item{padding:10px 3px}
+  .countdown-street{font-size:10.5px}
+  .countdown-street-en{font-size:7px;letter-spacing:.12em}
+  .countdown-days{font-size:12px}
+  .street-chip{padding:8px 13px 8px 22px;min-width:80px}
+  .street-chip::before{left:10px;width:5px;height:5px}
+  .street-chip-cn{font-size:12px}
+  .street-chip-en{font-size:8px;letter-spacing:.18em}
+  .link-grid{grid-template-columns:1fr}
+  .back-top{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:380px){
+  .title-cn{font-size:22px}
+  .street-cn-big{font-size:42px}
+  .result-street{font-size:36px}
+  .week-item{min-width:66px}
+}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .hero-card,.today-card,.card,.result-card.show,.tomorrow-bar,.back-top,.toast{background:var(--surface-3)}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  #particleCanvas{display:none}
+  .lantern,.title-cn,.street-cn-big,.result-street{animation:none}
+}
+@media print{
+  .bg-layer,#particleCanvas,.back-top,.toast,.skip-link,
+  .result-nav,.quick-btns,.query-btn,.date-input,
+  .exact-countdown,.tomorrow-bar,.week-strip,
+  .link-grid,.deco{display:none !important}
+  body{background:#fff;color:#000;padding:0;display:block}
+  .page{max-width:100%;padding:0}
+  .hero-card,.today-card,.card,.result-card.show{
+    break-inside:avoid;box-shadow:none;border:1px solid #ccc;background:#fff;
+    backdrop-filter:none;-webkit-backdrop-filter:none;max-height:none;opacity:1;
+  }
+  .result-card{padding:20px}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-vignette"></div>
+</div>
+<canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-card">
+
+      <div class="deco deco--left" aria-hidden="true">
+        <div class="lantern">
+          <span class="lantern-body"><span class="lantern-word">福</span></span>
+          <span class="lantern-tassel"></span>
+        </div>
+        <div class="firecracker">
+          <svg viewBox="0 0 24 100" fill="none">
+            <line class="fc-line" x1="12" y1="4" x2="12" y2="96"/>
+            <circle class="fc-dot" cx="12" cy="14" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="26" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="38" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="50" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="62" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="74" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="86" r="3.2"/>
+            <circle class="fc-spark" cx="4" cy="14" r="1.2"/>
+            <circle class="fc-spark" cx="4" cy="38" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="26" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="62" r="1.2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="deco deco--right" aria-hidden="true">
+        <div class="lantern">
+          <span class="lantern-body"><span class="lantern-word">春</span></span>
+          <span class="lantern-tassel"></span>
+        </div>
+        <div class="firecracker">
+          <svg viewBox="0 0 24 100" fill="none">
+            <line class="fc-line" x1="12" y1="4" x2="12" y2="96"/>
+            <circle class="fc-dot" cx="12" cy="14" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="26" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="38" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="50" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="62" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="74" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="86" r="3.2"/>
+            <circle class="fc-spark" cx="4" cy="14" r="1.2"/>
+            <circle class="fc-spark" cx="4" cy="38" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="26" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="62" r="1.2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="brand-tag">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>XIYI · MARKET CALENDAR</span>
+        </div>
+        <h1 class="title-cn">西邑乡赶集日历</h1>
+        <p class="title-en">XIYI MARKET CALENDAR</p>
+        <p class="subtitle">四街循环 · 永信 · 羊邑 · 丙麻 · 西邑</p>
+        <ul class="street-chips" aria-label="街道列表">
+          <li class="street-chip">
+            <span class="street-chip-cn">永信街</span>
+            <span class="street-chip-en">YONGXIN</span>
+          </li>
+          <li class="street-chip">
+            <span class="street-chip-cn">羊邑街</span>
+            <span class="street-chip-en">YANGYI</span>
+          </li>
+          <li class="street-chip">
+            <span class="street-chip-cn">丙麻街</span>
+            <span class="street-chip-en">BINGMA</span>
+          </li>
+          <li class="street-chip">
+            <span class="street-chip-cn">西邑街</span>
+            <span class="street-chip-en">XIYI</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="today-card" aria-labelledby="todayTitle">
+      <div class="signal-tag">
+        <span class="signal-dot" aria-hidden="true"></span>
+        <span>Today · 今日赶集</span>
+      </div>
+      <h2 class="today-date" id="todayTitle">
+        <time id="todayDate" datetime="">加载中…</time>
+      </h2>
+      <div class="today-lunar" id="todayLunar"></div>
+      <div class="street-display">
+        <div class="street-cn-big" id="todayStreet">计算中…</div>
+        <div class="street-en-small" id="todayStreetEn"></div>
+      </div>
+      <div class="today-hint">绿灯 · 现在赶集</div>
+
+      <div class="exact-countdown">
+        <div class="exact-label">
+          距 <b id="exactStreet">--</b> 开市还有
+        </div>
+        <div class="exact-timer" role="timer" aria-live="off">
+          <span class="exact-num" id="exactD">0</span>
+          <span class="exact-unit">天</span>
+          <span class="exact-num" id="exactH">00</span>
+          <span class="exact-unit">时</span>
+          <span class="exact-num" id="exactM">00</span>
+          <span class="exact-unit">分</span>
+          <span class="exact-num" id="exactS">00</span>
+          <span class="exact-unit">秒</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="tomorrow-bar" role="status">
+      <span class="tomorrow-icon" aria-hidden="true">🏮</span>
+      <span class="tomorrow-text" id="tomorrowText">加载中…</span>
+    </div>
+
+    <section class="card" aria-labelledby="weekTitle">
+      <div class="card-head">
+        <span class="card-head-icon" aria-hidden="true">📅</span>
+        <h2 class="card-head-title" id="weekTitle">未来 7 天</h2>
+        <div class="card-head-rule" aria-hidden="true"></div>
+      </div>
+      <div class="week-strip" id="weekStrip" role="list" aria-label="未来七天赶集日历"></div>
+    </section>
+
+    <section class="card" aria-labelledby="countdownTitle">
+      <div class="card-head">
+        <span class="card-head-icon" aria-hidden="true">⏱️</span>
+        <h2 class="card-head-title" id="countdownTitle">赶集倒计时</h2>
+        <div class="card-head-rule" aria-hidden="true"></div>
+      </div>
+      <ul class="countdown-grid" id="countdownGrid" aria-label="四街倒计时"></ul>
+    </section>
+
+    <div class="query-rules-row">
+
+      <section class="card" aria-labelledby="queryTitle">
+        <div class="card-head">
+          <span class="card-head-icon" aria-hidden="true">🔍</span>
+          <h2 class="card-head-title" id="queryTitle">查询其他日期</h2>
+          <div class="card-head-rule" aria-hidden="true"></div>
+        </div>
+        <div class="quick-btns">
+          <button class="quick-btn" type="button" data-offset="0">今天</button>
+          <button class="quick-btn" type="button" data-offset="1">明天</button>
+          <button class="quick-btn" type="button" data-offset="2">后天</button>
+        </div>
+        <div class="divider-text">或选择日期</div>
+        <label class="visually-hidden" for="dateInput" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">选择查询日期</label>
+        <input class="date-input" id="dateInput" type="date" aria-label="选择查询日期">
+        <button class="query-btn" id="btnQuery" type="button">查询</button>
+      </section>
+
+      <section class="card" aria-labelledby="ruleTitle">
+        <div class="card-head">
+          <span class="card-head-icon" aria-hidden="true">📖</span>
+          <h2 class="card-head-title" id="ruleTitle">赶集规律</h2>
+          <div class="card-head-rule" aria-hidden="true"></div>
+        </div>
+        <p class="rule-text">
+          西邑片区四个街市按 <b>四天一轮</b> 循环，依次为
+          <b>永信街 → 羊邑街 → 丙麻街 → 西邑街</b>，循环往复，风雨无阻。
+        </p>
+        <p class="rule-text">
+          本页可查询 <b>1995 年 1 月 1 日</b> 至 <b>2099 年 12 月 31 日</b>
+          之间任意日期的赶集街市，日期与农历均按 <b>北京时间</b> 计算。
+        </p>
+      </section>
+
+    </div>
+
+    <section class="card result-card" id="resultCard" data-signal="today" aria-live="polite" aria-atomic="true">
+      <div class="result-signal-tag">
+        <span class="result-signal-pill" id="resultSignalPill">
+          <span class="signal-dot" aria-hidden="true"></span>
+          <span id="resultSignalText">绿灯 · 现在赶集</span>
+        </span>
+      </div>
+      <div class="result-date" id="resultDate"></div>
+      <div class="result-lunar" id="resultLunar"></div>
+      <div class="result-street-wrap">
+        <div class="result-street" id="resultStreet"></div>
+        <div class="result-street-en" id="resultStreetEn"></div>
+      </div>
+      <div class="result-nav">
+        <button type="button" id="btnPrevDay" aria-label="查询前一天">← 前一天</button>
+        <button type="button" id="btnNextDay" aria-label="查询后一天">后一天 →</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="linksTitle">
+      <div class="card-head">
+        <span class="card-head-icon" aria-hidden="true">🔗</span>
+        <h2 class="card-head-title" id="linksTitle">其他项目</h2>
+        <div class="card-head-rule" aria-hidden="true"></div>
+      </div>
+      <ul class="link-grid">
+        <li>
+          <a class="link-item" href="https://duanaifeng.github.io/AFeng/" rel="noopener noreferrer">
+            <span class="link-icon" aria-hidden="true">🏠</span>
+            <span class="link-text">我的主页</span>
+          </a>
+        </li>
+        <li>
+          <a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/" rel="noopener noreferrer">
+            <span class="link-icon" aria-hidden="true">🧭</span>
+            <span class="link-text">资源导航</span>
+          </a>
+        </li>
+        <li>
+          <a class="link-item" href="https://duanaifeng.github.io/AFeng/gongshi/" rel="noopener noreferrer">
+            <span class="link-icon" aria-hidden="true">⏱️</span>
+            <span class="link-text">工时记账</span>
+          </a>
+        </li>
+        <li>
+          <a class="link-item" href="https://duanaifeng.github.io/AFeng/game/" rel="noopener noreferrer">
+            <span class="link-icon" aria-hidden="true">🕹️</span>
+            <span class="link-text">在线小游戏</span>
+          </a>
+        </li>
+        <li style="grid-column:1 / -1">
+          <button class="link-item feedback" id="feedbackBtn" type="button" style="width:100%">
+            <span class="link-icon" aria-hidden="true">📮</span>
+            <span class="link-text">反馈建议</span>
+          </button>
+        </li>
+      </ul>
+      <div class="feedback-tip" id="feedbackTip">
+        邮箱已复制：<b>88061995@qq.com</b><br>
+        请打开邮箱 App，粘贴到收件人后发送
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-version">v6.0 · 2026.10</div>
+    <div class="footer-line">
+      <span>Made by AiFeng</span>
+      <span aria-hidden="true">·</span>
+      <span class="footer-heart" aria-hidden="true">♥</span>
+    </div>
+    <div class="footer-line">
+      <a href="mailto:88061995@qq.com">88061995@qq.com</a>
+    </div>
+  </footer>
+
+</div>
+
+<button class="back-top" id="backTop" type="button" aria-label="回到顶部">
+  <svg class="ring" viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="ring-bg" cx="24" cy="24" r="21"/>
+    <circle class="ring-fg" cx="24" cy="24" r="21"/>
+  </svg>
+  <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+    <polyline points="6 15 12 9 18 15"/>
+  </svg>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function (global) {
+  'use strict';
+
+  const CFG = {
+    STREETS: [
+      { cn: '永信街', en: 'YONGXIN' },
+      { cn: '羊邑街', en: 'YANGYI' },
+      { cn: '丙麻街', en: 'BINGMA' },
+      { cn: '西邑街', en: 'XIYI' }
+    ],
+    BASE: { year: 2026, month: 2, day: 12 },
+    CYCLE: 4,
+    MARKET_HOUR: 8,
+    DATE_RANGE: { min: '1995-01-01', max: '2099-12-31' },
+    ARCHIVE_DAYS: 7,
+    SHARE_URL: 'https://duanaifeng.github.io/AFeng/ganji.html',
+    STORAGE_KEY: '__af_ganji_last_v6__',
+    TICK_MS: 1000,
+    REFRESH_MS: 60000,
+    SCROLL_TOP_THRESHOLD: 300,
+    RING_RADIUS: 21,
+    PARTICLE: {
+      MIN_DT: 1000 / 45,
+      DENSITY: 20000,
+      CAP_DESKTOP: 68,
+      CAP_MOBILE: 38,
+      LINK_DIST: 130
+    }
+  };
+
+  const WEEK_MAP = ['日', '一', '二', '三', '四', '五', '六'];
+
+  const Reporter = (function () {
+    let el = null, timer = 0, count = 0;
+    const MAX = 4;
+    function ensure() {
+      if (el || !document.body) return el;
+      el = document.createElement('div');
+      el.setAttribute('role', 'alert');
+      el.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:2147483647;padding:11px 20px;border-radius:10px;background:#2563eb;color:#fff;font:600 13px/1.5 -apple-system,system-ui,"PingFang SC",sans-serif;box-shadow:0 10px 30px rgba(37,99,235,.35);max-width:88vw;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s ease;';
+      document.body.appendChild(el);
+      return el;
+    }
+    function show(msg) {
+      if (count++ > MAX) return;
+      try {
+        const node = ensure();
+        if (!node) return;
+        node.textContent = String(msg || '');
+        node.style.opacity = '1';
+        clearTimeout(timer);
+        timer = setTimeout(function () { if (el) el.style.opacity = '0'; }, 4500);
+      } catch (e) {}
+    }
+    global.addEventListener('error', function (e) {
+      if (e && e.message) show('页面出错：' + e.message);
+    }, true);
+    global.addEventListener('unhandledrejection', function (e) {
+      const r = e && e.reason;
+      show('请求失败：' + ((r && r.message) || r || '未知错误'));
+    });
+    return { show };
+  })();
+
+  const Store = (function () {
+    const mem = {};
+    const ok = (function () {
+      try { const k='__af_probe__'; localStorage.setItem(k,'1'); localStorage.removeItem(k); return true; }
+      catch (e) { return false; }
+    })();
+    return {
+      get(k) {
+        if (!ok) return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null;
+        try { return localStorage.getItem(k); } catch (e) { return null; }
+      },
+      set(k, v) {
+        if (!ok) { mem[k] = String(v); return true; }
+        try { localStorage.setItem(k, String(v)); return true; }
+        catch (e) { return false; }
+      },
+      remove(k) {
+        if (!ok) { delete mem[k]; return; }
+        try { localStorage.removeItem(k); } catch (e) {}
+      }
+    };
+  })();
+
+  const Utils = {
+    pad2(n) { return n < 10 ? '0' + n : '' + n; },
+    rafThrottle(fn) {
+      let ticking = false, lastArgs = null;
+      return function () {
+        lastArgs = arguments;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          try { fn.apply(null, lastArgs); } catch (e) {}
+        });
+      };
+    },
+    prefersReducedMotion() {
+      try { return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+      catch (e) { return false; }
+    },
+    isDark() { return document.documentElement.classList.contains('dark'); },
+    isCoarse() {
+      try { return matchMedia('(pointer: coarse)').matches; }
+      catch (e) { return false; }
+    },
+    isDateStr(s) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+      const p = s.split('-').map(Number);
+      const d = new Date(p[0], p[1] - 1, p[2]);
+      return d.getFullYear() === p[0] && d.getMonth() === p[1] - 1 && d.getDate() === p[2];
+    },
+    formatInputDate(d) {
+      return d.getFullYear() + '-' + Utils.pad2(d.getMonth() + 1) + '-' + Utils.pad2(d.getDate());
+    },
+    copy(text) {
+      if (navigator.clipboard && global.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function (resolve, reject) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.cssText = 'position:fixed;left:-9999px;opacity:0;';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok ? resolve() : reject(new Error('execCommand failed'));
+        } catch (e) { reject(e); }
+      });
+    }
+  };
+
+  const Theme = (function () {
+    const listeners = [];
+    function apply(dark) {
+      document.documentElement.classList.toggle('dark', !!dark);
+      for (let i = 0; i < listeners.length; i++) {
+        try { listeners[i](!!dark); } catch (e) {}
+      }
+    }
+    return {
+      init() {
+        let mq = null;
+        try { mq = matchMedia('(prefers-color-scheme: dark)'); }
+        catch (e) { return; }
+        if (!mq) return;
+        apply(mq.matches);
+        const handler = function (e) { apply(e.matches); };
+        if (mq.addEventListener) mq.addEventListener('change', handler);
+        else if (mq.addListener) mq.addListener(handler);
+      },
+      onChange(fn) { listeners.push(fn); }
+    };
+  })();
+
+  const Particles = (function () {
+    const canvas = document.getElementById('particleCanvas');
+    if (!canvas || global.__AF_LITE__) return { noop: true };
+    if (Utils.prefersReducedMotion()) return { noop: true };
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return { noop: true };
+    let W = 0, H = 0, dpr = 1;
+    let parts = [];
+    let rafId = 0, running = false, lastTime = 0;
+    const mouse = { x: -9999, y: -9999 };
+    const isCoarse = Utils.isCoarse();
+    const COLORS_LIGHT = [[59,130,246],[96,165,250],[56,189,248],[14,165,233],[129,140,248]];
+    const COLORS_DARK  = [[96,165,250],[125,211,252],[56,189,248],[147,197,253],[129,140,248]];
+    const LINK_LIGHT = [59,130,246];
+    const LINK_DARK  = [125,211,252];
+    let COLORS = COLORS_LIGHT, LINK_COLOR = LINK_LIGHT;
+    const SPRITE_SIZE = 64;
+    let sprites = [];
+    function buildSprites(dark) {
+      COLORS = dark ? COLORS_DARK : COLORS_LIGHT;
+      LINK_COLOR = dark ? LINK_DARK : LINK_LIGHT;
+      sprites = COLORS.map(function (rgb) {
+        const r = rgb[0], g = rgb[1], b = rgb[2];
+        const cv = document.createElement('canvas');
+        cv.width = cv.height = SPRITE_SIZE;
+        const c = cv.getContext('2d');
+        const grd = c.createRadialGradient(32, 32, 0, 32, 32, 32);
+        if (dark) {
+          grd.addColorStop(0, 'rgba(255,255,255,0.95)');
+          grd.addColorStop(0.18, 'rgba(' + r + ',' + g + ',' + b + ',0.85)');
+          grd.addColorStop(0.5, 'rgba(' + r + ',' + g + ',' + b + ',0.25)');
+          grd.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)');
+        } else {
+          grd.addColorStop(0, 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
+          grd.addColorStop(0.35, 'rgba(' + r + ',' + g + ',' + b + ',0.55)');
+          grd.addColorStop(0.7, 'rgba(' + r + ',' + g + ',' + b + ',0.16)');
+          grd.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)');
+        }
+        c.fillStyle = grd;
+        c.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+        return cv;
+      });
+    }
+    function resize() {
+      try {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        initParticles();
+      } catch (e) { stop(); }
+    }
+    function initParticles() {
+      const base = Math.floor(W * H / CFG.PARTICLE.DENSITY);
+      const cap = isCoarse ? CFG.PARTICLE.CAP_MOBILE : CFG.PARTICLE.CAP_DESKTOP;
+      const n = Math.min(cap, Math.max(22, base));
+      parts = [];
+      for (let i = 0; i < n; i++) {
+        const si = Math.random() < 0.9 ? Math.floor(Math.random() * 4) : 4;
+        parts.push({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.32, vy: (Math.random() - 0.5) * 0.32,
+          r: Math.random() * 2 + 0.8, si,
+          a: Math.random() * 0.4 + 0.4,
+          tw: Math.random() * Math.PI * 2,
+          twS: Math.random() * 0.02 + 0.008
+        });
+      }
+    }
+    const LINK_DIST = CFG.PARTICLE.LINK_DIST;
+    const LINK_DIST2 = LINK_DIST * LINK_DIST;
+    function draw(now) {
+      if (now - lastTime < CFG.PARTICLE.MIN_DT) { rafId = requestAnimationFrame(draw); return; }
+      lastTime = now;
+      try {
+        ctx.clearRect(0, 0, W, H);
+        const dark = Utils.isDark();
+        for (let i = 0; i < parts.length; i++) {
+          const p = parts[i];
+          const dx = mouse.x - p.x, dy = mouse.y - p.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 150 && d > 0.5) {
+            const f = (150 - d) / 150 * 0.4;
+            p.vx += dx / d * f * 0.04;
+            p.vy += dy / d * f * 0.04;
+          }
+          const s = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          if (s > 0.9) { p.vx = p.vx / s * 0.9; p.vy = p.vy / s * 0.9; }
+          p.x += p.vx; p.y += p.vy; p.tw += p.twS;
+          if (p.x < 0) { p.x = 0; p.vx *= -1; } else if (p.x > W) { p.x = W; p.vx *= -1; }
+          if (p.y < 0) { p.y = 0; p.vy *= -1; } else if (p.y > H) { p.y = H; p.vy *= -1; }
+        }
+        const lineAlpha = dark ? 0.24 : 0.16;
+        const lr = LINK_COLOR[0], lg = LINK_COLOR[1], lb = LINK_COLOR[2];
+        ctx.lineWidth = 0.8;
+        for (let a1 = 0; a1 < parts.length; a1++) {
+          const pa = parts[a1];
+          for (let b1 = a1 + 1; b1 < parts.length; b1++) {
+            const pb = parts[b1];
+            const ddx = pa.x - pb.x, ddy = pa.y - pb.y;
+            const d2 = ddx * ddx + ddy * ddy;
+            if (d2 < LINK_DIST2) {
+              const op = (1 - Math.sqrt(d2) / LINK_DIST) * lineAlpha;
+              ctx.strokeStyle = 'rgba(' + lr + ',' + lg + ',' + lb + ',' + op + ')';
+              ctx.beginPath();
+              ctx.moveTo(pa.x, pa.y);
+              ctx.lineTo(pb.x, pb.y);
+              ctx.stroke();
+            }
+          }
+        }
+        const aS = dark ? 1 : 0.72;
+        for (let k = 0; k < parts.length; k++) {
+          const pk = parts[k];
+          const alpha = pk.a * (0.65 + 0.35 * Math.sin(pk.tw)) * aS;
+          const size = pk.r * (dark ? 10 : 8.5);
+          ctx.globalAlpha = alpha;
+          ctx.drawImage(sprites[pk.si], pk.x - size / 2, pk.y - size / 2, size, size);
+        }
+        ctx.globalAlpha = 1;
+      } catch (e) { stop(); return; }
+      rafId = requestAnimationFrame(draw);
+    }
+    function start() { if (running) return; running = true; lastTime = 0; rafId = requestAnimationFrame(draw); }
+    function stop() { running = false; if (rafId) cancelAnimationFrame(rafId); rafId = 0; }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
+    window.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+    window.addEventListener('mouseleave', function () { mouse.x = -9999; mouse.y = -9999; });
+    window.addEventListener('touchmove', function (e) {
+      if (e.touches[0]) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
+    }, { passive: true });
+    window.addEventListener('touchend', function () { mouse.x = -9999; mouse.y = -9999; });
+    let rt = 0;
+    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resize, 200); }, { passive: true });
+    buildSprites(Utils.isDark());
+    resize();
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 800 });
+    else setTimeout(start, 350);
+    Theme.onChange(function (dark) { buildSprites(dark); });
+    return { start, stop };
+  })();
+
+  const Lunar = (function () {
+    const DAY_NAMES = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+    const MONTH_NAMES = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+    const INFO = [
+      0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+      0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+      0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+      0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+      0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+      0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+      0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+      0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+      0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+      0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+      0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+      0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+      0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+      0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+      0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+      0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,
+      0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,
+      0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,
+      0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,
+      0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,
+      0x0d520
+    ];
+    function leapMonth(y) { return INFO[y - 1900] & 0xf; }
+    function leapDays(y) {
+      if (leapMonth(y)) return (INFO[y - 1900] & 0x10000) ? 30 : 29;
+      return 0;
+    }
+    function monthDays(y, m) { return (INFO[y - 1900] & (0x10000 >> m)) ? 30 : 29; }
+    function yearDays(y) {
+      let sum = 348;
+      for (let i = 0x8000; i > 0x8; i >>= 1) sum += (INFO[y - 1900] & i) ? 1 : 0;
+      return sum + leapDays(y);
+    }
+    function solarToLunar(date) {
+      try {
+        const base = Date.UTC(1900, 0, 31);
+        const target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+        let offset = Math.round((target - base) / 86400000);
+        if (offset < 0 || offset > 80000) return null;
+        let year = 1900;
+        while (year < 2101 && offset > 0) {
+          const days = yearDays(year);
+          if (offset < days) break;
+          offset -= days;
+          year++;
+        }
+        const leap = leapMonth(year);
+        let isLeap = false;
+        let month = 1;
+        while (month <= 12) {
+          let md;
+          if (leap > 0 && month === leap + 1 && !isLeap) {
+            isLeap = true; md = leapDays(year); month--;
+          } else md = monthDays(year, month);
+          if (offset < md) break;
+          offset -= md;
+          if (isLeap && month === leap) isLeap = false;
+          month++;
+        }
+        const day = offset + 1;
+        return {
+          month, day, isLeap,
+          monthName: (isLeap ? '闰' : '') + MONTH_NAMES[month - 1] + '月',
+          dayName: DAY_NAMES[day - 1] || ''
+        };
+      } catch (e) { return null; }
+    }
+    function text(date) {
+      const l = solarToLunar(date);
+      if (!l) return '';
+      return '农历' + l.monthName + l.dayName;
+    }
+    return { solarToLunar, text };
+  })();
+
+  const Calendar = {
+    beijingToday(d) {
+      const real = d || new Date();
+      const bj = new Date(real.getTime() + 8 * 3600 * 1000);
+      return new Date(bj.getUTCFullYear(), bj.getUTCMonth(), bj.getUTCDate());
+    },
+    streetIndex(date) {
+      try {
+        const base = Date.UTC(CFG.BASE.year, CFG.BASE.month - 1, CFG.BASE.day);
+        const target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+        const diff = Math.round((target - base) / 86400000);
+        return ((diff % CFG.CYCLE) + CFG.CYCLE) % CFG.CYCLE;
+      } catch (e) { return 0; }
+    },
+    street(date) { return CFG.STREETS[this.streetIndex(date)]; },
+    weekday(date) { return '周' + WEEK_MAP[date.getDay()]; },
+    formatDate(date) {
+      return date.getFullYear() + '年' + Utils.pad2(date.getMonth() + 1) + '月' +
+             Utils.pad2(date.getDate()) + '日';
+    },
+    addDays(date, n) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + n);
+      return d;
+    },
+    daysBetween(a, b) {
+      const t1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+      const t2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+      return Math.round((t1 - t2) / 86400000);
+    },
+    signalFor(date) {
+      const today = this.beijingToday();
+      const diff = this.daysBetween(date, today);
+      if (diff === 0) return 'today';
+      if (diff > 0) return 'future';
+      if (diff >= -CFG.ARCHIVE_DAYS) return 'past';
+      return 'archive';
+    },
+    signalLabel(signal, date) {
+      const today = this.beijingToday();
+      const diff = this.daysBetween(date, today);
+      switch (signal) {
+        case 'today':   return { pill: '绿灯 · 现在赶集' };
+        case 'future':  return { pill: '黄灯 · 还有 ' + diff + ' 天' };
+        case 'past':    return { pill: '红灯 · 已过 ' + (-diff) + ' 天' };
+        case 'archive': return { pill: '灰灯 · 历史记录' };
+        default:        return { pill: '' };
+      }
+    },
+    exactCountdown(now) {
+      const real = now || new Date();
+      const today = this.beijingToday(real);
+      let target = new Date(today);
+      target.setHours(CFG.MARKET_HOUR, 0, 0, 0);
+      if (real >= target) target = this.addDays(target, 1);
+      const street = this.street(target);
+      let ms = target.getTime() - real.getTime();
+      if (ms < 0) ms = 0;
+      const totalSec = Math.floor(ms / 1000);
+      const d = Math.floor(totalSec / 86400);
+      let rest = totalSec - d * 86400;
+      const h = Math.floor(rest / 3600);
+      rest -= h * 3600;
+      const m = Math.floor(rest / 60);
+      const s = rest - m * 60;
+      return { street, d, h, m, s };
+    }
+  };
+
+  const TimerManager = {
+    timers: [],
+    register(opts) {
+      const timer = {
+        id: null, interval: opts.interval, onTick: opts.onTick,
+        start() {
+          if (this.id) return;
+          const self = this;
+          try { self.onTick(); } catch (e) {}
+          this.id = setInterval(function () { try { self.onTick(); } catch (e) {} }, self.interval);
+        },
+        stop() { if (!this.id) return; clearInterval(this.id); this.id = null; }
+      };
+      this.timers.push(timer);
+      return timer;
+    },
+    startAll() { this.timers.forEach(function (t) { t.start(); }); },
+    stopAll() { this.timers.forEach(function (t) { t.stop(); }); },
+    init() {
+      const self = this;
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) self.stopAll(); else self.startAll();
+      });
+      window.addEventListener('pagehide', function () { self.stopAll(); });
+    }
+  };
+
+  const State = { today: null, currentResultDate: null, lastRenderedKey: null };
+
+  const DOM = {};
+  function cacheDom() {
+    DOM.todayDate = document.getElementById('todayDate');
+    DOM.todayLunar = document.getElementById('todayLunar');
+    DOM.todayStreet = document.getElementById('todayStreet');
+    DOM.todayStreetEn = document.getElementById('todayStreetEn');
+    DOM.tomorrowText = document.getElementById('tomorrowText');
+    DOM.weekStrip = document.getElementById('weekStrip');
+    DOM.countdownGrid = document.getElementById('countdownGrid');
+    DOM.exactStreet = document.getElementById('exactStreet');
+    DOM.exactD = document.getElementById('exactD');
+    DOM.exactH = document.getElementById('exactH');
+    DOM.exactM = document.getElementById('exactM');
+    DOM.exactS = document.getElementById('exactS');
+    DOM.dateInput = document.getElementById('dateInput');
+    DOM.btnQuery = document.getElementById('btnQuery');
+    DOM.resultCard = document.getElementById('resultCard');
+    DOM.resultSignalText = document.getElementById('resultSignalText');
+    DOM.resultDate = document.getElementById('resultDate');
+    DOM.resultLunar = document.getElementById('resultLunar');
+    DOM.resultStreet = document.getElementById('resultStreet');
+    DOM.resultStreetEn = document.getElementById('resultStreetEn');
+    DOM.btnPrevDay = document.getElementById('btnPrevDay');
+    DOM.btnNextDay = document.getElementById('btnNextDay');
+    DOM.backTop = document.getElementById('backTop');
+    DOM.toast = document.getElementById('toast');
+    DOM.feedbackBtn = document.getElementById('feedbackBtn');
+    DOM.feedbackTip = document.getElementById('feedbackTip');
+  }
+
+  const Toast = (function () {
+    let timer = 0;
+    return {
+      show(msg, isError) {
+        const el = DOM.toast;
+        if (!el) return;
+        el.textContent = String(msg || '');
+        el.classList.toggle('error', !!isError);
+        el.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('show'); }, 1800);
+      }
+    };
+  })();
+
+  const Render = {
+    renderToday() {
+      try {
+        const today = Calendar.beijingToday();
+        State.today = today;
+        const street = Calendar.street(today);
+        if (DOM.todayDate) {
+          DOM.todayDate.textContent = Calendar.formatDate(today) + ' ' + Calendar.weekday(today);
+          DOM.todayDate.setAttribute('datetime', Utils.formatInputDate(today));
+        }
+        if (DOM.todayLunar) {
+          const lunar = Lunar.text(today);
+          if (lunar) { DOM.todayLunar.textContent = lunar; DOM.todayLunar.style.display = ''; }
+          else { DOM.todayLunar.textContent = ''; DOM.todayLunar.style.display = 'none'; }
+        }
+        if (DOM.todayStreet) DOM.todayStreet.textContent = street.cn;
+        if (DOM.todayStreetEn) DOM.todayStreetEn.textContent = street.en;
+        if (DOM.tomorrowText) {
+          const tomorrow = Calendar.addDays(today, 1);
+          const tStreet = Calendar.street(tomorrow);
+          while (DOM.tomorrowText.firstChild) DOM.tomorrowText.removeChild(DOM.tomorrowText.firstChild);
+          DOM.tomorrowText.appendChild(document.createTextNode(
+            '明天 ' + (tomorrow.getMonth() + 1) + '月' + tomorrow.getDate() + '日 ' +
+            Calendar.weekday(tomorrow) + ' → '
+          ));
+          const span = document.createElement('span');
+          span.className = 'tomorrow-street';
+          span.textContent = tStreet.cn;
+          DOM.tomorrowText.appendChild(span);
+        }
+        State.lastRenderedKey = Utils.formatInputDate(today);
+      } catch (e) {
+        Reporter.show('日期计算异常');
+        if (DOM.todayDate) DOM.todayDate.textContent = '日期计算错误';
+        if (DOM.todayStreet) DOM.todayStreet.textContent = '请刷新页面';
+      }
+    },
+    renderWeekStrip() {
+      if (!DOM.weekStrip) return;
+      const today = State.today || Calendar.beijingToday();
+      while (DOM.weekStrip.firstChild) DOM.weekStrip.removeChild(DOM.weekStrip.firstChild);
+      for (let i = 0; i < 7; i++) {
+        const d = Calendar.addDays(today, i);
+        const s = Calendar.street(d);
+        const isToday = i === 0;
+        const dayLabel = i === 0 ? '今天' : (i === 1 ? '明天' : Calendar.weekday(d));
+        const dateLabel = Utils.pad2(d.getMonth() + 1) + '.' + Utils.pad2(d.getDate());
+        const item = document.createElement('div');
+        item.className = 'week-item' + (isToday ? ' today' : '');
+        item.setAttribute('role', 'listitem');
+        const day = document.createElement('div'); day.className = 'week-day'; day.textContent = dayLabel;
+        const date = document.createElement('div'); date.className = 'week-date'; date.textContent = dateLabel;
+        const streetCN = document.createElement('div'); streetCN.className = 'week-street-cn'; streetCN.textContent = s.cn;
+        const streetEN = document.createElement('div'); streetEN.className = 'week-street-en'; streetEN.textContent = s.en;
+        item.appendChild(day); item.appendChild(date); item.appendChild(streetCN); item.appendChild(streetEN);
+        DOM.weekStrip.appendChild(item);
+      }
+    },
+    renderCountdown() {
+      if (!DOM.countdownGrid) return;
+      const today = State.today || Calendar.beijingToday();
+      const todayIdx = Calendar.streetIndex(today);
+      const items = [];
+      for (let i = 0; i < CFG.STREETS.length; i++) {
+        const days = ((i - todayIdx) + CFG.CYCLE) % CFG.CYCLE;
+        items.push({ street: CFG.STREETS[i], days });
+      }
+      items.sort(function (a, b) { return a.days - b.days; });
+      while (DOM.countdownGrid.firstChild) DOM.countdownGrid.removeChild(DOM.countdownGrid.firstChild);
+      items.forEach(function (item) {
+        const isToday = item.days === 0;
+        const dayText = item.days === 0 ? '今天' : (item.days === 1 ? '明天' : item.days + '天后');
+        const li = document.createElement('li');
+        li.className = 'countdown-item' + (isToday ? ' today' : '');
+        const street = document.createElement('div'); street.className = 'countdown-street'; street.textContent = item.street.cn;
+        const streetEn = document.createElement('div'); streetEn.className = 'countdown-street-en'; streetEn.textContent = item.street.en;
+        const days = document.createElement('div'); days.className = 'countdown-days'; days.textContent = dayText;
+        li.appendChild(street); li.appendChild(streetEn); li.appendChild(days);
+        DOM.countdownGrid.appendChild(li);
+      });
+    },
+    updateExactCountdown() {
+      try {
+        const r = Calendar.exactCountdown();
+        if (DOM.exactStreet) DOM.exactStreet.textContent = r.street.cn;
+        if (DOM.exactD) DOM.exactD.textContent = r.d;
+        if (DOM.exactH) DOM.exactH.textContent = Utils.pad2(r.h);
+        if (DOM.exactM) DOM.exactM.textContent = Utils.pad2(r.m);
+        if (DOM.exactS) DOM.exactS.textContent = Utils.pad2(r.s);
+      } catch (e) {}
+    },
+    renderLunar(el, date) {
+      if (!el) return;
+      const text = Lunar.text(date);
+      if (text) { el.textContent = text; el.style.display = ''; }
+      else { el.textContent = ''; el.style.display = 'none'; }
+    }
+  };
+
+  const Query = {
+    showResult(date) {
+      if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+        Reporter.show('无效的日期');
+        return;
+      }
+      State.currentResultDate = date;
+      const s = Calendar.street(date);
+      const signal = Calendar.signalFor(date);
+      const labels = Calendar.signalLabel(signal, date);
+      if (DOM.resultCard) DOM.resultCard.setAttribute('data-signal', signal);
+      if (DOM.resultSignalText) DOM.resultSignalText.textContent = labels.pill;
+      if (DOM.resultDate) DOM.resultDate.textContent = Calendar.formatDate(date) + ' ' + Calendar.weekday(date);
+      if (DOM.resultStreet) DOM.resultStreet.textContent = s.cn;
+      if (DOM.resultStreetEn) DOM.resultStreetEn.textContent = s.en;
+      Render.renderLunar(DOM.resultLunar, date);
+      Store.set(CFG.STORAGE_KEY, Utils.formatInputDate(date));
+      if (!DOM.resultCard) return;
+      const alreadyOpen = DOM.resultCard.classList.contains('show');
+      if (alreadyOpen) {
+        DOM.resultCard.classList.remove('show');
+        void DOM.resultCard.offsetWidth;
+      }
+      DOM.resultCard.classList.add('show');
+      setTimeout(function () {
+        try {
+          DOM.resultCard.scrollIntoView({
+            behavior: Utils.prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'center'
+          });
+        } catch (e) {}
+      }, alreadyOpen ? 250 : 350);
+    },
+    hideResult() {
+      if (DOM.resultCard) DOM.resultCard.classList.remove('show');
+      State.currentResultDate = null;
+    },
+    doQuery() {
+      const input = DOM.dateInput;
+      if (!input) return;
+      const val = input.value;
+      if (!val || !Utils.isDateStr(val)) { Toast.show('请选择有效日期', true); return; }
+      const p = val.split('-').map(Number);
+      const date = new Date(p[0], p[1] - 1, p[2]);
+      if (isNaN(date.getTime())) { Toast.show('日期无效', true); return; }
+      if (val < CFG.DATE_RANGE.min || val > CFG.DATE_RANGE.max) {
+        Toast.show('超出可查询范围', true); return;
+      }
+      this.showResult(date);
+    },
+    quickQuery(offset) {
+      const d = Calendar.addDays(State.today || Calendar.beijingToday(), offset);
+      if (DOM.dateInput) DOM.dateInput.value = Utils.formatInputDate(d);
+      this.showResult(d);
+    },
+    shiftResult(delta) {
+      if (!State.currentResultDate) return;
+      const next = Calendar.addDays(State.currentResultDate, delta);
+      const nextKey = Utils.formatInputDate(next);
+      if (nextKey < CFG.DATE_RANGE.min || nextKey > CFG.DATE_RANGE.max) {
+        Toast.show('超出可查询范围', true); return;
+      }
+      if (DOM.dateInput) DOM.dateInput.value = nextKey;
+      this.showResult(next);
+    }
+  };
+
+  const Feedback = {
+    email: '88061995@qq.com',
+    open() {
+      const btn = DOM.feedbackBtn;
+      const tip = DOM.feedbackTip;
+      if (!btn) return;
+      if (btn.dataset.busy === '1') return;
+      btn.dataset.busy = '1';
+      const originalHTML = btn.innerHTML;
+      Utils.copy(this.email).then(function () {
+        btn.innerHTML = '<span class="link-icon" aria-hidden="true">✅</span><span class="link-text">邮箱已复制</span>';
+        Toast.show('邮箱已复制');
+        if (tip) { tip.classList.add('show'); setTimeout(function () { tip.classList.remove('show'); }, 8000); }
+        setTimeout(function () { btn.innerHTML = originalHTML; btn.dataset.busy = '0'; }, 2000);
+      }).catch(function () {
+        if (tip) { tip.classList.add('show'); setTimeout(function () { tip.classList.remove('show'); }, 8000); }
+        Toast.show('复制失败，请手动复制', true);
+        btn.dataset.busy = '0';
+      });
+    }
+  };
+
+  const BackTop = {
+    init() {
+      const btn = DOM.backTop;
+      if (!btn) return;
+      const fg = btn.querySelector('.ring-fg');
+      const CIRC = 2 * Math.PI * CFG.RING_RADIUS;
+      if (fg) { fg.style.strokeDasharray = CIRC; fg.style.strokeDashoffset = CIRC; }
+      const onScroll = Utils.rafThrottle(function () {
+        const y = window.scrollY || document.documentElement.scrollTop || 0;
+        const max = Math.max(1, (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight);
+        const p = Math.max(0, Math.min(1, y / max));
+        if (fg) fg.style.strokeDashoffset = CIRC * (1 - p);
+        btn.classList.toggle('show', y > CFG.SCROLL_TOP_THRESHOLD);
+      });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+      btn.addEventListener('click', function () {
+        const reduce = Utils.prefersReducedMotion();
+        try { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+        catch (e) { window.scrollTo(0, 0); }
+      });
+    }
+  };
+
+  function parseUrlDate() {
+    try {
+      const s = location.search || '';
+      const m = s.match(/[?&]date=(\d{4}-\d{2}-\d{2})/);
+      if (m && Utils.isDateStr(m[1])) {
+        if (m[1] >= CFG.DATE_RANGE.min && m[1] <= CFG.DATE_RANGE.max) return m[1];
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('.quick-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        Query.quickQuery(parseInt(btn.getAttribute('data-offset'), 10) || 0);
+      });
+    });
+    if (DOM.btnQuery) DOM.btnQuery.addEventListener('click', function () { Query.doQuery(); });
+    if (DOM.btnPrevDay) DOM.btnPrevDay.addEventListener('click', function () { Query.shiftResult(-1); });
+    if (DOM.btnNextDay) DOM.btnNextDay.addEventListener('click', function () { Query.shiftResult(1); });
+    if (DOM.dateInput) {
+      DOM.dateInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); Query.doQuery(); }
+        if (e.key === 'Escape') {
+          if (DOM.resultCard && DOM.resultCard.classList.contains('show')) Query.hideResult();
+        }
+      });
+    }
+    if (DOM.feedbackBtn) DOM.feedbackBtn.addEventListener('click', function () { Feedback.open(); });
+    document.addEventListener('keydown', function (e) {
+      const active = document.activeElement;
+      const isTyping = /input|textarea|select/i.test((active && active.tagName) || '');
+      if (e.key === '/' && !isTyping) {
+        e.preventDefault();
+        if (DOM.dateInput && DOM.dateInput.focus) DOM.dateInput.focus();
+        return;
+      }
+      if (e.key === 'Escape' && !isTyping) {
+        if (DOM.resultCard && DOM.resultCard.classList.contains('show')) Query.hideResult();
+      }
+      if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !isTyping) {
+        if (DOM.resultCard && DOM.resultCard.classList.contains('show')) {
+          e.preventDefault();
+          Query.shiftResult(e.key === 'ArrowLeft' ? -1 : 1);
+        }
+      }
+    });
+  }
+
+  function refreshIfDateChanged() {
+    try {
+      const today = Calendar.beijingToday();
+      const key = Utils.formatInputDate(today);
+      if (key !== State.lastRenderedKey) {
+        Render.renderToday();
+        Render.renderWeekStrip();
+        Render.renderCountdown();
+        if (DOM.dateInput) DOM.dateInput.value = key;
+      }
+    } catch (e) {}
+  }
+
+  function boot() {
+    try {
+      cacheDom();
+      Theme.init();
+      Render.renderToday();
+      Render.renderWeekStrip();
+      Render.renderCountdown();
+      if (DOM.dateInput) {
+        DOM.dateInput.min = CFG.DATE_RANGE.min;
+        DOM.dateInput.max = CFG.DATE_RANGE.max;
+        const urlDate = parseUrlDate();
+        let lastQuery = null;
+        try { lastQuery = Store.get(CFG.STORAGE_KEY); } catch (e) {}
+        let initialDate = urlDate || (lastQuery && Utils.isDateStr(lastQuery) ? lastQuery : null);
+        if (!initialDate) initialDate = Utils.formatInputDate(State.today);
+        DOM.dateInput.value = initialDate;
+        if (urlDate) {
+          const p = urlDate.split('-').map(Number);
+          setTimeout(function () { Query.showResult(new Date(p[0], p[1] - 1, p[2])); }, 400);
+        }
+      }
+      bindEvents();
+      BackTop.init();
+      TimerManager.init();
+      TimerManager.register({ interval: CFG.TICK_MS, onTick: Render.updateExactCountdown });
+      TimerManager.register({ interval: CFG.REFRESH_MS, onTick: refreshIfDateChanged });
+      TimerManager.startAll();
+    } catch (e) {
+      Reporter.show('初始化异常：' + (e && e.message || e));
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  global.__AF_GANJI__ = { version: '6.1.0' };
+})(window);
+</script>
+</body>
+</html>
