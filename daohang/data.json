@@ -488,6 +488,13 @@
       {
         "id": "",
         "tags": [],
+        "name": "12",
+        "desc": "",
+        "url": "http://www.baidu.com"
+      },
+      {
+        "id": "",
+        "tags": [],
         "name": "测试链接一",
         "desc": "测试描述一",
         "url": "https://nstool.netease.com/"
@@ -510,13 +517,39 @@
             "url": "https://www.yyczxt.com/"
           }
         ]
+      }
+    ]
+  },
+  {
+    "category": "测试2。",
+    "icon": "📀",
+    "color": "#60a5fa",
+    "items": [
+      {
+        "name": "测试一级标题。",
+        "url": "https://www.yyczxt.com/",
+        "desc": ""
       },
       {
-        "id": "",
-        "tags": [],
-        "name": "12",
-        "desc": "",
-        "url": "http://www.baidu.com"
+        "name": "测试测试二级菜单。",
+        "desc": "总描述。",
+        "popup": [
+          {
+            "label": "二级菜单一。",
+            "desc": "二级描述一。",
+            "url": "https://www.yyczxt.com/"
+          },
+          {
+            "label": "耳机菜单2。",
+            "desc": "二级描述二。",
+            "url": "https://www.yyczxt.com/"
+          }
+        ]
+      },
+      {
+        "name": "测试不加密连接。",
+        "url": "http://www.yyczxt.com/",
+        "desc": "没有加S的网址。"
       }
     ]
   }
