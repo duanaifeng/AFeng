@@ -14,6 +14,16 @@
         "url": "https://duanaifeng.github.io/AFeng/"
       },
       {
+        "id": "work-time",
+        "tags": [
+          "工具",
+          "效率"
+        ],
+        "name": "工时记账",
+        "desc": "临时工/正式工双模式，按天记工时自动算工资",
+        "url": "https://duanaifeng.github.io/AFeng/gongshi/"
+      },
+      {
         "id": "ganji",
         "tags": [
           "生活",
@@ -32,16 +42,6 @@
         "name": "在线小游戏库",
         "desc": "斗地主、保山幺子分、俄罗斯方块等经典游戏",
         "url": "https://duanaifeng.github.io/AFeng/game/"
-      },
-      {
-        "id": "work-time",
-        "tags": [
-          "工具",
-          "效率"
-        ],
-        "name": "工时记账",
-        "desc": "临时工/正式工双模式，按天记工时自动算工资",
-        "url": "https://duanaifeng.github.io/AFeng/gongshi/"
       },
       {
         "id": "pc-tools",
@@ -172,6 +172,16 @@
         "url": "https://music.gdstudio.org/"
       },
       {
+        "id": "moekoe",
+        "tags": [
+          "音乐",
+          "开源"
+        ],
+        "name": "MoeKoe Music",
+        "desc": "开源简洁的酷狗第三方客户端，支持 Hi-Fi",
+        "url": "https://music.moekoe.cn/"
+      },
+      {
         "id": "tunefree",
         "tags": [
           "音乐",
@@ -192,16 +202,6 @@
             "url": "https://share.feijipan.com/s/uEWhDYeu"
           }
         ]
-      },
-      {
-        "id": "moekoe",
-        "tags": [
-          "音乐",
-          "开源"
-        ],
-        "name": "MoeKoe Music",
-        "desc": "开源简洁的酷狗第三方客户端，支持 Hi-Fi",
-        "url": "https://music.moekoe.cn/"
       },
       {
         "id": "jay-chou",
@@ -301,15 +301,6 @@
         "url": "https://m.itsk.com/"
       },
       {
-        "id": "yrxitong",
-        "tags": [
-          "系统"
-        ],
-        "name": "小鱼儿 yr 系统",
-        "desc": "小鱼儿 yr 系统官网，提供系统封装与软件分享",
-        "url": "https://www.yrxitong.com/"
-      },
-      {
         "id": "pc528",
         "tags": [
           "系统"
@@ -317,6 +308,15 @@
         "name": "不忘初心系统",
         "desc": "精简优化版 Windows，砍掉广告与预装",
         "url": "https://www.pc528.net/"
+      },
+      {
+        "id": "yrxitong",
+        "tags": [
+          "系统"
+        ],
+        "name": "小鱼儿 yr 系统",
+        "desc": "小鱼儿 yr 系统官网，提供系统封装与软件分享",
+        "url": "https://www.yrxitong.com/"
       },
       {
         "id": "yyczxt",
@@ -346,16 +346,6 @@
         "url": "https://www.423down.com/"
       },
       {
-        "id": "hapstore",
-        "tags": [
-          "鸿蒙",
-          "资源"
-        ],
-        "name": "HAP Store",
-        "desc": "纯公益的鸿蒙 HAP 资源分享平台",
-        "url": "https://www.sydxky.cn/index.php"
-      },
-      {
         "id": "nexttime",
         "tags": [
           "导航",
@@ -383,6 +373,16 @@
         "name": "果核剥壳",
         "desc": "绿色软件、开源工具与安卓应用分享站",
         "url": "https://www.ghxi.com/"
+      },
+      {
+        "id": "hapstore",
+        "tags": [
+          "鸿蒙",
+          "资源"
+        ],
+        "name": "HAP Store",
+        "desc": "纯公益的鸿蒙 HAP 资源分享平台",
+        "url": "https://www.sydxky.cn/index.php"
       },
       {
         "id": "x6d",
@@ -486,13 +486,18 @@
     "color": "#4ade80",
     "items": [
       {
+        "id": "",
+        "tags": [],
         "name": "测试链接一",
-        "url": "https://nstool.netease.com/",
-        "desc": "测试描述一"
+        "desc": "测试描述一",
+        "url": "https://nstool.netease.com/"
       },
       {
+        "id": "",
+        "tags": [],
         "name": "测二级菜单",
         "desc": "测试一级描述",
+        "url": "",
         "popup": [
           {
             "label": "测试二级链接一",
@@ -505,6 +510,13 @@
             "url": "https://www.yyczxt.com/"
           }
         ]
+      },
+      {
+        "id": "",
+        "tags": [],
+        "name": "12",
+        "desc": "",
+        "url": "http://www.baidu.com"
       }
     ]
   }
