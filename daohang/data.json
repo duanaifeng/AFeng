@@ -1,7 +1,7 @@
 [
   {
     "category": "原·创",
-    "icon": "🏠",
+    "icon": "📌",
     "color": "#60a5fa",
     "items": [
       {
@@ -58,7 +58,7 @@
   },
   {
     "category": "网络·工具",
-    "icon": "⚒",
+    "icon": "📡",
     "color": "#22d3ee",
     "items": [
       {
@@ -427,7 +427,7 @@
   },
   {
     "category": "开源·脚本",
-    "icon": "⚙️",
+    "icon": "🗒️",
     "color": "#4ade80",
     "items": [
       {
@@ -441,14 +441,14 @@
         "url": "https://github.com/duanaifeng/AFeng"
       },
       {
-        "name": "Crx 搜搜",
-        "url": "https://www.crxsoso.com/",
-        "desc": "浏览器扩展与应用商店，四大商店插件搜索下载",
         "id": "crxso",
         "tags": [
           "扩展",
           "插件"
-        ]
+        ],
+        "name": "Crx 搜搜",
+        "desc": "浏览器扩展与应用商店，四大商店插件搜索下载",
+        "url": "https://www.crxsoso.com/"
       },
       {
         "id": "greasyfork",
@@ -475,7 +475,7 @@
   },
   {
     "category": "其·他",
-    "icon": "📌",
+    "icon": "🔍",
     "color": "#94a3b8",
     "items": [
       {
