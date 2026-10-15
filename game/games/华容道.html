@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a1410">
+<title>华容道 · 三国经典</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; background: #1a1410; overflow: hidden;
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    -webkit-user-select: none; user-select: none;
+    -webkit-tap-highlight-color: transparent; touch-action: none;
+  }
+  #app {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center;
+    background: radial-gradient(ellipse at top, #2a1e14 0%, #1a1410 60%, #0a0806 100%);
+    overflow-y: auto;
+    padding: calc(8px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
+  }
+  #hud { display: flex; gap: 8px; width: 100%; max-width: 480px; margin-bottom: 8px; flex-shrink: 0; }
+  .hud-item {
+    flex: 1;
+    background: linear-gradient(180deg, rgba(80, 60, 40, 0.55) 0%, rgba(40, 28, 18, 0.55) 100%);
+    border: 1px solid rgba(200, 160, 100, 0.25); border-radius: 10px;
+    padding: 5px 8px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .hud-item .label { font-size: 9px; color: rgba(220, 190, 140, 0.55); letter-spacing: 2px; margin-bottom: 2px; }
+  .hud-item .value { font-size: 17px; font-weight: 700; color: #f4e4c4; font-variant-numeric: tabular-nums; line-height: 1.15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+  .hud-item .value.small { font-size: 13px; letter-spacing: 1px; }
+  #game { display: block; max-width: 100%; max-height: 100%; touch-action: none; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6)); flex-shrink: 1; min-height: 0; }
+  #controls { display: flex; gap: 6px; margin-top: 10px; width: 100%; max-width: 480px; flex-shrink: 0; }
+  .ctrl-btn {
+    flex: 1; min-width: 0;
+    padding: 10px 2px; border-radius: 12px;
+    border: 1.5px solid rgba(200, 160, 100, 0.35);
+    background: linear-gradient(180deg, rgba(80, 60, 40, 0.7) 0%, rgba(50, 35, 22, 0.7) 100%);
+    color: #f4e4c4; font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ctrl-btn .ico { font-size: 17px; line-height: 1; }
+  .ctrl-btn .txt { font-size: 10px; opacity: 0.8; }
+  .ctrl-btn:hover { background: linear-gradient(180deg, rgba(100, 75, 50, 0.8) 0%, rgba(70, 50, 32, 0.8) 100%); }
+  .ctrl-btn:active { transform: scale(0.96); }
+  .ctrl-btn.disabled { opacity: 0.35; pointer-events: none; }
+  .ctrl-btn.primary {
+    background: linear-gradient(180deg, #c9a24a 0%, #8a6820 100%);
+    border-color: rgba(255, 220, 140, 0.6); color: #1a1410;
+    box-shadow: 0 4px 16px rgba(200, 162, 74, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  .ctrl-btn.primary:hover { background: linear-gradient(180deg, #d9b25a 0%, #9a7830 100%); }
+  .ctrl-btn.hint-btn {
+    background: linear-gradient(180deg, rgba(120, 180, 255, 0.55) 0%, rgba(40, 80, 180, 0.7) 100%);
+    border-color: rgba(140, 200, 255, 0.6); color: #e6f2ff;
+  }
+  .ctrl-btn.hint-btn .ico { color: #cce6ff; }
+  .ctrl-btn.hint-btn:hover { background: linear-gradient(180deg, rgba(140, 200, 255, 0.7) 0%, rgba(60, 100, 200, 0.8) 100%); }
+  .ctrl-btn.loading { pointer-events: none; opacity: 0.75; }
+  .ctrl-btn.loading .ico { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ctrl-btn.fs {
+    background: linear-gradient(180deg, rgba(160, 100, 200, 0.55) 0%, rgba(80, 40, 130, 0.75) 100%);
+    border-color: rgba(200, 160, 255, 0.6); color: #f0e6ff;
+  }
+  .ctrl-btn.fs:hover { background: linear-gradient(180deg, rgba(180, 130, 220, 0.7) 0%, rgba(100, 60, 150, 0.85) 100%); }
+  #hint { text-align: center; color: rgba(220, 190, 140, 0.5); font-size: 11px; letter-spacing: 1px; margin-top: 6px; max-width: 480px; min-height: 14px; transition: color 0.2s; }
+  #hint.alert { color: #8cc8ff; text-shadow: 0 0 8px rgba(140, 200, 255, 0.5); }
+  #hint.warn { color: #ffb74d; }
+  .overlay {
+    position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+    background: rgba(10, 6, 4, 0.9); z-index: 600; padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .overlay.show { display: flex; }
+  .panel {
+    background: linear-gradient(180deg, #2a1e14 0%, #1a1208 100%);
+    border: 2px solid rgba(200, 162, 74, 0.5); border-radius: 18px;
+    padding: 30px 40px; text-align: center;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(200, 162, 74, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 92vw; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .panel .trophy { font-size: 56px; margin-bottom: 6px; }
+  .panel h2 {
+    color: #f4d988; font-size: 30px; font-weight: 900; letter-spacing: 6px; margin-bottom: 4px;
+    text-shadow: 0 0 24px rgba(200, 162, 74, 0.8);
+  }
+  .panel .sub { color: rgba(220, 190, 140, 0.7); font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
+  .panel .stats { display: flex; gap: 30px; justify-content: center; margin-bottom: 24px; }
+  .panel .stat { display: flex; flex-direction: column; gap: 4px; }
+  .panel .stat .lbl { font-size: 10px; color: rgba(220, 190, 140, 0.5); letter-spacing: 2px; }
+  .panel .stat .val { font-size: 26px; font-weight: 900; color: #f4d988; font-variant-numeric: tabular-nums; }
+  .panel .btn-row { display: flex; gap: 10px; justify-content: center; }
+  .panel .btn {
+    padding: 12px 26px; border-radius: 10px; border: none;
+    font-family: inherit; font-size: 14px; font-weight: 800; letter-spacing: 2px;
+    cursor: pointer; min-width: 110px; transition: all 0.15s;
+  }
+  .panel .btn.primary {
+    background: linear-gradient(180deg, #c9a24a 0%, #8a6820 100%);
+    color: #1a1410; box-shadow: 0 4px 16px rgba(200, 162, 74, 0.5);
+  }
+  .panel .btn.primary:active { transform: scale(0.96); }
+  .panel .btn.secondary { background: transparent; color: #f4e4c4; border: 1.5px solid rgba(200, 160, 100, 0.4); }
+  .panel .btn.secondary:active { transform: scale(0.96); background: rgba(200, 160, 100, 0.1); }
+
+  /* ============ 开始界面 ============ */
+  .start-screen {
+    position: fixed; inset: 0; z-index: 900;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at 50% 40%, rgba(42,30,20,.97), rgba(10,8,6,.99));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    transition: opacity .4s ease, visibility .4s ease;
+    padding: 24px;
+  }
+  .start-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  .start-card {
+    width: min(88vw, 340px); text-align: center;
+    padding: 28px 24px 24px; border-radius: 20px;
+    background: linear-gradient(180deg, #2a1e14 0%, #1a1208 100%);
+    border: 2px solid rgba(200,162,74,.5);
+    box-shadow: 0 30px 80px rgba(0,0,0,.8), 0 0 60px rgba(200,162,74,.2), inset 0 1px 0 rgba(255,255,255,.08);
+    transform: scale(.9);
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .start-screen:not(.hide) .start-card { transform: scale(1); }
+  .start-logo {
+    font-size: 30px; font-weight: 900; letter-spacing: 8px; color: #f4d988;
+    text-shadow: 0 0 24px rgba(200,162,74,.7);
+  }
+  .start-sub { font-size: 9px; letter-spacing: 4px; color: rgba(220,190,140,.5); font-weight: 700; margin-bottom: 18px; }
+  .start-info {
+    text-align: left; font-size: 12px; line-height: 2; color: #e8d8b8;
+    background: rgba(60,44,28,.55); border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 20px;
+    border: 1px solid rgba(200,160,100,.2);
+  }
+  .start-info b { display: inline-block; min-width: 48px; color: #f4d988; }
+  .start-btn {
+    width: 100%; padding: 14px; border: none; border-radius: 13px;
+    font-family: inherit; font-size: 16px; font-weight: 900; letter-spacing: 4px;
+    color: #1a1410; cursor: pointer;
+    background: linear-gradient(180deg, #c9a24a 0%, #8a6820 100%);
+    box-shadow: 0 8px 26px rgba(200,162,74,.45), inset 0 1px 0 rgba(255,255,255,.4);
+    transition: transform .15s, filter .15s;
+  }
+  .start-btn:hover { filter: brightness(1.1); }
+  .start-btn:active { transform: scale(.96); }
+
+  @media (max-width: 480px) {
+    .hud-item .value { font-size: 15px; }
+    .hud-item .value.small { font-size: 12px; }
+    .ctrl-btn { padding: 9px 2px; }
+    .ctrl-btn .ico { font-size: 15px; }
+    .ctrl-btn .txt { font-size: 9px; }
+    .panel { padding: 24px 26px; }
+    .panel h2 { font-size: 24px; letter-spacing: 4px; }
+    .panel .stat .val { font-size: 22px; }
+    .panel .btn { padding: 10px 18px; font-size: 12px; min-width: 90px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="hud">
+    <div class="hud-item">
+      <div class="label">步数</div>
+      <div class="value" id="ui-moves">0</div>
+    </div>
+    <div class="hud-item">
+      <div class="label">时间</div>
+      <div class="value" id="ui-time">0:00</div>
+    </div>
+    <div class="hud-item">
+      <div class="label">布局</div>
+      <div class="value small" id="ui-layout">横刀立马</div>
+    </div>
+  </div>
+
+  <canvas id="game" width="480" height="570"></canvas>
+
+  <div id="controls">
+    <button class="ctrl-btn hint-btn" id="btn-hint">
+      <span class="ico">💡</span><span class="txt">提示</span>
+    </button>
+    <button class="ctrl-btn disabled" id="btn-undo">
+      <span class="ico">↶</span><span class="txt">撤销</span>
+    </button>
+    <button class="ctrl-btn" id="btn-reset">
+      <span class="ico">↻</span><span class="txt">重置</span>
+    </button>
+    <button class="ctrl-btn primary" id="btn-layout">
+      <span class="ico">◈</span><span class="txt">换局</span>
+    </button>
+    <button class="ctrl-btn fs" id="btn-full">
+      <span class="ico">⛶</span><span class="txt">全屏</span>
+    </button>
+  </div>
+
+  <div id="hint">拖动棋子 · 让曹操抵达底部出口</div>
+</div>
+
+<div class="overlay" id="winOverlay">
+  <div class="panel">
+    <div class="trophy">🏆</div>
+    <h2>曹操脱险</h2>
+    <div class="sub">成功走出华容道</div>
+    <div class="stats">
+      <div class="stat"><div class="lbl">步数</div><div class="val" id="ui-win-moves">0</div></div>
+      <div class="stat"><div class="lbl">用时</div><div class="val" id="ui-win-time">0:00</div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn secondary" id="btn-win-layout">换 一 局</button>
+      <button class="btn primary" id="btn-win-again">再 来 一 次</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 开始界面 ============ -->
+<div class="start-screen" id="startScreen">
+  <div class="start-card">
+    <div class="start-logo">华 容 道</div>
+    <div class="start-sub">三 国 经 典 滑 块</div>
+    <div class="start-info">
+      <div><b>目标</b> 把「曹操」移到底部出口</div>
+      <div><b>操作</b> 拖动棋子 / 键盘方向键</div>
+      <div><b>提示</b> 自动求解下一步（H 键）</div>
+      <div><b>换局</b> 10 种经典阵法（N 键）</div>
+    </div>
+    <button class="start-btn" id="startBtn">开 始 游 戏</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const CFG = {
+  W: 480, H: 570,
+  COLS: 4, ROWS: 5,
+  CELL: 105,
+  BOARD_X: 30, BOARD_Y: 22,
+  ANIM_SPEED: 0.28,
+  DRAG_THRESHOLD: 0.38,
+  SAVE_KEY: 'huarongdao_v3',
+  SOLVE_MAX_NODES: 600000,
+  SOLVE_MAX_TIME: 8000,
+  SOLVE_CHUNK_MS: 25,
+};
+
+const PIECE_STYLES = {
+  cao:     { light: '#e8b04a', dark: '#a06818', border: '#f4d988', text: '#2a1400', glow: 'rgba(232, 176, 74, 0.7)' },
+  guan:    { light: '#4caf50', dark: '#1b5e20', border: '#8ee79a', text: '#f0fff0', glow: 'rgba(76, 175, 80, 0.5)' },
+  zhang:   { light: '#3d7eff', dark: '#0d3a8a', border: '#8ab4ff', text: '#f0f6ff', glow: 'rgba(61, 126, 255, 0.5)' },
+  zhao:    { light: '#9c5fff', dark: '#4a1b8a', border: '#c8a0ff', text: '#f6f0ff', glow: 'rgba(156, 95, 255, 0.5)' },
+  ma:      { light: '#00bcd4', dark: '#006978', border: '#80deea', text: '#f0fdff', glow: 'rgba(0, 188, 212, 0.5)' },
+  huang:   { light: '#ff7043', dark: '#b23a10', border: '#ffab91', text: '#fff4f0', glow: 'rgba(255, 112, 67, 0.5)' },
+  soldier: { light: '#8d7060', dark: '#4a382e', border: '#c8b0a0', text: '#f8f0e8', glow: 'rgba(141, 112, 96, 0.4)' },
+};
+
+const LAYOUTS = [
+  { name: '横刀立马', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:2, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:2, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'b1', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+    { id:'b3', name:'兵', type:'soldier', x:0, y:4, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:3, y:4, w:1, h:1 },
+  ]},
+  { name: '齐头并进', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:2, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:2, w:1, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:1, y:2, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:2, y:2, w:1, h:1 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:4, w:2, h:1 },
+  ]},
+  { name: '兵分三路', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:2, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:2, w:1, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+  ]},
+  { name: '将拥曹营', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:0, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:0, w:1, h:1 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:1, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:1, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+  ]},
+  { name: '峰回路转', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:2, w:1, h:1 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:2, w:1, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:4, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:4, w:1, h:1 },
+  ]},
+  { name: '水泄不通', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:2, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:1, y:2, w:1, h:1 },
+    { id:'b3', name:'兵', type:'soldier', x:2, y:2, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:3, y:2, w:1, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:3, w:2, h:1 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+  ]},
+  { name: '雨声淅沥', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:2, w:1, h:1 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:2, w:1, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+  ]},
+  { name: '五将逼宫', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:0, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:0, w:1, h:1 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:1, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:1, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:2, w:2, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:4, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:4, w:1, h:1 },
+  ]},
+  { name: '前呼后拥', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:0, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:0, w:1, h:2 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:2, w:1, h:2 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:2, w:1, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:1, y:2, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:2, y:2, w:1, h:1 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:3, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:3, w:1, h:1 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:4, w:2, h:1 },
+  ]},
+  { name: '兵临城下', pieces: [
+    { id:'cao', name:'曹操', type:'cao', x:1, y:0, w:2, h:2 },
+    { id:'b1', name:'兵', type:'soldier', x:0, y:0, w:1, h:1 },
+    { id:'b2', name:'兵', type:'soldier', x:3, y:0, w:1, h:1 },
+    { id:'zhang', name:'张飞', type:'zhang', x:0, y:1, w:1, h:2 },
+    { id:'zhao', name:'赵云', type:'zhao', x:3, y:1, w:1, h:2 },
+    { id:'b3', name:'兵', type:'soldier', x:1, y:2, w:1, h:1 },
+    { id:'b4', name:'兵', type:'soldier', x:2, y:2, w:1, h:1 },
+    { id:'ma', name:'马超', type:'ma', x:0, y:3, w:1, h:2 },
+    { id:'guan', name:'关羽', type:'guan', x:1, y:3, w:2, h:1 },
+    { id:'huang', name:'黄忠', type:'huang', x:3, y:3, w:1, h:2 },
+  ]},
+];
+
+const WIN_X = 1, WIN_Y = 3;
+const U = { clamp: (v, a, b) => v < a ? a : (v > b ? b : v) };
+
+const Save = {
+  data: { soundOn: true, bestScores: {} },
+  load() { try { const raw = localStorage.getItem(CFG.SAVE_KEY); if (raw) Object.assign(this.data, JSON.parse(raw)); } catch (e) {} },
+  save() { try { localStorage.setItem(CFG.SAVE_KEY, JSON.stringify(this.data)); } catch (e) {} },
+};
+
+const Sound = {
+  ctx: null, master: null, enabled: true,
+  init() {
+    if (this.ctx) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { this.enabled = false; return; }
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.22;
+      this.master.connect(this.ctx.destination);
+    } catch (e) { this.enabled = false; }
+  },
+  resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {}); },
+  tone({ freq, freq2, dur = 0.08, type = 'sine', vol = 0.3, delay = 0 }) {
+    if (!this.enabled || !this.ctx) return;
+    const t0 = this.ctx.currentTime + delay;
+    try {
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq2 || freq, t0);
+      if (freq2 && freq2 !== freq) o.frequency.exponentialRampToValueAtTime(freq, t0 + dur);
+      g.gain.setValueAtTime(vol, t0);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      o.connect(g).connect(this.master);
+      o.start(t0); o.stop(t0 + dur + 0.02);
+    } catch (e) {}
+  },
+  move() { this.tone({ freq: 380, freq2: 520, dur: 0.06, type: 'sine', vol: 0.22 }); },
+  pick() { this.tone({ freq: 620, dur: 0.04, type: 'sine', vol: 0.18 }); },
+  undo() { this.tone({ freq: 520, freq2: 380, dur: 0.07, type: 'sine', vol: 0.22 }); },
+  hint() { this.tone({ freq: 880, dur: 0.08, type: 'triangle', vol: 0.25 }); this.tone({ freq: 1175, dur: 0.12, type: 'triangle', vol: 0.22, delay: 0.08 }); },
+  win() { [523, 659, 784, 1047, 1319].forEach((f, i) => { this.tone({ freq: f, dur: 0.14, type: 'triangle', vol: 0.32, delay: i * 0.11 }); }); },
+};
+
+const Game = {
+  canvas: null, ctx: null,
+  pieces: [], moves: 0,
+  startTime: 0, elapsed: 0, timerRunning: false,
+  history: [], currentLayout: 0, selectedPiece: null, solved: false, solveFlash: 0,
+  hintPiece: null, hintDir: null, hintLife: 0,
+  pointerDown: false, dragStartX: 0, dragStartY: 0,
+  solving: false, solveCancelled: false, lastTime: 0,
+  gameStarted: false,
+  winTimeout: null,
+
+  init() {
+    this.canvas = document.getElementById('game');
+    this.ctx = this.canvas.getContext('2d');
+    Save.load();
+    Sound.enabled = Save.data.soundOn;
+    this.bindEvents();
+    this.loadLayout(0);
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('orientationchange', () => setTimeout(() => this.resize(), 250));
+    requestAnimationFrame(t => this.loop(t));
+  },
+
+  isFullscreen() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement ||
+              document.mozFullScreenElement || document.msFullscreenElement);
+  },
+  async toggleFullscreen() {
+    try {
+      if (!this.isFullscreen()) {
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen ||
+                    el.mozRequestFullScreen || el.msRequestFullscreen;
+        if (req) await req.call(el);
+        try { if (screen.orientation && screen.orientation.lock)
+          await screen.orientation.lock('portrait').catch(() => {}); } catch (e) {}
+      } else {
+        const ex = document.exitFullscreen || document.webkitExitFullscreen ||
+                   document.mozCancelFullScreen || document.msExitFullscreen;
+        if (ex) await ex.call(document);
+      }
+    } catch (e) {}
+    this.updateFsIcon();
+    setTimeout(() => this.resize(), 200);
+  },
+  updateFsIcon() {
+    const btn = document.getElementById('btn-full');
+    if (!btn) return;
+    const icon = btn.querySelector('.ico');
+    const txt = btn.querySelector('.txt');
+    const full = this.isFullscreen();
+    if (icon) icon.textContent = full ? '✕' : '⛶';
+    if (txt) txt.textContent = full ? '退出' : '全屏';
+  },
+
+  bindEvents() {
+    const c = this.canvas;
+    c.addEventListener('mousedown', e => { Sound.init(); Sound.resume(); const p = this.toLocal(e.clientX, e.clientY); this.onPointerDown(p.x, p.y); });
+    window.addEventListener('mousemove', e => { if (!this.pointerDown) return; const p = this.toLocal(e.clientX, e.clientY); this.onPointerMove(p.x, p.y); });
+    window.addEventListener('mouseup', () => this.onPointerUp());
+    c.addEventListener('touchstart', e => { e.preventDefault(); Sound.init(); Sound.resume(); const t = e.touches[0]; const p = this.toLocal(t.clientX, t.clientY); this.onPointerDown(p.x, p.y); }, { passive: false });
+    c.addEventListener('touchmove', e => { e.preventDefault(); if (!this.pointerDown) return; const t = e.touches[0]; const p = this.toLocal(t.clientX, t.clientY); this.onPointerMove(p.x, p.y); }, { passive: false });
+    c.addEventListener('touchend', e => { e.preventDefault(); this.onPointerUp(); }, { passive: false });
+    c.addEventListener('touchcancel', e => { e.preventDefault(); this.onPointerUp(); }, { passive: false });
+
+    document.getElementById('btn-hint').addEventListener('click', () => this.showHint());
+    document.getElementById('btn-undo').addEventListener('click', () => this.undo());
+    document.getElementById('btn-reset').addEventListener('click', () => this.reset());
+    document.getElementById('btn-layout').addEventListener('click', () => this.nextLayout());
+    document.getElementById('btn-full').addEventListener('click', () => this.toggleFullscreen());
+
+    document.getElementById('btn-win-again').addEventListener('click', () => { this.hideWin(); this.reset(); });
+    document.getElementById('btn-win-layout').addEventListener('click', () => { this.hideWin(); this.nextLayout(); });
+
+    window.addEventListener('keydown', e => {
+      Sound.init(); Sound.resume();
+      if (!this.gameStarted) return;
+      if (e.code === 'KeyR') this.reset();
+      if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) this.undo();
+      if (e.code === 'KeyN') this.nextLayout();
+      if (e.code === 'KeyH') this.showHint();
+      if (e.code === 'KeyF') this.toggleFullscreen();
+    });
+
+    ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+      .forEach(ev => document.addEventListener(ev, () => { this.updateFsIcon(); setTimeout(() => this.resize(), 100); }));
+    this.updateFsIcon();
+  },
+
+  toLocal(clientX, clientY) {
+    const rect = this.canvas.getBoundingClientRect();
+    return { x: (clientX - rect.left) * (CFG.W / rect.width), y: (clientY - rect.top) * (CFG.H / rect.height) };
+  },
+
+  resize() {
+    // 用 visualViewport 兜底，避免移动端地址栏高度变化引起抖动
+    const vw = (window.visualViewport && window.visualViewport.width) || window.innerWidth;
+    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const hudH = 62, ctrlH = 72, hintH = 28, padding = 36;
+    const availW = vw - 24;
+    const availH = vh - hudH - ctrlH - hintH - padding;
+    const ratio = CFG.W / CFG.H;
+    let w = availW;
+    let h = w / ratio;
+    if (h > availH) { h = availH; w = h * ratio; }
+    this.canvas.style.width = Math.round(w) + 'px';
+    this.canvas.style.height = Math.round(h) + 'px';
+  },
+
+  loadLayout(index) {
+    const layout = LAYOUTS[index];
+    this.currentLayout = index;
+    this.pieces = layout.pieces.map(p => ({ ...p, renderX: p.x, renderY: p.y, isSelected: false }));
+    this.moves = 0; this.startTime = 0; this.elapsed = 0; this.timerRunning = false;
+    this.history = []; this.selectedPiece = null; this.solved = false; this.solveFlash = 0;
+    this.hintPiece = null; this.hintDir = null; this.hintLife = 0;
+    this.solveCancelled = true;
+    // 清理残留的胜利计时器，避免快速重置时弹面板
+    if (this.winTimeout) { clearTimeout(this.winTimeout); this.winTimeout = null; }
+    this.updateHUD(); this.updateUndoButton(); this.hideWin();
+    this.setHint('拖动棋子 · 让曹操抵达底部出口', '');
+  },
+  reset() { this.loadLayout(this.currentLayout); Sound.pick(); },
+  nextLayout() { const next = (this.currentLayout + 1) % LAYOUTS.length; this.loadLayout(next); Sound.pick(); },
+
+  getGrid() {
+    const grid = [];
+    for (let y = 0; y < CFG.ROWS; y++) grid.push(new Array(CFG.COLS).fill(null));
+    for (const p of this.pieces) {
+      for (let dy = 0; dy < p.h; dy++) for (let dx = 0; dx < p.w; dx++) grid[p.y + dy][p.x + dx] = p.id;
+    }
+    return grid;
+  },
+  canMove(piece, dx, dy) {
+    const nx = piece.x + dx, ny = piece.y + dy;
+    if (nx < 0 || ny < 0) return false;
+    if (nx + piece.w > CFG.COLS || ny + piece.h > CFG.ROWS) return false;
+    const grid = this.getGrid();
+    for (let yy = ny; yy < ny + piece.h; yy++) {
+      for (let xx = nx; xx < nx + piece.w; xx++) {
+        const occupant = grid[yy][xx];
+        if (occupant !== null && occupant !== piece.id) return false;
+      }
+    }
+    return true;
+  },
+  movePiece(piece, dx, dy) {
+    if (!this.canMove(piece, dx, dy)) return false;
+    this.history.push({ id: piece.id, fromX: piece.x, fromY: piece.y });
+    piece.x += dx; piece.y += dy; this.moves++;
+    if (!this.timerRunning) { this.startTime = performance.now(); this.timerRunning = true; }
+    this.hintPiece = null; this.hintDir = null; this.hintLife = 0;
+    Sound.move(); this.updateHUD(); this.updateUndoButton(); this.checkWin();
+    return true;
+  },
+  undo() {
+    if (this.history.length === 0) return;
+    const last = this.history.pop();
+    const piece = this.pieces.find(p => p.id === last.id);
+    if (!piece) return;
+    piece.x = last.fromX; piece.y = last.fromY;
+    this.moves = Math.max(0, this.moves - 1);
+    this.hintPiece = null; this.hintLife = 0;
+    Sound.undo(); this.updateHUD(); this.updateUndoButton();
+  },
+  checkWin() {
+    const cao = this.pieces.find(p => p.id === 'cao');
+    if (cao && cao.x === WIN_X && cao.y === WIN_Y) {
+      this.solved = true; this.solveFlash = 1; this.timerRunning = false;
+      Sound.win();
+      const key = LAYOUTS[this.currentLayout].name;
+      const prev = Save.data.bestScores[key];
+      if (!prev || this.moves < prev) { Save.data.bestScores[key] = this.moves; Save.save(); }
+      // 【修复】回调内判断 solved，避免快速重置时弹出旧面板
+      this.winTimeout = setTimeout(() => {
+        this.winTimeout = null;
+        if (this.solved) this.showWin();
+      }, 800);
+    }
+  },
+
+  solveAsync() {
+    return new Promise((resolve) => {
+      const N = this.pieces.length;
+      const DIRS = [[0,-1],[0,1],[-1,0],[1,0]];
+      const COLS = CFG.COLS, ROWS = CFG.ROWS;
+      const GRID_SIZE = COLS * ROWS;
+      const meta = this.pieces.map(p => ({ id: p.id, w: p.w, h: p.h, type: p.type }));
+      const start = new Uint8Array(N * 2);
+      for (let i = 0; i < N; i++) { start[i * 2] = this.pieces[i].x; start[i * 2 + 1] = this.pieces[i].y; }
+      let caoIdx = -1;
+      for (let i = 0; i < N; i++) if (meta[i].id === 'cao') { caoIdx = i; break; }
+
+      const encode = (state) => {
+        const groups = {};
+        for (let i = 0; i < N; i++) {
+          const m = meta[i];
+          const key = m.w + 'x' + m.h + '_' + m.type;
+          const pos = state[i * 2] * ROWS + state[i * 2 + 1];
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(pos);
+        }
+        const keys = Object.keys(groups).sort();
+        let s = '';
+        for (let k = 0; k < keys.length; k++) {
+          const arr = groups[keys[k]];
+          arr.sort((a, b) => a - b);
+          s += keys[k] + ':' + arr.join(',') + '|';
+        }
+        return s;
+      };
+      const buildGrid = (state) => {
+        const grid = new Uint8Array(GRID_SIZE);
+        for (let i = 0; i < N; i++) {
+          const m = meta[i];
+          const x = state[i * 2], y = state[i * 2 + 1];
+          const selfId = i + 1;
+          for (let dy = 0; dy < m.h; dy++) {
+            const rowBase = (y + dy) * COLS;
+            for (let dx = 0; dx < m.w; dx++) grid[rowBase + x + dx] = selfId;
+          }
+        }
+        return grid;
+      };
+      const canMove = (state, grid, pi, dx, dy) => {
+        const m = meta[pi];
+        const x = state[pi * 2], y = state[pi * 2 + 1];
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || ny < 0) return false;
+        if (nx + m.w > COLS || ny + m.h > ROWS) return false;
+        const selfId = pi + 1;
+        for (let yy = ny; yy < ny + m.h; yy++) {
+          const rowBase = yy * COLS;
+          for (let xx = nx; xx < nx + m.w; xx++) {
+            const v = grid[rowBase + xx];
+            if (v !== 0 && v !== selfId) return false;
+          }
+        }
+        return true;
+      };
+
+      const visited = new Set();
+      visited.add(encode(start));
+      const queue = [{ state: start, firstMove: null }];
+      let head = 0, nodes = 0;
+      const startTime = performance.now();
+
+      const step = () => {
+        if (Game.solveCancelled) { resolve(null); return; }
+        const chunkStart = performance.now();
+        while (head < queue.length) {
+          if (performance.now() - chunkStart > CFG.SOLVE_CHUNK_MS) break;
+          if (nodes >= CFG.SOLVE_MAX_NODES) { resolve(null); return; }
+          if (performance.now() - startTime > CFG.SOLVE_MAX_TIME) { resolve(null); return; }
+
+          const cur = queue[head++];
+          nodes++;
+          const curState = cur.state;
+          if (curState[caoIdx * 2] === WIN_X && curState[caoIdx * 2 + 1] === WIN_Y) {
+            if (cur.firstMove) resolve({ id: meta[cur.firstMove.pi].id, dx: cur.firstMove.dx, dy: cur.firstMove.dy });
+            else resolve({ id: 'cao', dx: 0, dy: 0 });
+            return;
+          }
+          const grid = buildGrid(curState);
+          for (let pi = 0; pi < N; pi++) {
+            for (let d = 0; d < 4; d++) {
+              const dx = DIRS[d][0], dy = DIRS[d][1];
+              if (canMove(curState, grid, pi, dx, dy)) {
+                const newState = new Uint8Array(curState);
+                newState[pi * 2] += dx; newState[pi * 2 + 1] += dy;
+                const key = encode(newState);
+                if (!visited.has(key)) {
+                  visited.add(key);
+                  queue.push({ state: newState, firstMove: cur.firstMove || { pi, dx, dy } });
+                }
+              }
+            }
+          }
+        }
+        if (head >= queue.length) { resolve(null); return; }
+        setTimeout(step, 0);
+      };
+      step();
+    });
+  },
+
+  async showHint() {
+    if (!this.gameStarted) return;
+    if (this.solved || this.solving) return;
+    const btn = document.getElementById('btn-hint');
+    btn.classList.add('loading');
+    this.solving = true; this.solveCancelled = false;
+    this.setHint('正在思考...', '');
+    this.hintPiece = null; this.hintDir = null; this.hintLife = 0;
+
+    try {
+      const move = await this.solveAsync();
+      if (this.solveCancelled) { btn.classList.remove('loading'); this.solving = false; return; }
+      if (!move) { this.setHint('当前局面可能走不到出口，试试撤销几步', 'warn'); btn.classList.remove('loading'); this.solving = false; return; }
+      if (move.dx === 0 && move.dy === 0) { this.setHint('曹操已经在出口了！', 'alert'); btn.classList.remove('loading'); this.solving = false; return; }
+      const piece = this.pieces.find(p => p.id === move.id);
+      if (!piece) { this.setHint('提示失败', 'warn'); btn.classList.remove('loading'); this.solving = false; return; }
+      this.hintPiece = piece;
+      this.hintDir = { dx: move.dx, dy: move.dy };
+      this.hintLife = 4.0;
+      const dirNames = { '0,-1': '上', '0,1': '下', '-1,0': '左', '1,0': '右' };
+      const dirTxt = dirNames[move.dx + ',' + move.dy] || '';
+      const name = piece.type === 'soldier' ? '兵' : piece.name;
+      this.setHint('提示：移动「' + name + '」向' + dirTxt, 'alert');
+      Sound.hint();
+    } catch (e) {
+      this.setHint('提示出错', 'warn');
+    } finally {
+      btn.classList.remove('loading');
+      this.solving = false;
+    }
+  },
+
+  setHint(text, cls) {
+    const el = document.getElementById('hint');
+    el.textContent = text;
+    el.classList.remove('alert', 'warn');
+    if (cls) el.classList.add(cls);
+  },
+
+  hitTest(px, py) {
+    const gx = (px - CFG.BOARD_X) / CFG.CELL;
+    const gy = (py - CFG.BOARD_Y) / CFG.CELL;
+    if (gx < 0 || gy < 0 || gx >= CFG.COLS || gy >= CFG.ROWS) return null;
+    const col = Math.floor(gx), row = Math.floor(gy);
+    for (const p of this.pieces) if (col >= p.x && col < p.x + p.w && row >= p.y && row < p.y + p.h) return p;
+    return null;
+  },
+  onPointerDown(x, y) {
+    if (!this.gameStarted || this.solved) return;
+    const piece = this.hitTest(x, y);
+    if (piece) { this.selectedPiece = piece; this.pointerDown = true; this.dragStartX = x; this.dragStartY = y; piece.isSelected = true; }
+  },
+  onPointerMove(x, y) {
+    if (!this.pointerDown || !this.selectedPiece || this.solved) return;
+    const threshold = CFG.CELL * CFG.DRAG_THRESHOLD;
+    let iterations = 0;
+    while (iterations < 4) {
+      const dx = x - this.dragStartX;
+      const dy = y - this.dragStartY;
+      let moveDx = 0, moveDy = 0;
+      if (Math.abs(dx) > Math.abs(dy)) { if (Math.abs(dx) > threshold) moveDx = dx > 0 ? 1 : -1; }
+      else { if (Math.abs(dy) > threshold) moveDy = dy > 0 ? 1 : -1; }
+      if (moveDx === 0 && moveDy === 0) break;
+      const success = this.movePiece(this.selectedPiece, moveDx, moveDy);
+      if (success) { this.dragStartX += moveDx * threshold; this.dragStartY += moveDy * threshold; }
+      else {
+        if (moveDx !== 0) this.dragStartX = x - Math.sign(dx) * threshold * 0.5;
+        if (moveDy !== 0) this.dragStartY = y - Math.sign(dy) * threshold * 0.5;
+        break;
+      }
+      iterations++;
+    }
+  },
+  onPointerUp() {
+    if (this.selectedPiece) this.selectedPiece.isSelected = false;
+    this.selectedPiece = null; this.pointerDown = false;
+  },
+
+  updateHUD() {
+    document.getElementById('ui-moves').textContent = this.moves;
+    document.getElementById('ui-layout').textContent = LAYOUTS[this.currentLayout].name;
+  },
+  updateUndoButton() { document.getElementById('btn-undo').classList.toggle('disabled', this.history.length === 0); },
+  updateTime() {
+    if (!this.timerRunning) return;
+    this.elapsed = (performance.now() - this.startTime) / 1000;
+    const m = Math.floor(this.elapsed / 60);
+    const s = Math.floor(this.elapsed % 60);
+    document.getElementById('ui-time').textContent = m + ':' + String(s).padStart(2, '0');
+  },
+  showWin() {
+    document.getElementById('ui-win-moves').textContent = this.moves;
+    const m = Math.floor(this.elapsed / 60);
+    const s = Math.floor(this.elapsed % 60);
+    document.getElementById('ui-win-time').textContent = m + ':' + String(s).padStart(2, '0');
+    document.getElementById('winOverlay').classList.add('show');
+  },
+  hideWin() { document.getElementById('winOverlay').classList.remove('show'); },
+
+  loop(now) {
+    requestAnimationFrame(t => this.loop(t));
+    if (!this.lastTime) this.lastTime = now;
+    let dt = (now - this.lastTime) / 1000;
+    this.lastTime = now;
+    if (dt > 0.1) dt = 0.1;
+    for (const p of this.pieces) {
+      p.renderX += (p.x - p.renderX) * CFG.ANIM_SPEED;
+      p.renderY += (p.y - p.renderY) * CFG.ANIM_SPEED;
+      if (Math.abs(p.renderX - p.x) < 0.005) p.renderX = p.x;
+      if (Math.abs(p.renderY - p.y) < 0.005) p.renderY = p.y;
+    }
+    if (this.solveFlash > 0) this.solveFlash -= dt * 1.2;
+    if (this.hintLife > 0) {
+      this.hintLife -= dt;
+      if (this.hintLife <= 0) { this.hintPiece = null; this.hintDir = null; }
+    }
+    this.updateTime();
+    this.render();
+  },
+
+  render() {
+    const ctx = this.ctx;
+    const W = CFG.W, H = CFG.H;
+    ctx.fillStyle = '#1a1410'; ctx.fillRect(0, 0, W, H);
+    this.drawBoard(ctx);
+    this.drawExit(ctx);
+    for (const p of this.pieces) this.drawPiece(ctx, p);
+    this.drawHint(ctx);
+    if (this.solveFlash > 0) {
+      ctx.fillStyle = 'rgba(255, 220, 100, ' + (this.solveFlash * 0.35) + ')';
+      ctx.fillRect(0, 0, W, H);
+    }
+  },
+
+  drawBoard(ctx) {
+    const x = CFG.BOARD_X, y = CFG.BOARD_Y;
+    const w = CFG.COLS * CFG.CELL, h = CFG.ROWS * CFG.CELL;
+    const frameGrad = ctx.createLinearGradient(x - 12, y - 12, x + w + 12, y + h + 12);
+    frameGrad.addColorStop(0, '#5a3e22'); frameGrad.addColorStop(0.5, '#3a2818'); frameGrad.addColorStop(1, '#1a1008');
+    ctx.fillStyle = frameGrad;
+    this.roundRect(ctx, x - 12, y - 12, w + 24, h + 24, 14); ctx.fill();
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; ctx.lineWidth = 2;
+    this.roundRect(ctx, x - 12, y - 12, w + 24, h + 24, 14); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255, 220, 160, 0.25)'; ctx.lineWidth = 1;
+    this.roundRect(ctx, x - 11, y - 11, w + 22, h + 22, 13); ctx.stroke();
+    const boardGrad = ctx.createLinearGradient(x, y, x, y + h);
+    boardGrad.addColorStop(0, '#241a12'); boardGrad.addColorStop(1, '#14100a');
+    ctx.fillStyle = boardGrad; ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = 'rgba(200, 160, 100, 0.12)'; ctx.lineWidth = 1;
+    for (let c = 1; c < CFG.COLS; c++) { ctx.beginPath(); ctx.moveTo(x + c * CFG.CELL, y); ctx.lineTo(x + c * CFG.CELL, y + h); ctx.stroke(); }
+    for (let r = 1; r < CFG.ROWS; r++) { ctx.beginPath(); ctx.moveTo(x, y + r * CFG.CELL); ctx.lineTo(x + w, y + r * CFG.CELL); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(200, 162, 74, 0.4)'; ctx.lineWidth = 1.5;
+    ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+  },
+  drawExit(ctx) {
+    const x = CFG.BOARD_X + WIN_X * CFG.CELL;
+    const y = CFG.BOARD_Y + (CFG.ROWS - 1) * CFG.CELL;
+    const w = 2 * CFG.CELL, h = CFG.CELL;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(232, 176, 74, 0.75)'; ctx.lineWidth = 3;
+    ctx.setLineDash([10, 8]); ctx.lineDashOffset = -(performance.now() / 60) % 18;
+    ctx.strokeRect(x + 4, y + 4, w - 8, h - 8); ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(232, 176, 74, 0.25)';
+    ctx.font = 'bold 22px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('出 口', x + w / 2, y + h / 2);
+    ctx.restore();
+  },
+  drawPiece(ctx, piece) {
+    const style = PIECE_STYLES[piece.type];
+    const px = CFG.BOARD_X + piece.renderX * CFG.CELL;
+    const py = CFG.BOARD_Y + piece.renderY * CFG.CELL;
+    const pw = piece.w * CFG.CELL, ph = piece.h * CFG.CELL;
+    const pad = 5;
+    const innerX = px + pad, innerY = py + pad;
+    const innerW = pw - pad * 2, innerH = ph - pad * 2;
+    const r = 10;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+    this.roundRect(ctx, innerX + 3, innerY + 5, innerW, innerH, r); ctx.fill();
+    ctx.restore();
+    const grad = ctx.createLinearGradient(innerX, innerY, innerX, innerY + innerH);
+    grad.addColorStop(0, style.light); grad.addColorStop(0.5, style.light); grad.addColorStop(1, style.dark);
+    ctx.fillStyle = grad;
+    this.roundRect(ctx, innerX, innerY, innerW, innerH, r); ctx.fill();
+    const shadowGrad = ctx.createLinearGradient(0, innerY + innerH * 0.5, 0, innerY + innerH);
+    shadowGrad.addColorStop(0, 'rgba(0,0,0,0)'); shadowGrad.addColorStop(1, 'rgba(0,0,0,0.35)');
+    ctx.save();
+    ctx.fillStyle = shadowGrad;
+    this.roundRect(ctx, innerX, innerY, innerW, innerH, r); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = style.border; ctx.lineWidth = 2.5;
+    this.roundRect(ctx, innerX, innerY, innerW, innerH, r); ctx.stroke();
+    if (piece.isSelected) {
+      ctx.save();
+      ctx.strokeStyle = '#ffe066'; ctx.lineWidth = 4;
+      ctx.shadowColor = '#ffe066'; ctx.shadowBlur = 20;
+      this.roundRect(ctx, innerX - 2, innerY - 2, innerW + 4, innerH + 4, r + 2); ctx.stroke();
+      ctx.restore();
+    }
+    ctx.save();
+    ctx.globalAlpha = 0.35;
+    const hlGrad = ctx.createLinearGradient(0, innerY, 0, innerY + innerH * 0.4);
+    hlGrad.addColorStop(0, 'rgba(255, 255, 255, 0.7)'); hlGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = hlGrad;
+    this.roundRect(ctx, innerX + 4, innerY + 4, innerW - 8, innerH * 0.4, r - 2); ctx.fill();
+    ctx.restore();
+    ctx.save();
+    ctx.fillStyle = style.text; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)'; ctx.shadowBlur = 4; ctx.shadowOffsetY = 1;
+    const cx = innerX + innerW / 2, cy = innerY + innerH / 2;
+    if (piece.type === 'cao') {
+      ctx.font = '900 ' + (CFG.CELL * 0.5) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(piece.name, cx, cy + 2);
+    } else if (piece.h === 2) {
+      const chars = piece.name.split('');
+      const fontSize = CFG.CELL * 0.38;
+      const gap = fontSize * 1.08;
+      const total = (chars.length - 1) * gap;
+      ctx.font = '700 ' + fontSize + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+      chars.forEach((ch, i) => ctx.fillText(ch, cx, cy - total / 2 + i * gap + 2));
+    } else if (piece.w === 2) {
+      ctx.font = '700 ' + (CFG.CELL * 0.42) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(piece.name, cx, cy + 2);
+    } else {
+      ctx.font = '900 ' + (CFG.CELL * 0.48) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(piece.name, cx, cy + 2);
+    }
+    ctx.restore();
+  },
+  drawHint(ctx) {
+    if (!this.hintPiece || !this.hintDir) return;
+    const p = this.hintPiece;
+    const t = this.hintLife;
+    const alpha = t > 3 ? (4 - t) / 1 : Math.min(1, t / 0.8);
+    const px = CFG.BOARD_X + p.renderX * CFG.CELL;
+    const py = CFG.BOARD_Y + p.renderY * CFG.CELL;
+    const cx = px + p.w * CFG.CELL / 2;
+    const cy = py + p.h * CFG.CELL / 2;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.008);
+    ctx.strokeStyle = 'rgba(140, 200, 255, ' + (0.6 + pulse * 0.4) + ')';
+    ctx.lineWidth = 5; ctx.shadowColor = '#8cc8ff'; ctx.shadowBlur = 24;
+    this.roundRect(ctx, px + 2, py + 2, p.w * CFG.CELL - 4, p.h * CFG.CELL - 4, 12); ctx.stroke();
+    const dir = this.hintDir;
+    const arrowLen = CFG.CELL * 0.55;
+    const startX = cx + dir.dx * (p.w * CFG.CELL / 2);
+    const startY = cy + dir.dy * (p.h * CFG.CELL / 2);
+    const endX = startX + dir.dx * arrowLen;
+    const endY = startY + dir.dy * arrowLen;
+    ctx.strokeStyle = '#8cc8ff'; ctx.fillStyle = '#8cc8ff';
+    ctx.lineWidth = 6; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY); ctx.stroke();
+    const headSize = 16;
+    const perpX = -dir.dy, perpY = dir.dx;
+    ctx.beginPath();
+    ctx.moveTo(endX + dir.dx * headSize, endY + dir.dy * headSize);
+    ctx.lineTo(endX - dir.dx * 4 + perpX * headSize * 0.7, endY - dir.dy * 4 + perpY * headSize * 0.7);
+    ctx.lineTo(endX - dir.dx * 4 - perpX * headSize * 0.7, endY - dir.dy * 4 - perpY * headSize * 0.7);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  },
+  roundRect(ctx, x, y, w, h, r) {
+    if (w < r * 2) r = w / 2;
+    if (h < r * 2) r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  },
+};
+
+window.addEventListener('DOMContentLoaded', () => Game.init());
+
+/* ============ 开始按钮：首次用户手势，创建 AudioContext ============ */
+document.getElementById('startBtn').addEventListener('click', () => {
+  Sound.init();
+  Sound.resume();
+  Sound.pick();
+  Game.gameStarted = true;
+  document.getElementById('startScreen').classList.add('hide');
+  Game.loadLayout(0);
+});
+</script>
+</body>
+</html>
