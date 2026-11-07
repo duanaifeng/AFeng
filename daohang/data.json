@@ -1,0 +1,167 @@
+[
+  {
+    "category": "原·创",
+    "icon": "📌",
+    "color": "#60a5fa",
+    "categoryEn": "ORIGINAL",
+    "items": [
+      { "id": "home",      "tags": ["个人"],       "name": "我的主页",       "desc": "AiFeng 个人主页，探索科技与学习技术的起点", "url": "https://duanaifeng.github.io/AFeng/" },
+      { "id": "ganji",     "tags": ["生活","工具"],"name": "西邑赶集日历",   "desc": "四街循环，按天查询，支持农历与精确倒计时", "url": "https://duanaifeng.github.io/AFeng/ganji.html" },
+      { "id": "games",     "tags": ["娱乐","游戏"],"name": "在线小游戏库",   "desc": "斗地主、保山幺子分、俄罗斯方块等经典游戏", "url": "https://duanaifeng.github.io/AFeng/game/" },
+      { "id": "work-time", "tags": ["工具","效率"],"name": "工时记账",       "desc": "临时工/正式工双模式，按天记工时自动算工资", "url": "https://duanaifeng.github.io/AFeng/gongshi/" },
+      { "id": "pc-tools",  "tags": ["工具","系统"],"name": "电脑维护工具",   "desc": "常用维护工具合集，百度网盘，提取码 8888", "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888" }
+    ]
+  },
+  {
+    "category": "网络·服务",
+    "icon": "📡",
+    "color": "#22d3ee",
+    "categoryEn": "NETWORK",
+    "items": [
+      { "id": "iplc-52",  "tags": ["网络","加速"], "name": "52IPLC",        "desc": "网络加速服务入口，提供备用访问域名", "url": "https://cloud.52iplc.com/" },
+      { "id": "onedns",   "tags": ["DNS","安全"],  "name": "OneDNS",        "desc": "纯净公共 DNS，拦截恶意网站与广告", "url": "https://www.onedns.net/" },
+      { "id": "adguard",  "tags": ["广告","隐私"], "name": "AdGuard",       "desc": "全平台广告拦截与隐私保护工具", "url": "https://adguard.com/zh_cn/welcome.html" },
+      { "id": "nextdns",  "tags": ["DNS","安全"],  "name": "NextDNS",       "desc": "新一代防火墙，支持加密 DNS 与广告拦截", "url": "https://nextdns.io/zh" },
+      {
+        "id": "netease-dns", "tags": ["DNS","检测"],
+        "name": "网易 DNS 检测",
+        "desc": "检测 IP 与 DNS 归属，排查 DNS 劫持",
+        "url": "",
+        "popup": [
+          { "label": "基础检测",       "desc": "检测 IP 与 DNS 归属是否一致",   "url": "https://nstool.netease.com/" },
+          { "label": "IPv6 详细检测",  "desc": "IPv6 环境下的 DNS 泄露检测",     "url": "https://v6.tx163.com/" }
+        ]
+      },
+      {
+        "id": "custom-dns", "tags": ["DNS","自建"],
+        "name": "自建 DNS 合集",
+        "desc": "民间自建加密 DNS，支持 DoH/DoT/DoQ 与广告追踪拦截，免装 APP，可填入私人 DNS / AdGuard Home / 路由器",
+        "url": "",
+        "popup": [
+          { "label": "果冻 DNS",     "desc": "果冻调度加速 PRO，边缘智能调度 + EDNS 优化 + 恶意域名识别；支持 DoT/DoH，适合软路由/电脑/手机，附带网络检测工具", "url": "https://www.gddns.org/" },
+          { "label": "关圣 DNS",     "desc": "公益版每日限额 10 万解析、限速 20 次/秒，高峰期易卡；付费版多节点不限速；支持 DoH/DoT/DoQ，自带解析统计面板", "url": "https://dns1.top/" },
+          { "label": "23-4 加密 DNS","desc": "广告追踪过滤，日志只统计数量不留查询域名；支持 DoH/DoT，自带网页自检，配置后切换网络生效", "url": "https://dns.23-4.cn/" },
+          { "label": "Sofmed DNS",   "desc": "支持 DoH / DoH3(QUIC) / DoT / DoQ / 明文 DNS；内置海量广告黑名单自动更新，可导入 AdGuard 订阅，附带 KMS 工具", "url": "https://dns.sofmed.cn/" },
+          { "label": "18Bit DNS",    "desc": "免费去广告、拦截追踪和钓鱼域名，TLS 评级 A+，对 GitHub 等站点优化；区分 DoT/DoH 线路，手机电脑直接配置", "url": "https://go.18bit.cn/" },
+          { "label": "XLXBK",        "desc": "VIP 付费 DNS 管理后台，公开参数较少，需登录面板查看服务信息", "url": "https://svip.xlxbk.cn/login" }
+        ]
+      },
+      { "id": "tcptest", "tags": ["网络","检测"], "name": "TCPTest", "desc": "国内网络诊断平台，含 IPv6 Ping / TCPing / 路由追踪与网站测速，多运营商节点", "url": "https://www.tcptest.cn/" },
+      { "id": "yiyuan-vpn", "tags": ["网络","加速"], "name": "一元机场", "desc": "低价机场，主打一元级套餐与年付小流量；基于 V2ray/Clash 协议，多端可用，适合轻度使用；注意公益/低价机场存在跑路与限速风险，建议短周期订阅", "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF" }
+    ]
+  },
+  {
+    "category": "聆听·音乐",
+    "icon": "🎵",
+    "color": "#a78bfa",
+    "categoryEn": "MUSIC",
+    "items": [
+      { "id": "lxmusic",   "tags": ["音乐","开源"], "name": "LX Music",       "desc": "开源音乐工具，聚合多平台音源与无损下载", "url": "https://lxmusic.toside.cn/" },
+      { "id": "music-api", "tags": ["音乐","API"],  "name": "Music API",      "desc": "免费音乐 API 状态监控，提供可用服务器", "url": "https://status.beta-next.icu/status/ncm" },
+      { "id": "gdmusic",   "tags": ["音乐","聚合"], "name": "GD 音乐台",       "desc": "聚合网易云、QQ、Tidal、Qobuz 等多平台曲库", "url": "https://music.gdstudio.org/" },
+      {
+        "id": "tunefree", "tags": ["音乐","聚合"],
+        "name": "TuneFree Next",
+        "desc": "聚合多平台音乐，支持在线试听与下载",
+        "url": "",
+        "popup": [
+          { "label": "访问官网", "desc": "打开网页版",        "url": "https://cdn.sayqz.com/tunefreenext/" },
+          { "label": "网盘直达", "desc": "小飞机网盘下载",    "url": "https://share.feijipan.com/s/uEWhDYeu" }
+        ]
+      },
+      { "id": "moekoe", "tags": ["音乐","开源"], "name": "MoeKoe Music", "desc": "开源简洁的酷狗第三方客户端，支持 Hi-Fi", "url": "https://music.moekoe.cn/" },
+      {
+        "id": "jay-chou", "tags": ["音乐","资源"],
+        "name": "周杰伦 · 全专CD抓轨与电影原声合集",
+        "desc": "阿尔法/杰威尔台首版、环球日版，FLAC 分轨 + 内嵌封面歌词，附电影原声。",
+        "url": "",
+        "popup": [
+          { "label": "百度网盘", "desc": "提取码：8888",         "url": "https://pan.baidu.com/s/1GJaim9R_6nnY3MADCdC1Ww?pwd=8888" },
+          { "label": "移动云盘", "desc": "访问码：291NqKp4nMoF",  "url": "https://yun.139.com/shareweb/#/w/i/2ygb7CmDUeW05" }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "影视·追剧",
+    "icon": "🎬",
+    "color": "#f472b6",
+    "categoryEn": "VIDEO",
+    "items": [
+      { "id": "kanju-ai",     "tags": ["影视","AI"],        "name": "看剧 AI",                "desc": "AI 驱动的影视搜索与发现工具，支持智能推荐", "url": "https://kanju.ai/" },
+      { "id": "danbo",        "tags": ["影视"],              "name": "蛋播星球",                "desc": "影视资源聚合平台，电影电视剧在线观看", "url": "https://danboxingqiu.cn/" },
+      { "id": "zyplayer",     "tags": ["影视","播放器"],     "name": "ZY Player",              "desc": "跨平台影视聚合播放器，支持多源切换", "url": "https://zyplayer.fun/" },
+      { "id": "yhzn-ios",     "tags": ["影视","iOS"],        "name": "硬核指南 · iOS 影视 APP",  "desc": "整理苹果商店伪装上架的免费追剧 APP", "url": "https://yinghezhinan.com/ios-app/" },
+      { "id": "yhzn-android", "tags": ["影视","Android"],    "name": "硬核指南 · Android 客户端","desc": "安卓端影视 APP 资源汇总，可按设备筛选", "url": "https://yinghezhinan.com/sitetag/android%E5%AE%A2%E6%88%B7%E7%AB%AF/" },
+      {
+        "id": "tvbox-api", "tags": ["影视","盒子"],
+        "name": "TVBox 接口源",
+        "desc": "电视盒子 TVBox 可用接口源，含网页版与 GitHub 仓库备份",
+        "url": "",
+        "popup": [
+          { "label": "网页版",      "desc": "在线查看接口源",       "url": "https://lubin776.github.io/tvbox-api-backup/" },
+          { "label": "GitHub 仓库", "desc": "接口源仓库地址",       "url": "https://github.com/lubin776/tvbox-api-backup" }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "系统·软件",
+    "icon": "💻",
+    "color": "#38bdf8",
+    "categoryEn": "SYSTEM",
+    "items": [
+      { "id": "itsk",      "tags": ["系统","工具"], "name": "IT 天空",        "desc": "ITSK 万能驱动、优启通 PE，系统封装部署一站式工具", "url": "https://m.itsk.com/" },
+      { "id": "yrxitong",  "tags": ["系统"],        "name": "小鱼儿 yr 系统",  "desc": "小鱼儿 yr 系统官网，提供系统封装与软件分享", "url": "https://www.yrxitong.com/" },
+      { "id": "pc528",     "tags": ["系统"],        "name": "不忘初心系统",    "desc": "精简优化版 Windows，砍掉广告与预装", "url": "https://www.pc528.net/" },
+      { "id": "yyczxt",    "tags": ["系统"],        "name": "又要重装系统站",  "desc": "专注系统重装，精选精简优化版 Windows", "url": "https://www.yyczxt.com/" }
+    ]
+  },
+  {
+    "category": "资源·站点",
+    "icon": "📦",
+    "color": "#fbbf24",
+    "categoryEn": "RESOURCES",
+    "items": [
+      { "id": "down423",   "tags": ["软件","资源"], "name": "423Down",        "desc": "老牌软件站，绿色去广告软件免注册下载", "url": "https://www.423down.com/" },
+      { "id": "hapstore",  "tags": ["鸿蒙","资源"], "name": "HAP Store",      "desc": "纯公益的鸿蒙 HAP 资源分享平台", "url": "https://www.sydxky.cn/index.php" },
+      { "id": "nexttime",  "tags": ["导航","资源"], "name": "下次一定",        "desc": "免费资源导航，影视网盘、AI 工具、装机软件", "url": "https://www.iiice.cn/" },
+      { "id": "daohangtx", "tags": ["导航"],        "name": "导航天下",        "desc": "精选 QQ 技术导航与资源网址导航", "url": "https://www.daohangtx.com/" },
+      { "id": "ghxi",      "tags": ["软件","资源"], "name": "果核剥壳",        "desc": "绿色软件、开源工具与安卓应用分享站", "url": "https://www.ghxi.com/" },
+      { "id": "x6d",       "tags": ["资源","线报"], "name": "小刀娱乐网",      "desc": "活动线报、绿色软件、网站源码与教程分享", "url": "https://www.x6d.com/" },
+      { "id": "ysepan",    "tags": ["导航","收藏"], "name": "网址藏经阁",      "desc": "网址收藏夹，收录各类实用站点", "url": "http://12122.ysepan.com", "insecure": true },
+      { "id": "qqyewu",    "tags": ["QQ","教程"],   "name": "QQ 业务乐园",     "desc": "QQ 资讯、免费点亮图标、技术教程与软件下载", "url": "http://m.qqyewu.com/", "insecure": true }
+    ]
+  },
+  {
+    "category": "扩展·脚本",
+    "icon": "🧩",
+    "color": "#4ade80",
+    "categoryEn": "EXTENSIONS",
+    "items": [
+      { "id": "crxso",          "tags": ["扩展","插件"],   "name": "Crx 搜搜",           "desc": "浏览器扩展与应用商店，四大商店插件搜索下载", "url": "https://www.crxsoso.com/" },
+      { "id": "greasyfork",     "tags": ["脚本","油猴"],   "name": "Greasy Fork",       "desc": "海量用户脚本仓库，装完油猴即用", "url": "https://greasyfork.org/zh-CN" },
+      { "id": "adblock-filters","tags": ["广告","规则"],   "name": "AdBlock Filters",   "desc": "去广告合并规则，每 8 小时自动更新", "url": "https://github.com/217heidai/adblockfilters" },
+      {
+        "id": "loon-plugins", "tags": ["插件","iOS"],
+        "name": "Loon 插件",
+        "desc": "Loon 代理工具插件与规则仓库，含 yfamilys 与 Kelee Hub",
+        "url": "",
+        "popup": [
+          { "label": "yfamilys",  "desc": "Loon 插件站",        "url": "https://yfamilys.com/loon" },
+          { "label": "Kelee Hub", "desc": "Loon 插件仓库",      "url": "https://hub.kelee.one/" }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "其·他",
+    "icon": "🔍",
+    "color": "#94a3b8",
+    "categoryEn": "OTHERS",
+    "items": [
+      { "id": "zepp",       "tags": ["运动","工具"], "name": "久创云运动", "desc": "通过 API 接口更新运动应用步数数据", "url": "https://zepp.net.cn/" },
+      { "id": "online-ps",  "tags": ["工具","图片"], "name": "在线 PS",     "desc": "免安装的在线图片编辑工具，浏览器直接修图", "url": "https://tugaigai.com/online_ps/" }
+    ]
+  }
+]
