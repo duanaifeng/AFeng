@@ -5,9 +5,7 @@
     "settings": {
       "baseSalary": null
     },
-    "customHolidays": {
-      "2026-11-09": true
-    },
+    "customHolidays": {},
     "allowances": [],
     "records": {}
   },
