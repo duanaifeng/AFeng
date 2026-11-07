@@ -637,6 +637,12 @@
           "运动",
           "工具"
         ]
+      },
+      {
+        "name": "LocalSend",
+        "url": "https://localsend.org/zh-CN#/",
+        "desc": "局域网跨平台文件传输工具",
+        "detail": "LocalSend是一款开源、无广告、无追踪的局域网跨平台文件传输工具，无需云端，离线即可传输文件。项目拥有93k+GitHub星标、35M+下载量、230+社区贡献者。"
       }
     ],
     "categoryEn": "OTHERS"
