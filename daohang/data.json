@@ -640,38 +640,5 @@
       }
     ],
     "categoryEn": "OTHERS"
-  },
-  {
-    "category": "1",
-    "icon": "🎓",
-    "color": "#818cf8",
-    "items": [
-      {
-        "name": "2",
-        "desc": "是你你是",
-        "detail": "时间就是就是就是那是你的继续继续难道你是几点能到难道你",
-        "url": "https://www.baidu.com"
-      },
-      {
-        "name": "sjsjsj",
-        "desc": "睡觉睡觉",
-        "detail": "睡觉睡觉你是男的女的马上开始考试你睡觉行不行",
-        "url": "",
-        "popup": [
-          {
-            "label": "你是男是女",
-            "desc": "是你是你是你",
-            "detail": "世界上你是男是女你什么事没事你说你",
-            "url": "https://hao123.com"
-          },
-          {
-            "label": "这种事不能说男生女生",
-            "desc": "四十几",
-            "detail": "睡觉睡觉就是男生女生就是就是你信不信很's",
-            "url": "https://www.qq.com"
-          }
-        ]
-      }
-    ]
   }
 ]
