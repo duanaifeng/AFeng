@@ -1,11 +1,13 @@
 {
   "version": 6,
-  "currentMode": "temp",
+  "currentMode": "full",
   "full": {
     "settings": {
       "baseSalary": null
     },
-    "customHolidays": {},
+    "customHolidays": {
+      "2026-11-09": true
+    },
     "allowances": [],
     "records": {}
   },
