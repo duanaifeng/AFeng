@@ -205,6 +205,12 @@
             "url": "https://svip.xlxbk.cn/login"
           }
         ]
+      },
+      {
+        "name": "网络测速",
+        "url": "https://test.ustc.edu.cn/",
+        "desc": "中国科学技术大学测速网站",
+        "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码"
       }
     ],
     "categoryEn": "NETWORK"
