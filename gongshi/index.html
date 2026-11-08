@@ -652,7 +652,7 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
           <div class="section-label">底薪设置</div>
           <div class="rate-row">
             <div class="rate-info">
-              <span class="rate-label">月薪</span>
+              <span class="rate-label">底薪</span>
               <span class="rate-value unset" id="baseSalaryDisplay">未设置</span>
               <span class="rate-hint" id="baseSalaryHint"></span>
             </div>
@@ -828,7 +828,7 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
     </div>
     <div class="welcome-icon" aria-hidden="true">👋</div>
     <p class="welcome-text">记录每天的 <strong>上班 / 休息 / 请假 / 调休</strong><br>自动算出工资，数据存在本机</p>
-    <div class="welcome-tip">💡 开始记账前，记得先设置你的 <strong>月薪</strong> 或 <strong>时薪</strong></div>
+    <div class="welcome-tip">💡 开始记账前，记得先设置你的 <strong>底薪</strong> 或 <strong>时薪</strong></div>
     <div class="welcome-tip">📅 公历固定的法定节假日（元旦 / 劳动节 / 国庆）已内置，<strong>任意年份都生效</strong>；农历节日与每年调休请用「标记假日」自行修正</div>
     <div class="form-actions"><button class="btn primary" id="welcomeOk" type="button">我知道了</button></div>
   </div>
@@ -1501,6 +1501,7 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
       DOM.stat2Label.textContent = isFull ? '加班费' : '总天数';
       DOM.stat3Label.textContent = isFull ? '补贴' : '时薪';
 
+      this.updateRates();
       this.dateBar();
       this.calendar();
       this.hoursGrid(DOM.fullHours, App.fullInput, this.updateFullPreview);
@@ -1521,6 +1522,28 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
       this.saveBtn('full');
       this.saveBtn('temp');
       Data.persist();
+    },
+    // 【核心修复】更新底薪和时薪的 UI 回显
+    updateRates() {
+      const fullBase = App.data.full.settings.baseSalary;
+      if (fullBase !== null && fullBase !== undefined) {
+        DOM.baseSalaryDisplay.textContent = Utils.formatMoney(fullBase) + ' / 月';
+        DOM.baseSalaryDisplay.classList.remove('unset');
+        DOM.baseSalaryHint.textContent = '约 ' + Utils.formatMoney(Calc.dailySalary()) + ' / 天';
+      } else {
+        DOM.baseSalaryDisplay.textContent = '未设置';
+        DOM.baseSalaryDisplay.classList.add('unset');
+        DOM.baseSalaryHint.textContent = '';
+      }
+
+      const tempRate = App.data.temp.settings.rate;
+      if (tempRate !== null && tempRate !== undefined) {
+        DOM.tempRateDisplay.textContent = Utils.formatMoney(tempRate) + ' / 时';
+        DOM.tempRateDisplay.classList.remove('unset');
+      } else {
+        DOM.tempRateDisplay.textContent = '未设置';
+        DOM.tempRateDisplay.classList.add('unset');
+      }
     },
     dateBar() {
       const parts = App.currentDate.split('-').map(Number);
@@ -2080,7 +2103,7 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
   }
 
   async function saveFullRecord() {
-    if (!App.data.full.settings.baseSalary) { Toast.show('请先设置底薪'); return; }
+    if (App.data.full.settings.baseSalary == null) { Toast.show('请先设置底薪'); return; }
     const hours = Utils.safeNumber(App.fullInput.hours, CFG.HOURS_MIN, CFG.HOURS_MAX);
     if (App.fullInput.att === 'work' && hours === null) { Toast.show('请选择有效时长'); return; }
     await withLoading(DOM.btnSaveFull, async function () {
@@ -2105,7 +2128,7 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
   }
 
   async function saveTempRecord() {
-    if (!App.data.temp.settings.rate) { Toast.show('请先设置时薪'); return; }
+    if (App.data.temp.settings.rate == null) { Toast.show('请先设置时薪'); return; }
     const hours = Utils.safeNumber(App.tempInput.hours, CFG.HOURS_MIN, CFG.HOURS_MAX);
     if (App.tempInput.att === 'work' && hours === null) { Toast.show('请选择有效时长'); return; }
     await withLoading(DOM.btnSaveTemp, async function () {
@@ -2473,6 +2496,18 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
     }
   };
 
+  // 【核心修复】检测跨天，自动切回今天，避免挂后台过夜后记录存到昨天
+  function checkDateChange() {
+    const today = Utils.today();
+    if (App.currentDate !== today) {
+      App.currentDate = today;
+      App.calendarDate = today;
+      restoreInput();
+      Render.all();
+      Toast.show('已自动切换至新的一天');
+    }
+  }
+
   function bindEvents() {
     document.querySelectorAll('.mode-tab').forEach(function (t) {
       t.addEventListener('click', function () {
@@ -2545,17 +2580,17 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
     });
 
     DOM.btnEditBase.addEventListener('click', function () {
-      const title = App.data.full.settings.baseSalary ? '修改底薪（元/月）' : '设置底薪（元/月）';
-      InputModal.open(title, App.data.full.settings.baseSalary || 6000, function (v) {
+      const title = (App.data.full.settings.baseSalary != null) ? '修改底薪（元/月）' : '设置底薪（元/月）';
+      InputModal.open(title, App.data.full.settings.baseSalary != null ? App.data.full.settings.baseSalary : 6000, function (v) {
         App.data.full.settings.baseSalary = v;
         Data.persist(); Render.all(); saveToGitHub();
         Toast.show('已更新底薪');
-      }, { label: '月薪', min: CFG.SALARY_MIN, max: CFG.SALARY_MAX, step: 100 });
+      }, { label: '底薪', min: CFG.SALARY_MIN, max: CFG.SALARY_MAX, step: 100 });
     });
 
     DOM.btnEditTemp.addEventListener('click', function () {
-      const title = App.data.temp.settings.rate ? '修改时薪（元/小时）' : '设置时薪（元/小时）';
-      InputModal.open(title, App.data.temp.settings.rate || 25, function (v) {
+      const title = (App.data.temp.settings.rate != null) ? '修改时薪（元/小时）' : '设置时薪（元/小时）';
+      InputModal.open(title, App.data.temp.settings.rate != null ? App.data.temp.settings.rate : 25, function (v) {
         App.data.temp.settings.rate = v;
         Data.persist(); Render.all(); saveToGitHub();
         Toast.show('已更新时薪');
@@ -2637,6 +2672,11 @@ html.dark .modal-box{background:linear-gradient(180deg,rgba(20,30,50,.98),rgba(1
       Render.all();
       BackTop.init();
       TimerManager.init();
+      
+      // 开启每分钟检测日期，以及切回页面时检测日期
+      TimerManager.register({ interval: 60000, onTick: checkDateChange });
+      document.addEventListener('visibilitychange', function() { if (!document.hidden) checkDateChange(); });
+      
       if (Config.load()) connectGitHub();
       else StatusBar.set('未配置 GitHub（数据仅保存在本地）', '');
     } catch (e) {
