@@ -10,9 +10,7 @@
         "detail": "作者个人技术主页，存放项目笔记、技术分享内容。",
         "url": "https://duanaifeng.github.io/AFeng/",
         "id": "home",
-        "tags": [
-          "个人"
-        ]
+        "tags": ["个人"]
       },
       {
         "name": "工时记账",
@@ -20,10 +18,7 @@
         "detail": "网页工时工资计算器，支持临时工、正式工模式，录入工时自动核算薪资。",
         "url": "https://duanaifeng.github.io/AFeng/gongshi/",
         "id": "work-time",
-        "tags": [
-          "工具",
-          "效率"
-        ]
+        "tags": ["工具", "效率"]
       },
       {
         "name": "西邑赶集日历",
@@ -31,10 +26,7 @@
         "detail": "赶集日查询工具，按农历推算集市日期，并提供倒计时提醒。",
         "url": "https://duanaifeng.github.io/AFeng/ganji.html",
         "id": "ganji",
-        "tags": [
-          "生活",
-          "工具"
-        ]
+        "tags": ["生活", "工具"]
       },
       {
         "name": "怀旧游戏库",
@@ -42,10 +34,7 @@
         "detail": "浏览器直接游玩怀旧小游戏，无需下载客户端。",
         "url": "https://duanaifeng.github.io/AFeng/game/",
         "id": "games",
-        "tags": [
-          "娱乐",
-          "游戏"
-        ]
+        "tags": ["娱乐", "游戏"]
       },
       {
         "name": "电脑维护工具合集",
@@ -53,10 +42,7 @@
         "detail": "易语言编写的电脑维护工具合集，含装机与系统故障排查小工具；百度网盘提取码8888。",
         "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
         "id": "pc-tools",
-        "tags": [
-          "工具",
-          "系统"
-        ]
+        "tags": ["工具", "系统"]
       }
     ],
     "categoryEn": "ORIGINAL"
@@ -72,10 +58,7 @@
         "detail": "跨境网络加速服务，提供多条备用访问域名，主域名失效时可切换。",
         "url": "https://cloud.52iplc.com/",
         "id": "iplc-52",
-        "tags": [
-          "网络",
-          "加速"
-        ]
+        "tags": ["网络", "加速"]
       },
       {
         "name": "OneDNS",
@@ -83,10 +66,7 @@
         "detail": "国内公共安全DNS，拦截钓鱼恶意域名，附带广告过滤能力，设备直接填写即可生效。",
         "url": "https://www.onedns.net/",
         "id": "onedns",
-        "tags": [
-          "DNS",
-          "安全"
-        ]
+        "tags": ["DNS", "安全"]
       },
       {
         "name": "AdGuard",
@@ -94,10 +74,7 @@
         "detail": "全平台广告隐私防护套件，拦截网页、APP广告以及各类跟踪请求。",
         "url": "https://adguard.com/zh_cn/welcome.html",
         "id": "adguard",
-        "tags": [
-          "广告",
-          "隐私"
-        ]
+        "tags": ["广告", "隐私"]
       },
       {
         "name": "NextDNS",
@@ -105,10 +82,7 @@
         "detail": "云端自定义DNS防火墙，高度可自定义规则，广告拦截、安全防护一体化。",
         "url": "https://nextdns.io/zh",
         "id": "nextdns",
-        "tags": [
-          "DNS",
-          "安全"
-        ]
+        "tags": ["DNS", "安全"]
       },
       {
         "name": "TCPTest",
@@ -116,10 +90,7 @@
         "detail": "国内多节点网络诊断工具，支持Ping、TCPing、IPv6检测、路由追踪、网站测速，排查网络故障。",
         "url": "https://www.tcptest.cn/",
         "id": "tcptest",
-        "tags": [
-          "网络",
-          "检测"
-        ]
+        "tags": ["网络", "检测"]
       },
       {
         "name": "一元机场",
@@ -127,10 +98,7 @@
         "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。",
         "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF",
         "id": "yiyuan-vpn",
-        "tags": [
-          "网络",
-          "加速"
-        ]
+        "tags": ["网络", "加速"]
       },
       {
         "name": "网易DNS检测",
@@ -138,10 +106,7 @@
         "detail": "网易官方网络诊断工具集，含基础检测与IPv6检测：查出口IP、所用DNS与劫持污染，或测IPv4/IPv6双栈。",
         "url": "",
         "id": "netease-dns",
-        "tags": [
-          "DNS",
-          "检测"
-        ],
+        "tags": ["DNS", "检测"],
         "popup": [
           {
             "label": "基础检测",
@@ -163,10 +128,7 @@
         "detail": "自建加密DNS合集，支持DoH/DoT/DoQ，可填路由器或手机私人DNS；带广告过滤，稳定性与隐私不及大厂，失效需切回默认。",
         "url": "",
         "id": "custom-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ],
+        "tags": ["DNS", "自建"],
         "popup": [
           {
             "label": "果冻调度加速PRO",
@@ -210,19 +172,25 @@
         "name": "网络测速",
         "desc": "中国科学技术大学测速网站",
         "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码",
-        "url": "https://test.ustc.edu.cn/"
+        "url": "https://test.ustc.edu.cn/",
+        "id": "ustc-speed",
+        "tags": ["网络", "测速"]
       },
       {
         "name": "DNS Leak Test",
         "url": "https://dnsleaktest.com/",
         "desc": "DNS泄露检测",
-        "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过，稳定性：老牌检测站，长期可用。"
+        "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过，稳定性：老牌检测站，长期可用。",
+        "id": "dns-leak",
+        "tags": ["DNS", "检测"]
       },
       {
         "name": "test-ipv6",
         "url": "https://test-ipv6.com/",
         "desc": "IPv6连通性检测",
-        "detail": "一键检测本机 IPv6 连通性与配置状态，和站内「网易DNS检测」形成互补。 稳定性：长期存在的专用检测站。"
+        "detail": "一键检测本机 IPv6 连通性与配置状态，和站内「网易DNS检测」形成互补。 稳定性：长期存在的专用检测站。",
+        "id": "test-ipv6",
+        "tags": ["IPv6", "检测"]
       }
     ],
     "categoryEn": "NETWORK"
@@ -238,10 +206,7 @@
         "detail": "跨平台开源音乐客户端，聚合多平台音源，无损试听、资源下载。",
         "url": "https://lxmusic.toside.cn/",
         "id": "lxmusic",
-        "tags": [
-          "音乐",
-          "开源"
-        ]
+        "tags": ["音乐", "开源"]
       },
       {
         "name": "Music API监控",
@@ -249,10 +214,7 @@
         "detail": "音乐音源接口存活监控页，快速确认各音源接口是否可用、是否掉线。",
         "url": "https://status.beta-next.icu/status/ncm",
         "id": "music-api",
-        "tags": [
-          "音乐",
-          "API"
-        ]
+        "tags": ["音乐", "API"]
       },
       {
         "name": "GD音乐台",
@@ -260,10 +222,7 @@
         "detail": "网页端聚合播放器，集合网易云、QQ、Tidal、Qobuz曲库，直接网页播放。",
         "url": "https://music.gdstudio.org/",
         "id": "gdmusic",
-        "tags": [
-          "音乐",
-          "聚合"
-        ]
+        "tags": ["音乐", "聚合"]
       },
       {
         "name": "MoeKoe Music",
@@ -271,10 +230,7 @@
         "detail": "开源第三方酷狗播放器，界面简洁干净，支持Hi-Fi高音质。",
         "url": "https://music.moekoe.cn/",
         "id": "moekoe",
-        "tags": [
-          "音乐",
-          "开源"
-        ]
+        "tags": ["音乐", "开源"]
       },
       {
         "name": "TuneFree Next",
@@ -282,10 +238,7 @@
         "detail": "跨平台第三方聚合音乐播放器，支持 iOS（自签）、Android、Windows、macOS。多源解析播放，可下载歌曲、同步歌单，高音质无广告。下载页只提供各系统安装包入口。",
         "url": "",
         "id": "tunefree",
-        "tags": [
-          "音乐",
-          "聚合"
-        ],
+        "tags": ["音乐", "聚合"],
         "popup": [
           {
             "label": "客户端下载",
@@ -307,10 +260,7 @@
         "detail": "台版首版CD分轨合集，2000《Jay》至2026《太阳之子》全专辑、EP及《不能说的秘密》电影原声；《太阳之子》为环球日版，封面已内嵌、歌词已校准。",
         "url": "",
         "id": "jay-chou",
-        "tags": [
-          "音乐",
-          "资源"
-        ],
+        "tags": ["音乐", "资源"],
         "popup": [
           {
             "label": "百度网盘",
@@ -340,10 +290,7 @@
         "detail": "AI驱动影视搜索，关键词检索影片，附带智能推荐。",
         "url": "https://kanju.ai/",
         "id": "kanju-ai",
-        "tags": [
-          "影视",
-          "AI"
-        ]
+        "tags": ["影视", "AI"]
       },
       {
         "name": "蛋播星球",
@@ -351,10 +298,7 @@
         "detail": "蛋蛋不语（DANBO）全能娱乐客户端，影视 / 直播 / 音乐 / 阅读四合一，支持 iOS、Android、Android TV、macOS、Windows、Linux，含完整安装教程与 FAQ。",
         "url": "https://danboxingqiu.cn/",
         "id": "danbo",
-        "tags": [
-          "影视",
-          "直播"
-        ]
+        "tags": ["影视", "直播"]
       },
       {
         "name": "ZY Player",
@@ -362,10 +306,7 @@
         "detail": "电脑端跨平台影视播放器，导入第三方影视源即可解析播放，本身不自带资源。",
         "url": "https://zyplayer.fun/",
         "id": "zyplayer",
-        "tags": [
-          "影视",
-          "播放器"
-        ]
+        "tags": ["影视", "播放器"]
       },
       {
         "name": "iOS·追剧",
@@ -373,10 +314,7 @@
         "detail": "整理App Store伪装上架类追剧APP，记录获取途径。",
         "url": "https://yinghezhinan.com/ios-app/",
         "id": "yhzn-ios",
-        "tags": [
-          "影视",
-          "iOS"
-        ]
+        "tags": ["影视", "iOS"]
       },
       {
         "name": "Android·追剧",
@@ -384,10 +322,7 @@
         "detail": "安卓追剧APP资源整理，可以根据设备筛选适配客户端。",
         "url": "https://yinghezhinan.com/sitetag/android%E5%AE%A2%E6%88%B7%E7%AB%AF/",
         "id": "yhzn-android",
-        "tags": [
-          "影视",
-          "Android"
-        ]
+        "tags": ["影视", "Android"]
       },
       {
         "name": "TVBox接口源",
@@ -395,10 +330,7 @@
         "detail": "TVBox 开源盒子软件不自带资源，需导入接口源；收录可用接口源网页与 GitHub 备份，源地址常变动，失效需另找最新配置。",
         "url": "",
         "id": "tvbox-api",
-        "tags": [
-          "影视",
-          "盒子"
-        ],
+        "tags": ["影视", "盒子"],
         "popup": [
           {
             "label": "网页版",
@@ -428,10 +360,7 @@
         "detail": "老牌装机工具站，优启通PE、万能驱动、系统部署全套工具。",
         "url": "https://m.itsk.com/",
         "id": "itsk",
-        "tags": [
-          "系统",
-          "工具"
-        ]
+        "tags": ["系统", "工具"]
       },
       {
         "name": "不忘初心系统",
@@ -439,9 +368,7 @@
         "detail": "Windows精简优化镜像，剔除广告与预装冗余组件，兼顾游戏办公。",
         "url": "https://www.pc528.net/",
         "id": "pc528",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
       },
       {
         "name": "小鱼儿yr系统",
@@ -449,9 +376,7 @@
         "detail": "第三方Windows精简母盘，优先保障系统稳定性。",
         "url": "https://www.yrxitong.com/",
         "id": "yrxitong",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
       },
       {
         "name": "又要重装系统站",
@@ -459,9 +384,23 @@
         "detail": "收集各类优化Windows镜像，附带重装教程参考。",
         "url": "https://www.yyczxt.com/",
         "id": "yyczxt",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
+      },
+      {
+        "name": "Ventoy",
+        "desc": "多系统U盘启动工具",
+        "detail": "国产开源启动盘工具，ISO镜像直接拷贝到U盘，就能多系统选择启动，不用反复格式化；持续更新。",
+        "url": "https://www.ventoy.net/",
+        "id": "ventoy",
+        "tags": ["系统", "U盘", "开源"]
+      },
+      {
+        "name": "Rufus",
+        "desc": "轻量U盘启动盘制作",
+        "detail": "免安装Windows启动盘工具，自带数字签名，支持简体中文，适配各类系统镜像。",
+        "url": "https://rufus.ie/",
+        "id": "rufus",
+        "tags": ["系统", "U盘", "开源"]
       }
     ],
     "categoryEn": "SYSTEM"
@@ -477,10 +416,7 @@
         "detail": "老牌绿色软件站，软件去除捆绑广告，免注册下载。",
         "url": "https://www.423down.com/",
         "id": "down423",
-        "tags": [
-          "软件",
-          "资源"
-        ]
+        "tags": ["软件", "资源"]
       },
       {
         "name": "下次一定",
@@ -488,10 +424,7 @@
         "detail": "聚合网盘影视、AI工具、装机软件等大量资源入口。",
         "url": "https://www.iiice.cn/",
         "id": "nexttime",
-        "tags": [
-          "导航",
-          "资源"
-        ]
+        "tags": ["导航", "资源"]
       },
       {
         "name": "导航天下",
@@ -499,9 +432,7 @@
         "detail": "偏向QQ技术向导航，收集各类网络资源站点。",
         "url": "https://www.daohangtx.com/",
         "id": "daohangtx",
-        "tags": [
-          "导航"
-        ]
+        "tags": ["导航"]
       },
       {
         "name": "果核剥壳",
@@ -509,10 +440,7 @@
         "detail": "绿色软件、安卓APP、开源工具分享，很多去广告修改版本。",
         "url": "https://www.ghxi.com/",
         "id": "ghxi",
-        "tags": [
-          "软件",
-          "资源"
-        ]
+        "tags": ["软件", "资源"]
       },
       {
         "name": "HAP Store",
@@ -520,10 +448,7 @@
         "detail": "公益鸿蒙原生HAP应用分享平台，可下载适配鸿蒙系统的原生应用安装包。",
         "url": "https://www.sydxky.cn/index.php",
         "id": "hapstore",
-        "tags": [
-          "鸿蒙",
-          "资源"
-        ]
+        "tags": ["鸿蒙", "资源"]
       },
       {
         "name": "小刀娱乐网",
@@ -531,10 +456,7 @@
         "detail": "老牌资源站，活动线报、绿色软件、网站源码、各类教程。",
         "url": "https://www.x6d.com/",
         "id": "x6d",
-        "tags": [
-          "资源",
-          "线报"
-        ]
+        "tags": ["资源", "线报"]
       },
       {
         "name": "网址藏经阁",
@@ -542,10 +464,7 @@
         "detail": "海量实用网址分类整理收藏，按类目查找各类资源站点入口。",
         "url": "http://12122.ysepan.com",
         "id": "ysepan",
-        "tags": [
-          "导航",
-          "收藏"
-        ],
+        "tags": ["导航", "收藏"],
         "insecure": true
       },
       {
@@ -554,17 +473,16 @@
         "detail": "QQ相关资讯、点亮图标教程、软件资源分享。",
         "url": "http://m.qqyewu.com/",
         "id": "qqyewu",
-        "tags": [
-          "QQ",
-          "教程"
-        ],
+        "tags": ["QQ", "教程"],
         "insecure": true
       },
       {
         "name": "吾爱破解",
         "desc": "国内老牌中文技术论坛",
         "detail": "吾爱破解（52pojie.cn）网站概要吾爱破解是国内老牌中文技术论坛，建站于2008年，聚焦软件逆向、软件安全、病毒分析、编程技术交流，聚集大量安全技术爱好者。",
-        "url": "https://www.52pojie.cn/"
+        "url": "https://www.52pojie.cn/",
+        "id": "pojie-52",
+        "tags": ["技术", "逆向", "安全"]
       }
     ],
     "categoryEn": "RESOURCES"
@@ -580,10 +498,7 @@
         "detail": "浏览器插件搜索下载，无需特殊环境获取Chrome/Edge扩展crx文件。",
         "url": "https://www.crxsoso.com/",
         "id": "crxso",
-        "tags": [
-          "扩展",
-          "插件"
-        ]
+        "tags": ["扩展", "插件"]
       },
       {
         "name": "Greasy Fork",
@@ -591,10 +506,7 @@
         "detail": "全球大型油猴脚本库，海量用户脚本，搭配油猴扩展使用。",
         "url": "https://greasyfork.org/zh-CN",
         "id": "greasyfork",
-        "tags": [
-          "脚本",
-          "油猴"
-        ]
+        "tags": ["脚本", "油猴"]
       },
       {
         "name": "AdBlock Filters",
@@ -602,10 +514,7 @@
         "detail": "定时自动合并更新广告拦截规则，适配AdGuard、uBlock Origin。",
         "url": "https://github.com/217heidai/adblockfilters",
         "id": "adblock-filters",
-        "tags": [
-          "广告",
-          "规则"
-        ]
+        "tags": ["广告", "规则"]
       },
       {
         "name": "Loon插件仓库",
@@ -613,10 +522,7 @@
         "detail": "iOS 代理工具 Loon 的常用插件与规则源合集，含去广告、应用净化、流媒体解锁模块，复制链接即可导入使用。",
         "url": "",
         "id": "loon-plugins",
-        "tags": [
-          "插件",
-          "iOS"
-        ],
+        "tags": ["插件", "iOS"],
         "popup": [
           {
             "label": "yfamilys",
@@ -631,6 +537,38 @@
             "url": "https://hub.kelee.one/"
           }
         ]
+      },
+      {
+        "name": "ScriptCat脚本猫",
+        "desc": "国产开源脚本管理器",
+        "detail": "兼容油猴脚本，国产开源浏览器扩展，支持后台脚本、定时执行、脚本订阅，配套独立文档站。文档地址：https://docs.scriptcat.org/",
+        "url": "https://github.com/scriptscat/scriptcat",
+        "id": "scriptcat",
+        "tags": ["脚本", "油猴", "开源"]
+      },
+      {
+        "name": "Violentmonkey暴力猴",
+        "desc": "轻量开源脚本管理器",
+        "detail": "简洁轻量化用户脚本管理器，主流浏览器扩展商店均可直接安装，支持油猴脚本。",
+        "url": "https://violentmonkey.github.io/",
+        "id": "violentmonkey",
+        "tags": ["脚本", "油猴", "开源"]
+      },
+      {
+        "name": "Tampermonkey油猴",
+        "desc": "经典老牌脚本管理器",
+        "detail": "最知名的用户脚本插件，海量脚本库适配，跨浏览器支持，免费版+付费高级版可选。",
+        "url": "https://www.tampermonkey.net/",
+        "id": "tampermonkey",
+        "tags": ["脚本", "油猴"]
+      },
+      {
+        "name": "uBlock Origin",
+        "desc": "高性能开源广告拦截",
+        "detail": "低内存占用的广告、弹窗拦截扩展，效率优于同类广告拦截插件，各大浏览器商店上架。",
+        "url": "https://github.com/gorhill/uBlock",
+        "id": "ublock-origin",
+        "tags": ["广告", "拦截", "开源"]
       }
     ],
     "categoryEn": "EXTENSIONS"
@@ -646,10 +584,7 @@
         "detail": "浏览器在线修图工具，不用安装PS，处理裁剪、调色等简单图片需求够用。",
         "url": "https://tugaigai.com/online_ps/",
         "id": "online-ps",
-        "tags": [
-          "工具",
-          "图片"
-        ]
+        "tags": ["工具", "图片"]
       },
       {
         "name": "久创云运动",
@@ -657,16 +592,15 @@
         "detail": "接口工具，可调整各类运动APP的步数数据，按需修改同步结果。",
         "url": "https://zepp.net.cn/",
         "id": "zepp",
-        "tags": [
-          "运动",
-          "工具"
-        ]
+        "tags": ["运动", "工具"]
       },
       {
         "name": "LocalSend",
         "desc": "局域网跨平台文件传输工具",
         "detail": "LocalSend是一款开源、无广告、无追踪的局域网跨平台文件传输工具，无需云端，离线即可传输文件。项目拥有93k+GitHub星标、35M+下载量、230+社区贡献者。",
-        "url": "https://localsend.org/zh-CN#/"
+        "url": "https://localsend.org/zh-CN#/",
+        "id": "localsend",
+        "tags": ["工具", "局域网", "开源"]
       }
     ],
     "categoryEn": "OTHERS"

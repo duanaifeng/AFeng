@@ -587,6 +587,11 @@ body.editing .back-top { display:none; }
     </div>
     <div class="form-field"><label class="form-label" id="linkDescLabel">卡片短描述 (限18字内)</label><textarea class="form-input" id="linkDesc" rows="1" maxlength="18" placeholder="从内容描述提炼，一眼看懂"></textarea></div>
     <div class="form-field"><label class="form-label">内容描述 (详情/菜单总纲)</label><textarea class="form-input" id="linkDetail" rows="3" placeholder="根据网址内容总结，建议21–63字"></textarea></div>
+    
+    <!-- 新增：标签与ID输入框 -->
+    <div class="form-field"><label class="form-label">标签 (用逗号或空格分隔)</label><input class="form-input" id="linkTags" type="text" placeholder="例如：工具, 效率, 系统"></div>
+    <div class="form-field"><label class="form-label">唯一ID (留空将自动生成)</label><input class="form-input" id="linkId" type="text" placeholder="例如：my-custom-id"></div>
+
     <div class="form-field"><label class="form-label">所属分类</label><select class="form-input" id="linkGroup"></select></div>
     <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="linkOk" type="button">保存</button></div>
   </div>
@@ -1047,7 +1052,7 @@ body.editing .back-top { display:none; }
       
       const list = Dom.el('ul', 'item-list');
       
-      /* 【核心修复】按名称的视觉宽度从少到多强制排序，绝不掺杂描述文字 */
+      /* 按视觉宽度（name）从少到多强制排序 */
       const sortedItems = group.items.map((item, originalIdx) => ({ item, originalIdx }))
         .sort((a, b) => {
           if (a.item.placeholder && !b.item.placeholder) return 1;
@@ -1231,7 +1236,7 @@ body.editing .back-top { display:none; }
 
       const ic = group.icon || Schema.DEFAULT_ICON, cl = group.color || Schema.DEFAULT_COLOR;
       
-      /* 【核心修复】二级菜单只按标题的视觉宽度强制排序 */
+      /* 按视觉宽度（label）从少到多强制排序 */
       const sortedPopup = [...item.popup].sort((a, b) => {
         const wA = Utils.calcVisualWidth(a.label);
         const wB = Utils.calcVisualWidth(b.label);
@@ -1293,13 +1298,16 @@ body.editing .back-top { display:none; }
       openLinkForm(gi, ii) {
         const modal = document.getElementById('linkModal'), g = DataService.data[gi];
         if (!modal || !g) return;
-        const isNew = ii < 0, item = isNew ? { name: '', url: '', desc: '', detail: '' } : g.items[ii];
+        const isNew = ii < 0, item = isNew ? { name: '', url: '', desc: '', detail: '', tags: [], id: '' } : g.items[ii];
         Object.assign(linkCtx, { gi, ii, isNew, origin: isNew ? null : item });
+        
         document.getElementById('linkTitle').textContent = isNew ? '添加链接' : '编辑链接';
         document.getElementById('linkName').value = item.name || '';
         document.getElementById('linkUrl').value = item.url || '';
         document.getElementById('linkDesc').value = item.desc || '';
         document.getElementById('linkDetail').value = item.detail || '';
+        document.getElementById('linkTags').value = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || '');
+        document.getElementById('linkId').value = item.id || '';
         
         const hp = !isNew && item.popup?.length > 0; setLinkType(hp ? 'multi' : 'single');
         const list = document.getElementById('popupList'); Dom.clear(list);
@@ -1310,19 +1318,33 @@ body.editing .back-top { display:none; }
         Modal.open(modal, { initialFocus: '#linkName' });
       },
       submitLink() {
-        const name = Utils.clean(document.getElementById('linkName').value, 100), desc = Utils.clean(document.getElementById('linkDesc').value, CFG.META.DESC_MAX), detail = Utils.clean(document.getElementById('linkDetail').value, 1000), tgt = Number(document.getElementById('linkGroup').value);
+        const name = Utils.clean(document.getElementById('linkName').value, 100);
+        const desc = Utils.clean(document.getElementById('linkDesc').value, CFG.META.DESC_MAX);
+        const detail = Utils.clean(document.getElementById('linkDetail').value, 1000);
+        const tgt = Number(document.getElementById('linkGroup').value);
+        
+        let id = Utils.clean(document.getElementById('linkId').value, CFG.META.ID_MAX);
+        if (!id) id = 'item-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        
+        const rawTags = document.getElementById('linkTags').value;
+        const tags = Utils.cleanTags(rawTags.split(/[,，\s]+/));
+
         if (!name) return alert('请填写名称');
+        
         let ni;
         if (linkCtx.type === 'single') {
           const url = Utils.safeUrl(document.getElementById('linkUrl').value);
           if (!url) return alert('请填写有效网址');
-          ni = { name, url, desc, detail };
+          ni = { id, name, url, desc, detail };
         } else {
           const ps = Dom.$$('.popup-row').map(r => ({ label: Utils.clean(r.querySelector('.p-label').value, 50), url: Utils.safeUrl(r.querySelector('.p-url').value), desc: Utils.clean(r.querySelector('.p-desc').value, CFG.META.DESC_MAX), detail: Utils.clean(r.querySelector('.p-detail').value, 1000) })).filter(x => x.label && x.url);
           if (!ps.length) return alert('至少添加 1 条子链接');
-          ni = { name, desc, detail, popup: ps };
+          ni = { id, name, desc, detail, popup: ps };
         }
-        if (linkCtx.origin) { if (linkCtx.origin.id) ni.id = linkCtx.origin.id; if (linkCtx.origin.tags) ni.tags = linkCtx.origin.tags; if (linkCtx.origin.insecure) ni.insecure = true; }
+        
+        if (tags.length) ni.tags = tags;
+        if (linkCtx.origin && linkCtx.origin.insecure) ni.insecure = true;
+        
         if (!linkCtx.isNew && tgt === linkCtx.gi) DataService.data[linkCtx.gi].items[linkCtx.ii] = ni;
         else { if (!linkCtx.isNew) DataService.data[linkCtx.gi].items.splice(linkCtx.ii, 1); DataService.data[tgt].items.push(ni); }
         DataService.persist(); Modal.close(document.getElementById('linkModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
