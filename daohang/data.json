@@ -48,7 +48,7 @@
     ]
   },
   {
-    "category": "音乐相关",
+    "category": "音乐世界",
     "icon": "🎵",
     "color": "#a78bfa",
     "categoryEn": "MUSIC",
@@ -234,6 +234,14 @@
         "tags": ["系统", "工具"]
       },
       {
+        "name": "系统总裁",
+        "desc": "系统封装与PE工具",
+        "detail": "老牌系统维护站，提供系统封装工具（SC）、PE维护盘（USM）以及各类驱动工具。",
+        "url": "https://www.sysceo.com/",
+        "id": "sysceo",
+        "tags": ["系统", "封装"]
+      },
+      {
         "name": "精简系统镜像合集",
         "desc": "不忘初心、小鱼儿、又要重装",
         "detail": "收集常用的 Windows 精简优化镜像与母盘，剔除广告与预装冗余组件，包含不忘初心系统、小鱼儿yr系统、又要重装系统站。",
@@ -286,7 +294,7 @@
     ]
   },
   {
-    "category": "软件&资源",
+    "category": "软件资源",
     "icon": "📦",
     "color": "#fbbf24",
     "categoryEn": "SOFTWARE",
@@ -315,8 +323,8 @@
       },
       {
         "name": "资源与线报合集",
-        "desc": "易破解与小刀娱乐网",
-        "detail": "长期更新各类电脑、手机工具，包含活动线报、绿色软件、网站源码、各类教程。",
+        "desc": "易破解、小刀、QQ业务乐园",
+        "detail": "长期更新各类电脑、手机工具，包含活动线报、绿色软件、网站源码、各类教程以及QQ相关资讯。",
         "url": "",
         "id": "resource-collection",
         "tags": ["资源", "线报"],
@@ -332,6 +340,12 @@
             "desc": "资源与源码分享",
             "detail": "老牌资源站，活动线报、绿色软件、网站源码、各类教程。",
             "url": "https://www.x6d.com/"
+          },
+          {
+            "label": "QQ业务乐园",
+            "desc": "QQ资讯与线报教程",
+            "detail": "QQ相关资讯、点亮图标教程、活动线报与软件资源分享。⚠ 该站未启用 HTTPS，访问时请注意隐私安全。",
+            "url": "http://m.qqyewu.com/"
           }
         ]
       },
@@ -378,20 +392,11 @@
         "url": "https://www.52pojie.cn/",
         "id": "pojie-52",
         "tags": ["技术", "逆向", "安全"]
-      },
-      {
-        "name": "QQ业务乐园",
-        "desc": "QQ资讯与教程",
-        "detail": "QQ相关资讯、点亮图标教程、软件资源分享。",
-        "url": "http://m.qqyewu.com/",
-        "id": "qqyewu",
-        "tags": ["QQ", "教程"],
-        "insecure": true
       }
     ]
   },
   {
-    "category": "网络安全",
+    "category": "网络与安全",
     "icon": "🌐",
     "color": "#22d3ee",
     "categoryEn": "SECURITY",
@@ -429,15 +434,16 @@
         ]
       },
       {
-        "name": "网络加速 / VPN",
+        "name": "网络代理与加速",
         "desc": "代理订阅与跨境加速",
-        "detail": "收集常用的跨境网络加速与代理订阅服务。注意：低价代理存在跑路、限速风险，建议短期订阅。",
+        "detail": "收集常用的跨境网络加速、代理订阅服务，以及 iOS 平台网络代理工具。",
         "url": "",
         "id": "vpn-collection",
-        "tags": ["网络", "加速"],
+        "tags": ["网络", "代理"],
         "popup": [
           { "label": "52IPLC", "desc": "跨境网络加速服务", "detail": "跨境网络加速服务，提供多条备用访问域名，主域名失效时可切换。", "url": "https://cloud.52iplc.com/" },
-          { "label": "一元机场", "desc": "低价代理订阅服务", "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。", "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF" }
+          { "label": "一元机场", "desc": "低价代理订阅服务", "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。", "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF" },
+          { "label": "Loon", "desc": "iOS 代理与网络工具", "detail": "iOS 平台强大的网络代理与规则分流工具，支持自定义规则、MitM解密等高级功能，主打网络代理与策略路由。", "url": "https://www.nsloon.com/" }
         ]
       },
       {
@@ -451,19 +457,11 @@
           { "label": "TCPTest", "desc": "多节点网络诊断", "detail": "国内多节点网络诊断工具，支持Ping、TCPing、IPv6检测、路由追踪、网站测速。", "url": "https://www.tcptest.cn/" },
           { "label": "中科大测速", "desc": "测速网站", "detail": "中国科学技术大学测速网站，支持 IPv4、IPv6 双协议测速。", "url": "https://test.ustc.edu.cn/" }
         ]
-      },
-      {
-        "name": "AdGuard",
-        "desc": "全平台广告防护套件",
-        "detail": "全平台广告隐私防护套件，拦截网页、APP广告以及各类跟踪请求。",
-        "url": "https://adguard.com/zh_cn/welcome.html",
-        "id": "adguard",
-        "tags": ["广告", "隐私"]
       }
     ]
   },
   {
-    "category": "浏览器扩展脚本",
+    "category": "脚本与扩展",
     "icon": "🧩",
     "color": "#4ade80",
     "categoryEn": "EXTENSIONS",
@@ -494,13 +492,14 @@
         ]
       },
       {
-        "name": "广告拦截工具",
-        "desc": "uBlock与AdBlock规则",
-        "detail": "低内存占用的广告拦截扩展，以及自动合并更新的拦截规则，适配AdGuard等软件。",
+        "name": "全平台广告拦截",
+        "desc": "浏览器扩展与系统级套件",
+        "detail": "收集全平台（浏览器及系统级）的广告拦截工具与规则源，全面拦截网页与APP广告。",
         "url": "",
         "id": "adblock-tools",
         "tags": ["广告", "拦截"],
         "popup": [
+          { "label": "AdGuard", "desc": "全平台广告防护套件", "detail": "全平台广告隐私防护套件，拦截网页、APP广告以及各类跟踪请求。", "url": "https://adguard.com/zh_cn/welcome.html" },
           { "label": "uBlock Origin", "desc": "高性能开源广告拦截", "detail": "低内存占用的广告、弹窗拦截扩展，效率优于同类广告拦截插件。", "url": "https://github.com/gorhill/uBlock" },
           { "label": "AdBlock Filters", "desc": "自动合并拦截规则", "detail": "定时自动合并更新广告拦截规则，适配AdGuard、uBlock Origin。", "url": "https://github.com/217heidai/adblockfilters" }
         ]
@@ -520,7 +519,7 @@
     ]
   },
   {
-    "category": "在线实用工具",
+    "category": "实用工具",
     "icon": "🛠️",
     "color": "#94a3b8",
     "categoryEn": "TOOLS",
