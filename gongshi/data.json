@@ -3,7 +3,7 @@
   "currentMode": "full",
   "full": {
     "settings": {
-      "baseSalary": null
+      "baseSalary": 6000
     },
     "customHolidays": {},
     "allowances": [],
