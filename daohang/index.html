@@ -1329,6 +1329,34 @@ html.perf-lite .search-box:focus-within {
     normalize(t) { return String(t || '').toLowerCase().replace(/[·・\s\-_/]+/g, ''); }
   };
 
+  // 排序工具：梯形（auto）与手动（manual）的单一事实来源
+  const SortUtil = {
+    // 梯形比较器：placeholder 恒底，其余按视觉宽度升序，同宽按原数据下标
+    ladderCmp(a, b) {
+      const pa = a.item.placeholder ? 1 : 0, pb = b.item.placeholder ? 1 : 0;
+      if (pa !== pb) return pa - pb;
+      const wa = Utils.calcVisualWidth(a.item.name);
+      const wb = Utils.calcVisualWidth(b.item.name);
+      return wa - wb || a.idx - b.idx;
+    },
+    // 返回按当前规则排好的 [{item, idx}]，idx 恒为原始数据下标
+    order(group) {
+      const arr = group.items.map((item, idx) => ({ item, idx }));
+      if (group.itemOrder === 'manual') {
+        arr.sort((a, b) => (a.item.placeholder ? 1 : 0) - (b.item.placeholder ? 1 : 0) || a.idx - b.idx);
+      } else {
+        arr.sort(this.ladderCmp);
+      }
+      return arr;
+    },
+    // 把"当前显示顺序"固化成数据数组顺序，并标记 manual
+    materialize(group) {
+      if (group.itemOrder === 'manual') return;
+      group.items = this.order(group).map(x => x.item);
+      group.itemOrder = 'manual';
+    }
+  };
+
   const Reporter = (function () {
     let node = null, timer = 0, count = 0;
     function ensure() { if (!node) { node = document.createElement('div'); node.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2563eb;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:9999;opacity:0;transition:opacity .2s;pointer-events:none;'; document.body.appendChild(node); } return node; }
@@ -1454,6 +1482,7 @@ html.perf-lite .search-box:focus-within {
         }
         const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, items };
         if (en) node.categoryEn = en;
+        if (g.itemOrder === 'manual') node.itemOrder = 'manual';
         out.push(node);
       }
       if (!out.length) throw new Error('全部数据无效');
@@ -1647,8 +1676,8 @@ html.perf-lite .search-box:focus-within {
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
       const arrow = Dom.el('span', 'item-arrow'); arrow.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
       const acts = Dom.el('div', 'item-actions');
-      acts.appendChild(btn({ act: 'up-item', gi, ii, label: '↑', disabled: ii === 0 }));
-      acts.appendChild(btn({ act: 'down-item', gi, ii, label: '↓', disabled: ii === group.items.length - 1 }));
+      acts.appendChild(btn({ act: 'up-item', gi, ii, label: '↑' }));
+      acts.appendChild(btn({ act: 'down-item', gi, ii, label: '↓' }));
       acts.appendChild(btn({ act: 'edit-item', gi, ii, label: '✎' }));
       acts.appendChild(btn({ act: 'del-item', gi, ii, label: '✕', danger: true }));
       li.appendChild(icon); li.appendChild(body); li.appendChild(arrow); li.appendChild(acts);
@@ -1673,29 +1702,27 @@ html.perf-lite .search-box:focus-within {
       const acts = Dom.el('div', 'section-actions');
       acts.appendChild(btn({ act: 'up-group', gi, label: '↑', disabled: gi === 0 }));
       acts.appendChild(btn({ act: 'down-group', gi, label: '↓', disabled: gi === count - 1 }));
+      if (group.itemOrder === 'manual') {
+        const rb = btn({ act: 'reset-order', gi, label: '↺' });
+        rb.title = '恢复梯形排序';
+        acts.appendChild(rb);
+      }
       acts.appendChild(btn({ act: 'edit-group', gi, label: '✎' }));
       acts.appendChild(btn({ act: 'del-group', gi, label: '✕', danger: true }));
       head.append(icon, title, cnt, rule, acts); sec.appendChild(head);
       
       const list = Dom.el('ul', 'item-list');
       
-      const sortedItems = group.items.map((item, originalIdx) => ({ item, originalIdx }))
-        .sort((a, b) => {
-          if (a.item.placeholder && !b.item.placeholder) return 1;
-          if (!a.item.placeholder && b.item.placeholder) return -1;
-          const wA = Utils.calcVisualWidth(a.item.name);
-          const wB = Utils.calcVisualWidth(b.item.name);
-          return wA - wB;
-        });
+      const sortedItems = SortUtil.order(group);
 
-      sortedItems.forEach(({ item, originalIdx }) => {
+      sortedItems.forEach(({ item, idx }) => {
         if (item.placeholder) {
           const li = Dom.el('li', 'item placeholder');
           li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`;
           li.innerHTML = `<span class="item-icon">✦</span><span class="item-body"><span class="item-title">${item.name}</span><span class="item-desc">${item.desc||''}</span></span>`;
           list.appendChild(li);
         } else {
-          list.appendChild(build(item, group, gi, originalIdx));
+          list.appendChild(build(item, group, gi, idx));
         }
       });
       sec.appendChild(list);
@@ -1862,13 +1889,8 @@ html.perf-lite .search-box:focus-within {
 
       const ic = group.icon || Schema.DEFAULT_ICON, cl = group.color || Schema.DEFAULT_COLOR;
       
-      const sortedPopup = [...item.popup].sort((a, b) => {
-        const wA = Utils.calcVisualWidth(a.label);
-        const wB = Utils.calcVisualWidth(b.label);
-        return wA - wB;
-      });
-
-      sortedPopup.forEach(entry => {
+      // popup 子链接保持原始顺序（不再按宽度排序）
+      item.popup.forEach(entry => {
         const link = Dom.el('a', 'suggest-item');
         link.href = 'javascript:void(0)';
         link.style.marginBottom = '6px';
@@ -1894,7 +1916,23 @@ html.perf-lite .search-box:focus-within {
     },
     deleteLink(gi, ii) { const g = DataService.data[gi]; if (!g || !g.items[ii]) return; if (!confirm('确定删除？')) return; g.items.splice(ii, 1); DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除'); },
     deleteGroup(gi) { const g = DataService.data[gi]; if (!g) return; if (!confirm('确定删除分类？')) return; DataService.data.splice(gi, 1); DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除'); },
-    moveItem(gi, ii, d) { const items = DataService.data[gi].items, ni = ii + d; if (ni < 0 || ni >= items.length) return; [items[ii], items[ni]] = [items[ni], items[ii]]; DataService.persist(); Mode.markDirty(); Renderer.render(); },
+    moveItem(gi, ii, d) {
+      const g = DataService.data[gi];
+      if (!g) return;
+      // 先用原始下标拿到 item 引用，避免 materialize 后下标错位
+      const targetItem = g.items[ii];
+      if (!targetItem || targetItem.placeholder) return;
+      // 把当前显示顺序固化为数据顺序（auto → manual 一次性完成）
+      SortUtil.materialize(g);
+      const items = g.items;
+      const curIdx = items.indexOf(targetItem);
+      if (curIdx < 0) return;
+      const ni = curIdx + d;
+      if (ni < 0 || ni >= items.length) return;
+      if (items[ni].placeholder) return; // placeholder 恒底，不参与交换
+      [items[curIdx], items[ni]] = [items[ni], items[curIdx]];
+      DataService.persist(); Mode.markDirty(); Renderer.render();
+    },
     moveGroup(gi, d) { const data = DataService.data, ni = gi + d; if (ni < 0 || ni >= data.length) return; [data[gi], data[ni]] = [data[ni], data[gi]]; DataService.persist(); Mode.markDirty(); Renderer.render(); }
   };
 
@@ -2070,6 +2108,10 @@ html.perf-lite .search-box:focus-within {
       else if (act === 'del-item') Actions.deleteLink(gi, ii);
       else if (act === 'up-group') Actions.moveGroup(gi, -1);
       else if (act === 'down-group') Actions.moveGroup(gi, 1);
+      else if (act === 'reset-order') {
+        const g = DataService.data[gi];
+        if (g) { delete g.itemOrder; DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已恢复梯形排序'); }
+      }
       else if (act === 'edit-group') Forms.openGroupForm(gi);
       else if (act === 'del-group') Actions.deleteGroup(gi);
     });
