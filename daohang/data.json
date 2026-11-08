@@ -345,6 +345,14 @@
             "url": "https://github.com/lubin776/tvbox-api-backup"
           }
         ]
+      },
+      {
+        "name": "饭太硬导航",
+        "desc": "TVBox/影视仓接口与工具导航站",
+        "detail": "汇集TVBox类空壳播放器配置接口、工具集合；含短链接压缩、GitHub加速、接口编辑器、直播源工具等实用在线小工具。",
+        "url": "https://shturl.cc/X6DzR2rfEHHSgRYF3XT4P",
+        "id": "fantaiying",
+        "tags": ["影视", "导航", "TVBox"]
       }
     ],
     "categoryEn": "VIDEO"
@@ -601,6 +609,14 @@
         "url": "https://localsend.org/zh-CN#/",
         "id": "localsend",
         "tags": ["工具", "局域网", "开源"]
+      },
+      {
+        "name": "临时邮箱",
+        "desc": "匿名一次性临时邮箱",
+        "detail": "无需注册，开箱即用的匿名临时邮箱，仅支持接收邮件，用于接收注册验证码，保护真实邮箱免受垃圾邮件骚扰。",
+        "url": "https://www.linshi-email.com/",
+        "id": "linshi-email",
+        "tags": ["工具", "邮箱", "隐私"]
       }
     ],
     "categoryEn": "OTHERS"
