@@ -220,80 +220,6 @@
     ]
   },
   {
-    "category": "系统装机",
-    "icon": "💻",
-    "color": "#38bdf8",
-    "categoryEn": "SYSTEM",
-    "items": [
-      {
-        "name": "IT天空",
-        "desc": "老牌装机工具站",
-        "detail": "老牌装机工具站，优启通PE、万能驱动、系统部署全套工具。",
-        "url": "https://m.itsk.com/",
-        "id": "itsk",
-        "tags": ["系统", "工具"]
-      },
-      {
-        "name": "系统总裁",
-        "desc": "系统封装与PE工具",
-        "detail": "老牌系统维护站，提供系统封装工具（SC）、PE维护盘（USM）以及各类驱动工具。",
-        "url": "https://www.sysceo.com/",
-        "id": "sysceo",
-        "tags": ["系统", "封装"]
-      },
-      {
-        "name": "精简系统镜像合集",
-        "desc": "不忘初心、小鱼儿、又要重装",
-        "detail": "收集常用的 Windows 精简优化镜像与母盘，剔除广告与预装冗余组件，包含不忘初心系统、小鱼儿yr系统、又要重装系统站。",
-        "url": "",
-        "id": "windows-iso",
-        "tags": ["系统"],
-        "popup": [
-          {
-            "label": "不忘初心系统",
-            "desc": "Windows精简镜像",
-            "detail": "Windows精简优化镜像，剔除广告与预装冗余组件，兼顾游戏办公。",
-            "url": "https://www.pc528.net/"
-          },
-          {
-            "label": "小鱼儿yr系统",
-            "desc": "第三方精简系统母盘",
-            "detail": "第三方Windows精简母盘，优先保障系统稳定性。",
-            "url": "https://www.yrxitong.com/"
-          },
-          {
-            "label": "又要重装系统站",
-            "desc": "收集优化系统镜像",
-            "detail": "收集各类优化Windows镜像，附带重装教程参考。",
-            "url": "https://www.yyczxt.com/"
-          }
-        ]
-      },
-      {
-        "name": "启动盘制作工具",
-        "desc": "Ventoy与Rufus",
-        "detail": "常用的 U 盘启动工具。Ventoy 支持多系统镜像直接拷贝启动；Rufus 轻量免安装，自带数字签名。",
-        "url": "",
-        "id": "usb-tools",
-        "tags": ["系统", "U盘"],
-        "popup": [
-          {
-            "label": "Ventoy",
-            "desc": "多系统U盘启动工具",
-            "detail": "国产开源启动盘工具，ISO镜像直接拷贝到U盘，就能多系统选择启动，不用反复格式化；持续更新。",
-            "url": "https://www.ventoy.net/"
-          },
-          {
-            "label": "Rufus",
-            "desc": "轻量U盘启动盘制作",
-            "detail": "免安装Windows启动盘工具，自带数字签名，支持简体中文，适配各类系统镜像。",
-            "url": "https://rufus.ie/"
-          }
-        ]
-      }
-    ]
-  },
-  {
     "category": "软件资源",
     "icon": "📦",
     "color": "#fbbf24",
@@ -396,6 +322,80 @@
     ]
   },
   {
+    "category": "系统装机",
+    "icon": "💻",
+    "color": "#38bdf8",
+    "categoryEn": "SYSTEM",
+    "items": [
+      {
+        "name": "IT天空",
+        "desc": "老牌装机工具站",
+        "detail": "老牌装机工具站，优启通PE、万能驱动、系统部署全套工具。",
+        "url": "https://m.itsk.com/",
+        "id": "itsk",
+        "tags": ["系统", "工具"]
+      },
+      {
+        "name": "系统总裁",
+        "desc": "系统封装与PE工具",
+        "detail": "老牌系统维护站，提供系统封装工具（SC）、PE维护盘（USM）以及各类驱动工具。",
+        "url": "https://www.sysceo.com/",
+        "id": "sysceo",
+        "tags": ["系统", "封装"]
+      },
+      {
+        "name": "精简系统镜像合集",
+        "desc": "不忘初心、小鱼儿、又要重装",
+        "detail": "收集常用的 Windows 精简优化镜像与母盘，剔除广告与预装冗余组件，包含不忘初心系统、小鱼儿yr系统、又要重装系统站。",
+        "url": "",
+        "id": "windows-iso",
+        "tags": ["系统"],
+        "popup": [
+          {
+            "label": "不忘初心系统",
+            "desc": "Windows精简镜像",
+            "detail": "Windows精简优化镜像，剔除广告与预装冗余组件，兼顾游戏办公。",
+            "url": "https://www.pc528.net/"
+          },
+          {
+            "label": "小鱼儿yr系统",
+            "desc": "第三方精简系统母盘",
+            "detail": "第三方Windows精简母盘，优先保障系统稳定性。",
+            "url": "https://www.yrxitong.com/"
+          },
+          {
+            "label": "又要重装系统站",
+            "desc": "收集优化系统镜像",
+            "detail": "收集各类优化Windows镜像，附带重装教程参考。",
+            "url": "https://www.yyczxt.com/"
+          }
+        ]
+      },
+      {
+        "name": "启动盘制作工具",
+        "desc": "Ventoy与Rufus",
+        "detail": "常用的 U 盘启动工具。Ventoy 支持多系统镜像直接拷贝启动；Rufus 轻量免安装，自带数字签名。",
+        "url": "",
+        "id": "usb-tools",
+        "tags": ["系统", "U盘"],
+        "popup": [
+          {
+            "label": "Ventoy",
+            "desc": "多系统U盘启动工具",
+            "detail": "国产开源启动盘工具，ISO镜像直接拷贝到U盘，就能多系统选择启动，不用反复格式化；持续更新。",
+            "url": "https://www.ventoy.net/"
+          },
+          {
+            "label": "Rufus",
+            "desc": "轻量U盘启动盘制作",
+            "detail": "免安装Windows启动盘工具，自带数字签名，支持简体中文，适配各类系统镜像。",
+            "url": "https://rufus.ie/"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "category": "网络与安全",
     "icon": "🌐",
     "color": "#22d3ee",
@@ -436,14 +436,15 @@
       {
         "name": "网络代理与加速",
         "desc": "代理订阅与跨境加速",
-        "detail": "收集常用的跨境网络加速、代理订阅服务，以及 iOS 平台网络代理工具。",
+        "detail": "收集常用的跨境网络加速、代理订阅服务，以及 Loon 代理工具常用的插件与规则订阅源。",
         "url": "",
         "id": "vpn-collection",
         "tags": ["网络", "代理"],
         "popup": [
           { "label": "52IPLC", "desc": "跨境网络加速服务", "detail": "跨境网络加速服务，提供多条备用访问域名，主域名失效时可切换。", "url": "https://cloud.52iplc.com/" },
           { "label": "一元机场", "desc": "低价代理订阅服务", "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。", "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF" },
-          { "label": "Loon", "desc": "iOS 代理与网络工具", "detail": "iOS 平台强大的网络代理与规则分流工具，支持自定义规则、MitM解密等高级功能，主打网络代理与策略路由。", "url": "https://www.nsloon.com/" }
+          { "label": "yfamilys", "desc": "常用插件与规则", "detail": "Loon代理工具插件、规则合集，包含yfamilys、Kelee Hub主流源。", "url": "https://yfamilys.com/loon" },
+          { "label": "Kelee Hub", "desc": "Loon规则订阅源", "detail": "Kelee Hub 维护的 Loon 插件与规则订阅源，可直接在 Loon 中导入使用。", "url": "https://hub.kelee.one/" }
         ]
       },
       {
@@ -502,18 +503,6 @@
           { "label": "AdGuard", "desc": "全平台广告防护套件", "detail": "全平台广告隐私防护套件，拦截网页、APP广告以及各类跟踪请求。", "url": "https://adguard.com/zh_cn/welcome.html" },
           { "label": "uBlock Origin", "desc": "高性能开源广告拦截", "detail": "低内存占用的广告、弹窗拦截扩展，效率优于同类广告拦截插件。", "url": "https://github.com/gorhill/uBlock" },
           { "label": "AdBlock Filters", "desc": "自动合并拦截规则", "detail": "定时自动合并更新广告拦截规则，适配AdGuard、uBlock Origin。", "url": "https://github.com/217heidai/adblockfilters" }
-        ]
-      },
-      {
-        "name": "Loon插件仓库",
-        "desc": "Loon代理与规则集",
-        "detail": "iOS 代理工具 Loon 的常用插件与规则源合集，含去广告、应用净化、流媒体解锁模块。",
-        "url": "",
-        "id": "loon-plugins",
-        "tags": ["插件", "iOS"],
-        "popup": [
-          { "label": "yfamilys", "desc": "常用插件与规则", "detail": "Loon代理工具插件、规则合集，包含yfamilys、Kelee Hub主流源。", "url": "https://yfamilys.com/loon" },
-          { "label": "Kelee Hub", "desc": "Loon规则订阅源", "detail": "Kelee Hub 维护的 Loon 插件与规则订阅源，可直接在 Loon 中导入使用。", "url": "https://hub.kelee.one/" }
         ]
       }
     ]
