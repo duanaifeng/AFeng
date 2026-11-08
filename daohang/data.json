@@ -345,14 +345,6 @@
             "url": "https://github.com/lubin776/tvbox-api-backup"
           }
         ]
-      },
-      {
-        "name": "饭太硬导航",
-        "desc": "TVBox/影视仓接口与工具导航站",
-        "detail": "汇集TVBox类空壳播放器配置接口、工具集合；含短链接压缩、GitHub加速、接口编辑器、直播源工具等实用在线小工具。",
-        "url": "https://shturl.cc/X6DzR2rfEHHSgRYF3XT4P",
-        "id": "fantaiying",
-        "tags": ["影视", "导航", "TVBox"]
       }
     ],
     "categoryEn": "VIDEO"
@@ -491,6 +483,14 @@
         "url": "https://www.52pojie.cn/",
         "id": "pojie-52",
         "tags": ["技术", "逆向", "安全"]
+      },
+      {
+        "name": "易破解",
+        "desc": "老牌软件资源分享站",
+        "detail": "长期更新各类电脑、手机工具，包含便携版、直装版、运行库、开源软件等资源，支持签到积分，资源分类清晰，更新勤快。",
+        "url": "https://www.ypojie.com/",
+        "id": "ypojie",
+        "tags": ["软件", "资源"]
       }
     ],
     "categoryEn": "RESOURCES"
