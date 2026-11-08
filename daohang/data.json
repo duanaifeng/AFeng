@@ -3,6 +3,7 @@
     "category": "本站原创",
     "icon": "🏠",
     "color": "#60a5fa",
+    "categoryEn": "ORIGINAL",
     "items": [
       {
         "name": "AiFeng个人主页",
@@ -44,13 +45,13 @@
         "id": "pc-tools",
         "tags": ["工具", "系统"]
       }
-    ],
-    "categoryEn": "ORIGINAL"
+    ]
   },
   {
     "category": "音乐相关",
     "icon": "🎵",
     "color": "#a78bfa",
+    "categoryEn": "MUSIC",
     "items": [
       {
         "name": "LX Music",
@@ -128,13 +129,13 @@
           }
         ]
       }
-    ],
-    "categoryEn": "MUSIC"
+    ]
   },
   {
     "category": "影视娱乐",
     "icon": "🎬",
     "color": "#f472b6",
+    "categoryEn": "VIDEO",
     "items": [
       {
         "name": "看剧AI",
@@ -198,13 +199,13 @@
           }
         ]
       }
-    ],
-    "categoryEn": "VIDEO"
+    ]
   },
   {
     "category": "系统装机",
     "icon": "💻",
     "color": "#38bdf8",
+    "categoryEn": "SYSTEM",
     "items": [
       {
         "name": "IT天空",
@@ -254,13 +255,13 @@
         "id": "rufus",
         "tags": ["系统", "U盘", "开源"]
       }
-    ],
-    "categoryEn": "SYSTEM"
+    ]
   },
   {
     "category": "软件&资源",
     "icon": "📦",
     "color": "#fbbf24",
+    "categoryEn": "SOFTWARE",
     "items": [
       {
         "name": "423Down",
@@ -349,29 +350,91 @@
         "id": "ypojie",
         "tags": ["软件", "资源"]
       }
-    ],
-    "categoryEn": "SOFTWARE"
+    ]
   },
   {
     "category": "网络安全",
     "icon": "🌐",
     "color": "#22d3ee",
+    "categoryEn": "SECURITY",
     "items": [
       {
-        "name": "52IPLC",
-        "desc": "跨境网络加速服务",
-        "detail": "跨境网络加速服务，提供多条备用访问域名，主域名失效时可切换。",
-        "url": "https://cloud.52iplc.com/",
-        "id": "iplc-52",
-        "tags": ["网络", "加速"]
+        "name": "DNS 工具合集",
+        "desc": "公共、加密与自建 DNS",
+        "detail": "聚合主流公共安全 DNS、云端自定义防火墙、以及民间自建加密 DNS 服务。包含检测工具，可按需配置。",
+        "url": "",
+        "id": "dns-collection",
+        "tags": ["DNS", "安全"],
+        "popup": [
+          {
+            "label": "OneDNS",
+            "desc": "国内公共安全DNS",
+            "detail": "国内公共安全DNS，拦截钓鱼恶意域名，附带广告过滤能力，设备直接填写即可生效。",
+            "url": "https://www.onedns.net/"
+          },
+          {
+            "label": "NextDNS",
+            "desc": "云端自定义防火墙",
+            "detail": "云端自定义DNS防火墙，高度可自定义规则，广告拦截、安全防护一体化。",
+            "url": "https://nextdns.io/zh"
+          },
+          {
+            "label": "自建DNS合集",
+            "desc": "民间自建加密DNS汇总",
+            "detail": "自建加密DNS合集，支持DoH/DoT/DoQ，可填路由器或手机私人DNS；带广告过滤，稳定性与隐私不及大厂，失效需切回默认。",
+            "url": "https://dns1.top/"
+          }
+        ]
       },
       {
-        "name": "OneDNS",
-        "desc": "国内公共安全DNS",
-        "detail": "国内公共安全DNS，拦截钓鱼恶意域名，附带广告过滤能力，设备直接填写即可生效。",
-        "url": "https://www.onedns.net/",
-        "id": "onedns",
-        "tags": ["DNS", "安全"]
+        "name": "网络检测工具",
+        "desc": "DNS与IPv6连通性检测",
+        "detail": "包含网易官方网络诊断、DNS 泄露检测以及 IPv6 连通性检测，用于排查网络故障与隐私泄露。",
+        "url": "",
+        "id": "network-test",
+        "tags": ["网络", "检测"],
+        "popup": [
+          {
+            "label": "网易DNS检测",
+            "desc": "查出口IP与DNS劫持",
+            "detail": "读取本机出口IP与所用DNS服务器，快速判断是否出现DNS劫持或解析异常。",
+            "url": "https://nstool.netease.com/"
+          },
+          {
+            "label": "DNS Leak Test",
+            "desc": "DNS泄露检测",
+            "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过。",
+            "url": "https://dnsleaktest.com/"
+          },
+          {
+            "label": "test-ipv6",
+            "desc": "IPv6连通性检测",
+            "detail": "一键检测本机 IPv6 连通性与配置状态。",
+            "url": "https://test-ipv6.com/"
+          }
+        ]
+      },
+      {
+        "name": "网络加速 / VPN",
+        "desc": "代理订阅与跨境加速",
+        "detail": "收集常用的跨境网络加速与代理订阅服务。注意：低价代理存在跑路、限速风险，建议短期订阅。",
+        "url": "",
+        "id": "vpn-collection",
+        "tags": ["网络", "加速"],
+        "popup": [
+          {
+            "label": "52IPLC",
+            "desc": "跨境网络加速服务",
+            "detail": "跨境网络加速服务，提供多条备用访问域名，主域名失效时可切换。",
+            "url": "https://cloud.52iplc.com/"
+          },
+          {
+            "label": "一元机场",
+            "desc": "低价代理订阅服务",
+            "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。",
+            "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF"
+          }
+        ]
       },
       {
         "name": "AdGuard",
@@ -382,14 +445,6 @@
         "tags": ["广告", "隐私"]
       },
       {
-        "name": "NextDNS",
-        "desc": "云端自定义防火墙",
-        "detail": "云端自定义DNS防火墙，高度可自定义规则，广告拦截、安全防护一体化。",
-        "url": "https://nextdns.io/zh",
-        "id": "nextdns",
-        "tags": ["DNS", "安全"]
-      },
-      {
         "name": "TCPTest",
         "desc": "多节点网络诊断",
         "detail": "国内多节点网络诊断工具，支持Ping、TCPing、IPv6检测、路由追踪、网站测速，排查网络故障。",
@@ -398,112 +453,20 @@
         "tags": ["网络", "检测"]
       },
       {
-        "name": "一元机场",
-        "desc": "低价代理订阅服务",
-        "detail": "低价代理订阅，兼容V2ray、Clash等客户端；⚠ 低价代理存在跑路、限速风险，建议短期订阅。",
-        "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF",
-        "id": "yiyuan-vpn",
-        "tags": ["网络", "加速"]
-      },
-      {
-        "name": "网易DNS检测",
-        "desc": "DNS劫持与IPv6检测",
-        "detail": "网易官方网络诊断工具集，含基础检测与IPv6检测：查出口IP、所用DNS与劫持污染，或测IPv4/IPv6双栈。",
-        "url": "",
-        "id": "netease-dns",
-        "tags": ["DNS", "检测"],
-        "popup": [
-          {
-            "label": "基础检测",
-            "desc": "查出口IP与DNS劫持",
-            "detail": "读取本机出口IP与所用DNS服务器，快速判断是否出现DNS劫持或解析异常。",
-            "url": "https://nstool.netease.com/"
-          },
-          {
-            "label": "IPv6 详细检测",
-            "desc": "IPv4/IPv6双栈检测",
-            "detail": "同系列IPv6专项检测页面，同时检测IPv4/IPv6双栈状态，查看是否支持IPv6网络访问。",
-            "url": "https://v6.tx163.com/"
-          }
-        ]
-      },
-      {
-        "name": "自建DNS合集",
-        "desc": "民间自建加密DNS",
-        "detail": "自建加密DNS合集，支持DoH/DoT/DoQ，可填路由器或手机私人DNS；带广告过滤，稳定性与隐私不及大厂，失效需切回默认。",
-        "url": "",
-        "id": "custom-dns",
-        "tags": ["DNS", "自建"],
-        "popup": [
-          {
-            "label": "果冻调度加速PRO",
-            "desc": "边缘智能调度",
-            "detail": "边缘智能调度DNS，自动选低延迟线路；公益版已暂停，付费版主打游戏低延迟与苹果APNs推送加速。",
-            "url": "https://www.gddns.org/"
-          },
-          {
-            "label": "关圣DNS",
-            "desc": "三协议与统计面板",
-            "detail": "公益加密DNS，DoH/DoT/DoQ 全支持；免费版每日10万次、20次/秒限速，付费版不限量带解析统计。",
-            "url": "https://dns1.top/"
-          },
-          {
-            "label": "23-4 DNS",
-            "desc": "轻量自建广告过滤",
-            "detail": "个人自建加密DNS，过滤广告与追踪器；仅统计总量不留查询域名，附带网页自检验证是否生效。",
-            "url": "https://dns.23-4.cn/"
-          },
-          {
-            "label": "Sofmed DNS",
-            "desc": "协议全且带KMS",
-            "detail": "支持DoH/DoH3/DoT/DoQ及明文DNS；广告黑名单定时更新，可导出AdGuard规则，站点另附KMS激活工具。",
-            "url": "https://dns.sofmed.cn/"
-          },
-          {
-            "label": "18Bit DNS",
-            "desc": "免费公益GitHub优化",
-            "detail": "免费公益DNS，拦截广告、追踪器与钓鱼域名；TLS评级A+，对GitHub访问做过优化。",
-            "url": "https://go.18bit.cn/"
-          },
-          {
-            "label": "XLXBK DNS",
-            "desc": "VIP付费管理后台",
-            "detail": "VIP付费DNS管理后台，公开解析参数极少，登录面板查看节点，属于付费专属服务。",
-            "url": "https://svip.xlxbk.cn/login"
-          }
-        ]
-      },
-      {
         "name": "网络测速",
         "desc": "中国科学技术大学测速网站",
-        "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码",
+        "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码。",
         "url": "https://test.ustc.edu.cn/",
         "id": "ustc-speed",
         "tags": ["网络", "测速"]
-      },
-      {
-        "name": "DNS Leak Test",
-        "url": "https://dnsleaktest.com/",
-        "desc": "DNS泄露检测",
-        "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过，稳定性：老牌检测站，长期可用。",
-        "id": "dns-leak",
-        "tags": ["DNS", "检测"]
-      },
-      {
-        "name": "test-ipv6",
-        "url": "https://test-ipv6.com/",
-        "desc": "IPv6连通性检测",
-        "detail": "一键检测本机 IPv6 连通性与配置状态，和站内「网易DNS检测」形成互补。 稳定性：长期存在的专用检测站。",
-        "id": "test-ipv6",
-        "tags": ["IPv6", "检测"]
       }
-    ],
-    "categoryEn": "SECURITY"
+    ]
   },
   {
     "category": "浏览器扩展脚本",
     "icon": "🧩",
     "color": "#4ade80",
+    "categoryEn": "EXTENSIONS",
     "items": [
       {
         "name": "Crx搜搜",
@@ -583,13 +546,13 @@
         "id": "ublock-origin",
         "tags": ["广告", "拦截", "开源"]
       }
-    ],
-    "categoryEn": "EXTENSIONS"
+    ]
   },
   {
     "category": "在线实用工具",
     "icon": "🛠️",
     "color": "#94a3b8",
+    "categoryEn": "TOOLS",
     "items": [
       {
         "name": "在线PS",
@@ -623,7 +586,6 @@
         "id": "linshi-email",
         "tags": ["工具", "邮箱", "隐私"]
       }
-    ],
-    "categoryEn": "TOOLS"
+    ]
   }
 ]
