@@ -1,0 +1,35 @@
+{
+  "version": 6,
+  "currentMode": "full",
+  "full": {
+    "settings": {
+      "baseSalary": null
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {}
+  },
+  "temp": {
+    "settings": {
+      "rate": 18
+    },
+    "customHolidays": {},
+    "allowances": [],
+    "records": {
+      "2026-10-12": {
+        "id": "1791822492487-4lw49u",
+        "att": "work",
+        "hours": 8,
+        "shift": "白班",
+        "timestamp": 1791822492487
+      },
+      "2026-10-09": {
+        "id": "1791822522588-zoz99e",
+        "att": "work",
+        "hours": 8,
+        "shift": "白班",
+        "timestamp": 1791822522588
+      }
+    }
+  }
+}
