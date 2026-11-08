@@ -1,8 +1,9 @@
 [
   {
-    "category": "原·创",
+    "category": "本站原创",
     "icon": "💡",
     "color": "#60a5fa",
+    "categoryEn": "ORIGINAL",
     "items": [
       {
         "name": "AiFeng个人主页",
@@ -44,13 +45,13 @@
         "id": "pc-tools",
         "tags": ["工具", "系统"]
       }
-    ],
-    "categoryEn": "ORIGINAL"
+    ]
   },
   {
-    "category": "网络·服务",
+    "category": "网络与安全",
     "icon": "📡",
     "color": "#22d3ee",
+    "categoryEn": "NETWORK",
     "items": [
       {
         "name": "52IPLC",
@@ -178,27 +179,27 @@
       },
       {
         "name": "DNS Leak Test",
-        "url": "https://dnsleaktest.com/",
         "desc": "DNS泄露检测",
         "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过，稳定性：老牌检测站，长期可用。",
+        "url": "https://dnsleaktest.com/",
         "id": "dns-leak",
         "tags": ["DNS", "检测"]
       },
       {
         "name": "test-ipv6",
-        "url": "https://test-ipv6.com/",
         "desc": "IPv6连通性检测",
         "detail": "一键检测本机 IPv6 连通性与配置状态，和站内「网易DNS检测」形成互补。 稳定性：长期存在的专用检测站。",
+        "url": "https://test-ipv6.com/",
         "id": "test-ipv6",
         "tags": ["IPv6", "检测"]
       }
-    ],
-    "categoryEn": "NETWORK"
+    ]
   },
   {
-    "category": "聆听·音乐",
-    "icon": "🎵",
-    "color": "#a78bfa",
+    "category": "影音娱乐",
+    "icon": "🎬",
+    "color": "#f472b6",
+    "categoryEn": "MEDIA",
     "items": [
       {
         "name": "LX Music",
@@ -275,15 +276,7 @@
             "url": "https://yun.139.com/shareweb/#/w/i/2ygb7CmDUeW05"
           }
         ]
-      }
-    ],
-    "categoryEn": "MUSIC"
-  },
-  {
-    "category": "影视·追剧",
-    "icon": "🎬",
-    "color": "#f472b6",
-    "items": [
+      },
       {
         "name": "看剧AI",
         "desc": "AI驱动影视检索",
@@ -346,13 +339,13 @@
           }
         ]
       }
-    ],
-    "categoryEn": "VIDEO"
+    ]
   },
   {
-    "category": "系统·软件",
+    "category": "系统与软件",
     "icon": "💻",
     "color": "#38bdf8",
+    "categoryEn": "SYSTEM",
     "items": [
       {
         "name": "IT天空",
@@ -402,13 +395,13 @@
         "id": "rufus",
         "tags": ["系统", "U盘", "开源"]
       }
-    ],
-    "categoryEn": "SYSTEM"
+    ]
   },
   {
-    "category": "资源·站点",
+    "category": "资源与导航",
     "icon": "🧭",
     "color": "#fbbf24",
+    "categoryEn": "RESOURCES",
     "items": [
       {
         "name": "423Down",
@@ -492,13 +485,13 @@
         "id": "ypojie",
         "tags": ["软件", "资源"]
       }
-    ],
-    "categoryEn": "RESOURCES"
+    ]
   },
   {
-    "category": "扩展·脚本",
+    "category": "扩展与在线工具",
     "icon": "🧩",
     "color": "#4ade80",
+    "categoryEn": "TOOLS",
     "items": [
       {
         "name": "Crx搜搜",
@@ -577,15 +570,7 @@
         "url": "https://github.com/gorhill/uBlock",
         "id": "ublock-origin",
         "tags": ["广告", "拦截", "开源"]
-      }
-    ],
-    "categoryEn": "EXTENSIONS"
-  },
-  {
-    "category": "其·他",
-    "icon": "🧰",
-    "color": "#94a3b8",
-    "items": [
+      },
       {
         "name": "在线PS",
         "desc": "浏览器在线修图",
@@ -618,7 +603,6 @@
         "id": "linshi-email",
         "tags": ["工具", "邮箱", "隐私"]
       }
-    ],
-    "categoryEn": "OTHERS"
+    ]
   }
 ]
