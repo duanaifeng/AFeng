@@ -208,9 +208,21 @@
       },
       {
         "name": "网络测速",
-        "url": "https://test.ustc.edu.cn/",
         "desc": "中国科学技术大学测速网站",
-        "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码"
+        "detail": "中国科学技术大学测速网站（test.ustc.edu.cn）该测速站点服务器部署于中科大网络空间安全学院，支持 IPv4、IPv6 双协议测速，开源可获取站点源代码",
+        "url": "https://test.ustc.edu.cn/"
+      },
+      {
+        "name": "DNS Leak Test",
+        "url": "https://dnsleaktest.com/",
+        "desc": "DNS泄露检测",
+        "detail": "检测实际生效的 DNS 解析服务器，判断配置是否被绕过，稳定性：老牌检测站，长期可用。"
+      },
+      {
+        "name": "test-ipv6",
+        "url": "https://test-ipv6.com/",
+        "desc": "IPv6连通性检测",
+        "detail": "一键检测本机 IPv6 连通性与配置状态，和站内「网易DNS检测」形成互补。 稳定性：长期存在的专用检测站。"
       }
     ],
     "categoryEn": "NETWORK"
