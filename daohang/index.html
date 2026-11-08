@@ -751,6 +751,7 @@ body.editing .back-top { display:none; }
   .edit-bar { bottom:calc(14px + env(safe-area-inset-bottom, 0px)); padding:8px 10px 8px 14px; gap:8px; }
   .edit-bar-status { font-size:11.5px; } .edit-bar-btn { padding:6px 11px; font-size:11.5px; }
   .modal-box { max-width:100%; } .detail-header { gap:12px; } .detail-icon { width:48px; height:48px; font-size:24px; }
+  
   /* 移动端修复操作按钮溢出 */
   .section-head { gap: 8px; }
   .section-rule { display: none; }
@@ -1895,8 +1896,14 @@ html.perf-lite .search-box:focus-within {
 
       const ic = group.icon || Schema.DEFAULT_ICON, cl = group.color || Schema.DEFAULT_COLOR;
       
-      // popup 子链接保持原始顺序（不再按宽度排序）
-      item.popup.forEach(entry => {
+      // popup 子链接强制梯形排序（按 label 视觉宽度升序）
+      const sortedPopup = [...item.popup].sort((a, b) => {
+        const wa = Utils.calcVisualWidth(a.label);
+        const wb = Utils.calcVisualWidth(b.label);
+        return wa - wb;
+      });
+
+      sortedPopup.forEach(entry => {
         const link = Dom.el('a', 'suggest-item');
         link.href = 'javascript:void(0)';
         link.style.marginBottom = '6px';
