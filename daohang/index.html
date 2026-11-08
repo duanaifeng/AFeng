@@ -331,7 +331,7 @@ html.dark .suggest-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
   box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.22);
 }
 html.dark .section-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
-.section-title { flex:0 0 auto; font-size:15px; font-weight:800; letter-spacing:.02em; color:var(--text-1); }
+.section-title { flex:0 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; font-weight:800; letter-spacing:.02em; color:var(--text-1); }
 .section-count {
   flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs);
   border:1px solid var(--glass-edge); background:var(--surface-2);
@@ -700,8 +700,9 @@ body.editing .footer { padding-bottom:calc(80px + env(safe-area-inset-bottom, 0p
   .edit-bar-status::after { display:none; }
   .edit-bar-btn { padding:6px 8px; }
   .edit-bar-seg-btn { padding:6px 7px; }
-  .section-head { gap:6px; }
+  .section-head { gap:4px; }
   .section-actions { gap:2px; }
+  .item-action-btn { width:24px; height:24px; font-size:11px; }
 }
 
 .back-top {
@@ -750,6 +751,11 @@ body.editing .back-top { display:none; }
   .edit-bar { bottom:calc(14px + env(safe-area-inset-bottom, 0px)); padding:8px 10px 8px 14px; gap:8px; }
   .edit-bar-status { font-size:11.5px; } .edit-bar-btn { padding:6px 11px; font-size:11.5px; }
   .modal-box { max-width:100%; } .detail-header { gap:12px; } .detail-icon { width:48px; height:48px; font-size:24px; }
+  /* 移动端修复操作按钮溢出 */
+  .section-head { gap: 8px; }
+  .section-rule { display: none; }
+  .section-actions { margin-left: auto; }
+  .item-action-btn { width: 26px; height: 26px; font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
