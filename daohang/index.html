@@ -109,10 +109,7 @@
   --glass-lo: rgba(0,0,0,.06);
   --glass-side: rgba(255,255,255,.70);
 
-  /* 标准玻璃（大卡片）*/
   --glass-blur: blur(38px) saturate(210%) brightness(1.08);
-  /* 轻量玻璃（密集列表）*/
-  --glass-blur-sm: blur(20px) saturate(190%) brightness(1.06);
 
   --surface: rgba(255,255,255,.06);
   --surface-2: rgba(255,255,255,.10);
@@ -182,7 +179,6 @@ html.dark {
   --glass-lo: rgba(0,0,0,.22);
   --glass-side: rgba(255,255,255,.16);
   --glass-blur: blur(42px) saturate(190%) brightness(1.16);
-  --glass-blur-sm: blur(22px) saturate(180%) brightness(1.10);
 
   --surface: rgba(255,255,255,.04);
   --surface-2: rgba(255,255,255,.07);
@@ -814,8 +810,14 @@ html.dark .suggest-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
 
 /* =====================================================================
    SECTION 7 · SECTION HEAD
+   ★ 加 content-visibility：视口外分区跳过渲染
    ===================================================================== */
-.section { position: relative; padding: 24px 0 12px; }
+.section {
+  position: relative;
+  padding: 24px 0 12px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
 .section:first-of-type { padding-top: 0; }
 @media (min-width: 1024px) { .section { padding: 36px 0 16px; } }
 
@@ -825,6 +827,7 @@ html.dark .suggest-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
   gap: 12px;
   margin-bottom: 16px;
 }
+/* ★ 去掉 section-icon 的 backdrop-filter */
 .section-icon {
   flex: 0 0 auto;
   width: 34px;
@@ -837,8 +840,6 @@ html.dark .suggest-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
   background: var(--c-bg);
   font-size: 16px;
   line-height: 1;
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.70),
     inset 0 -1px 0 rgba(255,255,255,.22);
@@ -857,6 +858,7 @@ html.dark .section-icon {
   letter-spacing: .02em;
   color: var(--text-1);
 }
+/* ★ 去掉 section-count 的 backdrop-filter */
 .section-count {
   flex: 0 0 auto;
   padding: 2px 8px;
@@ -864,8 +866,6 @@ html.dark .section-icon {
   border: 1px solid var(--glass-edge);
   background-color: rgba(255,255,255,.30);
   background-image: linear-gradient(155deg, rgba(255,255,255,.36), rgba(255,255,255,.06) 55%, rgba(255,255,255,.22));
-  backdrop-filter: blur(16px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,0,0,.03);
   font-family: ui-monospace, monospace;
   font-size: 11px;
@@ -885,7 +885,9 @@ html.dark .section-count {
 body.editing .section-actions { display: flex; }
 
 /* =====================================================================
-   SECTION 8 · ITEMS（密集列表 · 轻量玻璃）
+   SECTION 8 · ITEMS
+   ★ 去掉 backdrop-filter + contain 隔离布局
+   ★ 用半透明白底 + 边缘高光 + 外阴影塑形
    ===================================================================== */
 .item-list {
   list-style: none;
@@ -902,24 +904,23 @@ body.editing .section-actions { display: flex; }
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-edge);
-  background-color: var(--surface);
+  background-color: rgba(255,255,255,.28);
   background-image: linear-gradient(155deg,
     var(--glass-1) 0%, var(--glass-2) 26%,
     transparent 52%, var(--glass-2) 78%, var(--glass-3) 100%);
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
   box-shadow:
     inset 0 1.5px 0 var(--glass-hi),
     inset 1px 0 0 var(--glass-side),
     inset -1px 0 0 rgba(255,255,255,.30),
     inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 20px rgba(255,255,255,.10),
     0 1px 3px rgba(50,80,120,.08),
     0 6px 18px rgba(50,80,120,.08);
   color: inherit;
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
+  /* ★ 隔离：每个 item 的布局/样式/绘制互不影响 */
+  contain: layout style paint;
   transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 
@@ -940,13 +941,12 @@ body.editing .section-actions { display: flex; }
 @media (hover: hover) and (pointer: fine) {
   .item:hover, .item:focus-visible {
     border-color: var(--glass-edge-hover);
-    background-color: var(--glass-fill-hover);
+    background-color: rgba(255,255,255,.38);
     box-shadow:
       inset 0 1.5px 0 var(--glass-hi),
       inset 1px 0 0 rgba(255,255,255,.85),
       inset -1px 0 0 rgba(255,255,255,.55),
       inset 0 -1px 0 var(--glass-lo),
-      inset 0 0 24px rgba(255,255,255,.18),
       0 2px 6px rgba(50,80,120,.10),
       0 10px 28px rgba(50,80,120,.10);
   }
@@ -957,6 +957,32 @@ body.editing .section-actions { display: flex; }
 }
 .item:active { transform: scale(.997); }
 
+/* 深色模式 */
+html.dark .item {
+  background-color: rgba(255,255,255,.07);
+  box-shadow:
+    inset 0 1.5px 0 var(--glass-hi),
+    inset 1px 0 0 var(--glass-side),
+    inset -1px 0 0 rgba(255,255,255,.06),
+    inset 0 -1px 0 var(--glass-lo),
+    0 1px 3px rgba(0,5,15,.28),
+    0 6px 18px rgba(0,5,15,.24);
+}
+@media (hover: hover) and (pointer: fine) {
+  html.dark .item:hover, html.dark .item:focus-visible {
+    border-color: var(--glass-edge-hover);
+    background-color: rgba(255,255,255,.11);
+    box-shadow:
+      inset 0 1.5px 0 var(--glass-hi),
+      inset 1px 0 0 rgba(255,255,255,.30),
+      inset -1px 0 0 rgba(255,255,255,.15),
+      inset 0 -1px 0 var(--glass-lo),
+      0 2px 6px rgba(0,5,15,.34),
+      0 10px 28px rgba(0,5,15,.30);
+  }
+}
+
+/* ★ item-icon 去掉 backdrop-filter */
 .item-icon {
   position: relative;
   z-index: 1;
@@ -973,8 +999,6 @@ body.editing .section-actions { display: flex; }
   color: var(--c-fg);
   font-size: 18px;
   line-height: 1;
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20);
   transition: transform var(--dur) var(--ease);
 }
@@ -1053,15 +1077,24 @@ html.dark .item-icon {
 body.editing .item { padding-right: 110px; cursor: pointer; }
 body.editing .item:hover {
   border-color: var(--glass-edge);
-  background-color: var(--surface);
+  background-color: rgba(255,255,255,.28);
   box-shadow:
     inset 0 1.5px 0 var(--glass-hi),
     inset 1px 0 0 var(--glass-side),
     inset -1px 0 0 rgba(255,255,255,.30),
     inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 20px rgba(255,255,255,.10),
     0 1px 3px rgba(50,80,120,.08),
     0 6px 18px rgba(50,80,120,.08);
+}
+html.dark body.editing .item:hover {
+  background-color: rgba(255,255,255,.07);
+  box-shadow:
+    inset 0 1.5px 0 var(--glass-hi),
+    inset 1px 0 0 var(--glass-side),
+    inset -1px 0 0 rgba(255,255,255,.06),
+    inset 0 -1px 0 var(--glass-lo),
+    0 1px 3px rgba(0,5,15,.28),
+    0 6px 18px rgba(0,5,15,.24);
 }
 body.editing .item::before { opacity: .35; }
 body.editing .item .item-arrow { display: none; }
@@ -1076,6 +1109,7 @@ body.editing .item .item-arrow { display: none; }
   transform: translateY(-50%);
 }
 body.editing .item-actions { display: flex; }
+/* ★ item-action-btn 去掉 backdrop-filter */
 .item-action-btn {
   width: 28px;
   height: 28px;
@@ -1085,15 +1119,14 @@ body.editing .item-actions { display: flex; }
   justify-content: center;
   border-radius: var(--radius-xs);
   border: 1px solid var(--glass-edge);
-  background: var(--surface-2);
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
+  background: rgba(255,255,255,.32);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--text-2);
   font-size: 12px;
   cursor: pointer;
   transition: all var(--dur-fast) var(--ease);
 }
+html.dark .item-action-btn { background: rgba(255,255,255,.08); }
 .item-action-btn:hover {
   background: var(--accent-soft);
   color: var(--accent);
@@ -1107,6 +1140,7 @@ body.editing .item-actions { display: flex; }
 
 .add-zone { display: none; flex-direction: column; gap: 8px; padding: 14px 0 4px; }
 body.editing .add-zone { display: flex; }
+/* ★ add-btn 去掉 backdrop-filter */
 .add-btn {
   display: flex;
   align-items: center;
@@ -1115,9 +1149,7 @@ body.editing .add-zone { display: flex; }
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1.5px dashed var(--glass-edge);
-  background: linear-gradient(155deg, rgba(255,255,255,.14), rgba(255,255,255,.02));
-  backdrop-filter: blur(24px) saturate(190%) brightness(1.06);
-  -webkit-backdrop-filter: blur(24px) saturate(190%) brightness(1.06);
+  background: linear-gradient(155deg, rgba(255,255,255,.20), rgba(255,255,255,.03));
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--accent);
   font-size: 13px;
@@ -1125,7 +1157,7 @@ body.editing .add-zone { display: flex; }
   cursor: pointer;
   transition: all var(--dur) var(--ease);
 }
-html.dark .add-btn { background: linear-gradient(155deg, rgba(255,255,255,.04), rgba(255,255,255,.005)); }
+html.dark .add-btn { background: linear-gradient(155deg, rgba(255,255,255,.06), rgba(255,255,255,.01)); }
 .add-btn:hover {
   background: var(--accent-soft);
   border-style: solid;
@@ -1149,7 +1181,7 @@ html.dark .add-btn { background: linear-gradient(155deg, rgba(255,255,255,.04), 
 }
 
 /* =====================================================================
-   SECTION 9 · DISCLAIMER
+   SECTION 9 · DISCLAIMER（大卡片 · 保留完整玻璃）
    ===================================================================== */
 .disclaimer {
   margin-top: 32px;
@@ -1193,7 +1225,7 @@ html.dark .add-btn { background: linear-gradient(155deg, rgba(255,255,255,.04), 
 .disclaimer-body strong { color: var(--text-1); font-weight: 700; }
 
 /* =====================================================================
-   SECTION 10 · MODAL（弹窗 · 完整玻璃）
+   SECTION 10 · MODAL
    ===================================================================== */
 .modal {
   position: fixed;
@@ -1281,8 +1313,6 @@ html.dark .modal-mask { background: rgba(0,0,0,.58); }
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-edge);
   background: var(--surface-2);
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--text-2);
   cursor: pointer;
@@ -1315,8 +1345,6 @@ html.dark .modal-mask { background: rgba(0,0,0,.58); }
   border: 1px solid var(--c-border);
   font-size: 28px;
   flex: 0 0 auto;
-  backdrop-filter: blur(22px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20);
 }
 html.dark .detail-icon {
@@ -1346,8 +1374,6 @@ html.dark .detail-icon {
   border-radius: var(--radius-md);
   padding: 16px;
   margin-bottom: 20px;
-  backdrop-filter: blur(24px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
 }
 html.dark .security-box {
@@ -1416,8 +1442,6 @@ html.dark .security-box {
   border: 1px solid var(--glass-edge);
   background: var(--surface-2);
   background-image: linear-gradient(155deg, rgba(255,255,255,.16), rgba(255,255,255,.01));
-  backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--text-1);
   font-family: inherit;
@@ -1449,8 +1473,6 @@ textarea.form-input { min-height: 64px; resize: vertical; line-height: 1.5; }
   border: 1px solid var(--glass-edge);
   background: var(--surface-2);
   background-image: linear-gradient(155deg, rgba(255,255,255,.20), rgba(255,255,255,.02));
-  backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--text-1);
   font-size: 13px;
@@ -1523,6 +1545,7 @@ html.dark .btn {
 }
 .footer-ver { font-weight: 700; color: var(--accent); }
 
+/* ★ footer-btn 保留 backdrop-filter（只 2 个，不影响滚动） */
 .footer-btn {
   display: inline-flex;
   align-items: center;
@@ -1619,8 +1642,6 @@ body.editing .edit-bar {
   border: 1px solid var(--glass-edge);
   background: var(--surface-2);
   background-image: linear-gradient(155deg, rgba(255,255,255,.20), rgba(255,255,255,.02));
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   color: var(--text-1);
   font-size: 12.5px;
@@ -1647,8 +1668,6 @@ html.dark .edit-bar-btn {
   border-radius: 100px;
   border: 1px solid var(--glass-edge);
   background: var(--surface-2);
-  backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.06);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   overflow: hidden;
 }
@@ -1894,17 +1913,15 @@ html.perf-lite .bg-gradient {
 }
 
 html.perf-lite :where(
-  .search-box, .search-suggest, .item, .section-icon, .section-count,
-  .item-icon, .item-action-btn, .add-btn, .version-pill, .disclaimer,
-  .modal-box, .modal-close, .detail-icon, .security-box, .edit-bar,
-  .edit-bar-btn, .edit-bar-seg, .back-top, .toast, .footer-btn,
-  .form-input, .btn
+  .search-box, .search-suggest, .disclaimer,
+  .modal-box, .modal-close, .security-box, .edit-bar,
+  .back-top, .toast, .footer-btn
 ) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  background-color: rgba(255,255,255,.78) !important;
+  background-color: rgba(255,255,255,.82) !important;
 }
-html.dark.perf-lite :where(.search-box, .item, .disclaimer, .modal-box) {
+html.dark.perf-lite :where(.search-box, .disclaimer, .modal-box) {
   background-color: rgba(30,40,58,.82) !important;
 }
 
@@ -2290,9 +2307,6 @@ html.dark.perf-lite :where(.search-box, .item, .disclaimer, .modal-box) {
     };
   })();
 
-  /* =====================================================================
-     Bubble · 七彩泡泡漂浮（替代原粒子系统）
-     ===================================================================== */
   const Bubble = (function () {
     const canvas = document.getElementById('particleCanvas');
     if (!canvas || window.__AF_LITE__) return { noop: true };
@@ -2305,6 +2319,15 @@ html.dark.perf-lite :where(.search-box, .item, .disclaimer, .modal-box) {
     let rafId = 0, running = false, lastTime = 0;
     const mouse = { x: -9999, y: -9999, active: false };
     const isCoarse = Utils.isCoarsePointer();
+
+    /* 滚动时降帧：滚动时 30fps，静止时 50fps */
+    let scrolling = false;
+    let scrollTimer = 0;
+    window.addEventListener('scroll', () => {
+      scrolling = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => { scrolling = false; }, 200);
+    }, { passive: true });
 
     const PALETTE_LIGHT = [
       [255, 107, 107], [255, 181, 102], [255, 224, 102], [123, 224, 150],
@@ -2404,10 +2427,9 @@ html.dark.perf-lite :where(.search-box, .item, .disclaimer, .modal-box) {
       } catch (e) { stop(); }
     }
 
-    const MIN_DT = 1000 / 50;
-
     function draw(now) {
-      if (now - lastTime < MIN_DT) { rafId = requestAnimationFrame(draw); return; }
+      const minDt = scrolling ? 1000 / 30 : 1000 / 50;
+      if (now - lastTime < minDt) { rafId = requestAnimationFrame(draw); return; }
       lastTime = now;
       try {
         ctx.clearRect(0, 0, W, H);
@@ -2464,7 +2486,6 @@ html.dark.perf-lite :where(.search-box, .item, .disclaimer, .modal-box) {
     return { start, stop };
   })();
 
-  /* ---------- ClickRipple ---------- */
   const ClickRipple = (function () {
     let active = 0;
     const MAX = 6;
