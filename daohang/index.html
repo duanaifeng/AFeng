@@ -18,9 +18,7 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
-<link rel="apple-touch-icon" href="/AFeng/ico/192.png">
 <title>AiFeng · 资源导航</title>
-
 <script>
 (function () {
   'use strict';
@@ -33,24 +31,17 @@
       name: 'AiFeng · 资源导航', short_name: '资源导航', description: '工具 · 软件 · 影音 · 脚本聚合',
       start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
       background_color: '#f0f4fc', theme_color: '#60a5fa', lang: 'zh-CN',
-      icons: [
-        { src: '/AFeng/ico/192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/ico/512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/ico/192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-        { src: '/AFeng/ico/512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
-      ]
+      icons: []
     };
     var link = document.createElement('link');
     link.rel = 'manifest';
     link.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
     document.head.appendChild(link);
   } catch (e) { }
-
   var lite = false;
   try {
-    var search = location.search || '';
-    if (/[?&]full=1/.test(search)) lite = false;
-    else if (/[?&]lite=1/.test(search)) lite = true;
+    if (/[?&]full=1/.test(location.search)) lite = false;
+    else if (/[?&]lite=1/.test(location.search)) lite = true;
     else {
       if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4) lite = true;
       if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4) lite = true;
@@ -60,121 +51,72 @@
   } catch (e) { lite = true; }
   if (lite) document.documentElement.classList.add('perf-lite');
   window.__AF_LITE__ = lite;
-
   try {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.classList.add('dark');
-    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
   } catch (e) { }
 })();
 </script>
-
 <style>
 :root {
   --bg:#d9e6fb; --bg-2:#edf3ff;
-
-  --glass-1:rgba(255,255,255,.62);
-  --glass-2:rgba(255,255,255,.20);
-  --glass-3:rgba(255,255,255,.44);
-  --glass-edge:rgba(255,255,255,.75);
-  --glass-edge-2:rgba(255,255,255,.95);
-  --glass-hi:rgba(255,255,255,.98);
-  --glass-lo:rgba(255,255,255,.40);
-  --glass-inner-glow:rgba(255,255,255,.14);
-  --glass-blur:blur(24px) saturate(200%);
-
-  --surface:rgba(255,255,255,.24);
-  --surface-2:rgba(255,255,255,.34);
-  --surface-3:rgba(255,255,255,.58);
-
+  --glass-1:rgba(255,255,255,.62); --glass-2:rgba(255,255,255,.20); --glass-3:rgba(255,255,255,.44);
+  --glass-edge:rgba(255,255,255,.75); --glass-edge-2:rgba(255,255,255,.95);
+  --glass-hi:rgba(255,255,255,.98); --glass-lo:rgba(255,255,255,.40);
+  --glass-inner-glow:rgba(255,255,255,.14); --glass-blur:blur(24px) saturate(200%);
+  --surface:rgba(255,255,255,.24); --surface-2:rgba(255,255,255,.34); --surface-3:rgba(255,255,255,.58);
   --text-1:#0a1730; --text-2:#3a4d6c; --text-3:#5a6c8a;
   --border-1:rgba(255,255,255,.50); --border-2:rgba(255,255,255,.88);
-  --shine:rgba(255,255,255,.85);
-
   --accent:#1d64f2; --accent-hover:#1449c4;
   --accent-soft:rgba(59,130,246,.14); --accent-glow:rgba(59,130,246,.40); --accent-tint:rgba(59,130,246,.10);
-
   --glow-blue:rgba(96,165,250,.55); --glow-cyan:rgba(56,189,248,.45); --glow-indigo:rgba(129,140,248,.45);
   --grid-line:rgba(59,130,246,.08);
-
   --danger:#dc2626; --success:#16a34a; --warning:#d97706;
-
   --radius-xs:4px; --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:22px;
   --dur-fast:140ms; --dur:220ms; --dur-slow:360ms;
   --ease:cubic-bezier(.2,.8,.2,1); --ease-spring:cubic-bezier(.34,1.4,.64,1);
   --focus-ring:0 0 0 3px rgba(59,130,246,.30);
-
   --shadow-sm:0 1px 2px rgba(15,40,90,.05), 0 6px 20px rgba(15,40,90,.08);
   --shadow-md:0 4px 10px rgba(15,40,90,.08), 0 18px 44px rgba(15,40,90,.13);
   --shadow-lg:0 8px 22px rgba(15,40,90,.10), 0 32px 76px rgba(37,99,235,.20);
-
   --container-max:1120px; --container-pad-x:20px;
 }
-
 html.dark {
   --bg:#060b14; --bg-2:#0b1220;
-
-  --glass-1:rgba(255,255,255,.115);
-  --glass-2:rgba(255,255,255,.022);
-  --glass-3:rgba(255,255,255,.070);
-  --glass-edge:rgba(255,255,255,.155);
-  --glass-edge-2:rgba(255,255,255,.30);
-  --glass-hi:rgba(255,255,255,.24);
-  --glass-lo:rgba(255,255,255,.045);
-  --glass-inner-glow:rgba(255,255,255,.045);
-  --glass-blur:blur(26px) saturate(180%);
-
-  --surface:rgba(255,255,255,.045);
-  --surface-2:rgba(255,255,255,.070);
-  --surface-3:rgba(18,28,48,.86);
-
+  --glass-1:rgba(255,255,255,.115); --glass-2:rgba(255,255,255,.022); --glass-3:rgba(255,255,255,.070);
+  --glass-edge:rgba(255,255,255,.155); --glass-edge-2:rgba(255,255,255,.30);
+  --glass-hi:rgba(255,255,255,.24); --glass-lo:rgba(255,255,255,.045);
+  --glass-inner-glow:rgba(255,255,255,.045); --glass-blur:blur(26px) saturate(180%);
+  --surface:rgba(255,255,255,.045); --surface-2:rgba(255,255,255,.070); --surface-3:rgba(18,28,48,.86);
   --text-1:#e6eefb; --text-2:#a2b5d2; --text-3:#8ba0bf;
   --border-1:rgba(255,255,255,.12); --border-2:rgba(255,255,255,.28);
-  --shine:rgba(255,255,255,.10);
-
   --accent:#60a5fa; --accent-hover:#93c5fd;
   --accent-soft:rgba(96,165,250,.16); --accent-glow:rgba(96,165,250,.46); --accent-tint:rgba(96,165,250,.10);
-
   --glow-blue:rgba(59,130,246,.42); --glow-cyan:rgba(56,189,248,.30); --glow-indigo:rgba(129,140,248,.34);
   --grid-line:rgba(96,165,250,.09);
-
   --danger:#f87171; --success:#4ade80; --warning:#fbbf24;
-
   --shadow-sm:0 1px 2px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.35);
   --shadow-md:0 4px 10px rgba(0,0,0,.45), 0 18px 40px rgba(0,0,0,.50);
   --shadow-lg:0 8px 22px rgba(0,0,0,.55), 0 32px 72px rgba(0,0,0,.70);
   --focus-ring:0 0 0 3px rgba(96,165,250,.42);
 }
-
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 html { color-scheme:light; -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-behavior:smooth; overflow-anchor:none; }
 html.dark { color-scheme:dark; }
 html.perf-lite { scroll-behavior:auto; }
 html, body { overflow-x:clip; }
 @supports not (overflow: clip) { html { overflow-x:hidden; } }
-
 body {
   min-height:100vh; display:flex; flex-direction:column; align-items:center;
   font-family:-apple-system,BlinkMacSystemFont,'HarmonyOS Sans SC','HarmonyOS Sans','Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif;
   font-size:15px; line-height:1.6; color:var(--text-1); background:var(--bg);
-  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   transition:background var(--dur-slow) var(--ease),color var(--dur-slow) var(--ease);
 }
-
 :focus { outline:none; }
 :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--radius-sm); }
 ::selection { background:var(--accent-soft); color:var(--text-1); }
-
-@media (min-width:1024px) {
-  ::-webkit-scrollbar { width:10px; height:10px; }
-  ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:10px; border:2px solid transparent; background-clip:padding-box; }
-  ::-webkit-scrollbar-thumb:hover { background:var(--accent-glow); background-clip:padding-box; }
-}
-
 .skip-link { position:absolute; left:12px; top:-64px; z-index:10000; padding:10px 18px; border-radius:var(--radius-md); background:var(--accent); color:#fff; font-weight:700; font-size:14px; text-decoration:none; transition:top var(--dur-fast) var(--ease); }
 .skip-link:focus { top:12px; }
-
 .bg-layer { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
 .bg-gradient {
   position:absolute; inset:0;
@@ -184,7 +126,6 @@ body {
     radial-gradient(900px 700px at 72% 104%, var(--glow-indigo), transparent 62%),
     radial-gradient(760px 560px at 16% 88%, rgba(244,114,182,.20), transparent 62%),
     linear-gradient(165deg, var(--bg) 0%, var(--bg-2) 56%, var(--bg) 100%);
-  transition:background var(--dur-slow) var(--ease);
 }
 .bg-grid {
   position:absolute; inset:0;
@@ -195,463 +136,256 @@ body {
 }
 .bg-vignette { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, transparent 46%, rgba(15,40,90,.07) 100%); }
 html.dark .bg-vignette { background:radial-gradient(ellipse at 50% 40%, transparent 42%, rgba(0,0,0,.60) 100%); }
-
-.bg-layer::after {
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:.055; mix-blend-mode:overlay;
-}
-html.dark .bg-layer::after { opacity:.10; }
-
+html.perf-lite .bg-grid, html.perf-lite .bg-vignette, html.perf-lite #particleCanvas { display:none; }
 #particleCanvas { position:fixed; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; }
-
-html.perf-lite .bg-grid, html.perf-lite .bg-vignette, html.perf-lite #particleCanvas, html.perf-lite .bg-layer::after { display:none; }
-html.perf-lite .bg-gradient { background:linear-gradient(165deg, var(--bg) 0%, var(--bg-2) 56%, var(--bg) 100%); }
-
 .page { position:relative; z-index:2; width:100%; max-width:var(--container-max); padding:0 var(--container-pad-x); display:flex; flex-direction:column; }
 @media (max-width:480px) { .page { --container-pad-x:16px; } }
 @media (min-width:768px) { .page { --container-pad-x:32px; } }
 @media (min-width:1024px) { .page { --container-pad-x:48px; } }
-
 .topbar { padding:40px 0 24px; }
 @media (min-width:768px) { .topbar { padding:56px 0 32px; } }
 @media (min-width:1024px) { .topbar { padding:72px 0 40px; } }
-
 .topbar-inner { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:26px; }
 .brand { display:flex; flex-direction:column; gap:10px; min-width:0; }
-.brand-tag { display:inline-flex; align-items:center; gap:10px; align-self:flex-start; font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace; font-size:11.5px; font-weight:700; letter-spacing:.14em; color:var(--text-3); }
-.brand-tag-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--accent-soft), 0 0 14px var(--accent-glow); animation:brandPulse 2.6s ease-in-out infinite; }
-@keyframes brandPulse { 0%, 100% { box-shadow:0 0 0 4px var(--accent-soft), 0 0 14px var(--accent-glow); } 50% { box-shadow:0 0 0 9px transparent, 0 0 24px var(--accent-glow); } }
-.brand-title { display:flex; align-items:baseline; gap:.3em; font-size:clamp(24px, 6vw, 44px); font-weight:800; line-height:1.15; letter-spacing:-.028em; color:var(--text-1); white-space:nowrap; text-align:left; }
-.brand-title .brand-mark { font-family:'Georgia','Songti SC','STSong',serif; font-style:italic; font-weight:400; color:var(--accent); }
+.brand-tag { display:inline-flex; align-items:center; gap:10px; align-self:flex-start; font-family:ui-monospace,monospace; font-size:11.5px; font-weight:700; letter-spacing:.14em; color:var(--text-3); }
+.brand-tag-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--accent-soft), 0 0 14px var(--accent-glow); }
+.brand-title { display:flex; align-items:baseline; gap:.3em; font-size:clamp(24px, 6vw, 44px); font-weight:800; line-height:1.15; letter-spacing:-.028em; color:var(--text-1); white-space:nowrap; }
+.brand-title .brand-mark { font-family:'Georgia','Songti SC',serif; font-style:italic; font-weight:400; color:var(--accent); }
 .brand-sub { margin-top:2px; font-size:13.5px; font-weight:500; line-height:1.6; color:var(--text-3); }
-
 .topbar-stats { display:flex; gap:24px; flex:0 0 auto; }
 .topbar-stat { text-align:right; }
-.topbar-stat-num { display:block; font-size:22px; font-weight:800; line-height:1.2; letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--text-1); }
+.topbar-stat-num { display:block; font-size:22px; font-weight:800; line-height:1.2; font-variant-numeric:tabular-nums; color:var(--text-1); }
 .topbar-stat-label { display:block; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text-3); }
 @media (min-width:1024px) { .topbar-stat-num { font-size:28px; } .topbar-stat-label { font-size:11px; } }
-
 .version-bar { display:none; align-items:center; gap:10px; margin-bottom:14px; }
 .version-bar.show { display:flex; }
-.version-pill {
-  display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:100px;
-  border:1px solid rgba(217,119,6,.28);
-  background:linear-gradient(150deg, rgba(255,255,255,.55), rgba(255,255,255,.22) 55%, rgba(255,255,255,.40));
-  backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
-  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), 0 4px 14px rgba(217,119,6,.14);
-  color:#c2700a; font-family:inherit; font-size:12px; font-weight:700; letter-spacing:.02em; cursor:pointer;
-  transition:all var(--dur-fast) var(--ease);
-}
-html.dark .version-pill { color:#fbbf24; border-color:rgba(251,191,36,.26); background:linear-gradient(150deg, rgba(255,255,255,.10), rgba(255,255,255,.02) 55%, rgba(255,255,255,.06)); box-shadow:inset 0 1px 0 rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.04), 0 4px 14px rgba(0,0,0,.4); }
-.version-pill:hover { border-color:rgba(217,119,6,.45); }
-.version-pill:active { transform:scale(.97); }
-
+.version-pill { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:100px; border:1px solid rgba(217,119,6,.28); background:linear-gradient(150deg, rgba(255,255,255,.55), rgba(255,255,255,.22) 55%, rgba(255,255,255,.40)); color:#c2700a; font-size:12px; font-weight:700; cursor:pointer; }
+html.dark .version-pill { color:#fbbf24; border-color:rgba(251,191,36,.26); }
 .search-area { position:relative; margin-bottom:28px; }
 @media (min-width:1024px) { .search-area { margin-bottom:36px; } }
-
 .search-box {
-  position:relative; display:flex; align-items:center;
-  border-radius:var(--radius-lg);
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface);
+  position:relative; display:flex; align-items:center; border-radius:var(--radius-lg);
+  border:1px solid var(--glass-edge); background-color:var(--surface);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 48%, var(--glass-3) 100%);
   backdrop-filter:blur(30px) saturate(210%); -webkit-backdrop-filter:blur(30px) saturate(210%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 26px var(--glass-inner-glow),
-    var(--shadow-sm);
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), inset 0 0 26px var(--glass-inner-glow), var(--shadow-sm);
   overflow:hidden;
-  transition:border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition:border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.search-box::after {
-  content:''; position:absolute; left:0; right:0; top:0; height:52%;
-  border-radius:inherit; pointer-events:none;
-  background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,0));
-  opacity:.75;
-}
-html.dark .search-box::after { background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0)); opacity:.9; }
-
-.search-box:focus-within {
-  border-color:var(--glass-edge-2);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 30px rgba(255,255,255,.20),
-    0 0 0 3px var(--focus-ring),
-    var(--shadow-md);
-}
-
-.search-icon { position:relative; z-index:2; flex:0 0 auto; width:20px; height:20px; margin-left:18px; color:var(--text-3); pointer-events:none; transition:color var(--dur) var(--ease); }
+.search-box:focus-within { border-color:var(--glass-edge-2); box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), 0 0 0 3px var(--focus-ring), var(--shadow-md); }
+.search-icon { flex:0 0 auto; width:20px; height:20px; margin-left:18px; color:var(--text-3); pointer-events:none; }
 .search-box:focus-within .search-icon { color:var(--accent); }
 .search-icon svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-.search-input { position:relative; z-index:2; flex:1 1 auto; min-width:0; height:52px; padding:0 16px 0 12px; border:none; background:transparent; color:var(--text-1); font-family:inherit; font-size:15px; line-height:1.4; outline:none; -webkit-appearance:none; appearance:none; }
+.search-input { flex:1 1 auto; min-width:0; height:52px; padding:0 16px 0 12px; border:none; background:transparent; color:var(--text-1); font-family:inherit; font-size:15px; outline:none; }
 .search-input::placeholder { color:var(--text-3); opacity:1; }
-.search-clear { position:relative; z-index:2; flex:0 0 auto; width:36px; height:36px; margin-right:8px; display:flex; align-items:center; justify-content:center; border:none; border-radius:50%; background:transparent; color:var(--text-3); cursor:pointer; font-family:inherit; opacity:0; visibility:hidden; transition:all var(--dur-fast) var(--ease); }
+.search-clear { flex:0 0 auto; width:36px; height:36px; margin-right:8px; display:flex; align-items:center; justify-content:center; border:none; border-radius:50%; background:transparent; color:var(--text-3); cursor:pointer; opacity:0; visibility:hidden; transition:all var(--dur-fast) var(--ease); }
 .search-box.has-value .search-clear { opacity:1; visibility:visible; }
 .search-clear:hover { background:var(--accent-soft); color:var(--accent); }
 .search-clear svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
-
 .search-suggest {
   position:absolute; top:calc(100% + 8px); left:0; right:0; z-index:50;
-  max-height:360px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
-  border-radius:var(--radius-lg);
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface-3);
+  max-height:360px; overflow-y:auto; border-radius:var(--radius-lg);
+  border:1px solid var(--glass-edge); background-color:var(--surface-3);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 50%, var(--glass-3) 100%);
   backdrop-filter:blur(34px) saturate(220%); -webkit-backdrop-filter:blur(34px) saturate(220%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    var(--shadow-lg);
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), var(--shadow-lg);
   opacity:0; visibility:hidden; transform:translateY(-6px);
   transition:all var(--dur) var(--ease);
 }
 .search-suggest.show { opacity:1; visibility:visible; transform:translateY(0); }
-.suggest-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-1); color:inherit; text-decoration:none; cursor:pointer; transition:background var(--dur-fast) var(--ease); }
+.suggest-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-1); color:inherit; text-decoration:none; cursor:pointer; }
 .suggest-item:last-child { border-bottom:none; }
 .suggest-item:hover, .suggest-item.active { background:var(--accent-soft); }
-.suggest-icon { flex:0 0 auto; align-self:flex-start; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); background:var(--accent-soft); color:var(--accent); font-size:14px; box-shadow:inset 0 1px 0 rgba(255,255,255,.55); }
-html.dark .suggest-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
-.suggest-body { display:block; flex:1; min-width:0; }
-.suggest-name { display:block; width:100%; margin-bottom:2px; font-size:13.5px; font-weight:700; line-height:1.35; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.suggest-path { display:block; width:100%; font-size:11px; line-height:1.4; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.suggest-icon { flex:0 0 auto; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); background:var(--accent-soft); color:var(--accent); font-size:14px; }
+.suggest-body { flex:1; min-width:0; }
+.suggest-name { display:block; font-size:13.5px; font-weight:700; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.suggest-path { display:block; font-size:11px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .suggest-empty { padding:24px 16px; text-align:center; font-size:13px; color:var(--text-3); }
-
 .section { position:relative; padding:24px 0 12px; }
 .section:first-of-type { padding-top:0; }
 @media (min-width:1024px) { .section { padding:36px 0 16px; } }
 .section-head { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.section-icon {
-  flex:0 0 auto; width:34px; height:34px; display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-md); border:1px solid var(--c-border); background:var(--c-bg);
-  font-size:16px; line-height:1;
-  backdrop-filter:blur(14px) saturate(180%); -webkit-backdrop-filter:blur(14px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.22);
-}
-html.dark .section-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
-.section-title { flex:0 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; font-weight:800; letter-spacing:.02em; color:var(--text-1); }
-.section-count {
-  flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs);
-  border:1px solid var(--glass-edge); background:var(--surface-2);
-  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--text-3);
-}
+.section-icon { flex:0 0 auto; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-md); border:1px solid var(--c-border); background:var(--c-bg); font-size:16px; }
+.section-title { flex:0 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; font-weight:800; color:var(--text-1); }
+.section-count { flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs); border:1px solid var(--glass-edge); background:var(--surface-2); font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--text-3); }
 .section-rule { flex:1; height:1px; background:linear-gradient(90deg, var(--c-line), var(--border-1) 60%, transparent); }
 .section-actions { display:none; gap:4px; flex:0 0 auto; }
 body.editing .section-actions { display:flex; }
 
-.item-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+/* ===== 分组 ===== */
+.group-block { margin-bottom:18px; }
+.group-block:last-child { margin-bottom:0; }
+.group-head { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding:0 2px; min-height:28px; }
+.group-name { font-size:13px; font-weight:800; color:var(--text-1); letter-spacing:.01em; white-space:nowrap; }
+.group-desc { font-size:11.5px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.group-count { flex:0 0 auto; padding:1px 6px; border-radius:4px; background:var(--surface-2); border:1px solid var(--border-1); font-family:ui-monospace,monospace; font-size:10px; font-weight:700; color:var(--text-3); }
+.group-actions { display:none; gap:4px; margin-left:auto; flex:0 0 auto; }
+body.editing .group-actions { display:flex; }
 
+/* ===== 入口网格 ===== */
+.item-grid { list-style:none; display:grid; grid-template-columns:1fr; gap:8px; }
+@media (min-width:640px) { .item-grid { grid-template-columns:repeat(2, 1fr); } }
+@media (min-width:1024px) { .item-grid { grid-template-columns:repeat(3, 1fr); } }
 .item {
   --mx:50%; --my:50%;
-  position:relative; display:flex; align-items:center; gap:14px;
-  padding:14px 16px;
-  border-radius:var(--radius-md);
+  position:relative; display:flex; align-items:center; gap:12px;
+  padding:12px 14px; border-radius:var(--radius-md);
   border:1px solid var(--glass-edge);
-
   background-color:var(--surface);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 46%, var(--glass-3) 100%);
-
   backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
-
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 1px 0 0 rgba(255,255,255,.30),
-    inset -1px 0 0 rgba(255,255,255,.24),
-    inset 0 0 24px var(--glass-inner-glow),
-    var(--shadow-sm);
-
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), inset 0 0 24px var(--glass-inner-glow), var(--shadow-sm);
   color:inherit; text-decoration:none; overflow:hidden; cursor:pointer;
   transition:transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), padding var(--dur) var(--ease);
 }
-html.dark .item {
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 1px 0 0 rgba(255,255,255,.07),
-    inset -1px 0 0 rgba(255,255,255,.05),
-    inset 0 0 26px var(--glass-inner-glow),
-    var(--shadow-sm);
-}
-
-.item::before {
-  content:''; position:absolute; left:0; top:50%; width:3px; height:0;
-  border-radius:0 4px 4px 0; background:var(--c-accent);
-  box-shadow:0 0 12px var(--c-accent);
-  transform:translateY(-50%);
-  transition:height var(--dur) var(--ease);
-}
-.item::after {
-  content:''; position:absolute; inset:0; border-radius:inherit;
-  background:radial-gradient(460px circle at var(--mx) var(--my), var(--accent-tint), transparent 46%);
-  opacity:0; pointer-events:none;
-  transition:opacity var(--dur-slow) var(--ease);
-}
-
+.item::before { content:''; position:absolute; left:0; top:50%; width:3px; height:0; border-radius:0 4px 4px 0; background:var(--c-accent); box-shadow:0 0 12px var(--c-accent); transform:translateY(-50%); transition:height var(--dur) var(--ease); }
+.item::after { content:''; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(460px circle at var(--mx) var(--my), var(--accent-tint), transparent 46%); opacity:0; pointer-events:none; transition:opacity var(--dur-slow) var(--ease); }
 @media (hover:hover) and (pointer:fine) {
-  .item:hover, .item:focus-visible {
-    transform:translateY(-2px);
-    border-color:var(--glass-edge-2);
-    box-shadow:
-      inset 0 1px 0 var(--glass-hi),
-      inset 0 -1px 0 var(--glass-lo),
-      inset 1px 0 0 rgba(255,255,255,.38),
-      inset -1px 0 0 rgba(255,255,255,.30),
-      inset 0 0 30px rgba(255,255,255,.20),
-      0 0 0 1px rgba(255,255,255,.30),
-      var(--shadow-md);
-  }
+  .item:hover, .item:focus-visible { transform:translateY(-2px); border-color:var(--glass-edge-2); box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), inset 0 0 30px rgba(255,255,255,.20), 0 0 0 1px rgba(255,255,255,.30), var(--shadow-md); }
   .item:hover::before, .item:focus-visible::before { height:62%; }
   .item:hover::after { opacity:1; }
 }
 .item:active { transform:translateY(0) scale(.997); }
-
-.item-icon {
-  position:relative; z-index:1; flex:0 0 auto; align-self:flex-start;
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-sm); border:1px solid var(--c-border); background:var(--c-bg);
-  color:var(--c-fg); font-size:18px; line-height:1;
-  backdrop-filter:blur(14px) saturate(180%); -webkit-backdrop-filter:blur(14px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20);
-  transition:transform var(--dur) var(--ease-spring);
-}
-html.dark .item-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(255,255,255,.04); }
-
-.item-body { position:relative; z-index:1; display:block; flex:1; min-width:0; }
-.item-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:2px; font-size:14px; font-weight:700; line-height:1.35; color:var(--text-1); }
-.item-desc { display:-webkit-box; -webkit-line-clamp:1; line-clamp:1; -webkit-box-orient:vertical; width:100%; overflow:hidden; font-size:12px; line-height:1.5; color:var(--text-3); word-break:break-word; }
-
-.item-arrow { position:relative; z-index:1; flex:0 0 auto; align-self:center; width:16px; height:16px; color:var(--text-3); opacity:.6; transition:all var(--dur) var(--ease); }
+.item-icon { flex:0 0 auto; align-self:flex-start; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); border:1px solid var(--c-border); background:var(--c-bg); color:var(--c-fg); font-size:16px; line-height:1; }
+.item-body { flex:1; min-width:0; }
+.item-title { display:block; margin-bottom:2px; font-size:13.5px; font-weight:700; line-height:1.35; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.item-desc { display:-webkit-box; -webkit-line-clamp:1; line-clamp:1; -webkit-box-orient:vertical; width:100%; overflow:hidden; font-size:11.5px; line-height:1.5; color:var(--text-3); word-break:break-word; }
+.item-arrow { flex:0 0 auto; width:14px; height:14px; color:var(--text-3); opacity:.6; transition:all var(--dur) var(--ease); }
 .item-arrow svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-@media (hover:hover) and (pointer:fine) {
-  .item:hover .item-arrow, .item:focus-visible .item-arrow { color:var(--c-accent); transform:translateX(4px); opacity:1; }
-}
-
+@media (hover:hover) and (pointer:fine) { .item:hover .item-arrow, .item:focus-visible .item-arrow { color:var(--c-accent); transform:translateX(4px); opacity:1; } }
 body.editing .item { padding-right:110px; cursor:pointer; }
-body.editing .item:hover { transform:none; border-color:var(--glass-edge); box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), var(--shadow-sm); }
+body.editing .item:hover { transform:none; }
 body.editing .item::before, body.editing .item::after { display:none; }
 body.editing .item .item-arrow { display:none; }
-
-.item-actions { position:absolute; top:50%; right:10px; z-index:3; display:none; gap:4px; transform:translateY(-50%); }
+.item-actions { position:absolute; top:50%; right:8px; z-index:3; display:none; gap:4px; transform:translateY(-50%); }
 body.editing .item-actions { display:flex; }
 .item-action-btn {
-  width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-xs); border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  color:var(--text-2); font-size:12px; cursor:pointer;
-  transition:all var(--dur-fast) var(--ease);
+  width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center;
+  border-radius:var(--radius-xs); border:1px solid var(--glass-edge); background:var(--surface-2);
+  color:var(--text-2); font-size:12px; cursor:pointer; transition:all var(--dur-fast) var(--ease);
 }
 .item-action-btn:hover { background:var(--accent-soft); color:var(--accent); border-color:var(--border-2); }
 .item-action-btn.del:hover { background:rgba(220,38,38,.12); color:var(--danger); border-color:rgba(220,38,38,.30); }
-
 .add-zone { display:none; flex-direction:column; gap:8px; padding:14px 0 4px; }
 body.editing .add-zone { display:flex; }
 .add-btn {
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  padding:14px 16px; border-radius:var(--radius-md);
-  border:1.5px dashed var(--glass-edge);
-  background:linear-gradient(150deg, rgba(255,255,255,.32), rgba(255,255,255,.10));
-  backdrop-filter:blur(18px) saturate(180%); -webkit-backdrop-filter:blur(18px) saturate(180%);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  color:var(--accent); font-size:13px; font-weight:700; cursor:pointer;
-  transition:all var(--dur) var(--ease);
+  display:flex; align-items:center; justify-content:center; gap:8px; padding:14px 16px; border-radius:var(--radius-md);
+  border:1.5px dashed var(--glass-edge); background:linear-gradient(150deg, rgba(255,255,255,.32), rgba(255,255,255,.10));
+  color:var(--accent); font-size:13px; font-weight:700; cursor:pointer; transition:all var(--dur) var(--ease);
 }
-html.dark .add-btn { background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); }
 .add-btn:hover { background:var(--accent-soft); border-style:solid; border-color:var(--accent); }
 .add-btn svg { flex:0 0 16px; width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; }
-.add-btn span { white-space:nowrap; }
-
-@media (min-width:1024px) {
-  .add-zone { flex-direction:row; } .add-btn { flex:1; }
-  .item-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-}
-
+@media (min-width:1024px) { .add-zone { flex-direction:row; } .add-btn { flex:1; } }
 .modal { position:fixed; inset:0; z-index:400; display:none; align-items:center; justify-content:center; padding:20px; }
 .modal.show { display:flex; animation:modalFade var(--dur) var(--ease) both; }
 @keyframes modalFade { from { opacity:0; } to { opacity:1; } }
-
-.modal-mask { position:absolute; inset:0; border:none; padding:0; background:rgba(15,23,42,.34); backdrop-filter:blur(10px) saturate(120%); -webkit-backdrop-filter:blur(10px) saturate(120%); cursor:pointer; }
+.modal-mask { position:absolute; inset:0; border:none; padding:0; background:rgba(15,23,42,.34); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); cursor:pointer; }
 html.dark .modal-mask { background:rgba(0,0,0,.55); }
-
 .modal-box {
-  position:relative; width:100%; max-width:400px; max-height:88vh; overflow-y:auto; overscroll-behavior:contain;
-  padding:22px 20px 18px; border-radius:var(--radius-lg);
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface-3);
+  position:relative; width:100%; max-width:400px; max-height:88vh; overflow-y:auto; padding:22px 20px 18px; border-radius:var(--radius-lg);
+  border:1px solid var(--glass-edge); background-color:var(--surface-3);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 50%, var(--glass-3) 100%);
   backdrop-filter:blur(40px) saturate(220%); -webkit-backdrop-filter:blur(40px) saturate(220%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 40px rgba(255,255,255,.10),
-    0 30px 80px rgba(15,40,90,.28);
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), 0 30px 80px rgba(15,40,90,.28);
   animation:modalIn var(--dur-slow) var(--ease-spring) both;
 }
 .modal-box-lg { max-width:540px; }
-html.dark .modal-box {
-  background-image:linear-gradient(150deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.025) 50%, rgba(255,255,255,.06) 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.20),
-    inset 0 -1px 0 rgba(255,255,255,.05),
-    0 30px 80px rgba(0,0,0,.70);
-}
 @keyframes modalIn { from { opacity:0; transform:translateY(20px) scale(.96); } to { opacity:1; transform:none; } }
-
 .modal-head { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.modal-title { flex:1; min-width:0; display:flex; align-items:center; gap:10px; font-size:15px; font-weight:800; line-height:1.4; color:var(--text-1); }
+.modal-title { flex:1; min-width:0; display:flex; align-items:center; gap:10px; font-size:15px; font-weight:800; color:var(--text-1); }
 .modal-title::before { content:''; flex:0 0 auto; width:4px; height:16px; border-radius:2px; background:var(--accent); box-shadow:0 0 10px var(--accent-glow); }
-.modal-close {
-  flex:0 0 auto; width:32px; height:32px; display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-sm); border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  color:var(--text-2); cursor:pointer; transition:all var(--dur-fast) var(--ease);
-}
+.modal-close { flex:0 0 auto; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); border:1px solid var(--glass-edge); background:var(--surface-2); color:var(--text-2); cursor:pointer; transition:all var(--dur-fast) var(--ease); }
 .modal-close:hover { background:var(--surface); border-color:var(--border-2); color:var(--text-1); }
 .modal-close svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
-
 .detail-header { display:flex; gap:16px; align-items:center; margin-bottom:20px; }
-.detail-icon {
-  width:56px; height:56px; display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-lg); background:var(--c-bg); border:1px solid var(--c-border);
-  font-size:28px; flex:0 0 auto;
-  backdrop-filter:blur(16px) saturate(180%); -webkit-backdrop-filter:blur(16px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20);
-}
-html.dark .detail-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(255,255,255,.04); }
+.detail-icon { width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-lg); background:var(--c-bg); border:1px solid var(--c-border); font-size:28px; flex:0 0 auto; }
 .detail-title-wrap { min-width:0; flex:1; }
 .detail-title { font-size:18px; font-weight:800; color:var(--text-1); line-height:1.3; margin-bottom:4px; }
 .detail-host { font-family:ui-monospace,monospace; font-size:12px; color:var(--text-3); background:var(--surface-2); border:1px solid var(--border-1); padding:2px 8px; border-radius:4px; display:inline-block; word-break:break-all; }
 .detail-desc { font-size:13.5px; line-height:1.7; color:var(--text-2); margin-bottom:24px; white-space:pre-wrap; }
-
 .security-box {
   position:relative; overflow:hidden;
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.10));
-  border:1px solid var(--glass-edge);
-  border-radius:var(--radius-md); padding:16px; margin-bottom:20px;
-  backdrop-filter:blur(18px) saturate(180%); -webkit-backdrop-filter:blur(18px) saturate(180%);
+  background:var(--surface-2); background-image:linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.10));
+  border:1px solid var(--glass-edge); border-radius:var(--radius-md); padding:16px; margin-bottom:20px;
   box-shadow:inset 0 1px 0 var(--glass-hi);
 }
-html.dark .security-box { background-image:linear-gradient(150deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
 .security-inner { position:relative; z-index:2; display:flex; align-items:center; gap:12px; }
 .shield-icon { width:32px; height:32px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
-.shield-icon svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:color var(--dur) var(--ease); }
+.shield-icon svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .security-text { flex:1; }
-.security-status { font-size:14px; font-weight:700; color:var(--text-1); margin-bottom:2px; transition:color var(--dur) var(--ease); }
+.security-status { font-size:14px; font-weight:700; color:var(--text-1); margin-bottom:2px; }
 .security-sub { font-size:11.5px; color:var(--text-3); }
-
-.scan-line { position:absolute; top:0; bottom:0; width:2px; background:var(--accent); box-shadow:0 0 14px var(--accent); left:0; opacity:0; z-index:1; transition:opacity .2s; }
+.scan-line { position:absolute; top:0; bottom:0; width:2px; background:var(--accent); box-shadow:0 0 14px var(--accent); left:0; opacity:0; z-index:1; }
 .scanning .scan-line { opacity:1; animation:scanMove 0.8s linear infinite; }
 @keyframes scanMove { 0% { left:0; } 100% { left:100%; } }
-
 .security-box.state-idle .shield-icon { color:var(--text-3); }
 .security-box.state-scanning .shield-icon { color:var(--accent); }
 .security-box.state-safe .shield-icon { color:var(--success); }
 .security-box.state-safe .security-status { color:var(--success); }
 .security-box.state-warn .shield-icon { color:var(--warning); }
 .security-box.state-warn .security-status { color:var(--warning); }
-
 .detail-footer { display:flex; gap:10px; }
 .detail-footer .btn { flex:1; padding:12px 16px; font-size:14px; }
 .btn-visit { pointer-events:none; opacity:.5; transition:all var(--dur) var(--ease); }
-.btn-visit.ready { pointer-events:auto; opacity:1; background:var(--accent); color:#fff; box-shadow:0 8px 22px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.35); border-color:transparent; }
+.btn-visit.ready { pointer-events:auto; opacity:1; background:var(--accent); color:#fff; box-shadow:0 8px 22px var(--accent-glow); border-color:transparent; }
 .btn-visit.ready:hover { background:var(--accent-hover); }
-
-.form-field { margin-bottom:14px; } .form-field:last-of-type { margin-bottom:0; }
+.form-field { margin-bottom:14px; }
 .form-label { display:block; margin-bottom:6px; font-size:12px; font-weight:700; color:var(--text-2); }
 .form-input {
   width:100%; padding:11px 14px; border-radius:var(--radius-md);
-  border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, rgba(255,255,255,.30), rgba(255,255,255,.08));
-  backdrop-filter:blur(16px) saturate(180%); -webkit-backdrop-filter:blur(16px) saturate(180%);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
+  border:1px solid var(--glass-edge); background:var(--surface-2);
   color:var(--text-1); font-family:inherit; font-size:14px; outline:none;
   transition:all var(--dur) var(--ease);
 }
-html.dark .form-input { background-image:linear-gradient(150deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,.12); }
-.form-input:focus-visible { border-color:var(--accent); box-shadow:0 0 0 3px var(--focus-ring), inset 0 1px 0 var(--glass-hi); }
+.form-input:focus-visible { border-color:var(--accent); box-shadow:0 0 0 3px var(--focus-ring); }
 textarea.form-input { min-height:64px; resize:vertical; line-height:1.5; }
 .form-actions { display:flex; gap:8px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-1); }
-
 .btn {
-  flex:1; padding:11px 16px; border-radius:var(--radius-md);
-  border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, rgba(255,255,255,.36), rgba(255,255,255,.10));
-  backdrop-filter:blur(16px) saturate(180%); -webkit-backdrop-filter:blur(16px) saturate(180%);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  color:var(--text-1); font-size:13px; font-weight:700; cursor:pointer;
+  flex:1; padding:11px 16px; border-radius:var(--radius-md); border:1px solid var(--glass-edge);
+  background:var(--surface-2); color:var(--text-1); font-size:13px; font-weight:700; cursor:pointer;
   transition:all var(--dur) var(--ease); text-align:center; text-decoration:none;
 }
-html.dark .btn { background-image:linear-gradient(150deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
 .btn:hover { background:var(--surface); border-color:var(--border-2); }
-.btn.primary { background:var(--accent); background-image:linear-gradient(150deg, rgba(255,255,255,.30), rgba(255,255,255,0)); color:#fff; border-color:transparent; box-shadow:0 6px 18px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.40); }
+.btn.primary { background:var(--accent); color:#fff; border-color:transparent; box-shadow:0 6px 18px var(--accent-glow); }
 .btn.primary:hover { background:var(--accent-hover); }
-
 .disclaimer {
   margin-top:32px; padding:22px 24px; border-radius:var(--radius-lg);
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface);
+  border:1px solid var(--glass-edge); background-color:var(--surface);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 50%, var(--glass-3) 100%);
   backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 0 0 26px var(--glass-inner-glow),
-    var(--shadow-sm);
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), inset 0 0 26px var(--glass-inner-glow), var(--shadow-sm);
 }
 .disclaimer-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:13px; font-weight:800; color:var(--text-1); }
 .disclaimer-head-icon { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent-glow); }
 .disclaimer-body { font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .disclaimer-body p { margin-bottom:8px; } .disclaimer-body p:last-child { margin-bottom:0; }
 .disclaimer-body strong { color:var(--text-1); font-weight:700; }
-
 .footer { display:flex; flex-direction:column; gap:16px; margin-top:20px; padding:32px 0 44px; border-top:1px solid var(--border-1); }
 .footer-actions { display:flex; justify-content:space-between; align-items:center; gap:8px; width:100%; }
 .footer-main { display:flex; flex-direction:column; gap:10px; }
 @media (min-width:768px) { .footer-main { flex-direction:row; align-items:flex-start; justify-content:space-between; gap:24px; } }
 .footer-left { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12.5px; color:var(--text-3); }
-.footer-left a { color:var(--text-2); text-decoration:none; border-bottom:1px solid transparent; transition:all var(--dur-fast) var(--ease); }
-.footer-left a:hover { color:var(--accent); border-bottom-color:var(--accent); }
-.footer-right { display:flex; flex-direction:column; gap:4px; font-size:11.5px; line-height:1.5; color:var(--text-3); font-family:ui-monospace,monospace; letter-spacing:.02em; }
-@media (min-width:768px) { .footer-right { align-items:flex-end; text-align:right; flex:0 0 auto; } }
+.footer-left a { color:var(--text-2); text-decoration:none; }
+.footer-left a:hover { color:var(--accent); }
+.footer-right { display:flex; flex-direction:column; gap:4px; font-size:11.5px; line-height:1.5; color:var(--text-3); font-family:ui-monospace,monospace; }
+@media (min-width:768px) { .footer-right { align-items:flex-end; text-align:right; } }
 .footer-ver { font-weight:700; color:var(--accent); }
-
 .footer-btn {
   display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-md);
-  border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, rgba(255,255,255,.38), rgba(255,255,255,.10));
-  backdrop-filter:blur(18px) saturate(190%); -webkit-backdrop-filter:blur(18px) saturate(190%);
-  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo);
+  border:1px solid var(--glass-edge); background:var(--surface-2);
   color:var(--text-1); font-size:12px; font-weight:700; cursor:pointer;
   transition:all var(--dur-fast) var(--ease);
 }
-html.dark .footer-btn { background-image:linear-gradient(150deg, rgba(255,255,255,.09), rgba(255,255,255,.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
 .footer-btn:hover { background:var(--accent-soft); border-color:var(--border-2); color:var(--accent); }
 .footer-btn.cloud { background-image:linear-gradient(150deg, rgba(59,130,246,.20), rgba(59,130,246,.06)); color:var(--accent); }
-
 .edit-bar {
   position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:200;
   display:flex; align-items:center; gap:12px; max-width:calc(100vw - 24px);
   padding:10px 12px 10px 18px; border-radius:100px;
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface-3);
+  border:1px solid var(--glass-edge); background-color:var(--surface-3);
   background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 50%, var(--glass-3) 100%);
   backdrop-filter:blur(36px) saturate(220%); -webkit-backdrop-filter:blur(36px) saturate(220%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    var(--shadow-lg);
+  box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), var(--shadow-lg);
   opacity:0; visibility:hidden; transform:translate(-50%, 100px);
   transition:all var(--dur) var(--ease);
 }
@@ -660,29 +394,17 @@ body.editing .edit-bar { opacity:1; visibility:visible; transform:translate(-50%
 .edit-bar-dot { width:7px; height:7px; border-radius:50%; background:var(--text-3); }
 .edit-bar-dot.guest { background:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
 .edit-bar-dot.admin-synced { background:var(--success); box-shadow:0 0 0 3px rgba(22,163,74,.20); }
-.edit-bar-dot.admin-dirty { background:var(--warning); box-shadow:0 0 0 3px rgba(217,119,6,.20); animation:dotBreathe 1.8s ease-in-out infinite; }
-@keyframes dotBreathe { 0%, 100% { box-shadow:0 0 0 3px rgba(217,119,6,.20); } 50% { box-shadow:0 0 0 8px rgba(217,119,6,.05); } }
-.edit-bar-actions { display:flex; align-items:center; gap:6px; flex:0 0 auto; min-width:0; }
+.edit-bar-dot.admin-dirty { background:var(--warning); box-shadow:0 0 0 3px rgba(217,119,6,.20); }
+.edit-bar-actions { display:flex; align-items:center; gap:6px; flex:0 0 auto; }
 .edit-bar-btn {
-  padding:7px 14px; border-radius:100px; border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, rgba(255,255,255,.34), rgba(255,255,255,.08));
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
+  padding:7px 14px; border-radius:100px; border:1px solid var(--glass-edge); background:var(--surface-2);
   color:var(--text-1); font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;
   transition:all var(--dur-fast) var(--ease);
 }
-html.dark .edit-bar-btn { background-image:linear-gradient(150deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
-.edit-bar-btn.primary { background:var(--accent); background-image:linear-gradient(150deg, rgba(255,255,255,.30), rgba(255,255,255,0)); color:#fff; border-color:transparent; box-shadow:0 4px 14px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.40); }
+.edit-bar-btn.primary { background:var(--accent); color:#fff; border-color:transparent; box-shadow:0 4px 14px var(--accent-glow); }
 .edit-bar-btn.warn { background:rgba(217,119,6,.14); color:var(--warning); }
-.edit-bar-seg {
-  display:inline-flex; align-items:center; flex:0 0 auto; border-radius:100px;
-  border:1px solid var(--glass-edge); background:var(--surface-2);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:inset 0 1px 0 var(--glass-hi);
-  overflow:hidden;
-}
-.edit-bar-seg-btn { padding:7px 12px; border:0; background:transparent; color:var(--text-1); font-size:12.5px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; transition:all var(--dur-fast) var(--ease); }
+.edit-bar-seg { display:inline-flex; align-items:center; flex:0 0 auto; border-radius:100px; border:1px solid var(--glass-edge); background:var(--surface-2); overflow:hidden; }
+.edit-bar-seg-btn { padding:7px 12px; border:0; background:transparent; color:var(--text-1); font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap; transition:all var(--dur-fast) var(--ease); }
 .edit-bar-seg-btn + .edit-bar-seg-btn { border-left:1px solid var(--border-2); }
 .edit-bar-seg-btn:hover { background:var(--accent-soft); color:var(--accent); }
 .edit-bar-seg-btn:disabled { opacity:.6; cursor:default; }
@@ -690,28 +412,18 @@ body:not(.admin-mode) .edit-bar-admin { display:none; }
 body.editing .footer { padding-bottom:calc(80px + env(safe-area-inset-bottom, 0px)); }
 @media (max-width:480px){
   .edit-bar { gap:8px; max-width:calc(100vw - 16px); padding:8px 10px 8px 12px; }
-  .edit-bar-status { gap:6px; font-size:11.5px; }
   .edit-bar-status #editStatus { display:none; }
   .edit-bar-status::after { content:attr(data-short); }
   .edit-bar-btn { padding:6px 10px; font-size:11.5px; }
   .edit-bar-seg-btn { padding:6px 9px; font-size:11.5px; }
+  .section-head { gap:8px; }
+  .section-rule { display:none; }
+  .section-actions { margin-left:auto; }
 }
-@media (max-width:340px){
-  .edit-bar-status::after { display:none; }
-  .edit-bar-btn { padding:6px 8px; }
-  .edit-bar-seg-btn { padding:6px 7px; }
-  .section-head { gap:4px; }
-  .section-actions { gap:2px; }
-  .item-action-btn { width:24px; height:24px; font-size:11px; }
-}
-
 .back-top {
   position:fixed; right:20px; bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:100;
   width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:50%;
-  border:1px solid var(--glass-edge);
-  background:var(--surface-2);
-  background-image:linear-gradient(150deg, var(--glass-1), var(--glass-2) 55%, var(--glass-3));
-  color:var(--accent);
+  border:1px solid var(--glass-edge); background:var(--surface-2); color:var(--accent);
   backdrop-filter:blur(26px) saturate(200%); -webkit-backdrop-filter:blur(26px) saturate(200%);
   box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), var(--shadow-md);
   cursor:pointer; opacity:0; visibility:hidden; transform:translateY(12px);
@@ -724,13 +436,11 @@ body.editing .footer { padding-bottom:calc(80px + env(safe-area-inset-bottom, 0p
 .back-top .ring .ring-fg { stroke:var(--accent); stroke-linecap:round; transition:stroke-dashoffset 80ms linear; }
 .back-top .arrow { position:relative; z-index:1; width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.2; }
 body.editing .back-top { display:none; }
-
 .toast {
   position:fixed; left:50%; bottom:calc(80px + env(safe-area-inset-bottom, 0px)); z-index:10000;
   display:flex; align-items:center; gap:14px; max-width:calc(100vw - 48px);
   padding:11px 20px; border-radius:var(--radius-md);
-  border:1px solid var(--glass-edge);
-  background-color:var(--surface-3);
+  border:1px solid var(--glass-edge); background-color:var(--surface-3);
   background-image:linear-gradient(150deg, var(--glass-1), var(--glass-2) 55%, var(--glass-3));
   backdrop-filter:blur(34px) saturate(220%); -webkit-backdrop-filter:blur(34px) saturate(220%);
   box-shadow:inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--glass-lo), var(--shadow-lg);
@@ -739,324 +449,34 @@ body.editing .back-top { display:none; }
   transition:all var(--dur) var(--ease);
 }
 .toast.show { opacity:1; transform:translate(-50%, 0); }
-
 @media (max-width:640px) {
   .topbar-inner { flex-direction:column; gap:20px; } .topbar-stats { align-self:flex-start; gap:20px; } .topbar-stat { text-align:left; } .topbar-stat-num { font-size:18px; }
-  .search-input { height:48px; padding-left:10px; } .search-icon { width:18px; height:18px; margin-left:14px; }
-  .section { padding:20px 0 8px; } .item { padding:12px 14px; gap:12px; } .item-icon { width:36px; height:36px; }
-  .item-desc { font-size:11.5px; } body.editing .item { padding-right:108px; }
+  .search-input { height:48px; } .search-icon { width:18px; height:18px; margin-left:14px; }
+  .section { padding:20px 0 8px; } .item { padding:11px 12px; gap:10px; } .item-icon { width:30px; height:30px; font-size:15px; }
+  .item-desc { font-size:11px; } body.editing .item { padding-right:100px; }
   .disclaimer { margin-top:24px; padding:18px 20px; } .disclaimer-body { font-size:12px; }
   .footer { padding:28px 0 32px; }
   .footer-right { align-items:flex-end; text-align:right; margin-left:auto; }
   .edit-bar { bottom:calc(14px + env(safe-area-inset-bottom, 0px)); padding:8px 10px 8px 14px; gap:8px; }
-  .edit-bar-status { font-size:11.5px; } .edit-bar-btn { padding:6px 11px; font-size:11.5px; }
-  .modal-box { max-width:100%; } .detail-header { gap:12px; } .detail-icon { width:48px; height:48px; font-size:24px; }
-  
-  /* 移动端修复操作按钮溢出 */
-  .section-head { gap: 8px; }
-  .section-rule { display: none; }
-  .section-actions { margin-left: auto; }
-  .item-action-btn { width: 26px; height: 26px; font-size: 12px; }
+  .modal-box { max-width:100%; }
+  .detail-header { gap:12px; } .detail-icon { width:48px; height:48px; font-size:24px; }
+  .group-name { font-size:12px; } .group-desc { font-size:11px; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
   #particleCanvas { display:none; }
   .scan-line { display:none; }
 }
-
-html.perf-lite .item,
-html.perf-lite .search-box,
-html.perf-lite .disclaimer,
-html.perf-lite .modal-box,
-html.perf-lite .search-suggest,
-html.perf-lite .footer-btn,
-html.perf-lite .edit-bar,
-html.perf-lite .toast,
-html.perf-lite .back-top,
-html.perf-lite .form-input,
-html.perf-lite .btn,
-html.perf-lite .add-btn,
-html.perf-lite .security-box {
-  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
-}
-
 @media print {
   .bg-layer, #particleCanvas, .back-top, .toast, .search-area, .edit-bar, .footer-actions { display:none !important; }
   body { display:block; background:#fff; color:#000; } .page { max-width:100%; padding:0; }
-  .item, .disclaimer { break-inside:avoid; border:1px solid #ccc; box-shadow:none; backdrop-filter:none; background:#fff; }
+  .item, .disclaimer { break-inside:avoid; border:1px solid #ccc; box-shadow:none; background:#fff; }
   a { color:#000; text-decoration:none; }
 }
-/* GLASS RAIN BEGIN */
-:root{
-  --af-bead-core:rgba(255,255,255,.98);
-  --af-bead-mid:rgba(96,165,250,.20);
-  --af-bead-edge:rgba(255,255,255,.58);
-  --af-bead-refract:rgba(15,40,90,.20);
-  --af-bead-shade:rgba(15,40,90,.18);
-  --af-bead-op:.50;
-  --af-wave-trough:rgba(15,40,90,.17);
-  --af-wave-crest:rgba(255,255,255,.62);
-  --af-wave-crest2:rgba(96,165,250,.26);
-  --af-well-dark:rgba(15,40,90,.16);
-  --af-well-light:rgba(255,255,255,.55);
-}
-html.dark{
-  --af-bead-core:rgba(235,246,255,.95);
-  --af-bead-mid:rgba(147,197,253,.18);
-  --af-bead-edge:rgba(200,225,255,.45);
-  --af-bead-refract:rgba(0,0,0,.35);
-  --af-bead-shade:rgba(0,0,0,.45);
-  --af-bead-op:.58;
-  --af-wave-trough:rgba(0,0,0,.42);
-  --af-wave-crest:rgba(235,246,255,.55);
-  --af-wave-crest2:rgba(147,197,253,.30);
-  --af-well-dark:rgba(0,0,0,.34);
-  --af-well-light:rgba(235,246,255,.48);
-}
-.af-fx-card{position:relative}
-.af-glass-fx{
-  position:absolute;inset:0;z-index:5;
-  border-radius:inherit;overflow:hidden;pointer-events:none;
-}
-.af-bead{
-  position:absolute;top:var(--d-y,-12px);left:var(--d-x,50%);
-  width:var(--d-size,4px);height:var(--d-size,4px);border-radius:50%;
-  background:radial-gradient(circle at 34% 26%,
-    var(--af-bead-core) 0%,var(--af-bead-mid) 42%,
-    rgba(255,255,255,.05) 70%,transparent 100%);
-  box-shadow:
-    inset 0 0 0 .5px var(--af-bead-edge),
-    inset 0 -1px 1px var(--af-bead-refract),
-    0 1px 2px var(--af-bead-shade);
-  opacity:0;transform:translate3d(0,0,0);
-  animation:afBeadFall var(--d-dur,18s) linear var(--d-delay,0s) infinite;
-  will-change:transform,opacity;
-}
-@keyframes afBeadFall{
-  0%{transform:translate3d(0,0,0) scale(.86);opacity:0}
-  6%{opacity:var(--d-op,var(--af-bead-op))}
-  92%{opacity:var(--d-op,var(--af-bead-op))}
-  100%{transform:translate3d(var(--d-drift,5px),var(--d-travel,220px),0) scale(1);opacity:0}
-}
-.af-ripple{
-  position:absolute;left:var(--rx,50%);top:var(--ry,50%);
-  width:var(--r-size,190px);height:var(--r-size,190px);
-  transform:translate(-50%,-50%);pointer-events:none;
-}
-.af-wave{
-  position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle,
-    transparent 0%,transparent 43%,
-    var(--af-wave-trough) 45%,transparent 47.5%,
-    transparent 59%,
-    var(--af-wave-crest) 61.5%,transparent 64.5%,
-    transparent 73%,
-    var(--af-wave-crest2) 75.5%,transparent 78%);
-  opacity:0;transform:scale(.06);
-  animation:afWave 780ms cubic-bezier(.1,.62,.24,1) var(--d,0ms) forwards;
-  will-change:transform,opacity;
-}
-@keyframes afWave{
-  0%{transform:scale(.06);opacity:.9}
-  45%{opacity:.5}
-  100%{transform:scale(1.28);opacity:0}
-}
-.af-well{
-  position:absolute;left:50%;top:50%;
-  width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;
-  background:radial-gradient(circle,
-    var(--af-well-dark) 0%,rgba(255,255,255,.02) 38%,
-    transparent 52%,var(--af-well-light) 66%,transparent 82%);
-  opacity:0;transform:scale(.25);
-  animation:afWell 520ms var(--ease) forwards;
-}
-html.perf-lite .af-bead{animation:none;opacity:var(--d-op,var(--af-bead-op))}
-html.perf-lite .af-wave-extra,html.perf-lite .af-well{display:none}
-html.perf-lite .af-wave{animation-duration:260ms !important}
-html.__paused__ .af-bead,.af-glass-fx.af-offscreen .af-bead{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){
-  .af-bead{animation:none !important;opacity:var(--d-op,var(--af-bead-op)) !important}
-  .af-wave,.af-well{animation-duration:180ms !important;animation-delay:0ms !important}
-  .af-wave-extra,.af-well{display:none}
-}
-@media print{.af-glass-fx{display:none !important}}
-/* GLASS RAIN END */
-
-/* AF ENHANCE BEGIN */
-:root {
-  --af-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
-  --af-spring-dur: 720ms;
-}
-
-/* ---------- 1. 滚动入场（仅对静态元素） ---------- */
-@media (prefers-reduced-motion: no-preference) {
-  .af-reveal { opacity: 0; }
-  .af-reveal.af-revealed {
-    opacity: 1;
-    animation: af-reveal-in var(--af-spring-dur) var(--af-ease-spring) backwards;
-    animation-delay: var(--af-delay, 0ms);
-  }
-  @keyframes af-reveal-in {
-    from { opacity: 0; transform: translateY(24px) scale(.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-}
-
-/* ---------- 2. 磁吸 hover ---------- */
-.item,
-.search-box {
-  --af-tx: 0px;
-  --af-ty: 0px;
-}
-
-/* ---------- 3. Spring 缓动 ---------- */
-.item {
-  transition:
-    transform var(--dur) var(--af-ease-spring),
-    border-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease),
-    padding var(--dur) var(--ease);
-}
-.search-box {
-  transition:
-    border-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease),
-    transform var(--dur) var(--af-ease-spring);
-}
-.back-top {
-  transition:
-    opacity var(--dur) var(--ease),
-    transform var(--dur) var(--af-ease-spring),
-    visibility var(--dur) var(--ease),
-    color var(--dur-fast) var(--ease),
-    border-color var(--dur-fast) var(--ease),
-    box-shadow var(--dur) var(--ease);
-}
-.toast {
-  transition:
-    opacity var(--dur) var(--ease),
-    transform var(--dur) var(--af-ease-spring);
-}
-
-@media (hover:hover) and (pointer:fine) {
-  .item:hover, .item:focus-visible {
-    transform: translateY(-2px) translate(var(--af-tx), var(--af-ty));
-  }
-  .search-box:focus-within {
-    transform: translate(var(--af-tx), var(--af-ty));
-  }
-}
-
-/* 编辑模式：不做磁吸位移，保持原有视觉 */
-body.editing .item:hover { transform: none !important; }
-body.editing .item { --af-tx: 0px !important; --af-ty: 0px !important; }
-
-/* ---------- 4. Shimmer 扫光 ---------- */
-@keyframes af-shimmer {
-  from { background-position: 200% 0; }
-  to   { background-position: -100% 0; }
-}
-.af-shimmer {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 4;
-  opacity: 0;
-  transition: opacity 180ms var(--ease);
-  background-image: linear-gradient(115deg,
-    transparent 30%,
-    rgba(255,255,255,.55) 48%,
-    rgba(255,255,255,.85) 50%,
-    rgba(255,255,255,.55) 52%,
-    transparent 70%);
-  background-size: 220% 100%;
-  background-position: 200% 0;
-}
-html.dark .af-shimmer {
-  background-image: linear-gradient(115deg,
-    transparent 30%,
-    rgba(147,197,253,.18) 48%,
-    rgba(147,197,253,.36) 50%,
-    rgba(147,197,253,.18) 52%,
-    transparent 70%);
-}
-@media (hover:hover) and (pointer:fine) {
-  .item:hover > .af-shimmer,
-  .disclaimer:hover > .af-shimmer {
-    opacity: 1;
-    animation: af-shimmer 900ms cubic-bezier(.4, 0, .2, 1) forwards;
-  }
-}
-body.editing .item:hover > .af-shimmer { opacity: 0; animation: none; }
-
-/* ---------- 5. 文字拆分入场（本文件跳过 .brand-title，见 JS 注释） ---------- */
-.af-char {
-  display: inline-block;
-  transform-origin: 50% 80%;
-  will-change: transform, opacity, filter;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .af-char {
-    animation: af-char-in 720ms var(--af-ease-spring) both;
-    animation-delay: calc(var(--af-i, 0) * 35ms + 260ms);
-  }
-  @keyframes af-char-in {
-    from {
-      opacity: 0;
-      transform: translateY(18px) scale(.85);
-      filter: blur(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
-  }
-}
-
-/* ---------- 6. 降级 ---------- */
-html.perf-lite .af-reveal,
-html.perf-lite .af-char {
-  opacity: 1 !important;
-  animation: none !important;
-  transform: none !important;
-  filter: none !important;
-}
-html.perf-lite .af-shimmer { display: none !important; }
-html.perf-lite .item:hover,
-html.perf-lite .search-box:focus-within {
-  transform: none !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .af-reveal,
-  .af-char {
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
-    filter: none !important;
-  }
-  .af-shimmer { display: none !important; }
-  .item:hover,
-  .item:focus-visible,
-  .search-box:focus-within {
-    transform: revert !important;
-  }
-}
-
-@media print {
-  .af-shimmer { display: none !important; }
-  .af-reveal, .af-char { opacity: 1 !important; animation: none !important; }
-}
-/* AF ENHANCE END */
 </style>
 </head>
 <body>
-
 <a class="skip-link" href="#main">跳到主要内容</a>
-
 <div class="bg-layer" aria-hidden="true">
   <div class="bg-gradient"></div>
   <div class="bg-grid"></div>
@@ -1068,34 +488,18 @@ html.perf-lite .search-box:focus-within {
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="brand-tag">
-          <span class="brand-tag-dot" aria-hidden="true"></span>
-          <span>AI.FENG / NAVIGATOR</span>
-        </div>
-        <h1 class="brand-title">
-          <span>AiFeng</span><span class="brand-mark" aria-hidden="true">·</span><span>资源导航</span>
-        </h1>
+        <div class="brand-tag"><span class="brand-tag-dot" aria-hidden="true"></span><span>AI.FENG / NAVIGATOR</span></div>
+        <h1 class="brand-title"><span>AiFeng</span><span class="brand-mark" aria-hidden="true">·</span><span>资源导航</span></h1>
         <p class="brand-sub">日常好用的工具、软件与资源，按分类收录，一点即达</p>
       </div>
       <div class="topbar-stats" role="group" aria-label="站点统计">
-        <div class="topbar-stat">
-          <span class="topbar-stat-num" id="statTotal">0</span>
-          <span class="topbar-stat-label">Sites</span>
-        </div>
-        <div class="topbar-stat">
-          <span class="topbar-stat-num" id="statGroups">0</span>
-          <span class="topbar-stat-label">Groups</span>
-        </div>
+        <div class="topbar-stat"><span class="topbar-stat-num" id="statTotal">0</span><span class="topbar-stat-label">Sites</span></div>
+        <div class="topbar-stat"><span class="topbar-stat-num" id="statGroups">0</span><span class="topbar-stat-label">Groups</span></div>
       </div>
     </div>
-
     <div class="version-bar" id="versionBar">
-      <button class="version-pill" id="versionPill" type="button">
-        <span class="v-icon" aria-hidden="true">📍</span>
-        <span id="versionText">本地版本 · 恢复官方</span>
-      </button>
+      <button class="version-pill" id="versionPill" type="button"><span class="v-icon" aria-hidden="true">📍</span><span id="versionText">本地版本 · 恢复官方</span></button>
     </div>
-
     <div class="search-area">
       <div class="search-box" id="searchBox">
         <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -1109,24 +513,15 @@ html.perf-lite .search-box:focus-within {
   <main id="main" aria-busy="true">
     <div class="skeleton" id="skeleton" aria-hidden="true"></div>
     <div id="app"></div>
-
     <div class="add-zone" id="addZone">
-      <button class="add-btn" id="btnAddLink" type="button">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        <span>添加链接</span>
-      </button>
-      <button class="add-btn" id="btnAddGroup" type="button">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        <span>添加分类</span>
-      </button>
+      <button class="add-btn" id="btnAddCategory" type="button"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>添加分类</span></button>
+      <button class="add-btn" id="btnAddSubGroup" type="button"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>添加分组</span></button>
+      <button class="add-btn" id="btnAddLink" type="button"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>添加入口</span></button>
     </div>
   </main>
 
   <section class="disclaimer" aria-labelledby="disclaimer-title">
-    <div class="disclaimer-head">
-      <span class="disclaimer-head-icon" aria-hidden="true"></span>
-      <h2 id="disclaimer-title">免责声明</h2>
-    </div>
+    <div class="disclaimer-head"><span class="disclaimer-head-icon" aria-hidden="true"></span><h2 id="disclaimer-title">免责声明</h2></div>
     <div class="disclaimer-body">
       <p>本站为个人非营利性资源导航，仅收集整理互联网公开可访问的链接，<strong>不存储、不制作、不传播</strong>任何资源文件。</p>
       <p>所有链接均指向第三方网站，其内容、安全性、合法性由该第三方负责，与本站无关。</p>
@@ -1172,7 +567,6 @@ html.perf-lite .search-box:focus-within {
       <h2 class="modal-title" id="modalTitleText">详情</h2>
       <button class="modal-close" type="button" data-modal-close aria-label="关闭"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
     </div>
-
     <div class="detail-header">
       <div class="detail-icon" id="detailIcon">📁</div>
       <div class="detail-title-wrap">
@@ -1180,22 +574,17 @@ html.perf-lite .search-box:focus-within {
         <span class="detail-host" id="detailHost">example.com</span>
       </div>
     </div>
-
     <div class="detail-desc" id="detailDesc"></div>
-
     <div class="security-box state-idle" id="securityBox">
       <div class="scan-line"></div>
       <div class="security-inner">
-        <div class="shield-icon" id="shieldIcon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
+        <div class="shield-icon" id="shieldIcon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div class="security-text">
           <div class="security-status" id="securityStatus">等待检测...</div>
           <div class="security-sub" id="securitySub">即将连接至外部网站</div>
         </div>
       </div>
     </div>
-
     <div class="detail-footer">
       <button class="btn" type="button" data-modal-close>取消</button>
       <a class="btn btn-visit" id="btnVisit" href="#" target="_blank" rel="noopener noreferrer">继续访问</a>
@@ -1207,42 +596,47 @@ html.perf-lite .search-box:focus-within {
   <button class="modal-mask" type="button" data-modal-close></button>
   <div class="modal-box modal-box-lg">
     <div class="modal-head">
-      <h2 class="modal-title" id="linkTitle">编辑链接</h2>
+      <h2 class="modal-title" id="linkTitle">编辑入口</h2>
       <button class="modal-close" type="button" data-modal-close><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
     </div>
-    <div class="form-tabs" role="tablist" style="display:flex;gap:4px;margin-bottom:14px;background:var(--surface-2);padding:4px;border-radius:8px;">
-      <button class="form-tab active" type="button" data-link-type="single" style="flex:1;padding:8px;border:none;background:var(--surface-3);border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">单链接</button>
-      <button class="form-tab" type="button" data-link-type="multi" style="flex:1;padding:8px;border:none;background:transparent;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">多链接</button>
-    </div>
     <div class="form-field"><label class="form-label">名称</label><input class="form-input" id="linkName" type="text"></div>
-    <div class="form-field" id="linkSingleField"><label class="form-label">网址</label><input class="form-input" id="linkUrl" type="url"></div>
-    <div class="form-field" id="linkMultiField" hidden>
-      <label class="form-label">子链接</label>
-      <div class="popup-list" id="popupList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;"></div>
-      <button class="btn" type="button" id="popupAddBtn" style="padding:8px;">+ 添加子链接</button>
-    </div>
+    <div class="form-field"><label class="form-label">网址</label><input class="form-input" id="linkUrl" type="url"></div>
     <div class="form-field"><label class="form-label" id="linkDescLabel">卡片短描述 (限18字内)</label><textarea class="form-input" id="linkDesc" rows="1" maxlength="18" placeholder="从内容描述提炼，一眼看懂"></textarea></div>
-    <div class="form-field"><label class="form-label">内容描述 (详情/菜单总纲)</label><textarea class="form-input" id="linkDetail" rows="3" placeholder="根据网址内容总结，建议21–63字"></textarea></div>
-    
+    <div class="form-field"><label class="form-label">内容描述 (详情)</label><textarea class="form-input" id="linkDetail" rows="3" placeholder="根据网址内容总结，建议21–63字"></textarea></div>
     <div class="form-field"><label class="form-label">标签 (用逗号或空格分隔)</label><input class="form-input" id="linkTags" type="text" placeholder="例如：工具, 效率, 系统"></div>
     <div class="form-field"><label class="form-label">唯一ID (留空将自动生成)</label><input class="form-input" id="linkId" type="text" placeholder="例如：my-custom-id"></div>
-
-    <div class="form-field"><label class="form-label">所属分类</label><select class="form-input" id="linkGroup"></select></div>
+    <div class="form-field"><label class="form-label">所属分类</label><select class="form-input" id="linkCategory"></select></div>
+    <div class="form-field"><label class="form-label">所属分组</label><select class="form-input" id="linkSubGroup"></select></div>
     <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="linkOk" type="button">保存</button></div>
   </div>
 </div>
 
-<div class="modal" id="groupModal" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="modal" id="categoryModal" role="dialog" aria-modal="true" aria-hidden="true">
   <button class="modal-mask" type="button" data-modal-close></button>
   <div class="modal-box">
     <div class="modal-head">
-      <h2 class="modal-title" id="groupTitle">编辑分类</h2>
+      <h2 class="modal-title" id="categoryTitle">编辑分类</h2>
       <button class="modal-close" type="button" data-modal-close><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
     </div>
-    <div class="form-field"><label class="form-label">分类名称</label><input class="form-input" id="groupName" type="text"></div>
+    <div class="form-field"><label class="form-label">分类名称</label><input class="form-input" id="categoryName" type="text"></div>
     <div class="form-field"><label class="form-label">图标</label><div class="icon-picker" id="iconPicker" style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:200px;overflow-y:auto;"></div></div>
     <div class="form-field"><label class="form-label">主题色</label><div class="color-picker" id="colorPicker" style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;"></div></div>
-    <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="groupOk" type="button">保存</button></div>
+    <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="categoryOk" type="button">保存</button></div>
+  </div>
+</div>
+
+<div class="modal" id="subGroupModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="modal-mask" type="button" data-modal-close></button>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 class="modal-title" id="subGroupTitle">编辑分组</h2>
+      <button class="modal-close" type="button" data-modal-close><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+    </div>
+    <div class="form-field"><label class="form-label">所属分类</label><select class="form-input" id="subGroupCategory"></select></div>
+    <div class="form-field"><label class="form-label">分组名称</label><input class="form-input" id="subGroupName" type="text" placeholder="例如：DNS 合集"></div>
+    <div class="form-field"><label class="form-label">分组短描述</label><input class="form-input" id="subGroupDesc" type="text" maxlength="50" placeholder="例如：公共、加密与自建 DNS"></div>
+    <div class="form-field"><label class="form-label">分组详情</label><textarea class="form-input" id="subGroupDetail" rows="2" placeholder="合集总纲，可选"></textarea></div>
+    <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="subGroupOk" type="button">保存</button></div>
   </div>
 </div>
 
@@ -1266,33 +660,29 @@ html.perf-lite .search-box:focus-within {
 </div>
 
 <button class="back-top" id="backTop" type="button" aria-label="回到顶部">
-  <svg class="ring" viewBox="0 0 48 48" aria-hidden="true">
-    <circle class="ring-bg" cx="24" cy="24" r="21"/>
-    <circle class="ring-fg" cx="24" cy="24" r="21"/>
-  </svg>
+  <svg class="ring" viewBox="0 0 48 48" aria-hidden="true"><circle class="ring-bg" cx="24" cy="24" r="21"/><circle class="ring-fg" cx="24" cy="24" r="21"/></svg>
   <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 15 12 9 18 15"/></svg>
 </button>
-
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 (function (window, document) {
   'use strict';
 
-  const AF_VER = '3.6';
   const CFG = {
-    APP_VERSION: AF_VER,
+    APP_VERSION: '3.6',
+    SCHEMA_ID: 'groups-v1',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
-    CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
-    EDITS_KEY: '__af_nav_local_edits_v' + AF_VER + '__',
-    GH_KEY: '__af_gh_cfg_v' + AF_VER + '__',
-    ADMIN_KEY: '__af_admin_v' + AF_VER + '__',
-    CACHE_VERSION: AF_VER,
+    CACHE_KEY: '__af_nav_cache_v3.6__',
+    EDITS_KEY: '__af_nav_local_edits_v3.6__',
+    GH_KEY: '__af_gh_cfg_v3.6__',
+    ADMIN_KEY: '__af_admin_v3.6__',
+    CACHE_VERSION: '3.6',
     SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, SCROLL_TOP_THRESHOLD: 300, LONG_PRESS_MS: 800,
     PARTICLE_MIN_DT: 1000 / 45, PARTICLE_DENSITY: 20000, PARTICLE_CAP_DESKTOP: 68, PARTICLE_CAP_MOBILE: 38, PARTICLE_LINK_DIST: 130,
     GH: { API: 'https://api.github.com', DEFAULT_USER: 'duanaifeng', DEFAULT_REPO: 'AFeng', DEFAULT_BRANCH: 'main', DEFAULT_PATH: 'daohang/data.json' },
-    ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
+    ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
     META: { ID_MAX: 60, TAG_MAX: 20, TAG_COUNT: 8, CATEGORY_EN_MAX: 50, DESC_MAX: 18 },
     FALLBACK_DATA: [{ category: '加载异常', icon: '🔄', color: '#94a3b8', items: [{ name: '数据加载失败', url: 'https://duanaifeng.github.io/AFeng/daohang/', desc: '请刷新页面重试', detail: '线上数据与本地缓存均不可用，请刷新页面重试；恢复后会自动同步最新内容。' }] }]
@@ -1307,21 +697,6 @@ html.perf-lite .search-box:focus-within {
   };
 
   const Utils = {
-    calcVisualWidth(str) {
-      if (!str) return 0;
-      let w = 0;
-      for (let i = 0; i < str.length; i++) {
-        const code = str.charCodeAt(i);
-        if (code >= 0x4E00 && code <= 0x9FA5) {
-          w += 1;
-        } else if (code >= 0xFF00 && code <= 0xFFEF) {
-          w += 1;
-        } else {
-          w += 0.5;
-        }
-      }
-      return w;
-    },
     rafThrottle(fn) { let tick = false, last; return function () { last = arguments; if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; try { fn.apply(null, last); } catch (e) {} }); }; },
     debounce(fn, w) { let t = 0; return function () { const a = arguments, s = this; clearTimeout(t); t = setTimeout(() => { try { fn.apply(s, a); } catch (e) {} }, w || 200); }; },
     prefersReducedMotion() { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } },
@@ -1334,34 +709,6 @@ html.perf-lite .search-box:focus-within {
     contrastFg(h) { let c = String(h || '').replace('#', ''); if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2]; const r = parseInt(c.substring(0,2),16), g = parseInt(c.substring(2,4),16), b = parseInt(c.substring(4,6),16); if (isNaN(r)) return 'var(--accent)'; return (0.299*r + 0.587*g + 0.114*b)/255 > 0.65 ? 'rgba(15,23,42,.92)' : '#fff'; },
     cleanTags(v) { if (!Array.isArray(v)) return []; const s = {}, o = []; for (let i = 0; i < v.length; i++) { const t = Utils.clean(v[i], CFG.META.TAG_MAX); if (!t || s[t]) continue; s[t] = true; o.push(t); if (o.length >= CFG.META.TAG_COUNT) break; } return o; },
     normalize(t) { return String(t || '').toLowerCase().replace(/[·・\s\-_/]+/g, ''); }
-  };
-
-  // 排序工具：梯形（auto）与手动（manual）的单一事实来源
-  const SortUtil = {
-    // 梯形比较器：placeholder 恒底，其余按视觉宽度升序，同宽按原数据下标
-    ladderCmp(a, b) {
-      const pa = a.item.placeholder ? 1 : 0, pb = b.item.placeholder ? 1 : 0;
-      if (pa !== pb) return pa - pb;
-      const wa = Utils.calcVisualWidth(a.item.name);
-      const wb = Utils.calcVisualWidth(b.item.name);
-      return wa - wb || a.idx - b.idx;
-    },
-    // 返回按当前规则排好的 [{item, idx}]，idx 恒为原始数据下标
-    order(group) {
-      const arr = group.items.map((item, idx) => ({ item, idx }));
-      if (group.itemOrder === 'manual') {
-        arr.sort((a, b) => (a.item.placeholder ? 1 : 0) - (b.item.placeholder ? 1 : 0) || a.idx - b.idx);
-      } else {
-        arr.sort(this.ladderCmp);
-      }
-      return arr;
-    },
-    // 把"当前显示顺序"固化成数据数组顺序，并标记 manual
-    materialize(group) {
-      if (group.itemOrder === 'manual') return;
-      group.items = this.order(group).map(x => x.item);
-      group.itemOrder = 'manual';
-    }
   };
 
   const Reporter = (function () {
@@ -1455,41 +802,89 @@ html.perf-lite .search-box:focus-within {
     return { start, stop };
   })();
 
+  /* ===== Schema：groups / items 双形态 + 旧 popup 展开 ===== */
   const Schema = {
-    MAX_CATEGORIES: 100, MAX_ITEMS: 500, MAX_POPUPS: 12, DEFAULT_ICON: '📁', DEFAULT_COLOR: '#818cf8',
+    MAX_CATEGORIES: 100, MAX_GROUPS: 50, MAX_ITEMS: 500,
+    DEFAULT_ICON: '📁', DEFAULT_COLOR: '#818cf8',
+    normalizeItem(s) {
+      if (!s || typeof s !== 'object') return null;
+      const url = Utils.safeUrl(s.url);
+      if (!url) return null;
+      const item = {
+        name: Utils.clean(s.name, 100) || '未命名',
+        desc: Utils.clean(s.desc, CFG.META.DESC_MAX),
+        detail: Utils.clean(s.detail, 1000),
+        url
+      };
+      const id = Utils.clean(s.id, CFG.META.ID_MAX); if (id) item.id = id;
+      const tags = Utils.cleanTags(s.tags); if (tags.length) item.tags = tags;
+      if (s.insecure === true) item.insecure = true;
+      return item;
+    },
+    normalizeGroup(g, gi) {
+      if (!g || typeof g !== 'object') return null;
+      const name = Utils.clean(g.name, 50);
+      const desc = Utils.clean(g.desc, 100);
+      const detail = Utils.clean(g.detail, 1000);
+      const items = [];
+      if (Array.isArray(g.items)) {
+        for (let j = 0; j < g.items.length && j < this.MAX_ITEMS; j++) {
+          const it = this.normalizeItem(g.items[j]);
+          if (it) items.push(it);
+        }
+      }
+      if (!name && !items.length) return null;
+      return { name, desc, detail, items };
+    },
+    // 旧结构 item 的 popup 展开
+    expandLegacyItem(item, baseId) {
+      if (!item.popup || !item.popup.length) return [item];
+      const out = [];
+      for (let k = 0; k < item.popup.length; k++) {
+        const p = item.popup[k];
+        const ni = {
+          name: Utils.clean(p.label, 100) || '打开',
+          desc: Utils.clean(p.desc, CFG.META.DESC_MAX),
+          detail: Utils.clean(p.detail, 1000),
+          url: Utils.safeUrl(p.url),
+          id: (baseId || 'item') + '-' + (k + 1)
+        };
+        if (item.tags) ni.tags = item.tags.slice();
+        if (ni.url) out.push(ni);
+      }
+      return out.length ? out : [item];
+    },
     validate(raw) {
       if (!Array.isArray(raw)) throw new Error('数据根节点必须是数组');
       if (raw.length === 0) throw new Error('数据为空');
       const out = [];
-      for (let i=0; i<raw.length && i<this.MAX_CATEGORIES; i++) {
-        const g = raw[i]; if (!g || typeof g !== 'object') continue;
-        const cat = Utils.clean(g.category, 50); if (!cat) continue;
-        const en = Utils.clean(g.categoryEn, CFG.META.CATEGORY_EN_MAX), items = [];
-        if (Array.isArray(g.items)) {
-          for (let j=0; j<g.items.length && j<this.MAX_ITEMS; j++) {
-            const s = g.items[j]; if (!s || typeof s !== 'object') continue;
-            if (s.placeholder === true) { items.push({ name: Utils.clean(s.name, 100) || '敬请期待', desc: Utils.clean(s.desc, CFG.META.DESC_MAX), placeholder: true }); continue; }
-            const url = Utils.safeUrl(s.url), hasPop = Array.isArray(s.popup) && s.popup.length > 0;
-            if (!hasPop && !url) continue;
-            const item = { name: Utils.clean(s.name, 100) || '未命名', desc: Utils.clean(s.desc, CFG.META.DESC_MAX), detail: Utils.clean(s.detail, 1000), url };
-            const id = Utils.clean(s.id, CFG.META.ID_MAX); if (id) item.id = id;
-            const tags = Utils.cleanTags(s.tags); if (tags.length) item.tags = tags;
-            if (s.insecure === true) item.insecure = true;
-            if (hasPop) {
-              item.popup = [];
-              for (let k=0; k<s.popup.length && k<this.MAX_POPUPS; k++) {
-                const p = s.popup[k]; if (!p || typeof p !== 'object') continue;
-                const pu = Utils.safeUrl(p.url); if (!pu) continue;
-                item.popup.push({ label: Utils.clean(p.label, 50) || '打开', desc: Utils.clean(p.desc, CFG.META.DESC_MAX), detail: Utils.clean(p.detail, 1000), url: pu });
-              }
-              if (!item.popup.length) continue;
-            }
-            items.push(item);
+      for (let i = 0; i < raw.length && i < this.MAX_CATEGORIES; i++) {
+        const g = raw[i];
+        if (!g || typeof g !== 'object') continue;
+        const cat = Utils.clean(g.category, 50);
+        if (!cat) continue;
+        const en = Utils.clean(g.categoryEn, CFG.META.CATEGORY_EN_MAX);
+        let groups = [];
+        if (Array.isArray(g.groups)) {
+          for (let k = 0; k < g.groups.length && k < this.MAX_GROUPS; k++) {
+            const grp = this.normalizeGroup(g.groups[k], k);
+            if (grp) groups.push(grp);
           }
+        } else if (Array.isArray(g.items)) {
+          // 旧结构：items 直接包成一个无标题分组，popup 展开
+          const items = [];
+          for (let k = 0; k < g.items.length && k < this.MAX_ITEMS; k++) {
+            const s = g.items[k];
+            if (!s || typeof s !== 'object') continue;
+            const baseId = Utils.clean(s.id, CFG.META.ID_MAX) || ('item' + k);
+            const expanded = this.expandLegacyItem(s, baseId);
+            expanded.forEach(it => items.push(it));
+          }
+          if (items.length) groups.push({ name: '', desc: '', detail: '', items });
         }
-        const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, items };
+        if (!groups.length) continue;
+        const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, groups };
         if (en) node.categoryEn = en;
-        if (g.itemOrder === 'manual') node.itemOrder = 'manual';
         out.push(node);
       }
       if (!out.length) throw new Error('全部数据无效');
@@ -1502,36 +897,47 @@ html.perf-lite .search-box:focus-within {
     hasLocalEdits() { return Store.get(CFG.EDITS_KEY) === '1'; },
     markLocalEdits() { Store.set(CFG.EDITS_KEY, '1'); },
     clearLocalEdits() { Store.remove(CFG.EDITS_KEY); },
-    keepSourceOrder(data) {
-      data.forEach(g => {
-        if (!Array.isArray(g.items)) return;
-        g.items.sort((a,b) => a.placeholder ? 1 : b.placeholder ? -1 : 0);
-      });
-      return data;
+    persist() {
+      const ok = Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, schema: CFG.SCHEMA_ID, ts: Date.now(), data: this.data });
+      if (ok) this.markLocalEdits();
+      return ok;
     },
-    persist() { const ok = Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, ts: Date.now(), data: this.data }); if (ok) this.markLocalEdits(); return ok; },
     async resetToOfficial() { Store.remove(CFG.CACHE_KEY); this.clearLocalEdits(); return this.load(true); },
     async load(force) {
-      const c = Store.getJSON(CFG.CACHE_KEY, null), use = c && Array.isArray(c.data) && c.data.length > 0, edits = this.hasLocalEdits();
+      const c = Store.getJSON(CFG.CACHE_KEY, null);
+      const use = c && c.schema === CFG.SCHEMA_ID && Array.isArray(c.data) && c.data.length > 0;
+      const edits = this.hasLocalEdits();
       if (force) return this.fetchNetwork();
-      if (edits && use) { try { this.data = Schema.validate(c.data); this.source = 'local'; return this.data; } catch (e) { this.clearLocalEdits(); } }
-      if (!edits && use && c.version === CFG.CACHE_VERSION) { try { this.data = Schema.validate(c.data); this.keepSourceOrder(this.data); this.source = 'cache'; return this.data; } catch (e) {} }
+      if (edits && use) {
+        try { this.data = Schema.validate(c.data); this.source = 'local'; return this.data; }
+        catch (e) { this.clearLocalEdits(); }
+      }
+      if (!edits && use) {
+        try { this.data = Schema.validate(c.data); this.source = 'cache'; return this.data; }
+        catch (e) {}
+      }
       return this.fetchNetwork();
     },
     async fetchNetwork() {
-      const ctrl = 'AbortController' in window ? new AbortController() : null, t = setTimeout(() => ctrl?.abort(), CFG.DATA_TIMEOUT);
+      const ctrl = 'AbortController' in window ? new AbortController() : null;
+      const t = setTimeout(() => ctrl?.abort(), CFG.DATA_TIMEOUT);
       try {
-        const res = await fetch(CFG.DATA_URL, { cache: 'no-cache', signal: ctrl?.signal }); clearTimeout(t);
+        const res = await fetch(CFG.DATA_URL, { cache: 'no-cache', signal: ctrl?.signal });
+        clearTimeout(t);
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        const raw = await res.json(), data = Schema.validate(raw);
-        this.keepSourceOrder(data); this.data = data; this.source = 'official'; this.clearLocalEdits();
-        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, ts: Date.now(), data });
+        const raw = await res.json();
+        const data = Schema.validate(raw);
+        this.data = data; this.source = 'official'; this.clearLocalEdits();
+        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, schema: CFG.SCHEMA_ID, ts: Date.now(), data });
         return data;
       } catch (e) {
         clearTimeout(t);
         const c = Store.getJSON(CFG.CACHE_KEY, null);
-        if (c && Array.isArray(c.data) && c.data.length > 0) { try { this.data = Schema.validate(c.data); this.source = this.hasLocalEdits() ? 'local' : 'stale'; return this.data; } catch (e2) {} }
-        this.data = CFG.FALLBACK_DATA; this.source = 'fallback'; return CFG.FALLBACK_DATA;
+        if (c && c.schema === CFG.SCHEMA_ID && Array.isArray(c.data) && c.data.length > 0) {
+          try { this.data = Schema.validate(c.data); this.source = this.hasLocalEdits() ? 'local' : 'stale'; return this.data; } catch (e2) {}
+        }
+        this.data = Schema.validate(CFG.FALLBACK_DATA); this.source = 'fallback';
+        return this.data;
       }
     },
     async revalidate() {
@@ -1546,7 +952,7 @@ html.perf-lite .search-box:focus-within {
         if (JSON.stringify(data) === JSON.stringify(this.data)) return;
         if (this.hasLocalEdits() || document.body.classList.contains('editing')) return;
         this.data = data; this.source = 'official';
-        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, ts: Date.now(), data });
+        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, schema: CFG.SCHEMA_ID, ts: Date.now(), data });
         Renderer.render();
       } catch (e) { clearTimeout(t); }
     }
@@ -1557,9 +963,15 @@ html.perf-lite .search-box:focus-within {
     return {
       show(m, o) {
         o = o || {}; if (!root) return;
-        Dom.clear(root); const x = Dom.el('span', 'toast-msg', m); root.appendChild(x);
-        if (o.action?.onClick) { const b = Dom.el('button', 'toast-action', o.action.text || '操作'); b.type = 'button'; b.addEventListener('click', () => { root.classList.remove('show'); clearTimeout(t); o.action.onClick(); }); root.appendChild(b); }
-        root.classList.add('show'); clearTimeout(t); t = setTimeout(() => root.classList.remove('show'), o.duration || 1800);
+        Dom.clear(root);
+        root.appendChild(Dom.el('span', 'toast-msg', m));
+        if (o.action?.onClick) {
+          const b = Dom.el('button', 'toast-action', o.action.text || '操作'); b.type = 'button';
+          b.addEventListener('click', () => { root.classList.remove('show'); clearTimeout(t); o.action.onClick(); });
+          root.appendChild(b);
+        }
+        root.classList.add('show'); clearTimeout(t);
+        t = setTimeout(() => root.classList.remove('show'), o.duration || 1800);
       }
     };
   })();
@@ -1657,9 +1069,14 @@ html.perf-lite .search-box:focus-within {
       const dot = document.getElementById('editDot'), st = document.getElementById('editStatus');
       if (dot && st) {
         const box = st.parentNode;
-        if (this.current === 'admin') { if (this.dirty) { dot.className = 'edit-bar-dot admin-dirty'; st.textContent = '管理员 · 未同步'; box.dataset.short = '未同步'; } else { dot.className = 'edit-bar-dot admin-synced'; st.textContent = '管理员 · 已同步'; box.dataset.short = '已同步'; } }
-        else if (this.current === 'guest') { dot.className = 'edit-bar-dot guest'; st.textContent = '编辑中（本地）'; box.dataset.short = '编辑中'; }
-        else { dot.className = 'edit-bar-dot guest'; st.textContent = ''; box.dataset.short = ''; }
+        if (this.current === 'admin') {
+          if (this.dirty) { dot.className = 'edit-bar-dot admin-dirty'; st.textContent = '管理员 · 未同步'; box.dataset.short = '未同步'; }
+          else { dot.className = 'edit-bar-dot admin-synced'; st.textContent = '管理员 · 已同步'; box.dataset.short = '已同步'; }
+        } else if (this.current === 'guest') {
+          dot.className = 'edit-bar-dot guest'; st.textContent = '编辑中（本地）'; box.dataset.short = '编辑中';
+        } else {
+          dot.className = 'edit-bar-dot guest'; st.textContent = ''; box.dataset.short = '';
+        }
       }
       const eb = document.getElementById('editBtnText'), cb = document.getElementById('cloudBtnText'), c = document.getElementById('btnCloud');
       if (eb) eb.textContent = this.isEditing() ? '退出编辑' : '编辑';
@@ -1668,74 +1085,93 @@ html.perf-lite .search-box:focus-within {
     }
   };
 
+  /* ===== Renderer：三层渲染 ===== */
   const Renderer = (function () {
     const nodes = {};
     function init() { ['main','app','skeleton','statTotal','statGroups','versionBar','versionText'].forEach(k => nodes[k] = document.getElementById(k)); }
-    function btn(o) { const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label); b.type = 'button'; b.dataset.act = o.act; b.dataset.gi = String(o.gi); if (o.ii != null) b.dataset.ii = String(o.ii); b.disabled = !!o.disabled; return b; }
-    
-    function build(item, group, gi, ii) {
-      const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), fg = Utils.contrastFg(group.color);
+    function btn(o) {
+      const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label);
+      b.type = 'button'; b.dataset.act = o.act;
+      b.dataset.ci = String(o.ci);
+      if (o.gi != null) b.dataset.gi = String(o.gi);
+      if (o.ii != null) b.dataset.ii = String(o.ii);
+      b.disabled = !!o.disabled;
+      return b;
+    }
+    function buildItem(item, cat, ci, gi, ii) {
+      const tint = Utils.hexToRgba(cat.color, .14), brd = Utils.hexToRgba(cat.color, .32), fg = Utils.contrastFg(cat.color);
       const li = Dom.el('li', 'item');
-      li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${fg};`;
-      const icon = Dom.el('span', 'item-icon', group.icon || Schema.DEFAULT_ICON);
+      li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${cat.color};--c-fg:${fg};`;
+      const icon = Dom.el('span', 'item-icon', cat.icon || Schema.DEFAULT_ICON);
       const body = Dom.el('span', 'item-body');
       body.appendChild(Dom.el('span', 'item-title', item.name));
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
       const arrow = Dom.el('span', 'item-arrow'); arrow.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
       const acts = Dom.el('div', 'item-actions');
-      acts.appendChild(btn({ act: 'up-item', gi, ii, label: '↑' }));
-      acts.appendChild(btn({ act: 'down-item', gi, ii, label: '↓' }));
-      acts.appendChild(btn({ act: 'edit-item', gi, ii, label: '✎' }));
-      acts.appendChild(btn({ act: 'del-item', gi, ii, label: '✕', danger: true }));
+      acts.appendChild(btn({ act: 'up-item', ci, gi, ii, label: '↑', disabled: ii === 0 }));
+      acts.appendChild(btn({ act: 'down-item', ci, gi, ii, label: '↓' }));
+      acts.appendChild(btn({ act: 'edit-item', ci, gi, ii, label: '✎' }));
+      acts.appendChild(btn({ act: 'del-item', ci, gi, ii, label: '✕', danger: true }));
       li.appendChild(icon); li.appendChild(body); li.appendChild(arrow); li.appendChild(acts);
-      
       li.addEventListener('click', e => {
-        if (Mode.isEditing()) { if (!e.target.closest('.item-actions')) Forms.openLinkForm(gi, ii); return; }
-        if (item.popup?.length) { e.preventDefault(); Actions.openPopup(item, group); }
-        else if (item.url) { Actions.openDetail(item, group); }
+        if (Mode.isEditing()) { if (!e.target.closest('.item-actions')) Forms.openLinkForm(ci, gi, ii); return; }
+        if (item.url) Actions.openDetail(item, cat);
       });
       return li;
     }
-    
-    function buildSection(group, gi, count) {
-      const sec = Dom.el('section', 'section'); sec.dataset.group = String(gi);
-      const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), lin = Utils.hexToRgba(group.color, .42);
+    function buildGroupBlock(cat, ci, group, gi, totalGroups) {
+      const hasName = !!group.name;
+      const block = Dom.el('div', 'group-block');
+      block.dataset.group = String(gi);
+      if (hasName) {
+        const head = Dom.el('div', 'group-head');
+        head.appendChild(Dom.el('h3', 'group-name', group.name));
+        if (group.desc) head.appendChild(Dom.el('span', 'group-desc', group.desc));
+        head.appendChild(Dom.el('span', 'group-count', group.items.length + ''));
+        const acts = Dom.el('div', 'group-actions');
+        acts.appendChild(btn({ act: 'up-subgroup', ci, gi, label: '↑', disabled: gi === 0 }));
+        acts.appendChild(btn({ act: 'down-subgroup', ci, gi, label: '↓', disabled: gi === totalGroups - 1 }));
+        acts.appendChild(btn({ act: 'edit-subgroup', ci, gi, label: '✎' }));
+        acts.appendChild(btn({ act: 'del-subgroup', ci, gi, label: '✕', danger: true }));
+        acts.appendChild(btn({ act: 'add-item-to-group', ci, gi, label: '+' }));
+        head.appendChild(acts);
+        block.appendChild(head);
+      }
+      const grid = Dom.el('ul', 'item-grid');
+      group.items.forEach((item, ii) => grid.appendChild(buildItem(item, cat, ci, gi, ii)));
+      if (!group.items.length && Mode.isEditing()) {
+        const empty = Dom.el('li', 'item placeholder');
+        empty.style.cssText = `--c-bg:${Utils.hexToRgba(cat.color, .14)};--c-border:${Utils.hexToRgba(cat.color, .32)};--c-accent:${cat.color};--c-fg:${Utils.contrastFg(cat.color)};`;
+        empty.innerHTML = `<span class="item-icon">✦</span><span class="item-body"><span class="item-title">空分组</span><span class="item-desc">点击添加入口</span></span>`;
+        empty.addEventListener('click', () => Forms.openLinkForm(ci, gi, -1));
+        grid.appendChild(empty);
+      }
+      block.appendChild(grid);
+      return block;
+    }
+    function buildSection(cat, ci, total) {
+      const sec = Dom.el('section', 'section'); sec.dataset.category = String(ci);
+      const tint = Utils.hexToRgba(cat.color, .14), brd = Utils.hexToRgba(cat.color, .32), lin = Utils.hexToRgba(cat.color, .42);
       const head = Dom.el('div', 'section-head');
-      const icon = Dom.el('span', 'section-icon', group.icon || Schema.DEFAULT_ICON);
+      const icon = Dom.el('span', 'section-icon', cat.icon || Schema.DEFAULT_ICON);
       icon.style.cssText = `--c-bg:${tint};--c-border:${brd};`;
-      const title = Dom.el('h2', 'section-title', group.category); title.id = 'sec-' + gi;
-      const cnt = Dom.el('span', 'section-count', group.items.length + ' 条');
+      const title = Dom.el('h2', 'section-title', cat.category);
+      title.id = 'sec-' + ci;
+      const entryCount = cat.groups.reduce((s, g) => s + g.items.length, 0);
+      const namedGroups = cat.groups.filter(g => g.name).length;
+      const cntText = namedGroups > 0 ? (namedGroups + ' 组 · ' + entryCount + ' 入口') : (entryCount + ' 入口');
+      const cnt = Dom.el('span', 'section-count', cntText);
       const rule = Dom.el('div', 'section-rule'); rule.style.setProperty('--c-line', lin);
       const acts = Dom.el('div', 'section-actions');
-      acts.appendChild(btn({ act: 'up-group', gi, label: '↑', disabled: gi === 0 }));
-      acts.appendChild(btn({ act: 'down-group', gi, label: '↓', disabled: gi === count - 1 }));
-      if (group.itemOrder === 'manual') {
-        const rb = btn({ act: 'reset-order', gi, label: '↺' });
-        rb.title = '恢复梯形排序';
-        acts.appendChild(rb);
-      }
-      acts.appendChild(btn({ act: 'edit-group', gi, label: '✎' }));
-      acts.appendChild(btn({ act: 'del-group', gi, label: '✕', danger: true }));
-      head.append(icon, title, cnt, rule, acts); sec.appendChild(head);
-      
-      const list = Dom.el('ul', 'item-list');
-      
-      const sortedItems = SortUtil.order(group);
-
-      sortedItems.forEach(({ item, idx }) => {
-        if (item.placeholder) {
-          const li = Dom.el('li', 'item placeholder');
-          li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`;
-          li.innerHTML = `<span class="item-icon">✦</span><span class="item-body"><span class="item-title">${item.name}</span><span class="item-desc">${item.desc||''}</span></span>`;
-          list.appendChild(li);
-        } else {
-          list.appendChild(build(item, group, gi, idx));
-        }
-      });
-      sec.appendChild(list);
+      acts.appendChild(btn({ act: 'up-category', ci, label: '↑', disabled: ci === 0 }));
+      acts.appendChild(btn({ act: 'down-category', ci, label: '↓', disabled: ci === total - 1 }));
+      acts.appendChild(btn({ act: 'edit-category', ci, label: '✎' }));
+      acts.appendChild(btn({ act: 'del-category', ci, label: '✕', danger: true }));
+      head.append(icon, title, cnt, rule, acts);
+      sec.appendChild(head);
+      cat.groups.forEach((group, gi) => sec.appendChild(buildGroupBlock(cat, ci, group, gi, cat.groups.length)));
       return sec;
     }
-    
     function render() {
       const app = nodes.app; if (!app) return;
       if (nodes.skeleton) nodes.skeleton.style.display = 'none';
@@ -1748,17 +1184,22 @@ html.perf-lite .search-box:focus-within {
         if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
         return;
       }
-      let tot = 0; const frag = document.createDocumentFragment();
-      data.forEach((g, i) => { frag.appendChild(buildSection(g, i, data.length)); tot += g.items.filter(x => !x.placeholder).length; });
+      let totalEntries = 0;
+      const frag = document.createDocumentFragment();
+      data.forEach((cat, i) => {
+        frag.appendChild(buildSection(cat, i, data.length));
+        totalEntries += cat.groups.reduce((s, g) => s + g.items.length, 0);
+      });
       app.appendChild(frag);
-      if (nodes.statTotal) nodes.statTotal.textContent = tot;
+      if (nodes.statTotal) nodes.statTotal.textContent = totalEntries;
       if (nodes.statGroups) nodes.statGroups.textContent = data.length;
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
     }
     function updateVersionBar() {
       if (!nodes.versionBar || !nodes.versionText) return;
-      if (DataService.source === 'local' || DataService.hasLocalEdits()) { nodes.versionBar.classList.add('show'); nodes.versionText.textContent = '本地版本 · 恢复官方'; }
-      else nodes.versionBar.classList.remove('show');
+      if (DataService.source === 'local' || DataService.hasLocalEdits()) {
+        nodes.versionBar.classList.add('show'); nodes.versionText.textContent = '本地版本 · 恢复官方';
+      } else nodes.versionBar.classList.remove('show');
     }
     return { init, render, updateVersionBar };
   })();
@@ -1766,7 +1207,8 @@ html.perf-lite .search-box:focus-within {
   const Search = {
     input: null, box: null, clearBtn: null, suggest: null, results: [], activeIndex: -1,
     init() {
-      this.input = document.getElementById('searchInput'); this.box = document.getElementById('searchBox'); this.clearBtn = document.getElementById('searchClear'); this.suggest = document.getElementById('searchSuggest');
+      this.input = document.getElementById('searchInput'); this.box = document.getElementById('searchBox');
+      this.clearBtn = document.getElementById('searchClear'); this.suggest = document.getElementById('searchSuggest');
       if (!this.input || !this.box || !this.suggest) return;
       const deb = Utils.debounce(v => this.renderSuggest(v), CFG.SEARCH_DEBOUNCE);
       this.input.addEventListener('input', e => { this.box.classList.toggle('has-value', e.target.value.length > 0); deb(e.target.value); });
@@ -1787,35 +1229,43 @@ html.perf-lite .search-box:focus-within {
     build(kw) {
       const q = Utils.normalize(kw); if (!q) return [];
       const out = [], data = DataService.data || [];
-      for (let gi = 0; gi < data.length && out.length < CFG.SEARCH_LIMIT; gi++) {
-        const g = data[gi], gn = Utils.normalize(g.category);
-        for (let ii = 0; ii < g.items.length && out.length < CFG.SEARCH_LIMIT; ii++) {
-          const i = g.items[ii]; if (i.placeholder) continue;
-          const n = Utils.normalize(i.name), d = Utils.normalize(i.desc), t = Array.isArray(i.tags) ? Utils.normalize(i.tags.join(' ')) : '';
-          if (n.includes(q) || d.includes(q) || gn.includes(q) || t.includes(q)) out.push({ item: i, group: g });
+      for (let ci = 0; ci < data.length && out.length < CFG.SEARCH_LIMIT; ci++) {
+        const cat = data[ci], cn = Utils.normalize(cat.category);
+        for (let gi = 0; gi < cat.groups.length && out.length < CFG.SEARCH_LIMIT; gi++) {
+          const g = cat.groups[gi], gn = Utils.normalize(g.name);
+          for (let ii = 0; ii < g.items.length && out.length < CFG.SEARCH_LIMIT; ii++) {
+            const i = g.items[ii];
+            const n = Utils.normalize(i.name), d = Utils.normalize(i.desc), t = Array.isArray(i.tags) ? Utils.normalize(i.tags.join(' ')) : '';
+            if (n.includes(q) || d.includes(q) || cn.includes(q) || gn.includes(q) || t.includes(q)) out.push({ item: i, category: cat, group: g });
+          }
         }
       }
       return out;
     },
     renderSuggest(kw) {
-      if (!this.suggest) return; this.results = this.build(kw); this.activeIndex = -1; Dom.clear(this.suggest);
+      if (!this.suggest) return;
+      this.results = this.build(kw); this.activeIndex = -1; Dom.clear(this.suggest);
       if (!String(kw).trim()) return this.closeSuggest();
       if (!this.results.length) { this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>'; this.suggest.classList.add('show'); return; }
       this.results.forEach((r, idx) => {
         const a = Dom.el('a', 'suggest-item'); a.href = 'javascript:void(0)';
-        const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON); ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
+        const ic = Dom.el('span', 'suggest-icon', r.category.icon || Schema.DEFAULT_ICON);
+        ic.style.color = r.category.color; ic.style.background = Utils.hexToRgba(r.category.color, .14);
         const bd = Dom.el('span', 'suggest-body');
         bd.appendChild(Dom.el('span', 'suggest-name', r.item.name));
-        bd.appendChild(Dom.el('span', 'suggest-path', r.group.category + (r.item.desc ? ' · ' + r.item.desc : '')));
+        const path = r.category.category + (r.group.name ? ' · ' + r.group.name : '') + (r.item.desc ? ' · ' + r.item.desc : '');
+        bd.appendChild(Dom.el('span', 'suggest-path', path));
         a.append(ic, bd);
-        a.addEventListener('click', e => { e.preventDefault(); if (r.item.popup?.length) Actions.openPopup(r.item, r.group); else Actions.openDetail(r.item, r.group); this.closeSuggest(); });
+        a.addEventListener('click', e => { e.preventDefault(); Actions.openDetail(r.item, r.category); this.closeSuggest(); });
         this.suggest.appendChild(a);
       });
       this.suggest.classList.add('show');
     },
     move(d) {
       const items = this.suggest.querySelectorAll('.suggest-item'); if (!items.length) return;
-      this.activeIndex += d; if (this.activeIndex < 0) this.activeIndex = items.length - 1; if (this.activeIndex >= items.length) this.activeIndex = 0;
+      this.activeIndex += d;
+      if (this.activeIndex < 0) this.activeIndex = items.length - 1;
+      if (this.activeIndex >= items.length) this.activeIndex = 0;
       items.forEach((n, i) => { n.classList.toggle('active', i === this.activeIndex); });
       items[this.activeIndex].scrollIntoView({ block: 'nearest' });
     },
@@ -1823,43 +1273,35 @@ html.perf-lite .search-box:focus-within {
     externalSearch() { const kw = this.input?.value.trim(); if (kw) window.location.assign('https://www.bing.com/search?q=' + encodeURIComponent(kw)); }
   };
 
+  /* ===== Actions ===== */
   const Actions = {
-    openDetail(item, group) {
+    openDetail(item, cat) {
       const modal = document.getElementById('detailModal');
       if (!modal) return;
-
       document.getElementById('detailTitle').textContent = item.name;
       document.getElementById('detailDesc').textContent = item.detail || item.desc || '暂无详细介绍。';
-      
       const iconEl = document.getElementById('detailIcon');
-      iconEl.textContent = group.icon || Schema.DEFAULT_ICON;
-      iconEl.style.setProperty('--c-bg', Utils.hexToRgba(group.color, .14));
-      iconEl.style.setProperty('--c-border', Utils.hexToRgba(group.color, .32));
-
+      iconEl.textContent = cat.icon || Schema.DEFAULT_ICON;
+      iconEl.style.setProperty('--c-bg', Utils.hexToRgba(cat.color, .14));
+      iconEl.style.setProperty('--c-border', Utils.hexToRgba(cat.color, .32));
       let host = '未知域名';
       try { host = new URL(item.url).hostname; } catch (e) {}
       document.getElementById('detailHost').textContent = host;
-
       const box = document.getElementById('securityBox');
       const status = document.getElementById('securityStatus');
       const sub = document.getElementById('securitySub');
       const btnVisit = document.getElementById('btnVisit');
-
       box.className = 'security-box state-scanning scanning';
       status.textContent = '正在连接...';
       sub.textContent = '正在进行安全检查';
       btnVisit.href = 'javascript:void(0)';
       btnVisit.classList.remove('ready');
-
       Modal.open(modal);
-
       setTimeout(() => { status.textContent = '校验域名归属...'; }, 300);
-
       setTimeout(() => {
         box.classList.remove('scanning');
         const isHttps = item.url.startsWith('https://');
         const isInsecure = item.insecure === true || item.url.startsWith('http://');
-        
         if (isInsecure && !isHttps) {
           box.className = 'security-box state-warn';
           status.textContent = '⚠ 非加密连接';
@@ -1869,178 +1311,224 @@ html.perf-lite .search-box:focus-within {
           status.textContent = '✅ 检测通过';
           sub.textContent = '已建立安全加密连接，未发现已知风险';
         }
-
         btnVisit.href = item.url;
         btnVisit.classList.add('ready');
         btnVisit.textContent = '继续访问';
       }, 1000);
     },
-    openPopup(item, group) {
-      if (Mode.isEditing()) return;
-      const modal = Dom.el('div', 'modal show');
-      modal.dataset.modalDestroy = '1';
-      const mask = Dom.el('button', 'modal-mask'); mask.type = 'button';
-      const box = Dom.el('div', 'modal-box');
-      const head = Dom.el('div', 'modal-head');
-      head.appendChild(Dom.el('h2', 'modal-title', item.name));
-      const closeBtn = Dom.el('button', 'modal-close');
-      closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
-      head.appendChild(closeBtn); box.appendChild(head);
-
-      if (item.detail) {
-        const intro = Dom.el('div', 'detail-desc');
-        intro.style.cssText = 'font-size:12.5px; color:var(--text-3); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border-1);';
-        intro.textContent = item.detail;
-        box.appendChild(intro);
-      }
-
-      const ic = group.icon || Schema.DEFAULT_ICON, cl = group.color || Schema.DEFAULT_COLOR;
-      
-      // popup 子链接强制梯形排序（按 label 视觉宽度升序）
-      const sortedPopup = [...item.popup].sort((a, b) => {
-        const wa = Utils.calcVisualWidth(a.label);
-        const wb = Utils.calcVisualWidth(b.label);
-        return wa - wb;
-      });
-
-      sortedPopup.forEach(entry => {
-        const link = Dom.el('a', 'suggest-item');
-        link.href = 'javascript:void(0)';
-        link.style.marginBottom = '6px';
-        link.style.border = '1px solid var(--border-1)';
-        link.style.borderRadius = '8px';
-        
-        const icon = Dom.el('span', 'suggest-icon', ic); icon.style.color = cl; icon.style.background = Utils.hexToRgba(cl, .14);
-        const body = Dom.el('span', 'suggest-body');
-        body.appendChild(Dom.el('span', 'suggest-name', entry.label || '打开'));
-        if (entry.desc) body.appendChild(Dom.el('span', 'suggest-path', entry.desc));
-        
-        link.append(icon, body);
-        link.addEventListener('click', () => {
-           Modal.close(modal);
-           setTimeout(() => Actions.openDetail({ ...entry, name: entry.label || entry.name, desc: entry.desc }, group), 150);
-        });
-        box.appendChild(link);
-      });
-      modal.append(mask, box); document.body.appendChild(modal);
-      Modal.open(modal);
-      closeBtn.addEventListener('click', () => Modal.close(modal));
-      mask.addEventListener('click', () => Modal.close(modal));
+    deleteItem(ci, gi, ii) {
+      const g = DataService.data[ci]?.groups[gi];
+      if (!g || !g.items[ii]) return;
+      if (!confirm('确定删除该入口？')) return;
+      g.items.splice(ii, 1);
+      DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除');
     },
-    deleteLink(gi, ii) { const g = DataService.data[gi]; if (!g || !g.items[ii]) return; if (!confirm('确定删除？')) return; g.items.splice(ii, 1); DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除'); },
-    deleteGroup(gi) { const g = DataService.data[gi]; if (!g) return; if (!confirm('确定删除分类？')) return; DataService.data.splice(gi, 1); DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除'); },
-    moveItem(gi, ii, d) {
-      const g = DataService.data[gi];
+    deleteSubGroup(ci, gi) {
+      const cat = DataService.data[ci];
+      if (!cat || !cat.groups[gi]) return;
+      if (!confirm('确定删除分组「' + (cat.groups[gi].name || '无标题') + '」及其全部入口？')) return;
+      cat.groups.splice(gi, 1);
+      DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除');
+    },
+    deleteCategory(ci) {
+      if (!DataService.data[ci]) return;
+      if (!confirm('确定删除分类「' + DataService.data[ci].category + '」？')) return;
+      DataService.data.splice(ci, 1);
+      DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已删除');
+    },
+    moveItem(ci, gi, ii, d) {
+      const g = DataService.data[ci]?.groups[gi];
       if (!g) return;
-      // 先用原始下标拿到 item 引用，避免 materialize 后下标错位
-      const targetItem = g.items[ii];
-      if (!targetItem || targetItem.placeholder) return;
-      // 把当前显示顺序固化为数据顺序（auto → manual 一次性完成）
-      SortUtil.materialize(g);
-      const items = g.items;
-      const curIdx = items.indexOf(targetItem);
-      if (curIdx < 0) return;
-      const ni = curIdx + d;
-      if (ni < 0 || ni >= items.length) return;
-      if (items[ni].placeholder) return; // placeholder 恒底，不参与交换
-      [items[curIdx], items[ni]] = [items[ni], items[curIdx]];
+      const ni = ii + d;
+      if (ni < 0 || ni >= g.items.length) return;
+      [g.items[ii], g.items[ni]] = [g.items[ni], g.items[ii]];
       DataService.persist(); Mode.markDirty(); Renderer.render();
     },
-    moveGroup(gi, d) { const data = DataService.data, ni = gi + d; if (ni < 0 || ni >= data.length) return; [data[gi], data[ni]] = [data[ni], data[gi]]; DataService.persist(); Mode.markDirty(); Renderer.render(); }
+    moveSubGroup(ci, gi, d) {
+      const cat = DataService.data[ci];
+      if (!cat) return;
+      const ni = gi + d;
+      if (ni < 0 || ni >= cat.groups.length) return;
+      [cat.groups[gi], cat.groups[ni]] = [cat.groups[ni], cat.groups[gi]];
+      DataService.persist(); Mode.markDirty(); Renderer.render();
+    },
+    moveCategory(ci, d) {
+      const data = DataService.data;
+      const ni = ci + d;
+      if (ni < 0 || ni >= data.length) return;
+      [data[ci], data[ni]] = [data[ni], data[ci]];
+      DataService.persist(); Mode.markDirty(); Renderer.render();
+    }
   };
 
+  /* ===== Forms ===== */
   const Forms = (function () {
-    const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null };
-    const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR, en: '' };
-    function setLinkType(t) {
-      linkCtx.type = t;
-      Dom.$$('.form-tab').forEach(x => { const a = x.dataset.linkType === t; x.classList.toggle('active', a); x.style.background = a ? 'var(--surface-3)' : 'transparent'; });
-      document.getElementById('linkSingleField').hidden = (t !== 'single');
-      document.getElementById('linkMultiField').hidden = (t !== 'multi');
+    const linkCtx = { ci: -1, gi: -1, ii: -1, isNew: true };
+    const catCtx = { ci: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR };
+    const subCtx = { ci: -1, gi: -1, isNew: true };
+
+    function fillCategorySelect(sel, selectedCi) {
+      Dom.clear(sel);
+      DataService.data.forEach((c, i) => sel.add(new Option(c.category, i, false, i === selectedCi)));
     }
-    function addRow(d) {
-      const list = document.getElementById('popupList');
-      const row = Dom.el('div', 'popup-row');
-      row.style.cssText = 'background:var(--surface);padding:8px;border-radius:6px;border:1px solid var(--border-1);margin-bottom:6px;';
-      row.innerHTML = `<input class="form-input p-label" placeholder="标签" style="margin-bottom:4px;font-size:12px;" value="${d?.label||''}">
-        <input class="form-input p-url" placeholder="https://..." style="margin-bottom:4px;font-size:12px;" value="${d?.url||''}">
-        <input class="form-input p-desc" placeholder="卡片短描述(${CFG.META.DESC_MAX}字内)" maxlength="${CFG.META.DESC_MAX}" style="margin-bottom:4px;font-size:12px;" value="${d?.desc||''}">
-        <input class="form-input p-detail" placeholder="内容描述(建议21–63字)" style="margin-bottom:4px;font-size:12px;" value="${d?.detail||''}">
-        <button type="button" class="btn del-row" style="padding:4px;font-size:11px;color:var(--danger);">删除</button>`;
-      row.querySelector('.del-row').onclick = () => row.remove();
-      list.appendChild(row);
+    function fillSubGroupSelect(sel, ci, selectedGi) {
+      Dom.clear(sel);
+      const cat = DataService.data[ci];
+      if (!cat) return;
+      cat.groups.forEach((g, gi) => {
+        const label = g.name || '（无标题分组）';
+        sel.add(new Option(label, gi, false, gi === selectedGi));
+      });
     }
+
     return {
-      openLinkForm(gi, ii) {
-        const modal = document.getElementById('linkModal'), g = DataService.data[gi];
-        if (!modal || !g) return;
-        const isNew = ii < 0, item = isNew ? { name: '', url: '', desc: '', detail: '', tags: [], id: '' } : g.items[ii];
-        Object.assign(linkCtx, { gi, ii, isNew, origin: isNew ? null : item });
-        
-        document.getElementById('linkTitle').textContent = isNew ? '添加链接' : '编辑链接';
+      openLinkForm(ci, gi, ii) {
+        const modal = document.getElementById('linkModal');
+        if (!modal) return;
+        const isNew = ii < 0;
+        const cat = DataService.data[ci];
+        if (!cat) return;
+        let item = { name: '', url: '', desc: '', detail: '', tags: [], id: '' };
+        if (!isNew) {
+          const g = cat.groups[gi];
+          if (!g || !g.items[ii]) return;
+          item = g.items[ii];
+        }
+        Object.assign(linkCtx, { ci, gi, ii, isNew });
+        document.getElementById('linkTitle').textContent = isNew ? '添加入口' : '编辑入口';
         document.getElementById('linkName').value = item.name || '';
         document.getElementById('linkUrl').value = item.url || '';
         document.getElementById('linkDesc').value = item.desc || '';
         document.getElementById('linkDetail').value = item.detail || '';
-        document.getElementById('linkTags').value = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || '');
+        document.getElementById('linkTags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
         document.getElementById('linkId').value = item.id || '';
-        
-        const hp = !isNew && item.popup?.length > 0; setLinkType(hp ? 'multi' : 'single');
-        const list = document.getElementById('popupList'); Dom.clear(list);
-        if (hp) item.popup.forEach(p => addRow(p));
-        
-        const sel = document.getElementById('linkGroup'); Dom.clear(sel);
-        DataService.data.forEach((x, i) => sel.add(new Option(x.category, i, false, i === gi)));
+        const catSel = document.getElementById('linkCategory');
+        fillCategorySelect(catSel, ci);
+        const subSel = document.getElementById('linkSubGroup');
+        fillSubGroupSelect(subSel, ci, gi);
+        catSel.onchange = () => {
+          const newCi = Number(catSel.value);
+          fillSubGroupSelect(subSel, newCi, 0);
+        };
         Modal.open(modal, { initialFocus: '#linkName' });
       },
       submitLink() {
         const name = Utils.clean(document.getElementById('linkName').value, 100);
+        if (!name) return alert('请填写名称');
+        const url = Utils.safeUrl(document.getElementById('linkUrl').value);
+        if (!url) return alert('请填写有效网址');
         const desc = Utils.clean(document.getElementById('linkDesc').value, CFG.META.DESC_MAX);
         const detail = Utils.clean(document.getElementById('linkDetail').value, 1000);
-        const tgt = Number(document.getElementById('linkGroup').value);
-        
-        let id = Utils.clean(document.getElementById('linkId').value, CFG.META.ID_MAX);
-        if (!id) id = 'item-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-        
         const rawTags = document.getElementById('linkTags').value;
         const tags = Utils.cleanTags(rawTags.split(/[,，\s]+/));
-
-        if (!name) return alert('请填写名称');
-        
-        let ni;
-        if (linkCtx.type === 'single') {
-          const url = Utils.safeUrl(document.getElementById('linkUrl').value);
-          if (!url) return alert('请填写有效网址');
-          ni = { id, name, url, desc, detail };
-        } else {
-          const ps = Dom.$$('.popup-row').map(r => ({ label: Utils.clean(r.querySelector('.p-label').value, 50), url: Utils.safeUrl(r.querySelector('.p-url').value), desc: Utils.clean(r.querySelector('.p-desc').value, CFG.META.DESC_MAX), detail: Utils.clean(r.querySelector('.p-detail').value, 1000) })).filter(x => x.label && x.url);
-          if (!ps.length) return alert('至少添加 1 条子链接');
-          ni = { id, name, desc, detail, popup: ps };
-        }
-        
+        let id = Utils.clean(document.getElementById('linkId').value, CFG.META.ID_MAX);
+        if (!id) id = 'item-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        const catCi = Number(document.getElementById('linkCategory').value);
+        const subGi = Number(document.getElementById('linkSubGroup').value);
+        if (!DataService.data[catCi] || !DataService.data[catCi].groups[subGi]) return alert('目标分组不存在');
+        const ni = { id, name, url, desc, detail };
         if (tags.length) ni.tags = tags;
-        if (linkCtx.origin && linkCtx.origin.insecure) ni.insecure = true;
-        
-        if (!linkCtx.isNew && tgt === linkCtx.gi) DataService.data[linkCtx.gi].items[linkCtx.ii] = ni;
-        else { if (!linkCtx.isNew) DataService.data[linkCtx.gi].items.splice(linkCtx.ii, 1); DataService.data[tgt].items.push(ni); }
+        if (linkCtx.isNew) {
+          DataService.data[catCi].groups[subGi].items.push(ni);
+        } else {
+          const oldCat = DataService.data[linkCtx.ci];
+          const oldG = oldCat.groups[linkCtx.gi];
+          if (!oldG || !oldG.items[linkCtx.ii]) return;
+          if (catCi === linkCtx.ci && subGi === linkCtx.gi) {
+            DataService.data[catCi].groups[subGi].items[linkCtx.ii] = ni;
+          } else {
+            oldG.items.splice(linkCtx.ii, 1);
+            DataService.data[catCi].groups[subGi].items.push(ni);
+          }
+        }
         DataService.persist(); Modal.close(document.getElementById('linkModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
-      openGroupForm(gi) {
-        const modal = document.getElementById('groupModal'), isNew = gi < 0, g = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[gi];
-        if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, color: g.color, en: g.categoryEn || '' });
-        document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
-        document.getElementById('groupName').value = g.category || '';
+      openCategoryForm(ci) {
+        const modal = document.getElementById('categoryModal');
+        if (!modal) return;
+        const isNew = ci < 0;
+        const cat = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[ci];
+        if (!cat) return;
+        Object.assign(catCtx, { ci, icon: cat.icon, color: cat.color });
+        document.getElementById('categoryTitle').textContent = isNew ? '添加分类' : '编辑分类';
+        document.getElementById('categoryName').value = cat.category || '';
         const ip = document.getElementById('iconPicker'); Dom.clear(ip);
-        CFG.ICON_PRESETS.forEach(ic => { const b = Dom.el('button', 'icon-option' + (ic === groupCtx.icon ? ' active' : ''), ic); b.style.cssText = 'aspect-ratio:1;border:1px solid var(--border-1);background:var(--surface-2);border-radius:6px;cursor:pointer;font-size:16px;'; b.onclick = () => { Dom.$$('.icon-option', ip).forEach(x => x.style.borderColor = 'var(--border-1)'); b.style.borderColor = 'var(--accent)'; groupCtx.icon = ic; }; ip.appendChild(b); });
+        CFG.ICON_PRESETS.forEach(ic => {
+          const b = Dom.el('button', 'icon-option', ic);
+          b.type = 'button';
+          b.style.cssText = 'aspect-ratio:1;border:1px solid var(--border-1);background:var(--surface-2);border-radius:6px;cursor:pointer;font-size:16px;';
+          if (ic === catCtx.icon) b.style.borderColor = 'var(--accent)';
+          b.onclick = () => {
+            Dom.$$('.icon-option', ip).forEach(x => x.style.borderColor = 'var(--border-1)');
+            b.style.borderColor = 'var(--accent)'; catCtx.icon = ic;
+          };
+          ip.appendChild(b);
+        });
         const cp = document.getElementById('colorPicker'); Dom.clear(cp);
-        CFG.COLOR_PRESETS.forEach(c => { const b = Dom.el('button', 'color-option'); b.style.cssText = `aspect-ratio:1;border-radius:50%;background:${c};border:2px solid transparent;cursor:pointer;`; if (c === groupCtx.color) b.style.borderColor = 'var(--text-1)'; b.onclick = () => { Dom.$$('.color-option', cp).forEach(x => x.style.borderColor = 'transparent'); b.style.borderColor = 'var(--text-1)'; groupCtx.color = c; }; cp.appendChild(b); });
-        Modal.open(modal, { initialFocus: '#groupName' });
+        CFG.COLOR_PRESETS.forEach(c => {
+          const b = Dom.el('button', 'color-option');
+          b.type = 'button';
+          b.style.cssText = `aspect-ratio:1;border-radius:50%;background:${c};border:2px solid ${c === catCtx.color ? 'var(--text-1)' : 'transparent'};cursor:pointer;`;
+          b.onclick = () => {
+            Dom.$$('.color-option', cp).forEach(x => x.style.borderColor = 'transparent');
+            b.style.borderColor = 'var(--text-1)'; catCtx.color = c;
+          };
+          cp.appendChild(b);
+        });
+        Modal.open(modal, { initialFocus: '#categoryName' });
       },
-      submitGroup() {
-        const name = Utils.clean(document.getElementById('groupName').value, 50); if (!name) return alert('请填写名称');
-        if (groupCtx.gi < 0) DataService.data.push({ category: name, icon: groupCtx.icon, color: groupCtx.color, items: [] });
-        else { const t = DataService.data[groupCtx.gi]; t.category = name; t.icon = groupCtx.icon; t.color = groupCtx.color; }
-        DataService.persist(); Modal.close(document.getElementById('groupModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
+      submitCategory() {
+        const name = Utils.clean(document.getElementById('categoryName').value, 50);
+        if (!name) return alert('请填写分类名称');
+        if (catCtx.ci < 0) {
+          DataService.data.push({ category: name, icon: catCtx.icon, color: catCtx.color, groups: [] });
+        } else {
+          const t = DataService.data[catCtx.ci];
+          t.category = name; t.icon = catCtx.icon; t.color = catCtx.color;
+        }
+        DataService.persist(); Modal.close(document.getElementById('categoryModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
+      },
+      openSubGroupForm(ci, gi) {
+        const modal = document.getElementById('subGroupModal');
+        if (!modal) return;
+        const isNew = gi < 0;
+        const cat = DataService.data[ci];
+        if (!cat) return;
+        const g = isNew ? { name: '', desc: '', detail: '' } : cat.groups[gi];
+        if (!g) return;
+        Object.assign(subCtx, { ci, gi, isNew });
+        document.getElementById('subGroupTitle').textContent = isNew ? '添加分组' : '编辑分组';
+        const catSel = document.getElementById('subGroupCategory');
+        Dom.clear(catSel);
+        DataService.data.forEach((c, i) => catSel.add(new Option(c.category, i, false, i === ci)));
+        document.getElementById('subGroupName').value = g.name || '';
+        document.getElementById('subGroupDesc').value = g.desc || '';
+        document.getElementById('subGroupDetail').value = g.detail || '';
+        Modal.open(modal, { initialFocus: '#subGroupName' });
+      },
+      submitSubGroup() {
+        const name = Utils.clean(document.getElementById('subGroupName').value, 50);
+        if (!name) return alert('请填写分组名称');
+        const desc = Utils.clean(document.getElementById('subGroupDesc').value, 100);
+        const detail = Utils.clean(document.getElementById('subGroupDetail').value, 1000);
+        const targetCi = Number(document.getElementById('subGroupCategory').value);
+        const targetCat = DataService.data[targetCi];
+        if (!targetCat) return alert('目标分类不存在');
+        if (subCtx.isNew) {
+          targetCat.groups.push({ name, desc, detail, items: [] });
+        } else {
+          const oldCat = DataService.data[subCtx.ci];
+          const oldG = oldCat.groups[subCtx.gi];
+          if (!oldG) return;
+          if (targetCi === subCtx.ci) {
+            oldG.name = name; oldG.desc = desc; oldG.detail = detail;
+          } else {
+            oldG.name = name; oldG.desc = desc; oldG.detail = detail;
+            oldCat.groups.splice(subCtx.gi, 1);
+            targetCat.groups.push(oldG);
+          }
+        }
+        DataService.persist(); Modal.close(document.getElementById('subGroupModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
       openGhConfig(cb) {
         const modal = document.getElementById('ghModal'), cfg = GitHubClient.loadConfig() || {};
@@ -2053,86 +1541,138 @@ html.perf-lite .search-box:focus-within {
       },
       async submitGh() {
         const btn = document.getElementById('ghSave');
-        const cfg = { user: document.getElementById('ghUser').value.trim(), repo: document.getElementById('ghRepo').value.trim(), branch: document.getElementById('ghBranch').value.trim(), path: document.getElementById('ghPath').value.trim(), token: document.getElementById('ghToken').value.trim() };
+        const cfg = {
+          user: document.getElementById('ghUser').value.trim() || CFG.GH.DEFAULT_USER,
+          repo: document.getElementById('ghRepo').value.trim() || CFG.GH.DEFAULT_REPO,
+          branch: document.getElementById('ghBranch').value.trim() || CFG.GH.DEFAULT_BRANCH,
+          path: document.getElementById('ghPath').value.trim() || CFG.GH.DEFAULT_PATH,
+          token: document.getElementById('ghToken').value.trim()
+        };
         if (!cfg.token) return alert('请输入 Token');
         btn.disabled = true; btn.textContent = '连接中...';
-        try { await GitHubClient.testConnection(cfg); GitHubClient.saveConfig(cfg); Modal.close(document.getElementById('ghModal')); Toast.show('配置成功'); const m = document.getElementById('ghModal'); if (m._cb) { m._cb(); m._cb = null; } }
-        catch (e) { alert(e.message); }
+        try {
+          await GitHubClient.testConnection(cfg);
+          GitHubClient.saveConfig(cfg);
+          Modal.close(document.getElementById('ghModal'));
+          Toast.show('配置成功');
+          const m = document.getElementById('ghModal');
+          if (m._cb) { m._cb(); m._cb = null; }
+        } catch (e) { alert(e.message); }
         finally { btn.disabled = false; btn.textContent = '保存并连接'; }
       },
-      clearGhConfig() { if (!confirm('清除配置？')) return; GitHubClient.clearConfig(); Auth.clear(); Modal.close(document.getElementById('ghModal')); Mode.updateUI(); },
-      bindLinkModalEvents() {
-        Dom.delegate(document, 'click', '.form-tab', (e, t) => setLinkType(t.dataset.linkType));
-        document.getElementById('popupAddBtn').onclick = () => addRow();
-      }
+      clearGhConfig() { if (!confirm('清除配置？')) return; GitHubClient.clearConfig(); Auth.clear(); Modal.close(document.getElementById('ghModal')); Mode.updateUI(); }
     };
   })();
 
   const Cloud = {
     async sync() {
-      const cfg = GitHubClient.loadConfig(); if (!cfg) return Forms.openGhConfig(() => Cloud.sync());
-      const btn = document.getElementById('btnSync'); btn.disabled = true; btn.textContent = '同步中...';
-      try { const e = await GitHubClient.getFile(cfg); await GitHubClient.putFile(cfg, JSON.stringify(DataService.data, null, 2), e.sha); DataService.clearLocalEdits(); Mode.markClean(); Renderer.updateVersionBar(); Toast.show('✅ 已同步'); }
-      catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '⇧ 同步'; }
+      const cfg = GitHubClient.loadConfig();
+      if (!cfg) return Forms.openGhConfig(() => Cloud.sync());
+      const btn = document.getElementById('btnSync');
+      btn.disabled = true; btn.textContent = '同步中...';
+      try {
+        const e = await GitHubClient.getFile(cfg);
+        await GitHubClient.putFile(cfg, JSON.stringify(DataService.data, null, 2), e.sha);
+        DataService.clearLocalEdits(); Mode.markClean(); Renderer.updateVersionBar();
+        Toast.show('✅ 已同步');
+      } catch (e) { Toast.show('失败：' + e.message); }
+      finally { btn.disabled = false; btn.textContent = '⇧ 同步'; }
     },
     async pull() {
-      const cfg = GitHubClient.loadConfig(); if (!cfg) return Forms.openGhConfig(() => Cloud.pull());
+      const cfg = GitHubClient.loadConfig();
+      if (!cfg) return Forms.openGhConfig(() => Cloud.pull());
       if (Mode.dirty && !confirm('覆盖本地改动？')) return;
-      const btn = document.getElementById('btnPull'); btn.disabled = true; btn.textContent = '拉取中...';
-      try { const e = await GitHubClient.getFile(cfg); if (!e.content) throw new Error('云端无文件'); const d = Schema.validate(JSON.parse(e.content)); DataService.keepSourceOrder(d); DataService.data = d; Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, ts: Date.now(), data: d }); DataService.clearLocalEdits(); Mode.markClean(); Renderer.render(); Renderer.updateVersionBar(); Toast.show('✅ 已拉取'); }
-      catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '↓ 拉取'; }
+      const btn = document.getElementById('btnPull');
+      btn.disabled = true; btn.textContent = '拉取中...';
+      try {
+        const e = await GitHubClient.getFile(cfg);
+        if (!e.content) throw new Error('云端无文件');
+        const d = Schema.validate(JSON.parse(e.content));
+        DataService.data = d;
+        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, schema: CFG.SCHEMA_ID, ts: Date.now(), data: d });
+        DataService.clearLocalEdits(); Mode.markClean(); Renderer.render(); Renderer.updateVersionBar();
+        Toast.show('✅ 已拉取');
+      } catch (e) { Toast.show('失败：' + e.message); }
+      finally { btn.disabled = false; btn.textContent = '↓ 拉取'; }
     },
-    async resetToOfficial() { if (!confirm('恢复官方？')) return; await DataService.resetToOfficial(); Renderer.render(); Renderer.updateVersionBar(); Mode.markClean(); Toast.show('已恢复'); }
+    async resetToOfficial() {
+      if (!confirm('恢复官方数据？本地改动将丢失。')) return;
+      await DataService.resetToOfficial();
+      Renderer.render(); Renderer.updateVersionBar(); Mode.markClean();
+      Toast.show('已恢复');
+    }
   };
 
   function bindEvents() {
-    const be = document.getElementById('btnEdit'); if (be) be.onclick = () => Mode.isEditing() ? Mode.exit() : Mode.enterGuest();
+    const be = document.getElementById('btnEdit');
+    if (be) be.onclick = () => Mode.isEditing() ? Mode.exit() : Mode.enterGuest();
     const bc = document.getElementById('btnCloud');
     if (bc) {
       let t = 0, fired = false;
-      bc.addEventListener('pointerdown', () => { fired = false; t = setTimeout(() => { t = 0; fired = true; if (Auth.isAdmin() && confirm('重新配置？')) Forms.openGhConfig(); }, CFG.LONG_PRESS_MS); });
+      bc.addEventListener('pointerdown', () => {
+        fired = false;
+        t = setTimeout(() => { t = 0; fired = true; if (Auth.isAdmin() && confirm('重新配置？')) Forms.openGhConfig(); }, CFG.LONG_PRESS_MS);
+      });
       const cancel = () => { if (t) clearTimeout(t); };
       bc.addEventListener('pointerup', cancel); bc.addEventListener('pointerleave', cancel);
-      bc.onclick = e => { if (fired) { fired = false; e.preventDefault(); return; } if (Auth.isAdmin()) Mode.enterAdmin(); else Forms.openGhConfig(() => { Auth.persist(); Mode.enterAdmin(); }); };
+      bc.onclick = e => {
+        if (fired) { fired = false; e.preventDefault(); return; }
+        if (Auth.isAdmin()) Mode.enterAdmin();
+        else Forms.openGhConfig(() => { Auth.persist(); Mode.enterAdmin(); });
+      };
     }
-    document.getElementById('btnExitEdit').onclick = () => { if (Mode.isAdmin() && Mode.dirty && !confirm('未同步，确定退出？')) return; Mode.exit(); };
+    document.getElementById('btnExitEdit').onclick = () => {
+      if (Mode.isAdmin() && Mode.dirty && !confirm('未同步，确定退出？')) return;
+      Mode.exit();
+    };
     document.getElementById('btnReset').onclick = () => Cloud.resetToOfficial();
     document.getElementById('btnSync').onclick = () => Cloud.sync();
     document.getElementById('btnPull').onclick = () => Cloud.pull();
     document.getElementById('versionPill').onclick = () => Cloud.resetToOfficial();
-    document.getElementById('btnAddLink').onclick = () => DataService.data.length ? Forms.openLinkForm(0, -1) : Toast.show('请先添加分类');
-    document.getElementById('btnAddGroup').onclick = () => Forms.openGroupForm(-1);
-    document.getElementById('btnVisit').onclick = function(e) {
-      if (!this.classList.contains('ready')) {
-        e.preventDefault();
-        return;
-      }
+    document.getElementById('btnAddCategory').onclick = () => Forms.openCategoryForm(-1);
+    document.getElementById('btnAddSubGroup').onclick = () => {
+      if (!DataService.data.length) return Toast.show('请先添加分类');
+      Forms.openSubGroupForm(0, -1);
+    };
+    document.getElementById('btnAddLink').onclick = () => {
+      if (!DataService.data.length) return Toast.show('请先添加分类');
+      const cat = DataService.data[0];
+      if (!cat.groups.length) cat.groups.push({ name: '', desc: '', detail: '', items: [] });
+      Forms.openLinkForm(0, 0, -1);
+    };
+    document.getElementById('btnVisit').onclick = function (e) {
+      if (!this.classList.contains('ready')) { e.preventDefault(); return; }
       e.preventDefault();
       window.open(this.href, '_blank', 'noopener,noreferrer');
     };
-    
-    Dom.delegate(document, 'click', '[data-modal-close]', (e, t) => Modal.close(t.closest('.modal')));
-    Dom.delegate(document, 'click', '[data-act]', (e, t) => {
-      if (t.disabled) return; e.preventDefault(); e.stopPropagation();
-      const act = t.dataset.act, gi = parseInt(t.dataset.gi), ii = t.dataset.ii ? parseInt(t.dataset.ii) : -1;
-      if (act === 'up-item') Actions.moveItem(gi, ii, -1);
-      else if (act === 'down-item') Actions.moveItem(gi, ii, 1);
-      else if (act === 'edit-item') Forms.openLinkForm(gi, ii);
-      else if (act === 'del-item') Actions.deleteLink(gi, ii);
-      else if (act === 'up-group') Actions.moveGroup(gi, -1);
-      else if (act === 'down-group') Actions.moveGroup(gi, 1);
-      else if (act === 'reset-order') {
-        const g = DataService.data[gi];
-        if (g) { delete g.itemOrder; DataService.persist(); Mode.markDirty(); Renderer.render(); Toast.show('已恢复梯形排序'); }
-      }
-      else if (act === 'edit-group') Forms.openGroupForm(gi);
-      else if (act === 'del-group') Actions.deleteGroup(gi);
-    });
     document.getElementById('linkOk').onclick = () => Forms.submitLink();
-    document.getElementById('groupOk').onclick = () => Forms.submitGroup();
+    document.getElementById('categoryOk').onclick = () => Forms.submitCategory();
+    document.getElementById('subGroupOk').onclick = () => Forms.submitSubGroup();
     document.getElementById('ghSave').onclick = () => Forms.submitGh();
     document.getElementById('ghClear').onclick = () => Forms.clearGhConfig();
-    Forms.bindLinkModalEvents();
+
+    Dom.delegate(document, 'click', '[data-modal-close]', (e, t) => Modal.close(t.closest('.modal')));
+    Dom.delegate(document, 'click', '[data-act]', (e, t) => {
+      if (t.disabled) return;
+      e.preventDefault(); e.stopPropagation();
+      const act = t.dataset.act;
+      const ci = parseInt(t.dataset.ci);
+      const gi = t.dataset.gi != null ? parseInt(t.dataset.gi) : -1;
+      const ii = t.dataset.ii != null ? parseInt(t.dataset.ii) : -1;
+      if (act === 'up-item') Actions.moveItem(ci, gi, ii, -1);
+      else if (act === 'down-item') Actions.moveItem(ci, gi, ii, 1);
+      else if (act === 'edit-item') Forms.openLinkForm(ci, gi, ii);
+      else if (act === 'del-item') Actions.deleteItem(ci, gi, ii);
+      else if (act === 'up-subgroup') Actions.moveSubGroup(ci, gi, -1);
+      else if (act === 'down-subgroup') Actions.moveSubGroup(ci, gi, 1);
+      else if (act === 'edit-subgroup') Forms.openSubGroupForm(ci, gi);
+      else if (act === 'del-subgroup') Actions.deleteSubGroup(ci, gi);
+      else if (act === 'add-item-to-group') Forms.openLinkForm(ci, gi, -1);
+      else if (act === 'up-category') Actions.moveCategory(ci, -1);
+      else if (act === 'down-category') Actions.moveCategory(ci, 1);
+      else if (act === 'edit-category') Forms.openCategoryForm(ci);
+      else if (act === 'del-category') Actions.deleteCategory(ci);
+    });
 
     const bt = document.getElementById('backTop');
     const fg = bt.querySelector('.ring-fg');
@@ -2163,12 +1703,14 @@ html.perf-lite .search-box:focus-within {
       const fv = document.getElementById('footerVer'); if (fv) fv.textContent = 'v' + CFG.APP_VERSION;
       const dl = document.getElementById('linkDescLabel'); if (dl) dl.textContent = '卡片短描述 (限' + CFG.META.DESC_MAX + '字内)';
       const di = document.getElementById('linkDesc'); if (di) di.maxLength = CFG.META.DESC_MAX;
-      await DataService.load(); Renderer.render(); Renderer.updateVersionBar();
+      await DataService.load();
+      Renderer.render(); Renderer.updateVersionBar();
       DataService.revalidate();
       if (DataService.source === 'fallback') Toast.show('网络异常，显示备用数据', { duration: 2600 });
     } catch (e) {
       console.error('[启动失败]', e);
-      DataService.data = CFG.FALLBACK_DATA; Renderer.render(); Toast.show('数据加载失败', { duration: 2600 });
+      try { DataService.data = Schema.validate(CFG.FALLBACK_DATA); } catch (e2) { DataService.data = CFG.FALLBACK_DATA; }
+      Renderer.render(); Toast.show('数据加载失败', { duration: 2600 });
     }
   }
 
@@ -2178,335 +1720,5 @@ html.perf-lite .search-box:focus-within {
   window.__AF_NAV__ = { version: CFG.APP_VERSION, data: DataService, mode: Mode };
 })(window, document);
 </script>
-<!-- GLASS RAIN BEGIN -->
-<script>
-(function () {
-  'use strict';
-  var CARD_SELECTOR = [
-    '.hero-card','.hero-quote','.now-card','.work-card','.skill-item','.reading-card','.contact-item',
-    '.today-card','.card','.result-card','.street-chip','.week-item','.cycle-item','.link-item',
-    '.search-box','.item','.disclaimer','.version-pill','.security-box','.section-num','.section-count',
-    '.filter-bar','.cat-tab','.header-card','.header-title-tag','.period-btn',
-    '.game-card','.featured-card','.menu-card','.stat-card','.record-card','.summary-card','.cat-card',
-    '.mode-tabs','.date-bar','.cal-cell','.status-banner','.rate-row','.preview',
-    '.attendance-stats','.add-allowance'
-  ].join(',');
-  var MIN_BEADS = 8, MAX_BEADS = 14;
-  var BAD_CLASS = /(modal|toast|back-top|skip-link|bg-layer|af-glass-fx|af-bead|af-ripple|af-wave|af-well|(^|[\s_-])(btn|tip|input|countdown|suggest|copy|export|icon|view|mask|status-bar)([\s_-]|$))/i;
-  var BAD_TAG = /^(INPUT|TEXTAREA|SELECT|CANVAS|SVG|IFRAME|VIDEO|OPTION|LABEL)$/;
-  var io = null, mo = null, scanTimer = 0, suppress = false;
-  function pseudo(seed) {
-    var x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
-    return x - Math.floor(x);
-  }
-  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
-  function cls(el) { return typeof el.className === 'string' ? el.className : ''; }
-  function isCard(el) {
-    if (!el || el.nodeType !== 1 || el === document.body || el === document.documentElement) return false;
-    if (BAD_TAG.test(el.tagName) || BAD_CLASS.test(cls(el))) return false;
-    var cs = getComputedStyle(el);
-    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') return false;
-    var r = el.getBoundingClientRect();
-    if (r.width < 40 || r.height < 24 || r.width * r.height < 1800) return false;
-    if ((parseFloat(cs.borderTopLeftRadius) || 0) < 6) return false;
-    return true;
-  }
-  function beadCount(area) {
-    if (area >= 120000) return 14;
-    if (area >= 50000) return 12;
-    if (area >= 12000) return 10;
-    return MIN_BEADS;
-  }
-  function syncTravel(card) {
-    var h = card.offsetHeight || card.getBoundingClientRect().height || 160;
-    var beads = card.__afBeads__ || [];
-    for (var i = 0; i < beads.length; i++) beads[i].style.setProperty('--d-travel', (h + 40) + 'px');
-  }
-  function ensure(card, index) {
-    if (!card || card.__afLayer__ || !isCard(card)) return;
-    var r = card.getBoundingClientRect();
-    var area = r.width * r.height;
-    var n = Math.min(beadCount(area), MAX_BEADS);
-    var small = area < 9000;
-    var base = index * 11 + 3;
-    var layer = document.createElement('span');
-    layer.className = 'af-glass-fx';
-    layer.setAttribute('aria-hidden', 'true');
-    var beads = [];
-    for (var i = 0; i < n; i++) {
-      var s = base + i * 3;
-      var bead = document.createElement('i');
-      bead.className = 'af-bead';
-      bead.style.setProperty('--d-x', (6 + pseudo(s + 2) * 88).toFixed(1) + '%');
-      bead.style.setProperty('--d-y', (-8 - pseudo(s + 3) * 26).toFixed(1) + 'px');
-      bead.style.setProperty('--d-size', ((small ? 2.4 : 3.2) + pseudo(s + 1) * (small ? 2.2 : 3.6)).toFixed(1) + 'px');
-      bead.style.setProperty('--d-op', (small ? .38 : .52).toFixed(2));
-      bead.style.setProperty('--d-drift', (-6 + pseudo(s + 4) * 14).toFixed(1) + 'px');
-      bead.style.setProperty('--d-dur', (14 + pseudo(s + 5) * 10).toFixed(1) + 's');
-      bead.style.setProperty('--d-delay', (-(pseudo(s + 6) * 20)).toFixed(1) + 's');
-      layer.appendChild(bead);
-      beads.push(bead);
-    }
-    suppress = true;
-    try {
-      if (getComputedStyle(card).position === 'static') card.classList.add('af-fx-card');
-      card.appendChild(layer);
-    } catch (e) { suppress = false; return; }
-    suppress = false;
-    card.__afLayer__ = layer;
-    card.__afBeads__ = beads;
-    syncTravel(card);
-    if (io) io.observe(card);
-  }
-  function scan() {
-    var list = document.querySelectorAll(CARD_SELECTOR);
-    for (var i = 0; i < list.length; i++) ensure(list[i], i);
-    var bf = getComputedStyle(document.documentElement).webkitBackdropFilter;
-    var all = document.body.querySelectorAll('div,a,li,section,article,blockquote,ul,ol');
-    for (var j = 0; j < all.length; j++) {
-      var el = all[j];
-      if (el.__afLayer__ || !isCard(el)) continue;
-      var c = getComputedStyle(el);
-      var f = c.backdropFilter || c.webkitBackdropFilter || 'none';
-      if (f !== 'none' && f !== '') ensure(el, j);
-    }
-  }
-  function ripple(card, x, y) {
-    var layer = card.__afLayer__;
-    if (!layer) return;
-    var r = card.getBoundingClientRect();
-    if (!r.width || !r.height) return;
-    var old = layer.querySelectorAll('.af-ripple');
-    if (old.length >= 2 && old[0].parentNode) old[0].parentNode.removeChild(old[0]);
-    var el = document.createElement('span');
-    el.className = 'af-ripple';
-    el.style.setProperty('--rx', (x - r.left).toFixed(1) + 'px');
-    el.style.setProperty('--ry', (y - r.top).toFixed(1) + 'px');
-    el.style.setProperty('--r-size', clamp(Math.max(r.width, r.height) * .55, 130, 260).toFixed(0) + 'px');
-    for (var k = 0; k < 3; k++) {
-      var w = document.createElement('i');
-      w.className = 'af-wave' + (k ? ' af-wave-extra' : '');
-      w.style.setProperty('--d', (k * 95) + 'ms');
-      el.appendChild(w);
-    }
-    var well = document.createElement('b');
-    well.className = 'af-well';
-    el.appendChild(well);
-    layer.appendChild(el);
-    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1300);
-  }
-  function resolve(node) {
-    while (node && node !== document && node !== document.documentElement) {
-      if (node.nodeType === 1 && node.__afLayer__) return node;
-      node = node.parentNode;
-    }
-    return null;
-  }
-  function hit(node) {
-    if (!node || !node.closest) return null;
-    var c = node.closest(CARD_SELECTOR);
-    if (c) { ensure(c, 0); return c.__afLayer__ ? c : null; }
-    var p = node;
-    while (p && p !== document.body) {
-      if (p.nodeType === 1 && isCard(p)) {
-        var f = getComputedStyle(p).backdropFilter || getComputedStyle(p).webkitBackdropFilter || 'none';
-        if (f !== 'none' && f !== '') { ensure(p, 0); return p.__afLayer__ ? p : null; }
-      }
-      p = p.parentNode;
-    }
-    return null;
-  }
-  function init() {
-    if ('IntersectionObserver' in window) {
-      io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          var layer = en.target.__afLayer__;
-          if (layer) layer.classList.toggle('af-offscreen', !en.isIntersecting);
-        });
-      }, { rootMargin: '120px' });
-    }
-    scan();
-    document.addEventListener('pointerdown', function (e) {
-      if (e.button && e.button !== 0) return;
-      var card = resolve(e.target) || hit(e.target);
-      if (card) ripple(card, e.clientX, e.clientY);
-    }, { passive: true });
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      var card = resolve(e.target) || hit(e.target);
-      if (!card) return;
-      var r = card.getBoundingClientRect();
-      ripple(card, r.left + r.width / 2, r.top + r.height / 2);
-    }, { passive: true });
-    if ('MutationObserver' in window) {
-      mo = new MutationObserver(function () {
-        if (suppress) return;
-        clearTimeout(scanTimer);
-        scanTimer = setTimeout(scan, 120);
-      });
-      mo.observe(document.body, { childList: true, subtree: true });
-    }
-    var rt = 0;
-    window.addEventListener('resize', function () {
-      clearTimeout(rt);
-      rt = setTimeout(function () {
-        var cards = document.querySelectorAll('.af-glass-fx');
-        for (var i = 0; i < cards.length; i++) syncTravel(cards[i].parentNode);
-      }, 220);
-    }, { passive: true });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
-  else init();
-})();
-</script>
-<!-- GLASS RAIN END -->
-<!-- AF ENHANCE BEGIN -->
-<script>
-/* AF ENHANCE · 高级动画层，纯视觉，不读写任何业务状态
-   专为 daohang/index.html 定制：
-   - reveal：仅 topbar-inner / search-area / disclaimer（静态元素，永不重建）
-   - 磁吸 + shimmer：.item / .search-box / .disclaimer
-     用 MutationObserver 自动追踪 #app 内新增的 .item（编辑模式/云端同步后会重建）
-   - 文字拆分：跳过（.brand-title 内有 .brand-mark 专属样式）
-*/
-(function () {
-  'use strict';
-  if (window.__AF_LITE__) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  /* ---------- 1. 滚动入场（仅静态元素） ---------- */
-  var REVEAL_SELECTOR = '.topbar-inner, .search-area, .disclaimer';
-
-  function initReveal() {
-    var nodes = document.querySelectorAll(REVEAL_SELECTOR);
-    if (!nodes.length) return;
-
-    for (var i = 0; i < nodes.length; i++) {
-      nodes[i].classList.add('af-reveal');
-      nodes[i].style.setProperty('--af-delay', (i * 80) + 'ms');
-    }
-
-    function revealAll() {
-      for (var k = 0; k < nodes.length; k++) nodes[k].classList.add('af-revealed');
-    }
-
-    if (!('IntersectionObserver' in window)) { revealAll(); return; }
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('af-revealed');
-          io.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
-
-    for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
-
-    setTimeout(function () {
-      var pending = document.querySelectorAll('.af-reveal:not(.af-revealed)');
-      for (var m = 0; m < pending.length; m++) pending[m].classList.add('af-revealed');
-    }, 2500);
-  }
-
-  /* ---------- 2. 磁吸 hover（对 .item / .search-box） ---------- */
-  var MAG_MAX = 6;
-
-  function bindMagnetic(card) {
-    if (card.__afMagBound__) return;
-    card.__afMagBound__ = true;
-    var rafId = 0, lastEvent = null;
-    function apply() {
-      rafId = 0;
-      if (!lastEvent) return;
-      var r = card.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      var dx = (lastEvent.clientX - (r.left + r.width / 2)) / r.width;
-      var dy = (lastEvent.clientY - (r.top + r.height / 2)) / r.height;
-      card.style.setProperty('--af-tx', (dx * MAG_MAX).toFixed(2) + 'px');
-      card.style.setProperty('--af-ty', (dy * MAG_MAX).toFixed(2) + 'px');
-    }
-    card.addEventListener('mousemove', function (e) {
-      lastEvent = e;
-      if (!rafId) rafId = requestAnimationFrame(apply);
-    });
-    card.addEventListener('mouseleave', function () {
-      if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
-      lastEvent = null;
-      card.style.setProperty('--af-tx', '0px');
-      card.style.setProperty('--af-ty', '0px');
-    });
-  }
-
-  /* ---------- 3. Shimmer 注入 ---------- */
-  function injectShimmer(card) {
-    if (card.__afShimmer__) return;
-    var s = document.createElement('span');
-    s.className = 'af-shimmer';
-    s.setAttribute('aria-hidden', 'true');
-    var cs = getComputedStyle(card);
-    if (cs.position === 'static') card.style.position = 'relative';
-    card.appendChild(s);
-    card.__afShimmer__ = s;
-  }
-
-  /* ---------- 4. 处理新增节点 ---------- */
-  function processNode(node) {
-    if (!node || node.nodeType !== 1) return;
-
-    if (node.matches('.item')) {
-      bindMagnetic(node);
-      injectShimmer(node);
-    } else if (node.matches('.search-box')) {
-      bindMagnetic(node);
-    } else if (node.matches('.disclaimer')) {
-      injectShimmer(node);
-    }
-
-    node.querySelectorAll('.item').forEach(function (el) {
-      bindMagnetic(el);
-      injectShimmer(el);
-    });
-    node.querySelectorAll('.search-box').forEach(bindMagnetic);
-    node.querySelectorAll('.disclaimer').forEach(injectShimmer);
-  }
-
-  function initMagneticAndShimmer() {
-    if (matchMedia('(pointer: coarse)').matches) {
-      document.querySelectorAll('.item, .disclaimer').forEach(injectShimmer);
-    } else {
-      document.querySelectorAll('.item, .search-box').forEach(bindMagnetic);
-      document.querySelectorAll('.item, .disclaimer').forEach(injectShimmer);
-    }
-
-    if ('MutationObserver' in window) {
-      var pending = null;
-      var mo = new MutationObserver(function (mutations) {
-        clearTimeout(pending);
-        pending = setTimeout(function () {
-          mutations.forEach(function (m) {
-            m.addedNodes.forEach(processNode);
-          });
-        }, 60);
-      });
-      mo.observe(document.body, { childList: true, subtree: true });
-    }
-  }
-
-  function init() {
-    try {
-      initReveal();
-      initMagneticAndShimmer();
-    } catch (e) {}
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-})();
-</script>
-<!-- AF ENHANCE END -->
 </body>
 </html>
