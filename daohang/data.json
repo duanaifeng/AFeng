@@ -48,7 +48,7 @@
     ]
   },
   {
-    "category": "音乐世界",
+    "category": "聆听音乐",
     "icon": "🎵",
     "color": "#a78bfa",
     "categoryEn": "MUSIC",
@@ -78,12 +78,26 @@
         "tags": ["音乐", "聚合"]
       },
       {
-        "name": "Music API监控",
-        "desc": "音源接口存活监控",
-        "detail": "音乐音源接口存活监控页，快速确认各音源接口是否可用、是否掉线。",
-        "url": "https://status.beta-next.icu/status/ncm",
-        "id": "music-api",
-        "tags": ["音乐", "聚合"]
+        "name": "音乐接口监控",
+        "desc": "音源存活与多节点监控",
+        "detail": "同一作者开发的音乐 API 监控系统，提供两种监控视图。用于快速确认各主流音源接口是否可用、是否掉线，为支持自定义音源的播放软件提供状态参考。",
+        "url": "",
+        "id": "music-monitor",
+        "tags": ["音乐", "监控", "聚合"],
+        "popup": [
+          {
+            "label": "简易状态页",
+            "desc": "接口存活快速查看",
+            "detail": "音乐音源接口存活监控简易页，快速确认各音源接口是否可用、是否掉线。",
+            "url": "https://status.beta-next.icu/status/ncm"
+          },
+          {
+            "label": "综合监控面板",
+            "desc": "多节点实时状态看板",
+            "detail": "更详尽的运维监控面板，包含多个节点的响应时间与历史故障记录，查看状态更全面。",
+            "url": "https://betahub.tech/"
+          }
+        ]
       },
       {
         "name": "TuneFree Next",
@@ -132,7 +146,7 @@
     ]
   },
   {
-    "category": "影视娱乐",
+    "category": "随心观影",
     "icon": "🎬",
     "color": "#f472b6",
     "categoryEn": "VIDEO",
@@ -208,7 +222,7 @@
     ]
   },
   {
-    "category": "软件资源",
+    "category": "聚合资源",
     "icon": "📦",
     "color": "#fbbf24",
     "categoryEn": "SOFTWARE",
@@ -472,7 +486,7 @@
     ]
   },
   {
-    "category": "网络代理",
+    "category": "网络加速",
     "icon": "🚀",
     "color": "#3b82f6",
     "categoryEn": "PROXY",
