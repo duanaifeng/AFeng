@@ -178,20 +178,32 @@
         "tags": ["影视", "APP"]
       },
       {
-        "name": "网页版",
-        "desc": "在线查看接口源",
-        "detail": "TVBox电视盒子播放源汇总，附带网页版。",
-        "url": "https://lubin776.github.io/tvbox-api-backup/",
-        "id": "tvbox-web",
-        "tags": ["影视", "盒子"]
-      },
-      {
-        "name": "GitHub仓库",
-        "desc": "接口源仓库地址",
-        "detail": "TVBox电视盒子播放源汇总，GitHub备份。",
-        "url": "https://github.com/lubin776/tvbox-api-backup",
-        "id": "tvbox-github",
-        "tags": ["影视", "盒子"]
+        "name": "TVBox 接口备份",
+        "desc": "90+接口与直播源聚合",
+        "detail": "把互联网上公开的 TVBox 接口资源进行批量搬运与备份。基于 Python + GitHub Actions 定时抓取，提供 90+ 点播接口、直播聚合及采集站。纯前端静态托管，提供多个互为备份的访问域名。",
+        "url": "",
+        "id": "tvbox-api",
+        "tags": ["影视", "盒子"],
+        "popup": [
+          {
+            "label": "在线访问（主）",
+            "desc": "GitHub Pages 主站",
+            "detail": "TVBox API 自动化备份项目的静态前端主站，提供接口抓取与直播源聚合导航。",
+            "url": "https://lubin776.github.io/tvbox-api-backup/"
+          },
+          {
+            "label": "在线访问（备）",
+            "desc": "备用镜像站",
+            "detail": "TVBox API 自动化备份项目的备用访问域名，内容与主站一致，主站失效时可使用。",
+            "url": "https://0.12yue.de5.net/"
+          },
+          {
+            "label": "GitHub 仓库",
+            "desc": "项目源码与自动化配置",
+            "detail": "项目开源仓库，包含接口抓取、直播源聚合、静态前端导航的完整源码及 GitHub Actions 配置。",
+            "url": "https://github.com/lubin776/tvbox-api-backup"
+          }
+        ]
       }
     ]
   },
@@ -314,11 +326,11 @@
         "tags": ["工具", "局域网", "开源"]
       },
       {
-        "name": "临时邮箱",
-        "desc": "匿名一次性临时邮箱",
-        "detail": "无需注册，开箱即用的匿名临时邮箱，仅支持接收邮件，用于接收注册验证码，保护真实邮箱免受垃圾邮件骚扰。",
-        "url": "https://www.linshi-email.com/",
-        "id": "linshi-email",
+        "name": "AdGuard 临时邮箱",
+        "desc": "免注册无广告临时邮箱",
+        "detail": "AdGuard 官方提供的临时邮箱，免注册、无广告，大厂靠谱，最长可用6个月。⚠ 国内访问可能不稳定，部分平台会拦截。",
+        "url": "https://tempmail.adguard.com",
+        "id": "adguard-tempmail",
         "tags": ["工具", "邮箱", "隐私"]
       }
     ]
@@ -506,20 +518,26 @@
     "categoryEn": "NET-TEST",
     "items": [
       {
-        "name": "网易DNS检测",
-        "desc": "查出口IP与DNS劫持",
-        "detail": "读取本机出口IP与所用DNS服务器，快速判断是否出现DNS劫持或解析异常。",
-        "url": "https://nstool.netease.com/",
-        "id": "net-nstool",
-        "tags": ["网络", "检测"]
-      },
-      {
-        "name": "网易IPv6检测",
-        "desc": "IPv4/IPv6双栈检测",
-        "detail": "同系列IPv6专项检测页面，同时检测IPv4/IPv6双栈状态，查看是否支持IPv6网络访问。",
-        "url": "https://v6.tx163.com/",
-        "id": "net-ipv6-163",
-        "tags": ["网络", "检测"]
+        "name": "网易网络诊断",
+        "desc": "DNS与IPv6连通性检测",
+        "detail": "网易官方提供的网络诊断工具组合，包含读取本机出口IP与DNS劫持检测，以及 IPv4/IPv6 双栈连通性检测，用于快速排查网络异常。",
+        "url": "",
+        "id": "net-netease",
+        "tags": ["网络", "检测"],
+        "popup": [
+          {
+            "label": "DNS 检测",
+            "desc": "查出口IP与DNS劫持",
+            "detail": "读取本机出口IP与所用DNS服务器，快速判断是否出现DNS劫持或解析异常。",
+            "url": "https://nstool.netease.com/"
+          },
+          {
+            "label": "IPv6 检测",
+            "desc": "IPv4/IPv6双栈检测",
+            "detail": "同系列IPv6专项检测页面，同时检测IPv4/IPv6双栈状态，查看是否支持IPv6网络访问。",
+            "url": "https://v6.tx163.com/"
+          }
+        ]
       },
       {
         "name": "DNS Leak Test",
