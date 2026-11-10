@@ -73,15 +73,15 @@
 :root {
   --bg:#e4ebf5; --bg-2:#f2f6fb;
 
-  --glass-1:rgba(255,255,255,.62);
-  --glass-2:rgba(255,255,255,.20);
-  --glass-3:rgba(255,255,255,.44);
-  --glass-edge:rgba(255,255,255,.75);
-  --glass-edge-2:rgba(255,255,255,.95);
-  --glass-hi:rgba(255,255,255,.98);
-  --glass-lo:rgba(255,255,255,.40);
-  --glass-inner-glow:rgba(255,255,255,.14);
-  --glass-blur:blur(24px) saturate(200%);
+  --glass-1:rgba(255,255,255,.70);
+  --glass-2:rgba(255,255,255,.24);
+  --glass-3:rgba(255,255,255,.50);
+  --glass-edge:rgba(255,255,255,.78);
+  --glass-edge-2:rgba(255,255,255,.98);
+  --glass-hi:rgba(255,255,255,1);
+  --glass-lo:rgba(255,255,255,.42);
+  --glass-inner-glow:rgba(255,255,255,.16);
+  --glass-blur:blur(28px) saturate(215%);
 
   --surface:rgba(255,255,255,.24);
   --surface-2:rgba(255,255,255,.34);
@@ -117,15 +117,15 @@
 html.dark {
   --bg:#070b12; --bg-2:#0c121d;
 
-  --glass-1:rgba(255,255,255,.115);
-  --glass-2:rgba(255,255,255,.022);
-  --glass-3:rgba(255,255,255,.070);
-  --glass-edge:rgba(255,255,255,.155);
-  --glass-edge-2:rgba(255,255,255,.30);
-  --glass-hi:rgba(255,255,255,.24);
-  --glass-lo:rgba(255,255,255,.045);
-  --glass-inner-glow:rgba(255,255,255,.045);
-  --glass-blur:blur(26px) saturate(180%);
+  --glass-1:rgba(255,255,255,.13);
+  --glass-2:rgba(255,255,255,.03);
+  --glass-3:rgba(255,255,255,.085);
+  --glass-edge:rgba(255,255,255,.18);
+  --glass-edge-2:rgba(255,255,255,.34);
+  --glass-hi:rgba(255,255,255,.30);
+  --glass-lo:rgba(255,255,255,.05);
+  --glass-inner-glow:rgba(255,255,255,.06);
+  --glass-blur:blur(30px) saturate(195%);
 
   --surface:rgba(255,255,255,.045);
   --surface-2:rgba(255,255,255,.070);
@@ -399,37 +399,47 @@ body.editing .section-actions { display:flex; }
 
 .item-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
 
+/* ========== 玻璃卡片：加强真实感 ========== */
 .item {
   --mx:50%; --my:50%;
   position:relative; display:flex; align-items:center; gap:14px;
   padding:14px 16px;
   border-radius:var(--radius-md);
-  border:1px solid var(--glass-edge);
+  border:1px solid rgba(255,255,255,.66);
 
   background-color:var(--surface);
-  background-image:linear-gradient(150deg, var(--glass-1) 0%, var(--glass-2) 46%, var(--glass-3) 100%);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 58%, rgba(255,255,255,.12) 100%),
+    linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.14) 40%, rgba(255,255,255,.24) 62%, rgba(255,255,255,.54) 100%);
 
-  backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
+  backdrop-filter:blur(30px) saturate(230%) brightness(1.03);
+  -webkit-backdrop-filter:blur(30px) saturate(230%) brightness(1.03);
 
   box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 1px 0 0 rgba(255,255,255,.30),
-    inset -1px 0 0 rgba(255,255,255,.24),
-    inset 0 0 24px var(--glass-inner-glow),
-    var(--shadow-sm);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,.30),
+    inset 1px 0 0 rgba(255,255,255,.50),
+    inset -1px 0 0 rgba(255,255,255,.40),
+    inset 0 0 30px rgba(255,255,255,.18),
+    0 1px 2px rgba(15,40,90,.06),
+    0 10px 28px rgba(15,40,90,.12);
 
   color:inherit; text-decoration:none; overflow:hidden; cursor:pointer;
   transition:transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), padding var(--dur) var(--ease);
 }
 html.dark .item {
+  border-color:rgba(255,255,255,.16);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0) 60%, rgba(255,255,255,.04) 100%),
+    linear-gradient(150deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.02) 40%, rgba(255,255,255,.05) 62%, rgba(255,255,255,.10) 100%);
   box-shadow:
-    inset 0 1px 0 var(--glass-hi),
-    inset 0 -1px 0 var(--glass-lo),
-    inset 1px 0 0 rgba(255,255,255,.07),
-    inset -1px 0 0 rgba(255,255,255,.05),
-    inset 0 0 26px var(--glass-inner-glow),
-    var(--shadow-sm);
+    inset 0 1px 0 rgba(255,255,255,.30),
+    inset 0 -1px 0 rgba(255,255,255,.06),
+    inset 1px 0 0 rgba(255,255,255,.10),
+    inset -1px 0 0 rgba(255,255,255,.08),
+    inset 0 0 30px rgba(255,255,255,.07),
+    0 1px 2px rgba(0,0,0,.5),
+    0 12px 30px rgba(0,0,0,.45);
 }
 
 .item::before {
@@ -449,15 +459,28 @@ html.dark .item {
 @media (hover:hover) and (pointer:fine) {
   .item:hover, .item:focus-visible {
     transform:translateY(-2px);
-    border-color:var(--glass-edge-2);
+    border-color:rgba(255,255,255,.94);
     box-shadow:
-      inset 0 1px 0 var(--glass-hi),
-      inset 0 -1px 0 var(--glass-lo),
-      inset 1px 0 0 rgba(255,255,255,.38),
-      inset -1px 0 0 rgba(255,255,255,.30),
-      inset 0 0 30px rgba(255,255,255,.20),
-      0 0 0 1px rgba(255,255,255,.30),
-      var(--shadow-md);
+      inset 0 1px 0 rgba(255,255,255,1),
+      inset 0 -1px 0 rgba(255,255,255,.36),
+      inset 1px 0 0 rgba(255,255,255,.58),
+      inset -1px 0 0 rgba(255,255,255,.48),
+      inset 0 0 36px rgba(255,255,255,.24),
+      0 0 0 1px rgba(255,255,255,.36),
+      0 6px 16px rgba(15,40,90,.10),
+      0 22px 48px rgba(15,40,90,.20);
+  }
+  html.dark .item:hover, html.dark .item:focus-visible {
+    border-color:rgba(255,255,255,.32);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.40),
+      inset 0 -1px 0 rgba(255,255,255,.08),
+      inset 1px 0 0 rgba(255,255,255,.16),
+      inset -1px 0 0 rgba(255,255,255,.12),
+      inset 0 0 36px rgba(255,255,255,.10),
+      0 0 0 1px rgba(255,255,255,.10),
+      0 6px 16px rgba(0,0,0,.5),
+      0 24px 52px rgba(0,0,0,.55);
   }
   .item:hover::before, .item:focus-visible::before { height:62%; }
   .item:hover::after { opacity:1; }
@@ -944,17 +967,19 @@ html.__paused__ .af-bead,.af-glass-fx.af-offscreen .af-bead{animation-play-state
   --af-spring-dur: 720ms;
 }
 
-/* ---------- 1. 滚动入场（仅对静态元素） ---------- */
+/* ---------- 1. 卡片弹跳入场（一次性全部弹出，QQ 弹弹） ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .af-reveal { opacity: 0; }
-  .af-reveal.af-revealed {
-    opacity: 1;
-    animation: af-reveal-in var(--af-spring-dur) var(--af-ease-spring) backwards;
-    animation-delay: var(--af-delay, 0ms);
+  .af-pop-in {
+    animation: af-pop-in 680ms cubic-bezier(.22, 1.35, .36, 1) both;
+    animation-delay: var(--af-pop-delay, 0ms);
+    will-change: transform, opacity;
   }
-  @keyframes af-reveal-in {
-    from { opacity: 0; transform: translateY(24px) scale(.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+  @keyframes af-pop-in {
+    0%   { opacity: 0; transform: translateY(24px) scale(.80); }
+    50%  { opacity: 1; transform: translateY(-7px) scale(1.055); }
+    72%  { transform: translateY(3px) scale(.982); }
+    86%  { transform: translateY(-1.5px) scale(1.012); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 }
 
@@ -1046,38 +1071,11 @@ html.dark .af-shimmer {
 }
 body.editing .item:hover > .af-shimmer { opacity: 0; animation: none; }
 
-/* ---------- 5. 文字拆分入场（本文件跳过 .brand-title，见 JS 注释） ---------- */
-.af-char {
-  display: inline-block;
-  transform-origin: 50% 80%;
-  will-change: transform, opacity, filter;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .af-char {
-    animation: af-char-in 720ms var(--af-ease-spring) both;
-    animation-delay: calc(var(--af-i, 0) * 35ms + 260ms);
-  }
-  @keyframes af-char-in {
-    from {
-      opacity: 0;
-      transform: translateY(18px) scale(.85);
-      filter: blur(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
-  }
-}
-
-/* ---------- 6. 降级 ---------- */
-html.perf-lite .af-reveal,
-html.perf-lite .af-char {
+/* ---------- 5. 降级 ---------- */
+html.perf-lite .af-pop-in {
   opacity: 1 !important;
   animation: none !important;
   transform: none !important;
-  filter: none !important;
 }
 html.perf-lite .af-shimmer { display: none !important; }
 html.perf-lite .item:hover,
@@ -1086,12 +1084,10 @@ html.perf-lite .search-box:focus-within {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .af-reveal,
-  .af-char {
+  .af-pop-in {
     opacity: 1 !important;
     animation: none !important;
     transform: none !important;
-    filter: none !important;
   }
   .af-shimmer { display: none !important; }
   .item:hover,
@@ -1103,7 +1099,7 @@ html.perf-lite .search-box:focus-within {
 
 @media print {
   .af-shimmer { display: none !important; }
-  .af-reveal, .af-char { opacity: 1 !important; animation: none !important; }
+  .af-pop-in { opacity: 1 !important; animation: none !important; }
 }
 /* AF ENHANCE END */
 </style>
@@ -1202,7 +1198,7 @@ html.perf-lite .search-box:focus-within {
         <a href="mailto:88061995@qq.com">88061995@qq.com</a>
       </div>
       <div class="footer-right">
-        <span class="footer-ver" id="footerVer">v3.7</span><span>© 2026 AI.FENG</span><span>个人非营利 · 无广告追踪</span>
+        <span class="footer-ver" id="footerVer">v3.8</span><span>© 2026 AI.FENG</span><span>个人非营利 · 无广告追踪</span>
       </div>
     </div>
   </footer>
@@ -1334,9 +1330,12 @@ html.perf-lite .search-box:focus-within {
 (function (window, document) {
   'use strict';
 
+  /* AF_VER 保持 3.7，避免本地缓存与本地编辑被清空；
+     页脚显示版本号由 CFG.DISPLAY_VERSION 控制，纯视觉标识。 */
   const AF_VER = '3.7';
   const CFG = {
     APP_VERSION: AF_VER,
+    DISPLAY_VERSION: '3.8',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
     CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
@@ -1345,7 +1344,7 @@ html.perf-lite .search-box:focus-within {
     ADMIN_KEY: '__af_admin_v' + AF_VER + '__',
     CACHE_VERSION: AF_VER,
     SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, SCROLL_TOP_THRESHOLD: 300, LONG_PRESS_MS: 800,
-    PARTICLE_MIN_DT: 1000 / 45, PARTICLE_DENSITY: 20000, PARTICLE_CAP_DESKTOP: 68, PARTICLE_CAP_MOBILE: 38, PARTICLE_LINK_DIST: 130,
+    PARTICLE_MIN_DT: 1000 / 45, PARTICLE_DENSITY: 14000, PARTICLE_CAP_DESKTOP: 108, PARTICLE_CAP_MOBILE: 56, PARTICLE_LINK_DIST: 130,
     GH: { API: 'https://api.github.com', DEFAULT_USER: 'duanaifeng', DEFAULT_REPO: 'AFeng', DEFAULT_BRANCH: 'main', DEFAULT_PATH: 'daohang/data.json' },
     ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
@@ -1479,76 +1478,187 @@ html.perf-lite .search-box:focus-within {
     };
   })();
 
+  /* ================= 流光粒子（游鱼式光带） ================= */
   const Particles = (function () {
     const cvs = document.getElementById('particleCanvas');
     if (!cvs || window.__AF_LITE__ || Utils.prefersReducedMotion()) return { start() {}, stop() {} };
     const ctx = cvs.getContext('2d', { alpha: true });
     if (!ctx) return { start() {}, stop() {} };
-    /* 光粒配色：蓝 / 浅蓝 / 灰蓝 */
-    const CL = [[59,130,246],[96,165,250],[71,120,190],[130,165,215],[148,163,184]],
-          CD = [[147,197,253],[191,219,254],[186,205,227],[125,170,230],[96,165,250]],
-          LL = [96,130,180], LD = [147,197,253], SS = 64;
-    let w = 0, h = 0, dpr = 1, pts = [], sprites = [], linkColor = LL, raf = 0, running = false, last = 0;
-    const mouse = { x: -9999, y: -9999 };
-    function build(d) {
-      linkColor = d ? LD : LL;
-      sprites = (d ? CD : CL).map(rgb => {
-        const c = document.createElement('canvas'); c.width = c.height = SS;
-        const x = c.getContext('2d'), g = x.createRadialGradient(32,32,0,32,32,32);
-        const [r,g_,b] = rgb;
-        /* 光粒：中心高亮白核 + 柔和蓝晕，营造发光颗粒感 */
-        g.addColorStop(0, 'rgba(255,255,255,' + (d ? .98 : .94) + ')');
-        g.addColorStop(.10, `rgba(${r},${g_},${b},${d ? .90 : .80})`);
-        g.addColorStop(.30, `rgba(${r},${g_},${b},${d ? .34 : .26})`);
-        g.addColorStop(.62, `rgba(${r},${g_},${b},${d ? .10 : .07})`);
-        g.addColorStop(1, `rgba(${r},${g_},${b},0)`);
-        x.fillStyle = g; x.fillRect(0,0,SS,SS); return c;
-      });
+
+    /* 蓝灰白流光配色 */
+    const PAL_LIGHT = [[37,99,235],[59,130,246],[96,165,250],[71,85,105],[130,165,215],[147,197,253]];
+    const PAL_DARK  = [[147,197,253],[96,165,250],[191,219,254],[186,205,227],[125,211,252],[59,130,246]];
+
+    let vw = 0, vh = 0, dpr = 1, flows = [], raf = 0, running = false, last = 0;
+    let palette = PAL_LIGHT;
+    const mouse = { x: -9999, y: -9999, active: false };
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function pick() { return palette[(Math.random() * palette.length) | 0]; }
+
+    function createFlow() {
+      const len = Math.round(rnd(20, 38));
+      const f = {
+        x: rnd(-40, vw + 40),
+        y: rnd(-40, vh + 40),
+        a: rnd(0, Math.PI * 2),
+        sp: rnd(1.4, 3.0),
+        weight: rnd(1.0, 2.2),
+        len: len,
+        trail: [],
+        col: pick(),
+        wob: rnd(0, Math.PI * 2),
+        wobSp: rnd(.01, .026),
+        wobAmp: rnd(.006, .018),
+        orbit: Math.random() < .5 ? 1 : -1
+      };
+      for (let i = 0; i < len; i++) {
+        f.trail.push({ x: f.x - Math.cos(f.a) * i * f.sp, y: f.y - Math.sin(f.a) * i * f.sp });
+      }
+      return f;
     }
+
     function init() {
-      const base = Math.floor(w * h / CFG.PARTICLE_DENSITY), cap = Utils.isCoarsePointer() ? CFG.PARTICLE_CAP_MOBILE : CFG.PARTICLE_CAP_DESKTOP, cnt = Math.min(cap, Math.max(22, base));
-      pts = Array.from({ length: cnt }, () => ({ x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-.5)*.32, vy: (Math.random()-.5)*.32, r: Math.random()*2+.8, i: Math.random()<.9?Math.floor(Math.random()*4):4, a: Math.random()*.4+.4, tw: Math.random()*Math.PI*2, ts: Math.random()*.02+.008 }));
+      const base = Math.floor((vw * vh) / CFG.PARTICLE_DENSITY);
+      const cap = Utils.isCoarsePointer() ? CFG.PARTICLE_CAP_MOBILE : CFG.PARTICLE_CAP_DESKTOP;
+      const cnt = Math.min(cap, Math.max(30, base));
+      flows = [];
+      for (let i = 0; i < cnt; i++) flows.push(createFlow());
     }
-    function resize() { dpr = Math.min(devicePixelRatio || 1, 2); w = innerWidth; h = innerHeight; cvs.width = w*dpr; cvs.height = h*dpr; cvs.style.width = w+'px'; cvs.style.height = h+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); init(); }
-    function draw(t) {
-      if (t - last < CFG.PARTICLE_MIN_DT) { raf = requestAnimationFrame(draw); return; } last = t;
+
+    function turn(cur, target, rate) {
+      let d = target - cur;
+      while (d > Math.PI) d -= Math.PI * 2;
+      while (d < -Math.PI) d += Math.PI * 2;
+      return cur + d * rate;
+    }
+
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      vw = innerWidth; vh = innerHeight;
+      cvs.width = vw * dpr; cvs.height = vh * dpr;
+      cvs.style.width = vw + 'px'; cvs.style.height = vh + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      init();
+    }
+
+    function update(f) {
+      /* 自然摆动，像鱼游动 */
+      f.wob += f.wobSp;
+      f.a += Math.sin(f.wob) * f.wobAmp;
+
+      /* 鼠标附近绕行：光带会围着小鱼一样绕圈 */
+      if (mouse.active) {
+        const dx = f.x - mouse.x, dy = f.y - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 40000 && d2 > 0.25) {
+          const away = Math.atan2(dy, dx);
+          f.a = turn(f.a, away + f.orbit * Math.PI * 0.5, .035);
+        }
+      }
+
+      /* 边界平滑转向 */
+      const m = 100;
+      if (f.x < m) f.a = turn(f.a, 0, .05);
+      else if (f.x > vw - m) f.a = turn(f.a, Math.PI, .05);
+      if (f.y < m) f.a = turn(f.a, -Math.PI * 0.5, .05);
+      else if (f.y > vh - m) f.a = turn(f.a, Math.PI * 0.5, .05);
+
+      f.x += Math.cos(f.a) * f.sp;
+      f.y += Math.sin(f.a) * f.sp;
+
+      if (f.x < -60) f.x = vw + 60;
+      else if (f.x > vw + 60) f.x = -60;
+      if (f.y < -60) f.y = vh + 60;
+      else if (f.y > vh + 60) f.y = -60;
+
+      f.trail.unshift({ x: f.x, y: f.y });
+      if (f.trail.length > f.len) f.trail.pop();
+    }
+
+    function draw(now) {
+      if (now - last < CFG.PARTICLE_MIN_DT) { raf = requestAnimationFrame(draw); return; }
+      last = now;
+
       try {
-        ctx.clearRect(0,0,w,h); const d = Utils.isDark();
-        for (const p of pts) {
-          const dx = mouse.x - p.x, dy = mouse.y - p.y, dist = Math.hypot(dx, dy);
-          if (dist < 150 && dist > .5) { const f = (150-dist)/150*.4; p.vx += dx/dist*f*.04; p.vy += dy/dist*f*.04; }
-          const sp = Math.hypot(p.vx, p.vy); if (sp > .9) { p.vx = p.vx/sp*.9; p.vy = p.vy/sp*.9; }
-          p.x += p.vx; p.y += p.vy; p.tw += p.ts;
-          if (p.x < 0) { p.x = 0; p.vx *= -1; } else if (p.x > w) { p.x = w; p.vx *= -1; }
-          if (p.y < 0) { p.y = 0; p.vy *= -1; } else if (p.y > h) { p.y = h; p.vy *= -1; }
+        ctx.clearRect(0, 0, vw, vh);
+        const dark = Utils.isDark();
+        ctx.globalCompositeOperation = dark ? 'lighter' : 'source-over';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        const TAU = Math.PI * 2;
+
+        for (let k = 0; k < flows.length; k++) {
+          const f = flows[k];
+          update(f);
+          const tr = f.trail;
+          if (tr.length < 2) continue;
+
+          const hx = tr[0].x, hy = tr[0].y;
+          const tx = tr[tr.length - 1].x, ty = tr[tr.length - 1].y;
+          const cr = f.col[0], cg = f.col[1], cb = f.col[2];
+
+          /* 主体光带：从头到尾渐隐 */
+          const g = ctx.createLinearGradient(hx, hy, tx, ty);
+          if (dark) {
+            g.addColorStop(0, 'rgba(' + cr + ',' + cg + ',' + cb + ',.95)');
+            g.addColorStop(.3, 'rgba(' + cr + ',' + cg + ',' + cb + ',.50)');
+            g.addColorStop(.65, 'rgba(' + cr + ',' + cg + ',' + cb + ',.14)');
+            g.addColorStop(1, 'rgba(' + cr + ',' + cg + ',' + cb + ',0)');
+          } else {
+            g.addColorStop(0, 'rgba(' + cr + ',' + cg + ',' + cb + ',.60)');
+            g.addColorStop(.3, 'rgba(' + cr + ',' + cg + ',' + cb + ',.28)');
+            g.addColorStop(.65, 'rgba(' + cr + ',' + cg + ',' + cb + ',.08)');
+            g.addColorStop(1, 'rgba(' + cr + ',' + cg + ',' + cb + ',0)');
+          }
+
+          ctx.strokeStyle = g;
+          ctx.lineWidth = f.weight;
+          ctx.beginPath();
+          ctx.moveTo(tr[0].x, tr[0].y);
+          for (let i = 1; i < tr.length; i++) ctx.lineTo(tr[i].x, tr[i].y);
+          ctx.stroke();
+
+          /* 头部发光点 */
+          const rr = f.weight * 2.4;
+          ctx.fillStyle = dark
+            ? 'rgba(' + cr + ',' + cg + ',' + cb + ',.30)'
+            : 'rgba(' + cr + ',' + cg + ',' + cb + ',.14)';
+          ctx.beginPath(); ctx.arc(hx, hy, rr * 3, 0, TAU); ctx.fill();
+
+          ctx.fillStyle = dark ? 'rgba(255,255,255,.92)' : 'rgba(255,255,255,.72)';
+          ctx.beginPath(); ctx.arc(hx, hy, rr * .85, 0, TAU); ctx.fill();
         }
-        /* 连线更淡，让光粒成为画面主角 */
-        const la = d ? .09 : .06, [lr,lg,lb] = linkColor; ctx.lineWidth = .7;
-        for (let i=0; i<pts.length; i++) for (let j=i+1; j<pts.length; j++) {
-          const pa = pts[i], pb = pts[j], d2 = (pa.x-pb.x)**2 + (pa.y-pb.y)**2;
-          if (d2 < CFG.PARTICLE_LINK_DIST**2) { ctx.strokeStyle = `rgba(${lr},${lg},${lb},${(1-Math.sqrt(d2)/CFG.PARTICLE_LINK_DIST)*la})`; ctx.beginPath(); ctx.moveTo(pa.x,pa.y); ctx.lineTo(pb.x,pb.y); ctx.stroke(); }
-        }
-        /* 光粒本体：深色用叠加模式发亮，浅色用正常模式避免泛白 */
-        ctx.globalCompositeOperation = d ? 'lighter' : 'source-over';
-        const asc = d ? 1 : .92;
-        for (const p of pts) { ctx.globalAlpha = p.a * (.66+.34*Math.sin(p.tw)) * asc; const sz = p.r * (d ? 11 : 9.5); ctx.drawImage(sprites[p.i], p.x-sz/2, p.y-sz/2, sz, sz); }
+
         ctx.globalCompositeOperation = 'source-over';
-        ctx.globalAlpha = 1;
       } catch (e) { stop(); return; }
+
       raf = requestAnimationFrame(draw);
     }
+
     function start() { if (running) return; running = true; last = 0; raf = requestAnimationFrame(draw); }
     function stop() { running = false; cancelAnimationFrame(raf); }
-    const onMove = Utils.rafThrottle((x,y) => { mouse.x = x; mouse.y = y; });
-    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-    window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY), { passive: true });
-    window.addEventListener('mouseleave', () => onMove(-9999, -9999));
-    window.addEventListener('touchmove', e => { if (e.touches[0]) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-    window.addEventListener('touchend', () => onMove(-9999, -9999));
+
+    const onMove = Utils.rafThrottle(function (x, y) { mouse.x = x; mouse.y = y; mouse.active = true; });
+    const onLeave = function () { mouse.active = false; mouse.x = -9999; mouse.y = -9999; };
+
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    window.addEventListener('mousemove', function (e) { onMove(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener('mouseleave', onLeave);
+    window.addEventListener('touchmove', function (e) { if (e.touches[0]) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchend', onLeave);
     window.addEventListener('resize', Utils.debounce(resize, 200), { passive: true });
-    build(Utils.isDark()); resize();
+
+    function syncPalette() {
+      palette = Utils.isDark() ? PAL_DARK : PAL_LIGHT;
+      for (let i = 0; i < flows.length; i++) flows[i].col = pick();
+    }
+
+    palette = Utils.isDark() ? PAL_DARK : PAL_LIGHT;
+    resize();
     if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 800 }); else setTimeout(start, 350);
-    Theme.onChange(build);
+    Theme.onChange(syncPalette);
     return { start, stop };
   })();
 
@@ -2295,7 +2405,7 @@ html.perf-lite .search-box:focus-within {
   async function boot() {
     try {
       Theme.init(); Renderer.init(); Search.init(); bindEvents(); Mode.updateUI();
-      const fv = document.getElementById('footerVer'); if (fv) fv.textContent = 'v' + CFG.APP_VERSION;
+      const fv = document.getElementById('footerVer'); if (fv) fv.textContent = 'v' + CFG.DISPLAY_VERSION;
       const dl = document.getElementById('linkDescLabel'); if (dl) dl.textContent = '卡片短描述';
       const di = document.getElementById('linkDesc'); if (di) { di.placeholder = '建议' + CFG.META.DESC_SUGGEST + '字内，一眼看懂'; di.maxLength = CFG.META.DESC_MAX; }
       await DataService.load(); Renderer.render(); Renderer.updateVersionBar();
@@ -2499,7 +2609,7 @@ html.perf-lite .search-box:focus-within {
 <script>
 /* AF ENHANCE · 高级动画层，纯视觉，不读写任何业务状态
    专为 daohang/index.html 定制：
-   - reveal：仅 topbar-inner / search-area / disclaimer（静态元素，永不重建）
+   - 弹跳入场：页面一打开，所有卡片一次性 QQ 弹弹地全部弹出
    - 磁吸 + shimmer：.item / .search-box / .disclaimer
      用 MutationObserver 自动追踪 #app 内新增的 .item（编辑模式/云端同步后会重建）
    - 文字拆分：跳过（.brand-title 内有 .brand-mark 专属样式）
@@ -2509,39 +2619,52 @@ html.perf-lite .search-box:focus-within {
   if (window.__AF_LITE__) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  /* ---------- 1. 滚动入场（仅静态元素） ---------- */
-  var REVEAL_SELECTOR = '.topbar-inner, .search-area, .disclaimer';
+  /* ---------- 1. 卡片弹跳入场（一次性全部弹出） ---------- */
+  var POP_STEP = 30;   // 每张卡片的延迟间隔
+  var POP_MAX  = 460;  // 最大延迟，避免最后一屏等太久
 
-  function initReveal() {
-    var nodes = document.querySelectorAll(REVEAL_SELECTOR);
-    if (!nodes.length) return;
+  function popIn(el, delay) {
+    if (!el || el.__afPopped) return;
+    el.__afPopped = true;
+    el.style.setProperty('--af-pop-delay', delay + 'ms');
+    el.classList.add('af-pop-in');
 
-    for (var i = 0; i < nodes.length; i++) {
-      nodes[i].classList.add('af-reveal');
-      nodes[i].style.setProperty('--af-delay', (i * 80) + 'ms');
+    function done() {
+      el.classList.remove('af-pop-in');
+      el.style.removeProperty('--af-pop-delay');
+      el.removeEventListener('animationend', onEnd);
     }
-
-    function revealAll() {
-      for (var k = 0; k < nodes.length; k++) nodes[k].classList.add('af-revealed');
+    function onEnd(e) {
+      if (e && e.animationName !== 'af-pop-in') return;
+      done();
     }
+    el.addEventListener('animationend', onEnd);
+    /* 双保险：动画被禁用/意外中断时也能清理 */
+    setTimeout(done, delay + 900);
+  }
 
-    if (!('IntersectionObserver' in window)) { revealAll(); return; }
+  function popAll(root) {
+    if (document.body.classList.contains('editing')) return;
+    var items = (root || document).querySelectorAll('.item');
+    for (var i = 0; i < items.length; i++) {
+      popIn(items[i], Math.min(i * POP_STEP, POP_MAX));
+    }
+  }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('af-revealed');
-          io.unobserve(en.target);
-        }
+  function initPop() {
+    popAll(document);
+    var app = document.getElementById('app');
+    if (!app || !('MutationObserver' in window)) return;
+    var pending = 0;
+    var mo = new MutationObserver(function () {
+      if (document.body.classList.contains('editing')) return;
+      if (pending) return;
+      pending = requestAnimationFrame(function () {
+        pending = 0;
+        popAll(app);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
-
-    for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
-
-    setTimeout(function () {
-      var pending = document.querySelectorAll('.af-reveal:not(.af-revealed)');
-      for (var m = 0; m < pending.length; m++) pending[m].classList.add('af-revealed');
-    }, 2500);
+    });
+    mo.observe(app, { childList: true, subtree: true });
   }
 
   /* ---------- 2. 磁吸 hover（对 .item / .search-box） ---------- */
@@ -2630,7 +2753,7 @@ html.perf-lite .search-box:focus-within {
 
   function init() {
     try {
-      initReveal();
+      initPop();
       initMagneticAndShimmer();
     } catch (e) {}
   }
