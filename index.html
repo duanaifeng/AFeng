@@ -18,9 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" type="image/png" href="/AFeng/favicon.png?v=3.6">
-<link rel="shortcut icon" href="/AFeng/favicon.png?v=3.6">
-<link rel="apple-touch-icon" href="/AFeng/favicon.png?v=3.6">
+<link rel="icon" href="/AFeng/favicon/favicon.ico?v=3.6">
+<link rel="icon" type="image/png" sizes="96x96" href="/AFeng/favicon/favicon-96x96.png?v=3.6">
+<link rel="shortcut icon" href="/AFeng/favicon/favicon.ico?v=3.6">
+<link rel="apple-touch-icon" sizes="180x180" href="/AFeng/favicon/apple-touch-icon.png?v=3.6">
 <title>AiFeng · 探索 · 学习 · 创造</title>
 
 <script>
@@ -37,10 +38,9 @@
       start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
       background_color: '#dce4ee', theme_color: '#1d64f2', lang: 'zh-CN',
       icons: [
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: '/AFeng/favicon/web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/favicon/web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/favicon/web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -186,7 +186,7 @@ html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light { display:none; }
 .glass-card {
   position:relative;
   border:1px solid rgba(255,255,255,.55);
-  background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 40%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%);
+  background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.96),
     inset 0 2px 3px rgba(255,255,255,.16),
@@ -199,12 +199,9 @@ html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light { display:none; }
     0 16px 38px rgba(15,40,90,.09);
   transition:border-color .28s var(--ease), box-shadow .28s var(--ease), backdrop-filter .28s var(--ease);
 }
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass-card { backdrop-filter: blur(24px) saturate(170%); -webkit-backdrop-filter: blur(24px) saturate(170%); }
-}
 html.dark .glass-card {
   border-color:rgba(255,255,255,.16);
-  background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 40%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%);
+  background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.28),
     inset 0 2px 3px rgba(255,255,255,.05),
@@ -264,8 +261,8 @@ html.dark .hero-status { background:rgba(34,197,94,.14); color:#4ade80; border-c
 .hero-tagline { font-size:13px; font-weight:600; color:var(--text-3); letter-spacing:.02em; }
 @media (min-width:1024px) { .hero-tagline { font-size:14px; } }
 
-.hero-quote { position:relative; z-index:1; margin-bottom:20px; padding:14px 18px; border-radius:var(--radius-md); background:linear-gradient(140deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.05) 60%, rgba(255,255,255,.10) 100%); border:1px solid rgba(255,255,255,.55); border-left:3px solid var(--accent); box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20); font-size:14.5px; font-weight:600; letter-spacing:.01em; color:var(--text-1); line-height:1.6; font-family:'Georgia','Songti SC','STSong',serif; }
-html.dark .hero-quote { background:linear-gradient(140deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 60%, rgba(255,255,255,.05) 100%); border-color:rgba(255,255,255,.14); }
+.hero-quote { position:relative; z-index:1; margin-bottom:20px; padding:14px 18px; border-radius:var(--radius-md); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); border:1px solid rgba(255,255,255,.55); border-left:3px solid var(--accent); box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20); font-size:14.5px; font-weight:600; letter-spacing:.01em; color:var(--text-1); line-height:1.6; font-family:'Georgia','Songti SC','STSong',serif; }
+html.dark .hero-quote { background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); border-color:rgba(255,255,255,.14); }
 @media (min-width:1024px) { .hero-quote { grid-column:2; grid-row:2; margin-bottom:22px; font-size:16px; padding:18px 24px; } }
 
 .hero-desc { position:relative; z-index:1; font-size:13.5px; line-height:1.85; color:var(--text-2); margin-bottom:24px; }
@@ -406,8 +403,8 @@ html.dark .tonearm { background: linear-gradient(90deg, #555, #888, #444); }
 }
 
 .skill-list { list-style:none; display:flex; flex-wrap:wrap; gap:8px; }
-.skill-item { display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.58); background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 55%, rgba(255,255,255,.10) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20); font-size:12.5px; font-weight:600; color:var(--text-2); cursor:default; transition:border-color var(--dur) var(--ease); }
-html.dark .skill-item { border-color:rgba(255,255,255,.14); background:linear-gradient(140deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 55%, rgba(255,255,255,.04) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
+.skill-item { display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.58); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20); font-size:12.5px; font-weight:600; color:var(--text-2); cursor:default; transition:border-color var(--dur) var(--ease); }
+html.dark .skill-item { border-color:rgba(255,255,255,.14); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
 .skill-item::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--skill-color, var(--accent)); box-shadow:0 0 8px var(--skill-color, var(--accent)); flex:0 0 auto; }
 @media (hover:hover) and (pointer:fine) { .skill-item:hover { border-color:var(--border-2); color:var(--text-1); } }
 @media (min-width:1024px) { .skill-item { font-size:13.5px; padding:8px 15px; } }
@@ -469,13 +466,13 @@ html.dark .time-num {
 .back-top {
   position:fixed; right:20px; bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:100;
   width:48px; height:48px; padding:0; border-radius:50%; border:1px solid rgba(255,255,255,.58);
-  background:linear-gradient(140deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.03) 40%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.06) 100%);
+  background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%);
   backdrop-filter:blur(22px) saturate(160%); -webkit-backdrop-filter:blur(22px) saturate(160%);
   color:var(--accent); display:flex; align-items:center; justify-content:center; cursor:pointer;
   opacity:0; visibility:hidden; transform:translateY(12px);
   transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur) var(--ease);
 }
-html.dark .back-top { border-color:rgba(255,255,255,.14); background:linear-gradient(140deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 40%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); }
+html.dark .back-top { border-color:rgba(255,255,255,.14); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); }
 .back-top.show { opacity:1; visibility:visible; transform:translateY(0); }
 .back-top:active { transform:scale(.94); }
 .back-top .ring { position:absolute; inset:0; transform:rotate(-90deg); pointer-events:none; }
@@ -488,7 +485,7 @@ html.dark .back-top { border-color:rgba(255,255,255,.14); background:linear-grad
 @media (min-width:1024px) { .back-top { right:32px; bottom:calc(32px + env(safe-area-inset-bottom, 0px)); width:52px; height:52px; } }
 
 .toast { position:fixed; left:50%; bottom:80px; z-index:10000; display:flex; align-items:center; padding:11px 20px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.72); background:rgba(255,255,255,.86); box-shadow:0 12px 30px rgba(15,40,90,.14); opacity:0; pointer-events:none; transform:translate(-50%, 16px); transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
-html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,.94); }
+html.dark .toast { border-color:rgba(255,255,255,.14); background:rgba(18,28,48,.94); }
 .toast.show { opacity:1; transform:translate(-50%, 0); }
 
 @media (max-width:480px) {
@@ -519,7 +516,8 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
       </div>
       <div class="hero-identity">
         <div class="hero-avatar">
-          <img src="/AFeng/favicon.png?v=3.6" alt="AiFeng 头像" loading="eager" decoding="async">
+          <!-- 重点修改：去除了红圈提示，改为透明度隐藏 -->
+          <img src="/AFeng/favicon/favicon.png?v=3.6" alt="AiFeng 头像" loading="eager" decoding="async" onerror="this.style.opacity='0'">
         </div>
         <div class="hero-name-wrap">
           <h1 class="hero-name">AiFeng</h1>
@@ -848,7 +846,6 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
     pad2: function(n) { return n < 10 ? '0' + n : n; }
   };
 
-  // 1. 极简数字时钟
   var UptimeClock = {
     init: function () {
       var startDate = new Date('2025-07-28T00:00:00+08:00');
@@ -892,12 +889,11 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
         els.s.textContent = Utils.pad2(seconds);
       }
       
-      update(); // 立即执行一次避免闪烁
+      update(); 
       setInterval(update, 1000);
     }
   };
 
-  // 2. 纸上留声（经典语录）
   var WordsInBooks = {
     init: function () {
       var elText = document.getElementById('dailyQuoteText');
@@ -935,7 +931,6 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
     }
   };
 
-  // 3. 每日换书
   var DailyBook = {
     init: function () {
       var books = [
@@ -969,7 +964,6 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
     }
   };
 
-  // 4. 黑胶唱片机
   var VinylPlayer = {
     init: function () {
       var albums = [
@@ -999,7 +993,7 @@ html.dark .toast { border-color:rgba(255,255,255,.20); background:rgba(18,28,48,
 
       elCover.textContent = current.name;
       elCover.style.background = current.color;
-      elCover.style.fontSize = '13px'; // 确保字体醒目
+      elCover.style.fontSize = '13px';
       elCover.style.textShadow = '0 1px 2px rgba(0,0,0,.5)';
     }
   };

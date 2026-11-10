@@ -18,10 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/ganji.html">
 <meta name="twitter:card" content="summary">
 
-<!-- 统一图标指向根目录 -->
-<link rel="icon" type="image/png" href="/AFeng/favicon.png?v=3.6">
-<link rel="shortcut icon" href="/AFeng/favicon.png?v=3.6">
-<link rel="apple-touch-icon" href="/AFeng/favicon.png?v=3.6">
+<!-- 修复图标路径，统一版本号 v3.6 -->
+<link rel="icon" type="image/png" href="/AFeng/favicon/favicon.png?v=3.6">
+<link rel="shortcut icon" href="/AFeng/favicon/favicon.png?v=3.6">
+<link rel="apple-touch-icon" href="/AFeng/favicon/favicon.png?v=3.6">
 <title>西邑乡赶集日历 · AiFeng</title>
 
 <script>
@@ -37,11 +37,12 @@
       description: '永信街、羊邑街、丙麻街、西邑街四天循环',
       start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
       background_color: '#dce4ee', theme_color: '#1d64f2', lang: 'zh-CN',
+      // 修复 PWA 图标，分别指向正确的尺寸文件
       icons: [
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-        { src: '/AFeng/favicon.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: '/AFeng/favicon/web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/favicon/web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/AFeng/favicon/web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+        { src: '/AFeng/favicon/web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -105,7 +106,6 @@
   --shadow-md:0 4px 10px rgba(15,40,90,.06), 0 16px 38px rgba(15,40,90,.10);
   --shadow-lg:0 8px 22px rgba(15,40,90,.08), 0 28px 66px rgba(37,99,235,.14);
   --container-max:1120px; --container-pad-x:20px;
-  --breath-dur:4.2s;
 }
 
 html.dark {
@@ -408,28 +408,21 @@ html.dark .today-card::after {
 .street-display { margin:4px 0 2px; display:flex; flex-direction:column; align-items:center; gap:2px; position:relative; z-index:1; }
 @media (min-width:1024px) { .street-display { margin:12px 0; gap:6px; } }
 
+/* 修复：删掉所有渐变和发光白边，确保字体像刀刻一样清晰 */
 .street-cn-big {
   font-size:clamp(56px, 18vw, 80px);
   font-weight:900;
   letter-spacing:.03em;
   line-height:1.05;
-  color:var(--signal);
+  color:var(--signal); 
   font-variant-numeric:tabular-nums;
   display:inline-block;
   will-change:transform;
   animation:streetBreath 4.2s ease-in-out infinite;
+  -webkit-font-smoothing: antialiased; 
 }
 @media (min-width:768px) { .street-cn-big { font-size:clamp(64px, 13vw, 88px); } }
 @media (min-width:1024px) { .street-cn-big { font-size:clamp(76px, 9vw, 104px); letter-spacing:.04em; } }
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .street-cn-big {
-    background: linear-gradient(135deg, var(--signal) 0%, color-mix(in srgb, var(--signal) 55%, white) 50%, var(--signal) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 22px var(--signal-soft)) drop-shadow(0 0 44px var(--signal-tint));
-  }
-}
 
 .street-en-small { font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace; font-size:9.5px; font-weight:700; letter-spacing:.26em; color:var(--signal); text-transform:uppercase; opacity:.85; }
 @media (min-width:1024px) { .street-en-small { font-size:12px; letter-spacing:.32em; } }
@@ -681,18 +674,11 @@ html.perf-lite .result-card.show { backdrop-filter:none !important; -webkit-back
   display:inline-block;
   will-change:transform;
   animation:streetBreath 4.2s ease-in-out infinite;
+  -webkit-font-smoothing: antialiased;
 }
 @media (min-width:768px) { .result-street { font-size:clamp(64px, 13vw, 88px); } }
 @media (min-width:1024px) { .result-street { font-size:clamp(72px, 9vw, 96px); letter-spacing:.04em; } }
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .result-street {
-    background: linear-gradient(135deg, var(--signal) 0%, color-mix(in srgb, var(--signal) 55%, white) 50%, var(--signal) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 22px var(--signal-soft)) drop-shadow(0 0 44px var(--signal-tint));
-  }
-}
+/* 同样去除查询结果大字的毛边 */
 .result-street-en { font-family:ui-monospace,'SF Mono','Menlo','Consolas',monospace; font-size:9.5px; font-weight:700; letter-spacing:.26em; color:var(--signal); text-transform:uppercase; opacity:.75; }
 @media (min-width:1024px) { .result-street-en { font-size:11px; letter-spacing:.3em; } }
 
@@ -1577,7 +1563,6 @@ html.dark .toast.error { color:#fca5a5; }
     }
   };
 
-  // 核心生成器：纯前端计算并触发下载
   const ICSGenerator = {
     generate(startDate, days) {
       const icsLines = [
@@ -1589,17 +1574,14 @@ html.dark .toast.error { color:#fca5a5; }
         'X-WR-TIMEZONE:Asia/Shanghai'
       ];
 
-      // 基准 UTC 时间，防止跨时区或跨年溢出
       const baseUTC = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
 
       for (let i = 0; i < days; i++) {
-        // 用纯数字累加天数，彻底避开 setMonth 和本地时区的坑
         const d = new Date(baseUTC + i * 86400000);
         const y = d.getUTCFullYear();
         const m = d.getUTCMonth();
         const date = d.getUTCDate();
 
-        // 从 UTC 时间还原出纯日期对象用于算街
         const loopDate = new Date(y, m, date);
         const s = Calendar.street(loopDate);
 
@@ -1611,15 +1593,12 @@ html.dark .toast.error { color:#fca5a5; }
         icsLines.push('BEGIN:VEVENT');
         icsLines.push(`UID:${dateStr}-${s.en}@xiyi.ganji`);
         icsLines.push(`DTSTAMP:${dateStr}T000000Z`);
-        // 全天日程格式，彻底解决时区提前一天
         icsLines.push(`DTSTART;VALUE=DATE:${dateStr}`);
         icsLines.push(`DTEND;VALUE=DATE:${nextDateStr}`);
-        // 标题美化，描述分段
         icsLines.push(`SUMMARY:🛒 赶集日 · ${s.cn}`);
         icsLines.push(`LOCATION:${s.cn}`);
         icsLines.push(`DESCRIPTION:📍 地点：${s.cn}\\n⏰ 时间：08:00 开市，18:00 散场\\n🔥 黄金时段：09:00 - 12:00（人最多，好货趁早买）\\n📝 备注：西邑乡四天循环赶集，祝您赶集愉快！`);
         
-        // 提前4小时提醒（前一天晚上8点），相对时间兼容性最好
         icsLines.push('BEGIN:VALARM');
         icsLines.push('ACTION:DISPLAY');
         icsLines.push(`DESCRIPTION:明天赶集，记得去 ${s.cn}`);
@@ -1630,7 +1609,6 @@ html.dark .toast.error { color:#fca5a5; }
 
       icsLines.push('END:VCALENDAR');
       
-      // 关键：加上 BOM 头（\ufeff）防安卓乱码，强制使用 \r\n 换行
       const icsContent = '\ufeff' + icsLines.join('\r\n');
       
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
@@ -1657,7 +1635,6 @@ html.dark .toast.error { color:#fca5a5; }
       setTimeout(() => {
         try {
           const start = Calendar.beijingToday();
-          // 10年约等于 3650 天
           this.generate(start, 3650);
           Toast.show('日历文件已生成，请查看下载');
         } catch (e) {
