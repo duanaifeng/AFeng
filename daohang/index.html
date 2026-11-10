@@ -259,8 +259,14 @@ body.editing .section-actions { display:flex; }
   box-shadow:inset 0 1px 0 rgba(255,255,255,.96), inset 0 2px 3px rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.22), inset 1px 0 0 rgba(255,255,255,.48), inset -1px 0 0 rgba(255,255,255,.38), inset 0 0 22px rgba(255,255,255,.05), 0 1px 2px rgba(15,40,90,.04), 0 6px 18px rgba(15,40,90,.06), 0 16px 38px rgba(15,40,90,.09);
   color:inherit; text-decoration:none; overflow:hidden; cursor:pointer; transition:border-color .28s var(--ease), box-shadow .28s var(--ease);
 }
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .item { backdrop-filter: blur(18px) saturate(165%); -webkit-backdrop-filter: blur(18px) saturate(165%); } }
+/* [perf 3.7] 卡片毛玻璃已移除：blur(18px)+saturate(165%) 在长列表滚动时需对每张卡片背后的流体背景实时重算，是滚动卡顿的主因。改为更实的纯色渐变，视觉接近但零合成开销。 */
+.item { background:linear-gradient(140deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.86) 40%, rgba(255,255,255,.88) 62%, rgba(255,255,255,.96) 100%); }
+html.dark .item { background:linear-gradient(140deg, rgba(30,40,58,.96) 0%, rgba(30,40,58,.90) 40%, rgba(30,40,58,.91) 62%, rgba(30,40,58,.97) 100%); }
+/* 原毛玻璃声明已停用，保留选择器便于回滚对比 */
+@supports never ((backdrop-filter: blur(1px))) { .item { backdrop-filter: blur(18px) saturate(165%); -webkit-backdrop-filter: blur(18px) saturate(165%); } }
 html.dark .item { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 40%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.28), inset 0 2px 3px rgba(255,255,255,.05), inset 0 -1px 0 rgba(255,255,255,.05), inset 1px 0 0 rgba(255,255,255,.10), inset -1px 0 0 rgba(255,255,255,.08), inset 0 0 22px rgba(255,255,255,.03), 0 1px 2px rgba(0,0,0,.42), 0 6px 18px rgba(0,0,0,.32), 0 16px 38px rgba(0,0,0,.44); }
+/* [perf 3.7] 暗色模式下的卡片纯色背景，必须置于上一条之后以覆盖原半透明值 */
+html.dark .item { background:linear-gradient(140deg, rgba(30,40,58,.96) 0%, rgba(30,40,58,.90) 40%, rgba(30,40,58,.91) 62%, rgba(30,40,58,.97) 100%); }
 .item::before { content:''; position:absolute; left:0; top:50%; width:3px; height:60%; border-radius:0 4px 4px 0; background:var(--c-accent); transform:translateY(-50%); opacity:.85; }
 .item::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.36) 50%, rgba(255,255,255,.10) 58%, transparent 70%, transparent 100%); mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); opacity:.55; transition:opacity .4s var(--ease); }
 html.dark .item::after { background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(147,197,253,.07) 42%, rgba(147,197,253,.24) 50%, rgba(147,197,253,.07) 58%, transparent 70%, transparent 100%); }
