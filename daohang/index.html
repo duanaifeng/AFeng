@@ -76,7 +76,6 @@
 :root {
   --bg-a:#dce4ee; --bg-b:#e3eaf3; --bg-c:#d4dde9;
   --surface:rgba(255,255,255,.20); --surface-2:rgba(255,255,255,.30); --surface-3:rgba(255,255,255,.50);
---suggest-bg:#f4f8fe;
   --text-1:#0a1730; --text-2:#3a4d6c; --text-3:#5a6c8a;
   --border-1:rgba(255,255,255,.44); --border-2:rgba(255,255,255,.76);
   --accent:#1d64f2; --accent-hover:#1449c4;
@@ -95,7 +94,6 @@
 html.dark {
   --bg-a:#10161e; --bg-b:#141b24; --bg-c:#0d131a;
   --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.06); --surface-3:rgba(18,28,48,.82);
---suggest-bg:#182130;
   --text-1:#e6eefb; --text-2:#a2b5d2; --text-3:#8ba0bf;
   --border-1:rgba(255,255,255,.10); --border-2:rgba(255,255,255,.24);
   --accent:#60a5fa; --accent-hover:#93c5fd;
@@ -206,7 +204,7 @@ html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light { display:none; }
 }
 html.dark .version-pill { color:#fbbf24; border-color:rgba(251,191,36,.30); background:linear-gradient(140deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.06) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.04), 0 2px 8px rgba(0,0,0,.35); }
 
-.search-area { position:relative; z-index:70; margin-bottom:28px; }
+.search-area { position:relative; margin-bottom:28px; }
 .search-box { position:relative; display:flex; align-items:center; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.55); background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 2px 3px rgba(255,255,255,.18), inset 0 -1px 0 rgba(255,255,255,.24), inset 1px 0 0 rgba(255,255,255,.50), inset -1px 0 0 rgba(255,255,255,.40), inset 0 0 22px rgba(255,255,255,.06), 0 1px 2px rgba(15,40,90,.04), 0 8px 22px rgba(15,40,90,.07); overflow:hidden; transition:border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 html.dark .search-box { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(255,255,255,.05), inset 1px 0 0 rgba(255,255,255,.10), inset -1px 0 0 rgba(255,255,255,.08), inset 0 0 22px rgba(255,255,255,.03), 0 1px 2px rgba(0,0,0,.4), 0 8px 22px rgba(0,0,0,.30); }
 .search-box::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.34) 50%, rgba(255,255,255,.10) 58%, transparent 70%, transparent 100%); mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); opacity:.5; transition:opacity .4s var(--ease); }
@@ -224,27 +222,18 @@ html.dark .search-box::after { background:linear-gradient(120deg, transparent 0%
 .search-clear:hover { background:var(--accent-soft); color:var(--accent); }
 .search-clear svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-.search-suggest { position:absolute; top:calc(100% + 8px); left:0; right:0; z-index:60; max-height:min(360px, 56vh); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; border-radius:var(--radius-lg); border:1px solid var(--border-2); background:var(--suggest-bg); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); box-shadow:inset 0 1px 0 rgba(255,255,255,.98), inset 0 -1px 0 rgba(255,255,255,.24), inset 1px 0 0 rgba(255,255,255,.55), inset -1px 0 0 rgba(255,255,255,.44), 0 18px 44px rgba(15,40,90,.18), 0 40px 80px rgba(15,40,90,.14); opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity var(--dur) var(--ease), visibility var(--dur) var(--ease), transform var(--dur) var(--ease); }
-html.dark .search-suggest { border-color:rgba(255,255,255,.22); background:var(--suggest-bg); box-shadow:inset 0 1px 0 rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.04), 0 18px 44px rgba(0,0,0,.6), 0 40px 80px rgba(0,0,0,.5); }
-.search-suggest.show { opacity:1; visibility:visible; transform:translateY(0); }
-/* 面板背后的遮罩：彻底杜绝底层卡片文字透出 */
-.search-mask { position:fixed; inset:0; z-index:55; background:rgba(220,228,238,.58); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); opacity:0; visibility:hidden; transition:opacity var(--dur) var(--ease), visibility var(--dur) var(--ease); }
-html.dark .search-mask { background:rgba(10,15,22,.64); }
-.search-mask.show { opacity:1; visibility:visible; }
-.search-mask[hidden] { display:none; }
-body.search-open { overflow:hidden; }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .search-suggest { background:var(--suggest-bg); } .search-mask { background:rgba(220,228,238,.86); } html.dark .search-mask { background:rgba(10,15,22,.88); } }
-.suggest-item { position:relative; display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid var(--border-1); background:transparent; color:inherit; text-decoration:none; cursor:pointer; }
-.suggest-item:first-child { border-top-left-radius:var(--radius-lg); border-top-right-radius:var(--radius-lg); }
-.suggest-item:last-child { border-bottom-left-radius:var(--radius-lg); border-bottom-right-radius:var(--radius-lg); }
+/* 修复：大幅提升背景不透明度，并增加毛玻璃模糊，彻底解决底层透字问题 */
+.search-suggest { position:absolute; top:calc(100% + 8px); left:0; right:0; z-index:50; max-height:360px; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.55); background:rgba(243, 250, 255, 0.96); backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%); box-shadow:inset 0 1px 0 rgba(255,255,255,.98), inset 0 -1px 0 rgba(255,255,255,.24), inset 1px 0 0 rgba(255,255,255,.55), inset -1px 0 0 rgba(255,255,255,.44), 0 18px 44px rgba(15,40,90,.14); opacity:0; visibility:hidden; transition:opacity var(--dur) var(--ease), visibility var(--dur) var(--ease); }
+html.dark .search-suggest { border-color:rgba(255,255,255,.16); background:rgba(18, 28, 48, 0.96); box-shadow:inset 0 1px 0 rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.04), 0 18px 44px rgba(0,0,0,.55); }
+.search-suggest.show { opacity:1; visibility:visible; }
+.suggest-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-1); color:inherit; text-decoration:none; cursor:pointer; }
 .suggest-item:last-child { border-bottom:none; }
 .suggest-item:hover, .suggest-item.active { background:var(--accent-soft); }
 .suggest-icon { flex:0 0 auto; align-self:flex-start; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); background:var(--accent-soft); color:var(--accent); font-size:14px; box-shadow:inset 0 1px 0 rgba(255,255,255,.60); }
 html.dark .suggest-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
 .suggest-body { display:block; flex:1; min-width:0; }
-.suggest-name { display:block; width:100%; margin-bottom:3px; font-size:14.5px; font-weight:800; letter-spacing:.01em; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.suggest-path { display:block; width:100%; font-size:11.5px; line-height:1.45; color:var(--text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.suggest-name mark { background:transparent; color:var(--accent); font-weight:900; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:2px; }
+.suggest-name { display:block; width:100%; margin-bottom:2px; font-size:13.5px; font-weight:700; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.suggest-path { display:block; width:100%; font-size:11px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .suggest-empty { padding:24px 16px; text-align:center; font-size:13px; color:var(--text-3); }
 
 .section { position:relative; padding:24px 0 12px; }
@@ -513,7 +502,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
           <span>AI.FENG / NAVIGATOR</span>
         </div>
         <div class="brand-head">
-          <!-- 头像去除了红圈，改为透明度隐藏，路径修正 -->
+          <!-- 修复红圈，静默隐藏，路径修复 -->
           <img class="brand-avatar" src="/AFeng/favicon/favicon.png?v=3.6" alt="AiFeng" width="44" height="44" loading="eager" decoding="async" onerror="this.style.opacity='0'">
           <h1 class="brand-title">资源导航站</h1>
         </div>
@@ -544,7 +533,6 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
         <input id="searchInput" class="search-input" type="search" role="searchbox" placeholder="搜索站点名称、描述或分类…" autocomplete="off" spellcheck="false" aria-label="搜索站点">
         <button class="search-clear" id="searchClear" type="button" aria-label="清空"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
       </div>
-      <div class="search-mask" id="searchMask" hidden></div>
       <div class="search-suggest" id="searchSuggest" role="listbox" aria-label="搜索建议"></div>
     </div>
   </header>
@@ -804,25 +792,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
     contrastFg(h) { let c = String(h || '').replace('#', ''); if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2]; const r = parseInt(c.substring(0,2),16), g = parseInt(c.substring(2,4),16), b = parseInt(c.substring(4,6),16); if (isNaN(r)) return 'var(--accent)'; return (0.299*r + 0.587*g + 0.114*b)/255 > 0.65 ? 'rgba(15,23,42,.92)' : '#fff'; },
     cleanTags(v) { if (!Array.isArray(v)) return []; const s = {}, o = []; for (let i = 0; i < v.length; i++) { const t = Utils.clean(v[i], CFG.META.TAG_MAX); if (!t || s[t]) continue; s[t] = true; o.push(t); if (o.length >= CFG.META.TAG_COUNT) break; } return o; },
     escAttr(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); },
-    normalize(t) { return String(t || '').toLowerCase().replace(/[·・\s\-_/]+/g, ''); },
-    highlight(text, kw) {
-      const src = String(text || ''), q = String(kw || '').trim();
-      if (!q) return Utils.escapeHtml(src);
-      const needle = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const parts = src.split(new RegExp(needle, 'gi'));
-      if (parts.length < 2) return Utils.escapeHtml(src);
-      let out = '', low = src.toLowerCase(), from = 0;
-      parts.forEach((seg, i) => {
-        out += Utils.escapeHtml(seg);
-        if (i < parts.length - 1) {
-          const hit = src.substr(from + seg.length, q.length);
-          out += '<mark>' + Utils.escapeHtml(hit) + '</mark>';
-          from += seg.length + q.length;
-        }
-      });
-      return out;
-    },
-    escapeHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    normalize(t) { return String(t || '').toLowerCase().replace(/[·・\s\-_/]+/g, ''); }
   };
 
   const Measure = (function () {
@@ -1260,7 +1230,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
   const Search = {
     input: null, box: null, clearBtn: null, suggest: null, results: [], activeIndex: -1,
     init() {
-      this.input = document.getElementById('searchInput'); this.box = document.getElementById('searchBox'); this.clearBtn = document.getElementById('searchClear'); this.suggest = document.getElementById('searchSuggest'); this.mask = document.getElementById('searchMask');
+      this.input = document.getElementById('searchInput'); this.box = document.getElementById('searchBox'); this.clearBtn = document.getElementById('searchClear'); this.suggest = document.getElementById('searchSuggest');
       if (!this.input || !this.box || !this.suggest) return;
       const deb = Utils.debounce(v => this.renderSuggest(v), CFG.SEARCH_DEBOUNCE);
       this.input.addEventListener('input', e => { this.box.classList.toggle('has-value', e.target.value.length > 0); deb(e.target.value); });
@@ -1274,19 +1244,10 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
       });
       if (this.clearBtn) this.clearBtn.addEventListener('click', e => { e.preventDefault(); this.input.value = ''; this.box.classList.remove('has-value'); this.closeSuggest(); this.input.focus(); });
       document.addEventListener('click', e => { if (!this.box.contains(e.target) && !this.suggest.contains(e.target)) this.closeSuggest(); });
-      if (this.mask) this.mask.addEventListener('click', () => { this.closeSuggest(); this.input && this.input.blur(); });
       document.addEventListener('keydown', e => { const t = document.activeElement?.tagName || ''; if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.input.focus(); } else if (e.key === '/' && !/input|textarea|select/i.test(t)) { e.preventDefault(); this.input.focus(); } });
     },
     isSuggestOpen() { return this.suggest?.classList.contains('show'); },
-    setSuggestOpen(open) {
-      if (!this.suggest) return;
-      this.suggest.classList.toggle('show', open);
-      this.suggest.setAttribute('aria-hidden', open ? 'false' : 'true');
-      if (this.mask) { this.mask.hidden = !open; this.mask.classList.toggle('show', open); }
-      document.body.classList.toggle('search-open', open);
-      if (!open) this.activeIndex = -1;
-    },
-    closeSuggest() { this.setSuggestOpen(false); },
+    closeSuggest() { if (!this.suggest) return; this.suggest.classList.remove('show'); this.suggest.setAttribute('aria-hidden', 'true'); this.activeIndex = -1; },
     build(kw) {
       const q = Utils.normalize(kw); if (!q) return [];
       const out = [], data = DataService.data || [];
@@ -1303,18 +1264,18 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
     renderSuggest(kw) {
       if (!this.suggest) return; this.results = this.build(kw); this.activeIndex = -1; Dom.clear(this.suggest);
       if (!String(kw).trim()) return this.closeSuggest();
-      if (!this.results.length) { this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>'; this.setSuggestOpen(true); return; }
+      if (!this.results.length) { this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>'; this.suggest.classList.add('show'); return; }
       this.results.forEach((r, idx) => {
         const a = Dom.el('a', 'suggest-item'); a.href = 'javascript:void(0)';
         const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON); ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
         const bd = Dom.el('span', 'suggest-body');
-        bd.appendChild(Dom.el('span', 'suggest-name', Utils.highlight ? Utils.highlight(r.item.name, kw) : r.item.name));
+        bd.appendChild(Dom.el('span', 'suggest-name', r.item.name));
         bd.appendChild(Dom.el('span', 'suggest-path', r.group.category + (r.item.desc ? ' · ' + r.item.desc : '')));
         a.append(ic, bd);
         a.addEventListener('click', e => { e.preventDefault(); if (r.item.popup?.length) Actions.openPopup(r.item, r.group); else Actions.openDetail(r.item, r.group); this.closeSuggest(); });
         this.suggest.appendChild(a);
       });
-      this.setSuggestOpen(true);
+      this.suggest.classList.add('show');
     },
     move(d) {
       const items = this.suggest.querySelectorAll('.suggest-item'); if (!items.length) return;
