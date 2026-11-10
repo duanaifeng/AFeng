@@ -34,8 +34,8 @@
     if (/[?&]full=1/.test(search)) lite = false;
     else if (/[?&]lite=1/.test(search)) lite = true;
     else {
-      if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2) lite = true;
-      if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 2) lite = true;
+      if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4) lite = true;
+      if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4) lite = true;
       if (navigator.connection && navigator.connection.saveData) lite = true;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) lite = true;
     }
@@ -123,9 +123,14 @@ html.dark .bg-cursor-light { background:radial-gradient(620px circle at var(--gx
 html.perf-lite .bg-fluid span, html.perf-lite .bg-light span { animation:none; }
 html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light { display:none; }
 /* 核心防卡顿：滚动时强制关闭 GPU 重负载特效 */
-/* 滚动时只关掉最贵的 backdrop-filter，保留 inset 高光与背景色，避免卡片"变色/变平" */
+/* 滚动时只锁「分类大卡片」这一层：材质不切换 => 颜色不跳变。
+   .item 已是卡内行、无 backdrop-filter，不再参与，省掉无谓重排。 */
+html.is-scrolling .cat-card, html.is-scrolling .glass-card, html.is-scrolling .glass, html.is-scrolling .search-box, html.is-scrolling .work-card, html.is-scrolling .now-card, html.is-scrolling .daily-quote-card { backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) !important; -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) !important; backface-visibility: hidden !important; -webkit-backface-visibility: hidden !important; -webkit-transform-style: flat !important; transform-style: flat !important; }
+/* 高光常驻：从 display:none 改为 opacity 微调，避免整树重排让卡片闪没 */
+html.is-scrolling .cat-card::after, html.is-scrolling .glass-card::after, html.is-scrolling .work-card::after, html.is-scrolling .glass::after, html.is-scrolling .search-box::after, html.is-scrolling .now-card::after, html.is-scrolling .daily-quote-card::after { display: block !important; opacity: .62 !important; }
+/* 滚动期间禁 transition，图层不在甩动中重建，杜绝 tile 来不及光栅化的白块 */
+html.is-scrolling .cat-card, html.is-scrolling .item-list { transition: none !important; }
 html.is-scrolling .bg-fluid span, html.is-scrolling .bg-light span, html.is-scrolling .brandPulse, html.is-scrolling .statusPulse { animation-play-state: paused !important; }
-/* 高光层不再 display:none（会触发整树重排），改由文末加固规则固定为静态 .55 */
 
 .page { position:relative; z-index:2; width:100%; max-width:var(--container-max); padding:0 var(--container-pad-x); display:flex; flex-direction:column; }
 @media (max-width:480px) { .page { --container-pad-x:16px; } }
@@ -159,7 +164,7 @@ html.dark .search-box { border-color:rgba(255,255,255,.16); background:linear-gr
 html.dark .search-box::after { background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(147,197,253,.07) 42%, rgba(147,197,253,.22) 50%, rgba(147,197,253,.07) 58%, transparent 70%, transparent 100%); }
 .search-box:focus-within { border-color:rgba(255,255,255,.88); box-shadow:inset 0 1px 0 rgba(255,255,255,.98), inset 0 2px 3px rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.28), inset 1px 0 0 rgba(255,255,255,.55), inset -1px 0 0 rgba(255,255,255,.45), inset 0 0 26px rgba(255,255,255,.08), 0 0 0 3px var(--focus-ring), 0 10px 28px rgba(15,40,90,.10); }
 .search-box:focus-within::after { opacity:.85; }
-html.perf-lite .search-box { }
+html.perf-lite .search-box { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
 .search-icon { position:relative; z-index:2; flex:0 0 auto; width:20px; height:20px; margin-left:18px; color:var(--text-3); pointer-events:none; }
 .search-box:focus-within .search-icon { color:var(--accent); }
 .search-icon svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
@@ -173,7 +178,7 @@ html.perf-lite .search-box { }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .search-suggest { backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); } }
 html.dark .search-suggest { border-color:rgba(255,255,255,.20); background:linear-gradient(180deg, rgba(255,255,255,.10) 0%, transparent 12%), linear-gradient(140deg, rgba(20,28,44,.94) 0%, rgba(20,28,44,.88) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.04), 0 18px 44px rgba(0,0,0,.55); }
 .search-suggest.show { opacity:1; visibility:visible; }
-html.perf-lite .search-suggest { }
+html.perf-lite .search-suggest { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
 .suggest-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-1); color:inherit; text-decoration:none; cursor:pointer; }
 .suggest-item:last-child { border-bottom:none; }
 .suggest-item:hover, .suggest-item.active { background:var(--accent-soft); }
@@ -195,16 +200,48 @@ html.dark .section-count { border-color:rgba(255,255,255,.14); background:linear
 .section-rule { flex:1; height:1px; background:linear-gradient(90deg, var(--c-line), var(--border-1) 60%, transparent); }
 .section-actions { display:none; gap:4px; flex:0 0 auto; }
 body.editing .section-actions { display:flex; }
-.item-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
-.item { position:relative; display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.55); background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 40%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.96), inset 0 2px 3px rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.22), inset 1px 0 0 rgba(255,255,255,.48), inset -1px 0 0 rgba(255,255,255,.38), inset 0 0 22px rgba(255,255,255,.05), 0 1px 2px rgba(15,40,90,.04), 0 6px 18px rgba(15,40,90,.06), 0 16px 38px rgba(15,40,90,.09); color:inherit; text-decoration:none; overflow:hidden; cursor:pointer; transition:border-color .28s var(--ease), box-shadow .28s var(--ease); }
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .item { backdrop-filter: blur(18px) saturate(165%); -webkit-backdrop-filter: blur(18px) saturate(165%); } }
-html.dark .item { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 40%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.28), inset 0 2px 3px rgba(255,255,255,.05), inset 0 -1px 0 rgba(255,255,255,.05), inset 1px 0 0 rgba(255,255,255,.10), inset -1px 0 0 rgba(255,255,255,.08), inset 0 0 22px rgba(255,255,255,.03), 0 1px 2px rgba(0,0,0,.42), 0 6px 18px rgba(0,0,0,.32), 0 16px 38px rgba(0,0,0,.44); }
-.item::before { content:''; position:absolute; left:0; top:50%; width:3px; height:60%; border-radius:0 4px 4px 0; background:var(--c-accent); transform:translateY(-50%); opacity:.85; }
-.item::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.36) 50%, rgba(255,255,255,.10) 58%, transparent 70%, transparent 100%); mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 68%); opacity:.55; transition:opacity .4s var(--ease); }
-html.dark .item::after { background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(147,197,253,.07) 42%, rgba(147,197,253,.24) 50%, rgba(147,197,253,.07) 58%, transparent 70%, transparent 100%); }
-html.perf-lite .item { }
-@media (hover:hover) and (pointer:fine) { .item:hover, .item:focus-visible { border-color:rgba(255,255,255,.88); box-shadow:inset 0 1px 0 rgba(255,255,255,.99), inset 0 2px 3px rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.28), inset 1px 0 0 rgba(255,255,255,.58), inset -1px 0 0 rgba(255,255,255,.46), inset 0 0 26px rgba(255,255,255,.08), 0 1px 2px rgba(15,40,90,.05), 0 10px 26px rgba(15,40,90,.10), 0 24px 56px rgba(15,40,90,.16); } html.dark .item:hover, html.dark .item:focus-visible { border-color:rgba(255,255,255,.32); box-shadow:inset 0 1px 0 rgba(255,255,255,.36), inset 0 2px 3px rgba(255,255,255,.06), inset 0 -1px 0 rgba(255,255,255,.07), inset 1px 0 0 rgba(255,255,255,.14), inset -1px 0 0 rgba(255,255,255,.10), inset 0 0 26px rgba(255,255,255,.04), 0 1px 2px rgba(0,0,0,.42), 0 10px 26px rgba(0,0,0,.40), 0 24px 56px rgba(0,0,0,.55); } .item:hover::after, .item:focus-visible::after { opacity:1; } }
-.item:active { transform:translateY(0) scale(.998); }
+/* ========== 分类大卡片：液态玻璃只存在于这一层（12 张，而非 100+ 张） ========== */
+.cat-card { position:relative; display:block; padding:16px 16px 8px; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.58);
+  background:linear-gradient(140deg, rgba(232,244,255,.30) 0%, rgba(232,244,255,.12) 42%, rgba(232,244,255,.06) 62%, rgba(232,244,255,.20) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.98), inset 0 2px 3px rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.26), inset 1px 0 0 rgba(255,255,255,.52), inset -1px 0 0 rgba(255,255,255,.40), inset 0 0 26px rgba(255,255,255,.06), 0 1px 2px rgba(15,40,90,.04), 0 8px 22px rgba(15,40,90,.07), 0 20px 48px rgba(15,40,90,.10);
+  overflow:hidden; contain:layout style paint; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  transition:border-color .28s var(--ease), box-shadow .28s var(--ease); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cat-card { backdrop-filter: blur(20px) saturate(185%); -webkit-backdrop-filter: blur(20px) saturate(185%); } }
+html.dark .cat-card { border-color:rgba(255,255,255,.18);
+  background:linear-gradient(140deg, rgba(122,162,220,.16) 0%, rgba(122,162,220,.06) 42%, rgba(122,162,220,.03) 62%, rgba(122,162,220,.11) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 2px 3px rgba(255,255,255,.06), inset 0 -1px 0 rgba(255,255,255,.06), inset 1px 0 0 rgba(255,255,255,.12), inset -1px 0 0 rgba(255,255,255,.09), inset 0 0 26px rgba(255,255,255,.04), 0 1px 2px rgba(0,0,0,.44), 0 8px 22px rgba(0,0,0,.34), 0 20px 48px rgba(0,0,0,.46); }
+/* 1px 边缘高光环：iOS 玻璃“有厚度”的关键，exclude 挖空只留描边 */
+.cat-card::before { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; padding:1px; z-index:2;
+  background:linear-gradient(160deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.28) 38%, rgba(255,255,255,.05) 62%, rgba(255,255,255,.55) 100%);
+  mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite:exclude;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; }
+html.dark .cat-card::before { background:linear-gradient(160deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.10) 38%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.20) 100%); }
+/* 镜面斜向高光带：常驻，滚动时也留着，绝不 display:none */
+.cat-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1;
+  background:linear-gradient(115deg, transparent 0%, transparent 26%, rgba(255,255,255,.10) 38%, rgba(255,255,255,.34) 46%, rgba(255,255,255,.10) 54%, transparent 66%, transparent 100%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.5) 46%, rgba(0,0,0,0) 70%); -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.5) 46%, rgba(0,0,0,0) 70%);
+  opacity:.62; transition:opacity .4s var(--ease); }
+html.dark .cat-card::after { background:linear-gradient(115deg, transparent 0%, transparent 26%, rgba(147,197,253,.06) 38%, rgba(147,197,253,.22) 46%, rgba(147,197,253,.06) 54%, transparent 66%, transparent 100%); }
+html.perf-lite .cat-card { backdrop-filter: blur(10px) saturate(150%) !important; -webkit-backdrop-filter: blur(10px) saturate(150%) !important; }
+@media (hover:hover) and (pointer:fine) { .cat-card:hover { border-color:rgba(255,255,255,.90); box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 2px 3px rgba(255,255,255,.24), inset 0 -1px 0 rgba(255,255,255,.30), inset 1px 0 0 rgba(255,255,255,.60), inset -1px 0 0 rgba(255,255,255,.48), inset 0 0 30px rgba(255,255,255,.09), 0 1px 2px rgba(15,40,90,.05), 0 12px 28px rgba(15,40,90,.11), 0 28px 62px rgba(15,40,90,.18); } html.dark .cat-card:hover { border-color:rgba(255,255,255,.34); box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 2px 3px rgba(255,255,255,.07), inset 0 -1px 0 rgba(255,255,255,.08), inset 1px 0 0 rgba(255,255,255,.16), inset -1px 0 0 rgba(255,255,255,.12), inset 0 0 30px rgba(255,255,255,.05), 0 1px 2px rgba(0,0,0,.44), 0 12px 28px rgba(0,0,0,.42), 0 28px 62px rgba(0,0,0,.58); } .cat-card:hover::after { opacity:.95; } }
+
+/* ========== 卡内链接行：零模糊，只有半透底 + 发丝分隔线 ========== */
+.item-list { list-style:none; display:flex; flex-direction:column; gap:0; position:relative; z-index:3; }
+.item { position:relative; display:flex; align-items:center; gap:13px; padding:12px 10px 12px 13px; border-radius:var(--radius-sm);
+  background:linear-gradient(140deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,.07) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72), inset 0 -1px 0 rgba(255,255,255,.14);
+  color:inherit; text-decoration:none; overflow:hidden; cursor:pointer;
+  transition:background .22s var(--ease), box-shadow .22s var(--ease); }
+html.dark .item { background:linear-gradient(140deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.018) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.13), inset 0 -1px 0 rgba(255,255,255,.03); }
+.item + .item { margin-top:2px; }
+/* 行间发丝线 */
+.item + .item::before { content:''; position:absolute; left:13px; right:10px; top:-2px; height:1px; background:linear-gradient(90deg, var(--c-line), rgba(255,255,255,.10) 60%, transparent); pointer-events:none; }
+html.dark .item + .item::before { background:linear-gradient(90deg, var(--c-line), rgba(255,255,255,.05) 60%, transparent); }
+/* 左侧分类色条：静止时不占视觉，hover 才亮 */
+.item::after { content:''; position:absolute; left:0; top:50%; width:3px; height:0%; border-radius:0 4px 4px 0; background:var(--c-accent); transform:translateY(-50%); opacity:0; transition:height .26s var(--ease), opacity .26s var(--ease); pointer-events:none; }
+@media (hover:hover) and (pointer:fine) { .item:hover, .item:focus-visible { background:linear-gradient(140deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.16) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.90), inset 0 -1px 0 rgba(255,255,255,.20); } html.dark .item:hover, html.dark .item:focus-visible { background:linear-gradient(140deg, rgba(255,255,255,.11) 0%, rgba(255,255,255,.04) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.05); } .item:hover::after, .item:focus-visible::after { height:62%; opacity:.9; } }
+.item:active { background:linear-gradient(140deg, rgba(255,255,255,.54) 0%, rgba(255,255,255,.22) 100%); }
+html.dark .item:active { background:linear-gradient(140deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.05) 100%); }
 .item-icon { position:relative; z-index:1; flex:0 0 auto; align-self:flex-start; width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); border:1px solid var(--c-border); background:var(--c-bg); color:var(--c-fg); font-size:18px; box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20); }
 html.dark .item-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
 .item-body { position:relative; z-index:1; display:block; flex:1; min-width:0; }
@@ -215,7 +252,8 @@ html.dark .item-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -
 .item:hover .item-arrow, .item:focus-visible .item-arrow { color:var(--c-accent); opacity:1; }
 body.editing .item { padding-right:110px; cursor:pointer; }
 body.editing .item:hover { border-color:rgba(255,255,255,.58); }
-body.editing .item::before, body.editing .item::after { display:none; }
+body.editing .item::after, body.editing .item + .item::before { display:none !important; }
+body.editing .cat-card::after { opacity:.30 !important; }
 body.editing .item .item-arrow { display:none; }
 .item-actions { position:absolute; top:50%; right:10px; z-index:3; display:none; gap:4px; transform:translateY(-50%); }
 body.editing .item-actions { display:flex; }
@@ -230,7 +268,11 @@ html.dark .add-btn { border-color:rgba(255,255,255,.16); background:linear-gradi
 .add-btn:hover { background:var(--accent-soft); border-style:solid; border-color:var(--accent); }
 .add-btn svg { flex:0 0 16px; width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; }
 .add-btn span { white-space:nowrap; }
-@media (min-width:1024px) { .add-zone { flex-direction:row; } .add-btn { flex:1; } .item-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; } }
+@media (min-width:1024px) { .add-zone { flex-direction:row; } .add-btn { flex:1; }
+  /* 分类大卡片两列排布，长列表高度砍半，甩动距离更短 */
+  .app { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
+  .section { padding:0; } .section:first-of-type { padding-top:0; } .cat-card { height:100%; }
+  .item-list { display:flex; flex-direction:column; gap:0; } }
 .disclaimer { margin-top:32px; padding:22px 24px; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.55); background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.96), inset 0 -1px 0 rgba(255,255,255,.22), inset 1px 0 0 rgba(255,255,255,.46), inset -1px 0 0 rgba(255,255,255,.38), 0 1px 2px rgba(15,40,90,.04), 0 8px 22px rgba(15,40,90,.07); }
 html.dark .disclaimer { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.24), inset 0 -1px 0 rgba(255,255,255,.05), 0 1px 2px rgba(0,0,0,.42), 0 8px 22px rgba(0,0,0,.32); }
 .disclaimer-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:13px; font-weight:800; color:var(--text-1); }
@@ -360,13 +402,13 @@ html.dark .back-top::before { background:linear-gradient(120deg, transparent 0%,
 @keyframes flameFlicker { 0%, 100% { opacity:.55; } 50% { opacity:1; } }
 .back-top:active { transform:scale(.94); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .back-top { background:linear-gradient(140deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.10) 40%, rgba(255,255,255,.08) 62%, rgba(255,255,255,.16) 100%); } html.dark .back-top { background:linear-gradient(140deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.05) 40%, rgba(255,255,255,.04) 62%, rgba(255,255,255,.08) 100%); } }
-html.perf-lite .back-top { background:linear-gradient(140deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.10) 40%, rgba(255,255,255,.08) 62%, rgba(255,255,255,.16) 100%); }
+html.perf-lite .back-top { backdrop-filter:none; -webkit-backdrop-filter:none; background:linear-gradient(140deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.10) 40%, rgba(255,255,255,.08) 62%, rgba(255,255,255,.16) 100%); }
 html.perf-lite.dark .back-top { background:linear-gradient(140deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.05) 40%, rgba(255,255,255,.04) 62%, rgba(255,255,255,.08) 100%); }
 body.editing .back-top { display:none; }
 @media (min-width:1024px) { .back-top { right:32px; bottom:calc(32px + env(safe-area-inset-bottom, 0px)); width:52px; height:52px; } }
 .toast { position:fixed; left:50%; bottom:calc(80px + env(safe-area-inset-bottom, 0px)); z-index:10000; display:flex; align-items:center; gap:14px; max-width:calc(100vw - 48px); padding:11px 20px; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.72); background:linear-gradient(180deg, rgba(255,255,255,.20) 0%, transparent 18%), linear-gradient(140deg, rgba(255,255,255,.86) 0%, rgba(255,255,255,.76) 100%); backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%); box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(255,255,255,.30), inset 1px 0 0 rgba(255,255,255,.58), inset -1px 0 0 rgba(255,255,255,.46), 0 12px 30px rgba(15,40,90,.14), 0 28px 66px rgba(15,40,90,.20); color:var(--text-1); font-size:12.5px; font-weight:700; opacity:0; pointer-events:none; transform:translate(-50%, 16px); transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
 html.dark .toast { border-color:rgba(255,255,255,.20); background:linear-gradient(180deg, rgba(255,255,255,.10) 0%, transparent 18%), linear-gradient(140deg, rgba(20,28,44,.94) 0%, rgba(20,28,44,.88) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.05), 0 12px 30px rgba(0,0,0,.55), 0 28px 66px rgba(0,0,0,.70); }
-html.perf-lite .toast { }
+html.perf-lite .toast { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
 .toast.show { opacity:1; transform:translate(-50%, 0); }
 .toast-msg { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; }
 .toast-action { flex:0 0 auto; padding:5px 12px; border-radius:var(--radius-sm); border:none; background:var(--accent); color:#fff; font-family:inherit; font-size:11.5px; font-weight:800; letter-spacing:.02em; cursor:pointer; box-shadow:inset 0 1px 0 rgba(255,255,255,.40); }
@@ -374,7 +416,7 @@ html.perf-lite .toast { }
 @media (max-width:640px) {
   .topbar-inner { flex-direction:column; gap:20px; } .topbar-stats { align-self:flex-start; gap:20px; } .topbar-stat { text-align:left; } .topbar-stat-num { font-size:18px; }
   .search-input { height:48px; padding-left:10px; } .search-icon { width:18px; height:18px; margin-left:14px; }
-  .section { padding:20px 0 8px; } .item { padding:12px 14px; gap:12px; } .item-icon { width:36px; height:36px; }
+  .section { padding:20px 0 8px; } .cat-card { padding:13px 12px 6px; } .item { padding:11px 8px 11px 11px; gap:11px; } .item-icon { width:34px; height:34px; font-size:16px; }
   .item-desc { font-size:11.5px; } body.editing .item { padding-right:108px; }
   .disclaimer { margin-top:24px; padding:18px 20px; } .disclaimer-body { font-size:12px; }
   .footer { padding:28px 0 32px; }
@@ -389,230 +431,6 @@ html.perf-lite .toast { }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } .scan-line { display:none; } }
 @media print { .bg-layer, .bg-cursor-light, .back-top, .toast, .search-area, .edit-bar, .footer-actions { display:none !important; } body { display:block; background:#fff; color:#000; } .page { max-width:100%; padding:0; } .item, .disclaimer { break-inside:avoid; border:1px solid #ccc; box-shadow:none; background:#fff; } a { color:#000; text-decoration:none; } }
-
-/* ===== Liquid Glass · 视觉重构层 ===== */
-:root {
-  --lg-tint: 232, 244, 255;
-  --lg-hi: 255, 255, 255;
-  --lg-blur: 20px;
-  --lg-sat: 185%;
-}
-html.dark {
-  --lg-tint: 122, 162, 220;
-  --lg-hi: 190, 214, 255;
-  --lg-blur: 22px;
-  --lg-sat: 172%;
-}
-
-/* 2-1 玻璃材质：饱和度提到 185% 才有棱镜通透感，165% 偏灰 */
-.glass,
-.glass-card,
-.item,
-.search-box,
-.work-card,
-.now-card,
-.daily-quote-card,
-.topbar-stat,
-.version-pill,
-.item-action-btn {
-  background:
-    linear-gradient(158deg,
-      rgba(var(--lg-hi), .30) 0%,
-      rgba(var(--lg-tint), .14) 30%,
-      rgba(var(--lg-hi), .05) 55%,
-      rgba(var(--lg-tint), .18) 100%);
-  box-shadow:
-    inset 0 1px 0 0 rgba(var(--lg-hi), .92),
-    inset 0 2px 4px 0 rgba(var(--lg-hi), .34),
-    inset 1px 0 0 0 rgba(var(--lg-hi), .44),
-    inset -1px 0 0 0 rgba(var(--lg-hi), .30),
-    inset 0 -1px 0 0 rgba(var(--lg-hi), .18),
-    inset 0 0 26px 4px rgba(var(--lg-tint), .16),
-    0 1px 2px 0 rgba(18, 38, 78, .05),
-    0 6px 18px -4px rgba(18, 38, 78, .10),
-    0 18px 40px -12px rgba(18, 38, 78, .16);
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass,
-  .glass-card,
-  .item,
-  .search-box,
-  .work-card,
-  .now-card,
-  .daily-quote-card,
-  .version-pill,
-  .item-action-btn {
-    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat));
-    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat));
-  }
-}
-html.dark .glass,
-html.dark .glass-card,
-html.dark .item,
-html.dark .search-box,
-html.dark .work-card,
-html.dark .now-card,
-html.dark .daily-quote-card,
-html.dark .topbar-stat,
-html.dark .version-pill,
-html.dark .item-action-btn {
-  background:
-    linear-gradient(158deg,
-      rgba(var(--lg-hi), .14) 0%,
-      rgba(var(--lg-tint), .09) 32%,
-      rgba(var(--lg-hi), .02) 56%,
-      rgba(var(--lg-tint), .13) 100%);
-  box-shadow:
-    inset 0 1px 0 0 rgba(var(--lg-hi), .34),
-    inset 0 2px 4px 0 rgba(var(--lg-hi), .10),
-    inset 1px 0 0 0 rgba(var(--lg-hi), .14),
-    inset -1px 0 0 0 rgba(var(--lg-hi), .09),
-    inset 0 -1px 0 0 rgba(var(--lg-hi), .05),
-    inset 0 0 26px 4px rgba(var(--lg-tint), .12),
-    0 1px 2px 0 rgba(0, 0, 0, .44),
-    0 6px 18px -4px rgba(0, 0, 0, .40),
-    0 18px 40px -12px rgba(0, 0, 0, .54);
-}
-
-/* 2-2 边缘 specular：顶边亮、底边收，玻璃才有厚度 */
-.glass::before,
-.glass-card::before,
-.item::before,
-.search-box::before,
-.work-card::before,
-.now-card::before,
-.daily-quote-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(160deg,
-    rgba(var(--lg-hi), .90) 0%,
-    rgba(var(--lg-hi), .18) 26%,
-    rgba(var(--lg-tint), .10) 62%,
-    rgba(var(--lg-hi), .34) 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  opacity: .85;
-}
-html.dark .glass::before,
-html.dark .glass-card::before,
-html.dark .search-box::before,
-html.dark .work-card::before,
-html.dark .now-card::before,
-html.dark .daily-quote-card::before { opacity: .38; }
-/* 导航卡左侧色条要压在高光环之上 */
-.item::before { z-index: 2; }
-
-/* 2-3 镜面高光带：液态玻璃的灵魂，全程保留，绝不 display:none */
-.glass::after,
-.glass-card::after,
-.item::after,
-.search-box::after,
-.work-card::after,
-.now-card::after,
-.daily-quote-card::after {
-  background: linear-gradient(112deg,
-    transparent 0%,
-    transparent 26%,
-    rgba(var(--lg-hi), .10) 40%,
-    rgba(var(--lg-hi), .46) 50%,
-    rgba(var(--lg-hi), .10) 60%,
-    transparent 74%,
-    transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.62) 42%, rgba(0,0,0,0) 72%);
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.62) 42%, rgba(0,0,0,0) 72%);
-  opacity: .62;
-}
-html.dark .glass::after,
-html.dark .glass-card::after,
-html.dark .item::after,
-html.dark .search-box::after,
-html.dark .work-card::after,
-html.dark .now-card::after,
-html.dark .daily-quote-card::after {
-  background: linear-gradient(112deg,
-    transparent 0%,
-    transparent 26%,
-    rgba(var(--lg-hi), .05) 40%,
-    rgba(var(--lg-hi), .26) 50%,
-    rgba(var(--lg-hi), .05) 60%,
-    transparent 74%,
-    transparent 100%);
-}
-
-/* 2-4 按压缩放：触控反馈 */
-.item, .work-card, .now-card, .daily-quote-card, .version-pill, .item-action-btn {
-  transition: transform .22s var(--ease), border-color .28s var(--ease),
-              box-shadow .28s var(--ease), background .28s var(--ease);
-}
-.item:active, .work-card:active, .now-card:active,
-.daily-quote-card:active, .version-pill:active, .item-action-btn:active {
-  transform: scale(.976);
-}
-@media (hover: hover) and (pointer: fine) {
-  .glass-card:hover::after, .item:hover::after, .work-card:hover::after,
-  .now-card:hover::after, .daily-quote-card:hover::after { opacity: .95; }
-}
-
-/* 2-5 背景：滑动时把流体定格，玻璃取样源恒定 → 颜色不闪 */
-.bg-layer { transition: opacity .34s var(--ease); }
-.bg-vignette { display: none; }
-html.is-scrolling .bg-fluid,
-html.is-scrolling .bg-light { opacity: 0 !important; }
-.bg-fluid, .bg-light { transition: opacity .34s var(--ease); }
-html.is-scrolling .bg-fluid span,
-html.is-scrolling .bg-light span { animation-play-state: paused !important; }
-/* 滚动期间禁止一切材质过渡，杜绝中途变色 */
-html.is-scrolling .glass,
-html.is-scrolling .glass-card,
-html.is-scrolling .item,
-html.is-scrolling .search-box,
-html.is-scrolling .work-card,
-html.is-scrolling .now-card,
-html.is-scrolling .daily-quote-card {
-  transition: none !important;
-  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) !important;
-}
-html.is-scrolling .glass::after,
-html.is-scrolling .glass-card::after,
-html.is-scrolling .item::after,
-html.is-scrolling .search-box::after,
-html.is-scrolling .work-card::after,
-html.is-scrolling .now-card::after,
-html.is-scrolling .daily-quote-card::after {
-  display: block !important;
-  opacity: .62 !important;
-}
-
-/* 2-6 低配降级：降采样而不是关掉玻璃，保住质感 */
-html.perf-lite .glass,
-html.perf-lite .glass-card,
-html.perf-lite .item,
-html.perf-lite .search-box,
-html.perf-lite .work-card,
-html.perf-lite .now-card,
-html.perf-lite .daily-quote-card {
-  backdrop-filter: blur(10px) saturate(150%) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
-  background:
-    linear-gradient(158deg,
-      rgba(var(--lg-hi), .38) 0%,
-      rgba(var(--lg-tint), .18) 34%,
-      rgba(var(--lg-hi), .08) 58%,
-      rgba(var(--lg-tint), .22) 100%);
-}
-html.perf-lite .bg-vignette { display: none; }
-
-/* 2-7 减弱动效偏好 */
-@media (prefers-reduced-motion: reduce) {
-  .item, .work-card, .now-card, .daily-quote-card { transition: none; }
-}
-
 </style>
 </head>
 <body>
@@ -804,7 +622,7 @@ html.perf-lite .bg-vignette { display: none; }
     window.addEventListener('scroll', function () {
       if (!docEl.classList.contains('is-scrolling')) docEl.classList.add('is-scrolling');
       clearTimeout(timer);
-      timer = setTimeout(function () { docEl.classList.remove('is-scrolling'); }, 260);
+      timer = setTimeout(function () { docEl.classList.remove('is-scrolling'); }, 200);
     }, { passive: true });
   })();
 
@@ -991,9 +809,10 @@ html.perf-lite .bg-vignette { display: none; }
     const nodes = {};
     function init() { ['main','app','skeleton','statTotal','statGroups','versionBar','versionText'].forEach(k => nodes[k] = document.getElementById(k)); }
     function btn(o) { const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label); b.type = 'button'; b.dataset.act = o.act; b.dataset.gi = String(o.gi); if (o.ii != null) b.dataset.ii = String(o.ii); b.disabled = !!o.disabled; return b; }
+    /* 链接行：不再是独立玻璃卡片，只是大卡片内部的一行 —— 零 backdrop-filter */
     function build(item, group, gi, ii) {
-      const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), fg = Utils.contrastFg(group.color);
-      const li = Dom.el('li', 'item'); li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${fg};`;
+      const fg = Utils.contrastFg(group.color);
+      const li = Dom.el('li', 'item'); li.style.cssText = `--c-accent:${group.color};--c-fg:${fg};`;
       const icon = Dom.el('span', 'item-icon', group.icon || Schema.DEFAULT_ICON);
       const body = Dom.el('span', 'item-body'); body.appendChild(Dom.el('span', 'item-title', item.name)); body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
       const arrow = Dom.el('span', 'item-arrow'); arrow.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
@@ -1002,19 +821,23 @@ html.perf-lite .bg-vignette { display: none; }
       li.addEventListener('click', e => { if (Mode.isEditing()) { if (!e.target.closest('.item-actions')) Forms.openLinkForm(gi, ii); return; } if (item.popup?.length) { e.preventDefault(); Actions.openPopup(item, group); } else if (item.url) { Actions.openDetail(item, group); } });
       return li;
     }
+    /* 分类大卡片：玻璃只套在这一层，内部链接行不模糊 */
     function buildSection(group, gi, count) {
       const sec = Dom.el('section', 'section'); sec.dataset.group = String(gi);
       const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), lin = Utils.hexToRgba(group.color, .42);
+      const card = Dom.el('div', 'cat-card'); card.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-line:${lin};`;
+
       const head = Dom.el('div', 'section-head'); const icon = Dom.el('span', 'section-icon', group.icon || Schema.DEFAULT_ICON); icon.style.cssText = `--c-bg:${tint};--c-border:${brd};`;
       const title = Dom.el('h2', 'section-title', group.category); title.id = 'sec-' + gi;
       const cnt = Dom.el('span', 'section-count', group.items.length + ' 条'); const rule = Dom.el('div', 'section-rule'); rule.style.setProperty('--c-line', lin);
       const acts = Dom.el('div', 'section-actions'); acts.appendChild(btn({ act: 'up-group', gi, label: '↑', disabled: gi === 0 })); acts.appendChild(btn({ act: 'down-group', gi, label: '↓', disabled: gi === count - 1 }));
       if (group.itemOrder === 'manual') { const rb = btn({ act: 'reset-order', gi, label: '↺' }); rb.title = '恢复梯形排序'; acts.appendChild(rb); }
       acts.appendChild(btn({ act: 'edit-group', gi, label: '✎' })); acts.appendChild(btn({ act: 'del-group', gi, label: '✕', danger: true }));
-      head.append(icon, title, cnt, rule, acts); sec.appendChild(head);
+      head.append(icon, title, cnt, rule, acts); card.appendChild(head);
+
       const list = Dom.el('ul', 'item-list'); const sortedItems = SortUtil.order(group);
-      sortedItems.forEach(({ item, idx }) => { if (item.placeholder) { const li = Dom.el('li', 'item placeholder'); li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`; li.innerHTML = `<span class="item-icon">✦</span><span class="item-body"><span class="item-title">${item.name}</span><span class="item-desc">${item.desc||''}</span></span>`; list.appendChild(li); } else { list.appendChild(build(item, group, gi, idx)); } });
-      sec.appendChild(list); return sec;
+      sortedItems.forEach(({ item, idx }) => { if (item.placeholder) { const li = Dom.el('li', 'item placeholder'); li.style.cssText = `--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`; li.innerHTML = `<span class="item-icon">✦</span><span class="item-body"><span class="item-title">${item.name}</span><span class="item-desc">${item.desc||''}</span></span>`; list.appendChild(li); } else { list.appendChild(build(item, group, gi, idx)); } });
+      card.appendChild(list); sec.appendChild(card); return sec;
     }
     function render() {
       updateVersionBar(); const app = nodes.app; if (!app) return; if (nodes.skeleton) nodes.skeleton.style.display = 'none'; Dom.clear(app); const data = DataService.data;
