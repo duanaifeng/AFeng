@@ -75,10 +75,11 @@
 :root {
   --bg-a:#dce4ee; --bg-b:#e3eaf3; --bg-c:#d4dde9;
   --surface:rgba(255,255,255,.20); --surface-2:rgba(255,255,255,.30); --surface-3:rgba(255,255,255,.50);
-  /* 文字颜色加深：提升对比度 */
-  --text-1:#051024; /* 标题：极深藏青 */
-  --text-2:#2c3e59; /* 描述：深灰蓝 */
-  --text-3:#475a75; /* 辅助说明：中灰蓝 */
+  /* 文字颜色体系：拉开层次 */
+  --text-1:#0a1730;    /* 标题：最深 */
+  --text-2:#3a4d6c;    /* 正文/详情描述：适中 */
+  --text-3:#5a6c8a;    /* 辅助：偏浅 */
+  --text-desc:#4b5f7f; /* 卡片短描述专属：退回到略淡的灰蓝 */
   --border-1:rgba(255,255,255,.44); --border-2:rgba(255,255,255,.76);
   --accent:#1d64f2; --accent-hover:#1449c4;
   --accent-soft:rgba(59,130,246,.14); --accent-glow:rgba(59,130,246,.40); --accent-tint:rgba(59,130,246,.10);
@@ -96,10 +97,11 @@
 html.dark {
   --bg-a:#10161e; --bg-b:#141b24; --bg-c:#0d131a;
   --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.06); --surface-3:rgba(18,28,48,.82);
-  /* 文字颜色加深：暗色模式下也提亮 */
-  --text-1:#f0f5fc; /* 标题：极亮白 */
-  --text-2:#b8cce4; /* 描述：亮灰蓝 */
-  --text-3:#8ca1bd; /* 辅助说明：中灰蓝 */
+  /* 暗色模式文字体系 */
+  --text-1:#e6eefb;    /* 标题：最亮 */
+  --text-2:#a2b5d2;    /* 正文/详情描述 */
+  --text-3:#8ba0bf;    /* 辅助 */
+  --text-desc:#95a9c7; /* 卡片短描述专属：略暗于正文 */
   --border-1:rgba(255,255,255,.10); --border-2:rgba(255,255,255,.24);
   --accent:#60a5fa; --accent-hover:#93c5fd;
   --accent-soft:rgba(96,165,250,.16); --accent-glow:rgba(96,165,250,.46); --accent-tint:rgba(96,165,250,.10);
@@ -122,7 +124,6 @@ body {
   font-size:15px; line-height:1.6; color:var(--text-1);
   background:linear-gradient(165deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
   background-attachment:fixed;
-  /* 移除 antialiased 以解决部分屏幕发虚问题 */
   transition:background-color 300ms var(--ease), color 300ms var(--ease);
 }
 
@@ -272,8 +273,8 @@ html.dark .search-suggest { border-color:rgba(255,255,255,.16); background:rgba(
 .suggest-icon { flex:0 0 auto; align-self:flex-start; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); background:var(--accent-soft); color:var(--accent); font-size:14px; box-shadow:inset 0 1px 0 rgba(255,255,255,.60); }
 html.dark .suggest-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
 .suggest-body { display:block; flex:1; min-width:0; }
-.suggest-name { display:block; width:100%; margin-bottom:2px; font-size:14px; font-weight:700; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.suggest-path { display:block; width:100%; font-size:12.5px; font-weight:500; color:var(--text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.suggest-name { display:block; width:100%; margin-bottom:2px; font-size:14.5px; font-weight:700; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.suggest-path { display:block; width:100%; font-size:12.5px; font-weight:400; color:var(--text-desc); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .suggest-empty { padding:24px 16px; text-align:center; font-size:13px; color:var(--text-2); }
 
 .section { position:relative; padding:24px 0 12px; }
@@ -297,7 +298,8 @@ html.dark .section-num { background:rgba(255,255,255,.08); border-color:rgba(255
   box-shadow:inset 0 1px 0 rgba(255,255,255,.70), inset 0 -1px 0 rgba(255,255,255,.20), inset 0 0 12px var(--c-bg), 0 2px 6px rgba(0,0,0,.05);
 }
 html.dark .section-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04), inset 0 0 12px var(--c-bg), 0 2px 6px rgba(0,0,0,.20); }
-.section-title { flex:0 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; font-weight:800; color:var(--text-1); }
+/* 分类标题：16.5px，拉开与卡片标题的差距 */
+.section-title { flex:0 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:16.5px; font-weight:800; color:var(--text-1); letter-spacing:-.01em; }
 .section-count { flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs); border:1px solid rgba(255,255,255,.55); background:linear-gradient(140deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.06) 62%, rgba(255,255,255,.20) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20); font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--text-2); }
 html.dark .section-count { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.08) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
 .section-rule { flex:1; height:1px; background:linear-gradient(90deg, var(--c-line), var(--border-1) 60%, transparent); }
@@ -308,16 +310,12 @@ body.editing .section-actions { display:flex; }
 .item {
   position:relative; display:flex; align-items:center; gap:14px; padding:14px 16px;
   border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.70);
-  /* 提升背景不透明度，减少底层光斑干扰，让文字更锐利 */
   background:linear-gradient(140deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.18) 42%, rgba(255,255,255,.12) 62%, rgba(255,255,255,.25) 100%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 2px 3px rgba(255,255,255,.20), inset 0 -1px 0 rgba(255,255,255,.30), inset 1px 0 0 rgba(255,255,255,.60), inset -1px 0 0 rgba(255,255,255,.50), 0 1px 2px rgba(15,40,90,.04), 0 6px 18px rgba(15,40,90,.06), 0 16px 38px rgba(15,40,90,.09);
   color:inherit; text-decoration:none; overflow:hidden; cursor:pointer;
   transition:transform .25s var(--ease), border-color .28s var(--ease), box-shadow .30s var(--ease), background .28s var(--ease);
 }
 html.dark .item { border-color:rgba(255,255,255,.20); background:linear-gradient(140deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.03) 62%, rgba(255,255,255,.09) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.24), inset 0 -1px 0 rgba(255,255,255,.05), inset 1px 0 0 rgba(255,255,255,.14), inset -1px 0 0 rgba(255,255,255,.10), 0 1px 2px rgba(0,0,0,.42), 0 8px 22px rgba(0,0,0,.32); }
-
-/* 已删掉左侧竖条 .item::before */
-/* 削弱高光反光 .item::after，或者去掉 */
 .item::after {
   content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background:linear-gradient(120deg, transparent 0%, transparent 30%, rgba(255,255,255,.15) 42%, rgba(255,255,255,.40) 50%, rgba(255,255,255,.15) 58%, transparent 70%, transparent 100%);
@@ -351,9 +349,10 @@ html.dark .item { border-color:rgba(255,255,255,.20); background:linear-gradient
 html.dark .item-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04), inset 0 0 10px var(--c-bg); }
 .item-body { position:relative; z-index:1; display:block; flex:1; min-width:0; }
 
-/* 标题和描述加深、加粗 */
-.item-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px; font-size:14.5px; font-weight:800; color:var(--text-1); }
-.item-desc { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; width:100%; overflow:hidden; font-size:13px; font-weight:600; color:var(--text-2); word-break:break-word; }
+/* 链接标题：15px，主信息清晰 */
+.item-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:3px; font-size:15px; font-weight:700; color:var(--text-1); letter-spacing:.01em; }
+/* 卡片描述：12.5px，轻字重，颜色用 --text-desc */
+.item-desc { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; width:100%; overflow:hidden; font-size:12.5px; font-weight:400; color:var(--text-desc); word-break:break-word; }
 
 .item-arrow { position:relative; z-index:1; flex:0 0 auto; align-self:center; width:16px; height:16px; color:var(--text-3); opacity:.8; transition:color .2s var(--ease), opacity .2s var(--ease), transform .25s var(--ease); }
 .item-arrow svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
@@ -381,7 +380,7 @@ html.dark .add-btn { border-color:rgba(255,255,255,.16); background:linear-gradi
 
 .disclaimer { margin-top:32px; padding:22px 24px; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.55); background:linear-gradient(140deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.10) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(255,255,255,.22), inset 1px 0 0 rgba(255,255,255,.46), inset -1px 0 0 rgba(255,255,255,.38), 0 1px 2px rgba(15,40,90,.04), 0 8px 22px rgba(15,40,90,.07); }
 html.dark .disclaimer { border-color:rgba(255,255,255,.16); background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 42%, rgba(255,255,255,.01) 62%, rgba(255,255,255,.05) 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.24), inset 0 -1px 0 rgba(255,255,255,.05), 0 1px 2px rgba(0,0,0,.42), 0 8px 22px rgba(0,0,0,.32); }
-.disclaimer-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:13px; font-weight:800; color:var(--text-1); }
+.disclaimer-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:14px; font-weight:800; color:var(--text-1); }
 .disclaimer-head-icon { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px var(--accent-tint); }
 .disclaimer-body { font-size:12.5px; line-height:1.75; color:var(--text-2); }
 .disclaimer-body p { position:relative; padding-left:18px; margin-bottom:10px; }
@@ -472,10 +471,12 @@ html.dark .modal-close:hover { border-color:rgba(255,255,255,.28); }
 .detail-icon { width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-lg); background:var(--c-bg); border:1px solid var(--c-border); font-size:28px; flex:0 0 auto; box-shadow:inset 0 1px 0 rgba(255,255,255,.75), inset 0 -1px 0 rgba(255,255,255,.22), 0 4px 12px rgba(15,40,90,.06); }
 html.dark .detail-icon { box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04), 0 4px 12px rgba(0,0,0,.28); }
 .detail-title-wrap { min-width:0; flex:1; }
-.detail-title { font-size:18px; font-weight:800; color:var(--text-1); line-height:1.3; margin-bottom:4px; }
+/* 详情标题：20px，非常大非常醒目 */
+.detail-title { font-size:20px; font-weight:800; color:var(--text-1); line-height:1.3; margin-bottom:4px; letter-spacing:-.01em; }
 .detail-host { font-family:ui-monospace,monospace; font-size:12px; color:var(--text-2); background:linear-gradient(140deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.06) 62%, rgba(255,255,255,.20) 100%); border:1px solid rgba(255,255,255,.60); padding:2px 8px; border-radius:4px; display:inline-block; word-break:break-all; box-shadow:inset 0 1px 0 rgba(255,255,255,.90), inset 0 -1px 0 rgba(255,255,255,.22); }
 html.dark .detail-host { background:linear-gradient(140deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.08) 100%); border-color:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
-.detail-desc { font-size:13.5px; line-height:1.7; color:var(--text-2); margin-bottom:24px; white-space:pre-wrap; }
+/* 详情描述：14px，常规字重 */
+.detail-desc { font-size:14px; font-weight:400; line-height:1.65; color:var(--text-2); margin-bottom:24px; white-space:pre-wrap; }
 
 .security-box { position:relative; overflow:hidden; background:linear-gradient(140deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,.10) 42%, rgba(255,255,255,.06) 62%, rgba(255,255,255,.20) 100%); border:1px solid rgba(255,255,255,.60); border-radius:var(--radius-md); padding:16px; margin-bottom:20px; box-shadow:inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.24), inset 1px 0 0 rgba(255,255,255,.52), inset -1px 0 0 rgba(255,255,255,.42), 0 1px 2px rgba(20,22,28,.04); transition:border-color .3s var(--ease), background .3s var(--ease); }
 html.dark .security-box { background:linear-gradient(140deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 42%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.08) 100%); border-color:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.04); }
@@ -586,8 +587,8 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
   .topbar-inner { flex-direction:row; gap:16px; }
   .search-input { height:48px; padding-left:10px; } .search-icon { width:18px; height:18px; margin-left:14px; }
   .section { padding:20px 0 8px; } .item { padding:12px 14px; gap:12px; } .item-icon { width:36px; height:36px; }
-  .item-title { font-size:14px; }
-  .item-desc { font-size:12.5px; }
+  .item-title { font-size:14.5px; }
+  .item-desc { font-size:12px; }
   body.editing .item { padding-right:108px; }
   .disclaimer { margin-top:24px; padding:18px 20px; } .disclaimer-body { font-size:12px; }
   .footer { padding:28px 0 32px; }
@@ -927,8 +928,8 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
       el = document.createElement('span');
       el.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;display:inline-block;white-space:nowrap;pointer-events:none;';
       el.style.fontFamily = '-apple-system,BlinkMacSystemFont,"HarmonyOS Sans SC","HarmonyOS Sans","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif';
-      el.style.fontSize = '14.5px';
-      el.style.fontWeight = '800';
+      el.style.fontSize = '15px';
+      el.style.fontWeight = '700';
       el.style.lineHeight = '1.35';
       document.body.appendChild(el);
       return el;
@@ -1480,7 +1481,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
 
       if (item.detail) {
         const intro = Dom.el('div', 'detail-desc');
-        intro.style.cssText = 'font-size:12.5px; color:var(--text-3); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.35);';
+        intro.style.cssText = 'font-size:12.5px; color:var(--text-desc); margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.35);';
         intro.textContent = item.detail;
         box.appendChild(intro);
       }
