@@ -48,11 +48,11 @@
         ]
       },
       {
-        "name": "电脑维护工具合集",
+        "id": "diannao-weihu-gongju",
+        "name": "电脑维护工具",
+        "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
         "desc": "易语言写的装机小工具包",
         "detail": "站长用易语言编写的维护工具合集，含装机辅助、系统故障排查等小工具，经百度网盘分发。打包即用、针对国内常见故障；易语言程序常被杀软误报，无毒放心使用！",
-        "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
-        "id": "diannao-weihu-gongju",
         "tags": [
           "工具",
           "系统"
