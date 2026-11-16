@@ -580,6 +580,26 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } .scan-line { display:none; } .brand-avatar-wrap::before { display:none; } }
 @media print { .bg-layer, .bg-cursor-light, .back-top, .toast, .search-area, .edit-bar, .footer-actions { display:none !important; } body { display:block; background:#fff; color:#000; } .page { max-width:100%; padding:0; } .item, .disclaimer { break-inside:avoid; border:1px solid #ccc; box-shadow:none; background:#fff; } a { color:#000; text-decoration:none; } }
+/* ===== 手机编辑优化 & 分享按钮 ===== */
+.item-share{ position:relative; z-index:1; flex:0 0 auto; align-self:center; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:none; border-radius:50%; background:transparent; color:var(--text-3); font-size:15px; cursor:pointer; transition:background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+@media (hover:hover) and (pointer:fine){ .item-share:hover{ background:var(--accent-soft); color:var(--accent); } }
+.item-share:active{ transform:scale(.9); }
+body.editing .item-share{ display:none; }
+@media (max-width:640px){
+  .item{ align-items:flex-start; }
+  .item-share{ width:38px; height:38px; }
+  body.editing .item{ flex-wrap:wrap; padding-right:14px !important; row-gap:8px; }
+  body.editing .item-actions{ position:static !important; transform:none !important; width:100%; justify-content:flex-end; gap:8px; margin-top:2px; }
+  .item-action-btn{ width:42px; height:38px; font-size:14px; border-radius:8px; }
+  .edit-bar{ overflow-x:auto; scrollbar-width:none; }
+  .edit-bar::-webkit-scrollbar{ display:none; }
+  .edit-bar-actions{ flex-wrap:nowrap; }
+  .form-input{ font-size:16px; }
+  .btn{ padding:13px 16px; font-size:14px; }
+  .modal-box{ padding:18px 16px 14px; }
+  .form-tab{ padding:10px 8px; font-size:13px; }
+  .popup-row .form-input{ margin-bottom:6px; }
+}
 </style>
 </head>
 <body>
@@ -769,6 +789,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
 
     <div class="detail-footer">
       <button class="btn" type="button" data-modal-close>取消</button>
+      <button class="btn" id="btnShare" type="button">🔗 分享</button>
       <a class="btn btn-visit" id="btnVisit" href="#" target="_blank" rel="noopener noreferrer">继续访问</a>
     </div>
   </div>
@@ -933,6 +954,41 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
     escAttr(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); },
     normalize(t) { return String(t || '').toLowerCase().replace(/[·・\s\-_/]+/g, ''); }
   };
+
+  async function copyText(t) {
+    try { await navigator.clipboard.writeText(t); return true; }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = t; ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      ta.remove(); return true;
+    }
+  }
+  function shareUrlFor(item) {
+    const base = location.origin + location.pathname;
+    const key = item.id || item.name || '';
+    return base + '?item=' + encodeURIComponent(key);
+  }
+  function openSharedItem() {
+    try {
+      const id = new URLSearchParams(location.search).get('item');
+      if (!id) return;
+      const data = DataService.data;
+      for (let gi = 0; gi < data.length; gi++) {
+        const g = data[gi];
+        for (let ii = 0; ii < g.items.length; ii++) {
+          const it = g.items[ii];
+          if (!it || it.placeholder) continue;
+          if (it.id === id || (!it.id && it.name === id)) {
+            if (it.popup && it.popup.length) Actions.openPopup(it, g);
+            else Actions.openDetail(it, g);
+            return;
+          }
+        }
+      }
+    } catch (e) {}
+  }
 
   const Measure = (function () {
     let el = null;
@@ -1295,7 +1351,14 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
       acts.appendChild(btn({ act: 'down-item', gi, ii, label: '↓' }));
       acts.appendChild(btn({ act: 'edit-item', gi, ii, label: '✎' }));
       acts.appendChild(btn({ act: 'del-item', gi, ii, label: '✕', danger: true }));
-      li.appendChild(icon); li.appendChild(body); li.appendChild(arrow); li.appendChild(acts);
+      const shareBtn = Dom.el('button', 'item-share', '🔗');
+      shareBtn.type = 'button'; shareBtn.title = '复制分享链接'; shareBtn.setAttribute('aria-label', '分享');
+      shareBtn.addEventListener('click', async e => {
+        e.stopPropagation(); e.preventDefault();
+        await copyText(shareUrlFor(item));
+        Toast.show('分享链接已复制，可直接发送');
+      });
+      li.appendChild(icon); li.appendChild(body); li.appendChild(shareBtn); li.appendChild(arrow); li.appendChild(acts);
 
       li.addEventListener('click', e => {
         if (Mode.isEditing()) { if (!e.target.closest('.item-actions')) Forms.openLinkForm(gi, ii); return; }
@@ -1437,6 +1500,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
     openDetail(item, group) {
       const modal = document.getElementById('detailModal');
       if (!modal) return;
+      Actions._cur = item;
       const token = ++detailToken;
 
       document.getElementById('detailTitle').textContent = item.name;
@@ -1753,6 +1817,13 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
       if (!this.classList.contains('ready')) { e.preventDefault(); return; }
       e.preventDefault(); window.open(this.href, '_blank', 'noopener,noreferrer');
     };
+    const btnShare = document.getElementById('btnShare');
+    if (btnShare) btnShare.onclick = async function() {
+      const it = Actions._cur;
+      if (!it) return;
+      await copyText(shareUrlFor(it));
+      Toast.show('分享链接已复制，可直接发送');
+    };
 
     Dom.delegate(document, 'click', '[data-modal-close]', (e, t) => Modal.close(t.closest('.modal')));
     Dom.delegate(document, 'click', '[data-act]', (e, t) => {
@@ -1865,6 +1936,7 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
       updateUptime();
 
       await DataService.load(); Renderer.render(); Renderer.updateVersionBar();
+      openSharedItem();
       DataService.revalidate();
       if (DataService.source === 'fallback') Toast.show('网络异常，显示备用数据', { duration: 2600 });
     } catch (e) {
