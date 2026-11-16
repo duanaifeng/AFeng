@@ -581,13 +581,35 @@ html.dark .toast { border-color:rgba(255,255,255,.16); background:linear-gradien
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } .scan-line { display:none; } .brand-avatar-wrap::before { display:none; } }
 @media print { .bg-layer, .bg-cursor-light, .back-top, .toast, .search-area, .edit-bar, .footer-actions { display:none !important; } body { display:block; background:#fff; color:#000; } .page { max-width:100%; padding:0; } .item, .disclaimer { break-inside:avoid; border:1px solid #ccc; box-shadow:none; background:#fff; } a { color:#000; text-decoration:none; } }
 /* ===== 手机编辑优化 & 分享按钮 ===== */
-.item-share{ position:relative; z-index:1; flex:0 0 auto; align-self:center; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:none; border-radius:50%; background:transparent; color:var(--text-3); font-size:15px; cursor:pointer; transition:background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
-@media (hover:hover) and (pointer:fine){ .item-share:hover{ background:var(--accent-soft); color:var(--accent); } }
-.item-share:active{ transform:scale(.9); }
+/* 与主卡片统一的胶囊描边分享按钮（替代原右侧箭头） */
+.item-share{
+  position:relative; z-index:1; flex:0 0 auto; align-self:center; margin-left:auto;
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  padding:6px 12px; min-height:30px;
+  border-radius:999px; border:1px solid var(--border-1);
+  background:linear-gradient(140deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.22) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.20), 0 1px 2px rgba(15,40,90,.04);
+  color:var(--text-2); font-family:inherit; font-size:12px; font-weight:700; letter-spacing:.02em;
+  white-space:nowrap; cursor:pointer;
+  transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+html.dark .item-share{
+  border-color:rgba(255,255,255,.14);
+  background:linear-gradient(140deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.03) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(255,255,255,.03);
+}
+.item-share-ico{ width:13px; height:13px; flex:0 0 auto; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform var(--dur-fast) var(--ease); }
+@media (hover:hover) and (pointer:fine){
+  .item-share:hover{ background:var(--accent-soft); border-color:var(--border-2); color:var(--accent); box-shadow:inset 0 1px 0 rgba(255,255,255,.70), 0 4px 12px var(--accent-tint); }
+  .item-share:hover .item-share-ico{ transform:translateY(-1px); }
+}
+.item-share:active{ transform:scale(.96); }
+.item-share.copied{ background:var(--accent); border-color:transparent; color:#fff; box-shadow:0 4px 14px var(--accent-glow); }
 body.editing .item-share{ display:none; }
 @media (max-width:640px){
-  .item{ align-items:flex-start; }
-  .item-share{ width:38px; height:38px; }
+  .item{ align-items:center; }
+  .item-share{ padding:7px 11px; min-height:32px; font-size:11.5px; gap:4px; }
+  .item-share-ico{ width:12px; height:12px; }
   body.editing .item{ flex-wrap:wrap; padding-right:14px !important; row-gap:8px; }
   body.editing .item-actions{ position:static !important; transform:none !important; width:100%; justify-content:flex-end; gap:8px; margin-top:2px; }
   .item-action-btn{ width:42px; height:38px; font-size:14px; border-radius:8px; }
@@ -789,7 +811,6 @@ body.editing .item-share{ display:none; }
 
     <div class="detail-footer">
       <button class="btn" type="button" data-modal-close>取消</button>
-      <button class="btn" id="btnShare" type="button">🔗 分享</button>
       <a class="btn btn-visit" id="btnVisit" href="#" target="_blank" rel="noopener noreferrer">继续访问</a>
     </div>
   </div>
@@ -1345,20 +1366,25 @@ body.editing .item-share{ display:none; }
       const body = Dom.el('span', 'item-body');
       body.appendChild(Dom.el('span', 'item-title', item.name));
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
-      const arrow = Dom.el('span', 'item-arrow'); arrow.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
       const acts = Dom.el('div', 'item-actions');
       acts.appendChild(btn({ act: 'up-item', gi, ii, label: '↑' }));
       acts.appendChild(btn({ act: 'down-item', gi, ii, label: '↓' }));
       acts.appendChild(btn({ act: 'edit-item', gi, ii, label: '✎' }));
       acts.appendChild(btn({ act: 'del-item', gi, ii, label: '✕', danger: true }));
-      const shareBtn = Dom.el('button', 'item-share', '🔗');
-      shareBtn.type = 'button'; shareBtn.title = '复制分享链接'; shareBtn.setAttribute('aria-label', '分享');
+      const shareBtn = Dom.el('button', 'item-share');
+      shareBtn.innerHTML = '<svg class="item-share-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="8 6 12 2 16 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span class="item-share-text">分享</span>';
+      shareBtn.type = 'button'; shareBtn.title = '复制分享链接'; shareBtn.setAttribute('aria-label', '分享 ' + (item.name || ''));
       shareBtn.addEventListener('click', async e => {
         e.stopPropagation(); e.preventDefault();
         await copyText(shareUrlFor(item));
-        Toast.show('分享链接已复制，可直接发送');
+        const label = shareBtn.querySelector('.item-share-text');
+        const old = label ? label.textContent : '';
+        if (label) label.textContent = '已复制';
+        shareBtn.classList.add('copied');
+        Toast.show('链接已复制');
+        setTimeout(() => { if (label) label.textContent = old || '分享'; shareBtn.classList.remove('copied'); }, 1400);
       });
-      li.appendChild(icon); li.appendChild(body); li.appendChild(shareBtn); li.appendChild(arrow); li.appendChild(acts);
+      li.appendChild(icon); li.appendChild(body); li.appendChild(shareBtn); li.appendChild(acts);
 
       li.addEventListener('click', e => {
         if (Mode.isEditing()) { if (!e.target.closest('.item-actions')) Forms.openLinkForm(gi, ii); return; }
@@ -1817,14 +1843,6 @@ body.editing .item-share{ display:none; }
       if (!this.classList.contains('ready')) { e.preventDefault(); return; }
       e.preventDefault(); window.open(this.href, '_blank', 'noopener,noreferrer');
     };
-    const btnShare = document.getElementById('btnShare');
-    if (btnShare) btnShare.onclick = async function() {
-      const it = Actions._cur;
-      if (!it) return;
-      await copyText(shareUrlFor(it));
-      Toast.show('分享链接已复制，可直接发送');
-    };
-
     Dom.delegate(document, 'click', '[data-modal-close]', (e, t) => Modal.close(t.closest('.modal')));
     Dom.delegate(document, 'click', '[data-act]', (e, t) => {
       if (t.disabled) return; e.preventDefault(); e.stopPropagation();
