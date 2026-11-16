@@ -1,7 +1,7 @@
 [
   {
     "category": "本站原创",
-    "icon": "🏠",
+    "icon": "✨",
     "color": "#60a5fa",
     "items": [
       {
@@ -27,8 +27,8 @@
       },
       {
         "name": "西邑赶集日历",
-        "desc": "按农历推算赶集日",
-        "detail": "按农历规则推算当地集市日期，可查近期赶集日并给出倒计时提醒。",
+        "desc": "西邑乡四个街道查询",
+        "detail": "西邑乡本地西邑街、永信街、羊邑街、丙麻街日历查询。支持导入到手机日历，形成日历推送提醒。",
         "url": "https://duanaifeng.github.io/AFeng/ganji.html",
         "id": "xiyi-ganji-rili",
         "tags": [
@@ -48,11 +48,11 @@
         ]
       },
       {
-        "id": "diannao-weihu-gongju",
-        "name": "电脑维护工具",
-        "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
+        "name": "电脑维护工具合集",
         "desc": "易语言写的装机小工具包",
         "detail": "站长用易语言编写的维护工具合集，含装机辅助、系统故障排查等小工具，经百度网盘分发。打包即用、针对国内常见故障；易语言程序常被杀软误报，无毒放心使用！",
+        "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
+        "id": "diannao-weihu-gongju",
         "tags": [
           "工具",
           "系统"
@@ -61,7 +61,7 @@
       {
         "name": "网络管家",
         "desc": "局域网管家，数据全在本地",
-        "detail": "自动拓扑图＋三协议探活，设备在线状态一眼看清；局域网网段、名称、IP、图标全自定义；宽带账号、路由后台地址、WiFi 密码按节点存档，出门不用问家人；纯本地存储，零上传，支持备份导出。移动云盘分享，提取码 v91R8LHXXi8E。",
+        "detail": "自动拓扑图＋三协议探活，设备在线状态一眼看清；局域网网段、名称、IP、图标全自定义；宽带账号、路由后台地址、WiFi 密码按节点存档，出门不用问家人；纯本地存储，零上传，支持备份导出。",
         "url": "https://yun.139.com/shareweb/#/w/i/2yA8GzqqP8f77",
         "id": "wangluo-guanjia",
         "tags": [
@@ -113,7 +113,7 @@
       },
       {
         "name": "音乐接口监控",
-        "desc": "查各音乐接口还活着没",
+        "desc": "网易云 API 接口收藏",
         "detail": "监控网易云等主流音源 API 的存活状态，提供简易状态页与多节点运维看板两种视图。",
         "url": "",
         "id": "yinyue-jiekou-jiankong",
@@ -406,7 +406,7 @@
   },
   {
     "category": "实用工具",
-    "icon": "🛠️",
+    "icon": "🧰",
     "color": "#94a3b8",
     "items": [
       {
@@ -542,7 +542,7 @@
   },
   {
     "category": "DNS 服务",
-    "icon": "📡",
+    "icon": "🌐",
     "color": "#22d3ee",
     "items": [
       {
@@ -690,7 +690,7 @@
   },
   {
     "category": "网络检测",
-    "icon": "🔍",
+    "icon": "📡",
     "color": "#14b8a6",
     "items": [
       {
@@ -805,7 +805,7 @@
       },
       {
         "name": "Crx搜搜",
-        "desc": "下 Chrome 与 Edge 的 crx 离线包",
+        "desc": "浏览器扩展资源站",
         "detail": "浏览器扩展搜索下载站，可获取 Chrome / Edge 扩展的 crx 离线安装包，免去特殊网络环境。⚠ 第三方转存的 crx 未经官方校验，装前确认来源。",
         "url": "https://www.crxsoso.com/",
         "id": "crx-sousuo",
