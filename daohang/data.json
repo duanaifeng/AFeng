@@ -454,6 +454,16 @@
           "邮箱",
           "隐私"
         ]
+      },
+      {
+        "name": "街历APK",
+        "desc": "好几家",
+        "detail": "你你你",
+        "url": "https://www.baidu.com",
+        "id": "jieli-app",
+        "tags": [
+          "工具"
+        ]
       }
     ],
     "categoryEn": "TOOLS"
