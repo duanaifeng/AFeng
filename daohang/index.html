@@ -298,7 +298,7 @@ html.dark .section-num { background:rgba(255,255,255,.08); border-color:rgba(255
 html.dark .section-icon { box-shadow:none; }
 .section-icon svg { width:18px; height:18px; display:block; }
 .section-icon.has-svg { color:var(--c-accent, var(--accent)); }
-.icon-option svg { width:16px; height:16px; display:block; margin:auto; }
+.icon-option svg { width:16px; height:16px; display:block; margin:auto; pointer-events:none; }
 .suggest-icon svg { width:14px; height:14px; display:block; }
 .detail-icon svg { width:22px; height:22px; display:block; }
 .section-title { flex:1 1 auto; min-width:min(100%, 8em); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:16.5px; font-weight:800; color:var(--text-1); letter-spacing:-.01em; }
@@ -835,6 +835,7 @@ body.editing .item-share{ display:none; }
       <button class="form-tab" type="button" data-link-type="multi">多链接</button>
     </div>
     <div class="form-field"><label class="form-label">名称</label><input class="form-input" id="linkName" type="text"></div>
+    <div class="form-field"><label class="form-label">图标（留空则跟随分类）</label><div class="icon-picker" id="linkIconPicker" style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:180px;overflow-y:auto;"></div><div style="margin-top:6px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);"><input type="checkbox" id="linkIconInherit" checked><label for="linkIconInherit">跟随分类图标</label></div></div>
     <div class="form-field" id="linkSingleField"><label class="form-label">网址</label><input class="form-input" id="linkUrl" type="url"></div>
     <div class="form-field" id="linkMultiField" hidden>
       <label class="form-label">子链接</label>
@@ -1452,7 +1453,7 @@ body.editing .item-share{ display:none; }
       const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), fg = Utils.contrastFg(group.color);
       const li = Dom.el('li', 'item');
       li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${fg};`;
-      const icon = Dom.iconEl('item-icon', group.icon);
+      const icon = Dom.iconEl('item-icon', item.icon || group.icon, item.iconId || group.iconId);
       const body = Dom.el('span', 'item-body');
       body.appendChild(Dom.el('span', 'item-title', item.name));
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
@@ -1741,7 +1742,7 @@ body.editing .item-share{ display:none; }
   };
 
   const Forms = (function () {
-    const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null };
+    const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null, icon: '', iconId: '', inherit: true };
     const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, iconId: '', color: Schema.DEFAULT_COLOR, en: '' };
     function setLinkType(t) {
       linkCtx.type = t;
@@ -1766,7 +1767,8 @@ body.editing .item-share{ display:none; }
         const modal = document.getElementById('linkModal'), g = DataService.data[gi];
         if (!modal || !g) return;
         const isNew = ii < 0 || !g.items[ii], item = isNew ? { name: '', url: '', desc: '', detail: '', tags: [], id: '' } : g.items[ii];
-        Object.assign(linkCtx, { gi, ii: isNew ? -1 : ii, isNew, origin: isNew ? null : item });
+        Object.assign(linkCtx, { gi, ii: isNew ? -1 : ii, isNew, origin: isNew ? null : item,
+          icon: item.icon || '', iconId: item.iconId || '', inherit: !(item.icon || item.iconId) });
 
         document.getElementById('linkTitle').textContent = isNew ? '添加链接' : '编辑链接';
         document.getElementById('linkName').value = item.name || '';
@@ -1782,6 +1784,19 @@ body.editing .item-share{ display:none; }
 
         const sel = document.getElementById('linkGroup'); Dom.clear(sel);
         DataService.data.forEach((x, i) => sel.add(new Option(x.category, i, false, i === gi)));
+
+        // 项目图标选择器（方案A：项目可独立选 SVG/emoji；勾选“跟随分类”则不用）
+        const lip = document.getElementById('linkIconPicker'), inh = document.getElementById('linkIconInherit');
+        const curColor = (g && g.color) ? g.color : Schema.DEFAULT_COLOR;
+        if (inh) {
+          inh.checked = linkCtx.inherit;
+          inh.onchange = () => { linkCtx.inherit = inh.checked; if (lip) lip.style.opacity = inh.checked ? '.4' : '1'; };
+        }
+        if (lip) {
+          lip.style.opacity = linkCtx.inherit ? '.4' : '1';
+          this.renderIconPicker(lip, linkCtx.icon || g.icon, linkCtx.iconId || '', curColor,
+            (icon, iconId) => { linkCtx.icon = icon; linkCtx.iconId = iconId; linkCtx.inherit = false; if (inh) { inh.checked = false; lip.style.opacity = '1'; } });
+        }
         Modal.open(modal, { initialFocus: '#linkName' });
       },
       submitLink() {
@@ -1810,51 +1825,59 @@ body.editing .item-share{ display:none; }
         }
 
         if (tags.length) ni.tags = tags;
+        if (!linkCtx.inherit) { if (linkCtx.iconId) ni.iconId = linkCtx.iconId; if (linkCtx.icon) ni.icon = linkCtx.icon; }
         if (linkCtx.origin && linkCtx.origin.insecure && ni.url && ni.url.startsWith('http://')) ni.insecure = true;
 
         if (!linkCtx.isNew && tgt === linkCtx.gi) DataService.data[linkCtx.gi].items[linkCtx.ii] = ni;
         else { if (!linkCtx.isNew) DataService.data[linkCtx.gi].items.splice(linkCtx.ii, 1); DataService.data[tgt].items.push(ni); }
         DataService.persist(); Modal.close(document.getElementById('linkModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
+      // 共用图标选择器：第一行 SVG 线性图标，第二行 emoji 兼容旧数据。
+      // 事件绑容器 + closest 兜底：移动端 tap 命中的是 <svg>/<path> 而非 <button>，
+      // 若 onclick 直接绑 button 会点不动（svg 是独立事件目标）；配合 CSS pointer-events:none 双保险。
+      renderIconPicker(ip, curIcon, curIconId, colorVar, onPick) {
+        Dom.clear(ip);
+        ip.classList.add('svg-picker');
+        const svgList = CFG.SVG_ICON_IDS;
+        const activeId = (curIconId && CFG.SVG_ICONS[curIconId]) ? curIconId : (svgList.indexOf(curIcon) > -1 ? curIcon : '');
+        svgList.forEach(sid => {
+          const active = sid === activeId;
+          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''));
+          b.type = 'button'; b.title = sid; b.dataset.svg = sid; b.innerHTML = CFG.SVG_ICONS[sid];
+          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;color:' + (colorVar || Schema.DEFAULT_COLOR) + ';' +
+            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
+            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
+            'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
+          ip.appendChild(b);
+        });
+        CFG.ICON_PRESETS.forEach(ic => {
+          const active = !activeId && ic === curIcon;
+          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''), ic);
+          b.type = 'button'; b.dataset.emoji = ic;
+          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;font-size:16px;' +
+            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
+            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
+            'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
+          ip.appendChild(b);
+        });
+        ip.onclick = (e) => {
+          const opt = e.target.closest('.icon-option'); if (!opt || !ip.contains(opt)) return;
+          Dom.$$('.icon-option', ip).forEach(x => x.classList.remove('active'));
+          opt.classList.add('active');
+          if (opt.dataset.svg) onPick(opt.dataset.svg, opt.dataset.svg);
+          else onPick(opt.dataset.emoji, '');
+        };
+      },
       openGroupForm(gi) {
         const modal = document.getElementById('groupModal'), isNew = gi < 0, g = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[gi];
         if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, iconId: g.iconId || '', color: g.color, en: g.categoryEn || '' });
         document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
         document.getElementById('groupName').value = g.category || '';
-        const ip = document.getElementById('iconPicker'); Dom.clear(ip);
-        groupCtx.iconId = (g.iconId && CFG.SVG_ICONS[g.iconId]) ? g.iconId : (CFG.SVG_ICON_IDS.indexOf(groupCtx.icon) > -1 ? groupCtx.icon : '');
-        // 第一行：SVG 线性图标（推荐，分类统一风格）
-        ip.classList.add('svg-picker');
-        CFG.SVG_ICON_IDS.forEach(sid => {
-          const active = sid === groupCtx.iconId;
-          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''));
-          b.type = 'button'; b.title = sid; b.innerHTML = CFG.SVG_ICONS[sid];
-          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;color:' + (groupCtx.color || Schema.DEFAULT_COLOR) + ';' +
-            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
-            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
-            'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
-          b.onclick = () => {
-            Dom.$$('#iconPicker .icon-option').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            groupCtx.iconId = sid; groupCtx.icon = sid;
-          };
-          ip.appendChild(b);
-        });
-        // 第二行：emoji 预设（兼容旧分类，可选）
-        CFG.ICON_PRESETS.forEach(ic => {
-          const active = !groupCtx.iconId && ic === groupCtx.icon;
-          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''), ic);
-          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;font-size:16px;' +
-            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
-            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
-            'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
-          b.onclick = () => {
-            Dom.$$('.icon-option', ip).forEach(x => x.style.borderColor = 'rgba(255,255,255,.60)');
-            b.style.borderColor = 'var(--accent)';
-            groupCtx.icon = ic; groupCtx.iconId = '';
-          };
-          ip.appendChild(b);
-        });
+        this.renderIconPicker(
+          document.getElementById('iconPicker'), groupCtx.icon, groupCtx.iconId,
+          groupCtx.color || Schema.DEFAULT_COLOR,
+          (icon, iconId) => { groupCtx.icon = icon; groupCtx.iconId = iconId; }
+        );
         const cp = document.getElementById('colorPicker'); Dom.clear(cp);
         CFG.COLOR_PRESETS.forEach(c => {
           const b = Dom.el('button', 'color-option');
