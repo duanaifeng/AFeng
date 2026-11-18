@@ -1,7 +1,7 @@
 [
   {
     "category": "本站原创",
-    "icon": "✨",
+    "icon": "💎",
     "color": "#60a5fa",
     "items": [
       {
@@ -75,7 +75,7 @@
   },
   {
     "category": "聆听音乐",
-    "icon": "🎵",
+    "icon": "🎧",
     "color": "#a78bfa",
     "items": [
       {
@@ -287,7 +287,7 @@
   },
   {
     "category": "聚合资源",
-    "icon": "📦",
+    "icon": "📥",
     "color": "#fbbf24",
     "items": [
       {
@@ -407,7 +407,7 @@
   {
     "category": "实用工具",
     "icon": "🧰",
-    "color": "#94a3b8",
+    "color": "#cbd5e1",
     "items": [
       {
         "name": "在线PS",
@@ -454,13 +454,23 @@
           "邮箱",
           "隐私"
         ]
+      },
+      {
+        "name": "街历APK",
+        "desc": "好几家",
+        "detail": "你你你",
+        "url": "https://www.baidu.com",
+        "id": "jieli-app",
+        "tags": [
+          "工具"
+        ]
       }
     ],
     "categoryEn": "TOOLS"
   },
   {
     "category": "系统装机",
-    "icon": "💻",
+    "icon": "💿",
     "color": "#38bdf8",
     "items": [
       {
@@ -542,7 +552,7 @@
   },
   {
     "category": "DNS 服务",
-    "icon": "🌐",
+    "icon": "🛡️",
     "color": "#22d3ee",
     "items": [
       {

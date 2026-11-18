@@ -165,6 +165,34 @@ html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light, html.perf-lite .bg
 @media (max-width:480px) { .page { --container-pad-x:16px; } }
 @media (min-width:768px) { .page { --container-pad-x:32px; } }
 @media (min-width:1024px) { .page { --container-pad-x:48px; } }
+#timeLock {
+  position: fixed; inset: 0; z-index: 99999; background: #0d1117;
+  display: none; flex-direction: column; justify-content: center; align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden; padding: 20px; box-sizing: border-box;
+}
+.terminal-window { width: 100%; max-width: 650px; height: 320px; background: rgba(22, 27, 34, 0.95); border: 1px solid #30363d; border-radius: 8px; box-shadow:none; display: flex; flex-direction: column; overflow: hidden; position: relative; margin-bottom: 40px; }
+.term-header { height: 36px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+.term-header .dot { width: 12px; height: 12px; border-radius: 50%; }
+.term-header .dot.red { background: #ff5f56; }
+.term-header .dot.yellow { background: #ffbd2e; }
+.term-header .dot.green { background: #27c93f; }
+.term-title { flex: 1; text-align: center; color: #8b949e; font-size: 12px; margin-right: 44px; }
+.term-body { padding: 16px; flex: 1; overflow-y: auto; font-family: 'SF Mono', Consolas, monospace; font-size: 13.5px; line-height: 1.6; color: #c9d1d9; display: flex; flex-direction: column; gap: 4px; }
+.term-body::-webkit-scrollbar { display: none; }
+.cmd { color: #79c0ff; }
+.err { color: #ff7b72; font-weight: bold; }
+.warn { color: #d2a8ff; }
+.success { color: #3fb950; }
+.cursor { display: inline-block; width: 8px; height: 15px; background: #c9d1d9; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+@keyframes blink { 50% { opacity: 0; } }
+.status-info { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.status-info.show { animation: fadeIn 1s ease forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+.status-code { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.3em; color: #38bdf8; margin-bottom: 12px; text-transform: uppercase; }
+.main-msg { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-bottom: 10px; }
+.sub-msg { font-size: 13px; color: #94a3b8; line-height: 1.8; max-width: 280px; }
+.date-highlight { color: #e2e8f0; font-family: monospace; font-size: 14px; margin-top: 20px; padding: 6px 16px; border: 1px solid #334155; border-radius: 6px; background: rgba(2, 6, 23, 0.5); }
 .footer { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 20px; padding: 32px 0 44px; border-top: 1px solid var(--border-1); width: 100%; }
 .uptime-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .uptime-title { font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; opacity: 0.8; }
@@ -212,6 +240,19 @@ html.perf-lite .brand-avatar-wrap::before { animation:none; display:none; }
 @media (prefers-reduced-motion: reduce) { .brand-avatar-wrap::before { animation:none; } }
 .brand-title { font-size:clamp(24px, 6vw, 44px); font-weight:800; letter-spacing:-.028em; color:var(--text-1); white-space:nowrap; min-width:0; }
 .brand-sub { margin-top:2px; font-size:13.5px; font-weight:500; color:var(--text-3); }
+.version-bar { display:none; align-items:center; gap:10px; margin-bottom:14px; }
+.version-bar.show { display:flex; }
+.version-pill {
+  position:relative; overflow:hidden;
+  display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:100px;
+  border:1px solid rgba(217,119,6,.30);
+  background:linear-gradient(140deg, rgba(255,255,255,.60) 0%, rgba(255,255,255,.42) 100%);
+  box-shadow:none;
+  color:#c2700a; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.version-pill:hover { border-color:rgba(217,119,6,.55); transform:translateY(-1px); }
+html.dark .version-pill { color:#fbbf24; border-color:rgba(251,191,36,.30); background:linear-gradient(140deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.06) 100%); box-shadow:none; }
 .search-area { position:relative; margin-bottom:16px; }
 .search-box {
   position:relative; display:flex; align-items:center; border-radius:var(--radius-lg);
@@ -616,6 +657,22 @@ body.editing .item-share{ display:none; }
 </div>
 <div class="bg-cursor-light" id="cursorLight" aria-hidden="true"></div>
 
+<div id="timeLock">
+  <div class="terminal-window">
+    <div class="term-header">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="term-title">bash - deploy.sh</div>
+    </div>
+    <div class="term-body" id="termBody"></div>
+  </div>
+  <div class="status-info" id="statusInfo">
+    <div class="status-code">System Standby</div>
+    <div class="main-msg">该网站正在部署中</div>
+    <div class="sub-msg">尚未正式上线，请稍后再试。<br>如果手机时间正常，请等待系统开放。</div>
+    <div class="date-highlight">预计上线: 2026-06-19</div>
+  </div>
+</div>
+
 <div id="mainContent">
   <div class="page">
     <header class="topbar">
@@ -641,7 +698,6 @@ body.editing .item-share{ display:none; }
           </button>
         </div>
       </div>
-
 
       <div class="search-area">
         <div class="search-box" id="searchBox">
@@ -893,7 +949,7 @@ body.editing .item-share{ display:none; }
     GH_KEY: '__af_gh_cfg_v' + AF_VER + '__',
     ADMIN_KEY: '__af_admin_v' + AF_VER + '__',
     CACHE_VERSION: AF_VER,
-    SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, 
+    SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, SCROLL_TOP_THRESHOLD: 300, LONG_PRESS_MS: 800,
     GH: { API: 'https://api.github.com', DEFAULT_USER: 'duanaifeng', DEFAULT_REPO: 'AFeng', DEFAULT_BRANCH: 'main', DEFAULT_PATH: 'daohang/data.json' },
     ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
@@ -1438,11 +1494,12 @@ body.editing .item-share{ display:none; }
       app.appendChild(frag);
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
     }
+    function updateVersionBar() {
       if (!nodes.versionBar || !nodes.versionText) return;
       if (DataService.source === 'local' || DataService.hasLocalEdits()) { nodes.versionBar.classList.add('show'); nodes.versionText.textContent = '本地版本 · 恢复官方'; }
       else nodes.versionBar.classList.remove('show');
     }
-    return { init, render };
+    return { init, render, updateVersionBar };
   })();
 
   const Search = {
@@ -1780,6 +1837,7 @@ body.editing .item-share{ display:none; }
         DataService.clearLocalEdits();
         DataService.source = 'official';
         Mode.markClean();
+        Renderer.updateVersionBar();
         Toast.show('✅ 已同步');
       }
       catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '⇧ 同步'; }
@@ -1798,11 +1856,12 @@ body.editing .item-share{ display:none; }
         DataService.source = 'official';
         Mode.markClean();
         Renderer.render();
+        Renderer.updateVersionBar();
         Toast.show('✅ 已拉取');
       }
       catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '↓ 拉取'; }
     },
-    async resetToOfficial() { if (!confirm('恢复官方？')) return; await DataService.resetToOfficial(); Renderer.render(); Mode.markClean(); Toast.show('已恢复'); }
+    async resetToOfficial() { if (!confirm('恢复官方？')) return; await DataService.resetToOfficial(); Renderer.render(); Renderer.updateVersionBar(); Mode.markClean(); Toast.show('已恢复'); }
   };
 
   function bindEvents() {
@@ -1874,8 +1933,7 @@ body.editing .item-share{ display:none; }
 
   const startDate = new Date('2026-06-19T00:00:00+08:00');
   function updateUptime() {
-    const now = new Date();
-    if (now.getTime() < startDate.getTime()) return;
+    const now = new Date(); let diff = now.getTime() - startDate.getTime(); if (diff < 0) { const ze = n => '0' + n; ['upY','upM','upD'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 0; }); ['upH','upMin','upS'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '00'; }); return; }
     let years = now.getFullYear() - startDate.getFullYear(), months = now.getMonth() - startDate.getMonth(), days = now.getDate() - startDate.getDate(), hours = now.getHours() - startDate.getHours(), minutes = now.getMinutes() - startDate.getMinutes(), seconds = now.getSeconds() - startDate.getSeconds();
     if (seconds < 0) { seconds += 60; minutes--; } if (minutes < 0) { minutes += 60; hours--; } if (hours < 0) { hours += 24; days--; }
     if (days < 0) { let prevMonth = new Date(now.getFullYear(), now.getMonth(), 0); days += prevMonth.getDate(); months--; }
@@ -1886,12 +1944,14 @@ body.editing .item-share{ display:none; }
     if (eH) eH.textContent = pad(hours); if (eMin) eMin.textContent = pad(minutes); if (eS) eS.textContent = pad(seconds);
   }
 
+  const LAUNCH_TIME = new Date('2026-06-19T00:00:00+08:00');
+  function startTerminalLock() {
     const lines = [
       { text: '<span class="cmd">$</span> git status', delay: 400 },
       { text: 'On branch main', delay: 150 },
       { text: 'Your branch is up to date with \'origin/main\'.', delay: 100 },
       { text: '<span class="cmd">$</span> npm run build', delay: 600 },
-      { text: '> afeng@3.6.0 build', delay: 200 },
+      { text: '> afeng@3.6 build', delay: 200 },
       { text: '> vite build', delay: 100 },
       { text: '<span class="success">✓</span> 128 modules transformed.', delay: 500 },
       { text: 'dist/index.html                 0.54 kB', delay: 100 },
@@ -1943,14 +2003,13 @@ body.editing .item-share{ display:none; }
       setInterval(updateUptime, 1000);
       updateUptime();
 
-      await DataService.load();
-      try { Renderer.render(); } finally { openSharedItem(); }
+      await DataService.load(); Renderer.render(); Renderer.updateVersionBar();
       openSharedItem();
       DataService.revalidate();
       if (DataService.source === 'fallback') Toast.show('网络异常，显示备用数据', { duration: 2600 });
     } catch (e) {
       console.error('[启动失败]', e);
-      try { if (!Array.isArray(DataService.data) || !DataService.data.length) DataService.data = Schema.validate(CFG.FALLBACK_DATA); } catch (_) { }
+      DataService.data = CFG.FALLBACK_DATA; Renderer.render(); Toast.show('数据加载失败', { duration: 2600 });
     }
   }
 
