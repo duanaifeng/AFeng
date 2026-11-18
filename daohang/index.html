@@ -1391,8 +1391,8 @@ body.editing .item-share{ display:none; }
 
   const Mode = {
     current: 'browse', dirty: false,
-    // 修复：刷新后若有管理员凭证，自动恢复管理员态（此前依赖已删除的页脚按钮，导致刷新掉线）
-    init() { this.dirty = DataService.hasLocalEdits(); if (Auth.isAdmin()) { this.current = 'admin'; document.body.classList.add('editing', 'admin-mode'); } else if (DataService.hasLocalEdits()) { this.current = 'guest'; document.body.classList.add('editing'); } this.updateUI(); Renderer.render(); },
+    // 启动始终为浏览态：本地数据/管理员凭证保留不丢，但必须手动点铅笔或页眉 AI.FENG 才进入编辑/管理员
+    init() { this.current = 'browse'; this.dirty = DataService.hasLocalEdits(); document.body.classList.remove('editing', 'admin-mode'); this.updateUI(); Renderer.render(); },
     isEditing() { return this.current !== 'browse'; },
     isAdmin() { return this.current === 'admin'; },
     enterGuest() { this.current = 'guest'; this.dirty = DataService.hasLocalEdits(); document.body.classList.add('editing'); document.body.classList.remove('admin-mode'); this.updateUI(); Renderer.render(); Toast.show(this.dirty ? '已恢复上次的编辑' : '已进入编辑'); },
