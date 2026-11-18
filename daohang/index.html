@@ -240,19 +240,6 @@ html.perf-lite .brand-avatar-wrap::before { animation:none; display:none; }
 @media (prefers-reduced-motion: reduce) { .brand-avatar-wrap::before { animation:none; } }
 .brand-title { font-size:clamp(24px, 6vw, 44px); font-weight:800; letter-spacing:-.028em; color:var(--text-1); white-space:nowrap; min-width:0; }
 .brand-sub { margin-top:2px; font-size:13.5px; font-weight:500; color:var(--text-3); }
-.version-bar { display:none; align-items:center; gap:10px; margin-bottom:14px; }
-.version-bar.show { display:flex; }
-.version-pill {
-  position:relative; overflow:hidden;
-  display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:100px;
-  border:1px solid rgba(217,119,6,.30);
-  background:linear-gradient(140deg, rgba(255,255,255,.60) 0%, rgba(255,255,255,.42) 100%);
-  box-shadow:none;
-  color:#c2700a; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;
-  transition:border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
-}
-.version-pill:hover { border-color:rgba(217,119,6,.55); transform:translateY(-1px); }
-html.dark .version-pill { color:#fbbf24; border-color:rgba(251,191,36,.30); background:linear-gradient(140deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.06) 100%); box-shadow:none; }
 .search-area { position:relative; margin-bottom:16px; }
 .search-box {
   position:relative; display:flex; align-items:center; border-radius:var(--radius-lg);
@@ -702,13 +689,6 @@ body.editing .item-share{ display:none; }
             <span class="edit-label">编辑中</span>
           </button>
         </div>
-      </div>
-
-      <div class="version-bar" id="versionBar">
-        <button class="version-pill" id="versionPill" type="button" aria-label="版本信息" title="版本信息">
-          <span class="v-icon" aria-hidden="true">📍</span>
-          <span id="versionText">本地版本 · 恢复官方</span>
-        </button>
       </div>
 
       <div class="search-area">
@@ -1465,7 +1445,7 @@ body.editing .item-share{ display:none; }
 
   const Renderer = (function () {
     const nodes = {};
-    function init() { ['main','app','skeleton','versionBar','versionText'].forEach(k => nodes[k] = document.getElementById(k)); }
+    function init() { ['main','app','skeleton'].forEach(k => nodes[k] = document.getElementById(k)); }
     function btn(o) { const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label); b.type = 'button'; b.dataset.act = o.act; b.dataset.gi = String(o.gi); if (o.ii != null) b.dataset.ii = String(o.ii); b.disabled = !!o.disabled; return b; }
 
     function build(item, group, gi, ii) {
@@ -1548,7 +1528,6 @@ body.editing .item-share{ display:none; }
     }
 
     function render() {
-      updateVersionBar();
       const app = nodes.app; if (!app) return;
       if (nodes.skeleton) nodes.skeleton.style.display = 'none';
       Dom.clear(app);
@@ -1563,12 +1542,7 @@ body.editing .item-share{ display:none; }
       app.appendChild(frag);
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
     }
-    function updateVersionBar() {
-      if (!nodes.versionBar || !nodes.versionText) return;
-      if (DataService.source === 'local' || DataService.hasLocalEdits()) { nodes.versionBar.classList.add('show'); nodes.versionText.textContent = '本地版本 · 恢复官方'; }
-      else nodes.versionBar.classList.remove('show');
-    }
-    return { init, render, updateVersionBar };
+    return { init, render };
   })();
 
   const Search = {
@@ -1933,7 +1907,6 @@ body.editing .item-share{ display:none; }
         DataService.clearLocalEdits();
         DataService.source = 'official';
         Mode.markClean();
-        Renderer.updateVersionBar();
         Toast.show('✅ 已同步');
       }
       catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '⇧ 同步'; }
@@ -1952,12 +1925,11 @@ body.editing .item-share{ display:none; }
         DataService.source = 'official';
         Mode.markClean();
         Renderer.render();
-        Renderer.updateVersionBar();
         Toast.show('✅ 已拉取');
       }
       catch (e) { Toast.show('失败：' + e.message); } finally { btn.disabled = false; btn.textContent = '↓ 拉取'; }
     },
-    async resetToOfficial() { if (!confirm('恢复官方？')) return; await DataService.resetToOfficial(); Renderer.render(); Renderer.updateVersionBar(); Mode.markClean(); Toast.show('已恢复'); }
+    async resetToOfficial() { if (!confirm('恢复官方？')) return; await DataService.resetToOfficial(); Renderer.render(); Mode.markClean(); Toast.show('已恢复'); }
   };
 
   function bindEvents() {
@@ -1981,17 +1953,6 @@ body.editing .item-share{ display:none; }
 
     must('btnExitEdit').onclick = () => Mode.exit();
     must('btnReset').onclick = () => Cloud.resetToOfficial();
-    // 顶部「本地版本 · 恢复官方」胶囊：原版未绑定，此处补上，点击走同一套恢复官方流程
-    (function bindVersionPill() {
-      const pill = document.getElementById('versionPill');
-      if (!pill) return;
-      pill.type = 'button';
-      pill.setAttribute('role', 'button');
-      pill.setAttribute('title', '恢复官方数据');
-      const handler = (e) => { e.preventDefault(); e.stopPropagation(); Cloud.resetToOfficial(); };
-      pill.onclick = handler;
-      pill.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(e); } });
-    })();
     must('btnSync').onclick = () => Cloud.sync();
     must('btnPull').onclick = () => Cloud.pull();
     must('btnAddLink').onclick = () => DataService.data.length ? Forms.openLinkForm(0, -1) : Toast.show('请先添加分类');
@@ -2110,7 +2071,7 @@ body.editing .item-share{ display:none; }
       setInterval(updateUptime, 1000);
       updateUptime();
 
-      await DataService.load(); Renderer.render(); Renderer.updateVersionBar();
+      await DataService.load(); Renderer.render();
       openSharedItem();
       DataService.revalidate();
       if (DataService.source === 'fallback') Toast.show('网络异常，显示备用数据', { duration: 2600 });
