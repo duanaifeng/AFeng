@@ -1,6 +1,0 @@
-把本目录全部文件上传到站点根目录（与 index.html 同级）即可。
-index.html 用相对路径引用图标与 site.webmanifest。
-site.webmanifest 的 display_override:["fullscreen","standalone"]：
-  安卓 Chrome 支持时真全屏（隐藏系统状态栏），iOS 与旧浏览器回退 standalone。
-theme_color / background_color / 页面顶部均为 #FFF7EC，启动无白闪、状态栏与页面连成一片。
-若只想要单文件版，用工作区根目录的 街道日历_终版.html，图标已全部内嵌。
