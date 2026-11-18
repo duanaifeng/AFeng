@@ -1857,8 +1857,7 @@ body.editing .item-share{ display:none; }
             'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);';
           ip.appendChild(b);
         });
-        return;
-        CFG.ICON_PRESETS.forEach(ic => {
+        ICONS: for (const ic of CFG.ICON_PRESETS) {
           const active = ic === groupCtx.icon;
           const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''), ic);
           b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;font-size:16px;' +
@@ -1871,7 +1870,8 @@ body.editing .item-share{ display:none; }
             groupCtx.icon = ic;
           };
           ip.appendChild(b);
-        });
+          break ICONS;
+        }
         const cp = document.getElementById('colorPicker'); Dom.clear(cp);
         CFG.COLOR_PRESETS.forEach(c => {
           const b = Dom.el('button', 'color-option');
