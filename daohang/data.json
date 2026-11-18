@@ -1,7 +1,6 @@
 [
   {
     "category": "本站原创",
-    "icon": "AF",
     "color": "#60a5fa",
     "items": [
       {
@@ -71,11 +70,11 @@
         ]
       }
     ],
-    "categoryEn": "ORIGINAL"
+    "categoryEn": "ORIGINAL",
+    "iconId": "star"
   },
   {
     "category": "聆听音乐",
-    "icon": "🎧",
     "color": "#a78bfa",
     "items": [
       {
@@ -189,11 +188,11 @@
         ]
       }
     ],
-    "categoryEn": "MUSIC"
+    "categoryEn": "MUSIC",
+    "iconId": "headphones"
   },
   {
     "category": "随心观影",
-    "icon": "🎬",
     "color": "#f472b6",
     "items": [
       {
@@ -283,11 +282,11 @@
         ]
       }
     ],
-    "categoryEn": "VIDEO"
+    "categoryEn": "VIDEO",
+    "iconId": "clapperboard"
   },
   {
     "category": "聚合资源",
-    "icon": "📥",
     "color": "#fbbf24",
     "items": [
       {
@@ -402,11 +401,11 @@
         ]
       }
     ],
-    "categoryEn": "SOFTWARE"
+    "categoryEn": "SOFTWARE",
+    "iconId": "package"
   },
   {
     "category": "实用工具",
-    "icon": "🧰",
     "color": "#cbd5e1",
     "items": [
       {
@@ -466,11 +465,11 @@
         ]
       }
     ],
-    "categoryEn": "TOOLS"
+    "categoryEn": "TOOLS",
+    "iconId": "wrench"
   },
   {
     "category": "系统装机",
-    "icon": "💿",
     "color": "#38bdf8",
     "items": [
       {
@@ -548,11 +547,11 @@
         ]
       }
     ],
-    "categoryEn": "SYSTEM"
+    "categoryEn": "SYSTEM",
+    "iconId": "disc"
   },
   {
     "category": "DNS 服务",
-    "icon": "🛡️",
     "color": "#22d3ee",
     "items": [
       {
@@ -644,11 +643,11 @@
         ]
       }
     ],
-    "categoryEn": "DNS"
+    "categoryEn": "DNS",
+    "iconId": "shield-check"
   },
   {
     "category": "网络加速",
-    "icon": "🚀",
     "color": "#3b82f6",
     "items": [
       {
@@ -696,11 +695,11 @@
         ]
       }
     ],
-    "categoryEn": "PROXY"
+    "categoryEn": "PROXY",
+    "iconId": "zap"
   },
   {
     "category": "网络检测",
-    "icon": "📡",
     "color": "#14b8a6",
     "items": [
       {
@@ -773,11 +772,11 @@
         ]
       }
     ],
-    "categoryEn": "NET-TEST"
+    "categoryEn": "NET-TEST",
+    "iconId": "search"
   },
   {
     "category": "脚本与扩展",
-    "icon": "🧩",
     "color": "#4ade80",
     "items": [
       {
@@ -869,6 +868,7 @@
         ]
       }
     ],
-    "categoryEn": "EXTENSIONS"
+    "categoryEn": "EXTENSIONS",
+    "iconId": "puzzle"
   }
 ]

@@ -283,6 +283,8 @@ html.dark .search-suggest { border-color:rgba(255,255,255,.16); background:rgba(
 .suggest-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border-1); color:inherit; text-decoration:none; cursor:pointer; }
 .suggest-item:last-child { border-bottom:none; }
 .suggest-item:hover, .suggest-item.active { background:var(--accent-soft); }
+.section-icon.has-svg svg, .suggest-icon.has-svg svg, .detail-icon.has-svg svg { width:54%; height:54%; display:block; }
+.suggest-icon.has-svg, .section-icon.has-svg, .detail-icon.has-svg { color:var(--c-self, currentColor); }
 .suggest-icon { flex:0 0 auto; align-self:flex-start; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); background:var(--accent-soft); color:var(--accent); font-size:14px; box-shadow:none; }
 html.dark .suggest-icon { box-shadow:none; }
 .suggest-body { display:block; flex:1; min-width:0; }
@@ -958,6 +960,58 @@ body.editing .item-share{ display:none; }
     CACHE_VERSION: AF_VER,
     SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, SCROLL_TOP_THRESHOLD: 300, LONG_PRESS_MS: 800,
     GH: { API: 'https://api.github.com', DEFAULT_USER: 'duanaifeng', DEFAULT_REPO: 'AFeng', DEFAULT_BRANCH: 'main', DEFAULT_PATH: 'daohang/data.json' },
+    // 内置 SVG 图标库（Lucide 风格，24×24，线宽 1.8，stroke=currentColor 跟随分类 color）
+    // 分类图标优先取 iconId → 此处查表；查不到则回退 emoji（icon 字段），保证旧数据不炸
+    SVG_ICONS: {
+      star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 15.09 8.7l6.91 1-5 4.87 1.18 6.88L12 18.77l-6.18 3.25L7 15.14 2 10.27l6.91-1L12 2.5Z"/></svg>',
+      headphones: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 15a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2v1ZM3 15a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2v1Z"/></svg>',
+      clapperboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 21 5l-.5 3.5L2.5 12 3 8.5Z"/><path d="M3 8.5V19a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8.5"/><path d="M7.5 7.6 8.8 4M12.5 6.9l1.3-3.2M17.5 6.1l1.2-3"/></svg>',
+      package: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.7 7.1 12 12l8.3-4.9M12 12v9.4"/><path d="M7.8 4.7 16.2 9.3"/></svg>',
+      wrench: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.1-.4-.4-2.1 2.5-2.5Z"/></svg>',
+      disc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3.5a8.5 8.5 0 0 1 6 2.5M6.2 17.8a8.5 8.5 0 0 0 11.6 0"/></svg>',
+      'shield-check': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 5.5v6c0 5 3.2 8.5 7.5 10 4.3-1.5 7.5-5 7.5-10v-6L12 2.5Z"/><path d="m8.5 12 2.3 2.3 4.7-4.8"/></svg>',
+      zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>',
+      search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/></svg>',
+      puzzle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5a2 2 0 0 1 4 0c0 .6-.2 1 .5 1.5H16a1 1 0 0 1 1 1v2.5c.5.7.9.5 1.5.5a2 2 0 0 1 0 4c-.6 0-1-.2-1.5.5V16a1 1 0 0 1-1 1h-2.5c-.5.7-.9.5-1.5.5a2 2 0 0 1-4 0c0-.6.2-1-.5-1.5H4a1 1 0 0 1-1-1v-2.5C2.5 12 2.5 11.6 3 11V8a1 1 0 0 1 1-1h2.5C7.2 6.3 7 5.9 7 5.3A1.8 1.8 0 0 1 9 3.5Z"/></svg>',
+      'book-open': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2Z"/><path d="M12 6.5v13"/></svg>',
+      code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8.5 8-4.5 4 4.5 4M15.5 8l4.5 4-4.5 4M13.5 5l-3 14"/></svg>',
+      terminal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="m7 9.5 2.5 2.5L7 14.5M12 14.5h5"/></svg>',
+      cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-8.97A5.5 5.5 0 0 1 17 8.5a4 4 0 0 1 .5 7.98c-.3.02-.6.02-.9.02H7Z"/></svg>',
+      image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"/></svg>',
+      film: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7.5 4.5v15M16.5 4.5v15M3 12h18M3 8.2h4.5M3 15.8h4.5M16.5 8.2H21M16.5 15.8H21"/></svg>',
+      gamepad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8h9a4.5 4.5 0 0 1 4.4 5.4l-.5 2.3A2.2 2.2 0 0 1 16.3 17l-1.3-1.5H9L7.7 17a2.2 2.2 0 0 1-4.1-1.3l-.5-2.3A4.5 4.5 0 0 1 7.5 8Z"/><path d="M6.5 11v2M5.5 12h2M15.5 11.5h.01M17.5 13h.01"/></svg>',
+      cpu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9.5 3.5v3M14.5 3.5v3M9.5 17v3M14.5 17v3M3.5 9.5h3M3.5 14.5h3M17 9.5h3.5M17 14.5h3.5"/></svg>',
+      smartphone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3.5" width="10" height="17" rx="2"/><path d="M10.5 18h3"/></svg>',
+      palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 0 0 0 17 2 2 0 0 0 2-2 2 2 0 0 1 2-2h1.5a2.5 2.5 0 0 0 2.5-2.5A8.5 8.5 0 0 0 12 3.5Z"/><circle cx="8.5" cy="10.5" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="15.5" cy="10.5" r="1"/></svg>',
+      rss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11a8.5 8.5 0 0 1 8.5 8.5M4.5 4.5A15.5 15.5 0 0 1 20 20M4.5 15.5h.01M4.5 4.5h.01"/></svg>',
+      globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.2 5.3 3.2 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.2-5.3-3.2-8.5S9.8 5.9 12 3.5Z"/></svg>',
+      link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.5a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1.5 1.5"/><path d="M14 10.5a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1.5-1.5"/></svg>',
+      download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11M7.5 10.5 12 15l4.5-4.5M4.5 19.5h15"/></svg>',
+      award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="m8.5 13.5-1.5 7 5-2.5 5 2.5-1.5-7"/></svg>',
+      flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5s5.5 4.2 5.5 9.5a5.5 5.5 0 0 1-11 0c0-1.8.8-3.2 1.8-4.3.4 1.2 1.3 2 2.2 2 0-2.6-.5-5.4-2.5-7.2Z"/></svg>',
+      heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.8-9.2-9C1.8 8 2.5 4.8 5.2 4.8c1.8 0 3.2 1.1 3.8 2.4.6-1.3 2-2.4 3.8-2.4 2.7 0 3.4 3.2 2.4 6.2-1.7 4.2-9.2 9-9.2 9Z"/></svg>',
+      mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
+      wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="13" rx="2"/><path d="M16 12h4M3.5 9.5h14"/></svg>',
+      user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>',
+      users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19a6.5 6.5 0 0 1 13 0"/><path d="M16 5.5a3.5 3.5 0 0 1 0 6.8M17.5 19a6.5 6.5 0 0 0-2-4.6"/></svg>',
+      'shopping-bag': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 11.5H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+      radio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><circle cx="12" cy="13" r="2.5"/><path d="M8.5 4.5 19 3M5.5 8l-3-3.5M18.5 8l3-3.5"/></svg>',
+      'radio-tower': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5v4M8.5 8.5l7 9M15.5 8.5l-7 9M6.5 12.5h11M5 16.5h14"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5 7 4-14 2.5 7H21"/></svg>',
+      gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17a8.5 8.5 0 1 1 16 0"/><path d="m12 13 4-3"/><circle cx="12" cy="14" r="1.2"/></svg>',
+      fingerprint: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 0 0-5 15.4M12 3.5a8.5 8.5 0 0 1 5 15.4M12 7a5 5 0 0 0-2.5 9M12 7a5 5 0 0 1 2.5 9M12 7v6.5"/></svg>',
+      lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5"/></svg>',
+      key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="10" r="4.5"/><path d="m11.5 13.5 7.5 7.5M16 16l2-2M18.5 18.5 20 17"/></svg>',
+      'wrench-tools': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="11" rx="2"/><path d="M8.5 8V6.5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2V8M3.5 13h4l1.5 2.5h6L16.5 13h4"/></svg>',
+      trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4.5h4V7M6.5 7l1 12.5h9L17.5 7M10 11v5M14 11v5"/></svg>',
+      'zap-off': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-.6 5.2L14 13M18.5 9.5 17 12"/><path d="m4 4 16 16"/></svg>',
+      list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8.5 4.5L12 12 3.5 7.5 12 3Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5l8 4.5 8-4.5"/></svg>',
+      compass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m14.5 9.5-4 1.5-1.5 4 4-1.5 1.5-4Z"/></svg>',
+      smile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg>'
+    },
+    // 编辑器「添加/编辑分类」图标选择器用的顺序（条目链接仍用下面的 emoji 预设）
+    SVG_ICON_IDS: ['star','headphones','clapperboard','film','radio','package','download','cloud','wrench','wrench-tools','trash','disc','cpu','smartphone','gamepad','shield-check','lock','key','fingerprint','zap','zap-off','radio-tower','search','activity','gauge','puzzle','code','terminal','book-open','globe','link','list','layers','rss','compass','image','palette','users','user','shopping-bag','wallet','mail','flame','heart','award','smile'],
     ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
     META: { ID_MAX: 60, TAG_MAX: 20, TAG_COUNT: 8, CATEGORY_EN_MAX: 50, DESC_SUGGEST: 18, DESC_MAX: 200, DETAIL_MAX: 1000 },
@@ -971,9 +1025,17 @@ body.editing .item-share{ display:none; }
     clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; },
     delegate(r, t, s, h) { r.addEventListener(t, e => { const el = e.target.closest(s); if (el && r.contains(el)) h(e, el); }); },
     // 字母图标（如 AF）：非 emoji 的短 ASCII 文本，渲染成徽标而非表情
-    iconEl(cls, icon) {
+    iconEl(cls, icon, iconId) {
       const n = document.createElement('span');
       n.className = cls;
+      // 分类图标优先用内置 SVG（iconId），取不到再回退 emoji / 字母徽标
+      const id = iconId || ((typeof Schema !== 'undefined' && Schema.SVG_ICON_IDS && Schema.SVG_ICON_IDS.indexOf(icon) > -1) ? icon : '');
+      const svg = id && CFG.SVG_ICONS[id];
+      if (svg) {
+        n.classList.add('has-svg');
+        n.innerHTML = svg;
+        return n;
+      }
       const t = icon || Schema.DEFAULT_ICON;
       n.textContent = t;
       if (/^[A-Za-z0-9]{1,4}$/.test(t)) n.classList.add('icon-badge');
@@ -1195,7 +1257,7 @@ body.editing .item-share{ display:none; }
             items.push(item);
           }
         }
-        const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, items };
+        const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, iconId: (CFG.SVG_ICONS[g.iconId] ? g.iconId : undefined), color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, items };
         if (en) node.categoryEn = en;
         if (g.itemOrder === 'manual') node.itemOrder = 'manual';
         out.push(node);
@@ -1450,7 +1512,7 @@ body.editing .item-share{ display:none; }
       const num = Dom.el('span', 'section-num', String(gi + 1).padStart(2, '0'));
       num.setAttribute('aria-hidden', 'true');
 
-      const icon = Dom.iconEl('section-icon', group.icon);
+      const icon = Dom.iconEl('section-icon', group.icon, group.iconId);
       icon.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`;
       const title = Dom.el('h2', 'section-title', group.category); title.id = 'sec-' + gi;
       const cnt = Dom.el('span', 'section-count', group.items.length + ' 条');
@@ -1549,7 +1611,7 @@ body.editing .item-share{ display:none; }
       if (!this.results.length) { this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>'; this.suggest.classList.add('show'); return; }
       this.results.forEach((r, idx) => {
         const a = Dom.el('a', 'suggest-item'); a.href = 'javascript:void(0)';
-        const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON); ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
+        const ic = Dom.iconEl('suggest-icon', r.group.icon, r.group.iconId); ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
         const bd = Dom.el('span', 'suggest-body');
         bd.appendChild(Dom.el('span', 'suggest-name', r.item.name));
         bd.appendChild(Dom.el('span', 'suggest-path', r.group.category + (r.item.desc ? ' · ' + r.item.desc : '')));
@@ -1581,8 +1643,12 @@ body.editing .item-share{ display:none; }
       document.getElementById('detailDesc').textContent = item.detail || item.desc || '暂无详细介绍。';
 
       const iconEl = document.getElementById('detailIcon');
+      const svgId = group.iconId || (CFG.SVG_ICON_IDS && CFG.SVG_ICON_IDS.indexOf(group.icon) > -1 ? group.icon : '');
+      if (CFG.SVG_ICONS[svgId]) { iconEl.textContent = ''; iconEl.classList.add('has-svg'); iconEl.innerHTML = CFG.SVG_ICONS[svgId]; }
+      else {
       iconEl.textContent = group.icon || Schema.DEFAULT_ICON;
       iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(group.icon || ''));
+      }
       iconEl.style.setProperty('--c-bg', Utils.hexToRgba(group.color, .14));
       iconEl.style.setProperty('--c-border', Utils.hexToRgba(group.color, .32));
 
@@ -1774,10 +1840,24 @@ body.editing .item-share{ display:none; }
       },
       openGroupForm(gi) {
         const modal = document.getElementById('groupModal'), isNew = gi < 0, g = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[gi];
-        if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, color: g.color, en: g.categoryEn || '' });
+        if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, iconId: g.iconId || '', color: g.color, en: g.categoryEn || '' });
         document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
         document.getElementById('groupName').value = g.category || '';
         const ip = document.getElementById('iconPicker'); Dom.clear(ip);
+        const svgIds = CFG.SVG_ICON_IDS;
+        const curId = groupCtx.iconId || (svgIds.indexOf(groupCtx.icon) > -1 ? groupCtx.icon : '');
+        ip.classList.add('svg-picker');
+        svgIds.forEach(sid => {
+          const active = sid === curId;
+          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''));
+          b.type = 'button'; b.title = sid; b.innerHTML = CFG.SVG_ICONS[sid];
+          b.onclick = () => { groupCtx.iconId = sid; groupCtx.icon = sid; Dom.$$('#iconPicker .icon-option').forEach(x => x.classList.remove('active')); b.classList.add('active'); };
+          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;color:' + (groupCtx.color || Schema.DEFAULT_COLOR) + ';' +
+            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
+            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);';
+          ip.appendChild(b);
+        });
+        return;
         CFG.ICON_PRESETS.forEach(ic => {
           const active = ic === groupCtx.icon;
           const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''), ic);
@@ -1804,8 +1884,8 @@ body.editing .item-share{ display:none; }
       },
       submitGroup() {
         const name = Utils.clean(document.getElementById('groupName').value, 50); if (!name) return alert('请填写名称');
-        if (groupCtx.gi < 0) DataService.data.push({ category: name, icon: groupCtx.icon, color: groupCtx.color, items: [] });
-        else { const t = DataService.data[groupCtx.gi]; t.category = name; t.icon = groupCtx.icon; t.color = groupCtx.color; }
+        if (groupCtx.gi < 0) DataService.data.push({ category: name, icon: groupCtx.icon, iconId: groupCtx.iconId, color: groupCtx.color, items: [] });
+        else { const t = DataService.data[groupCtx.gi]; t.category = name; t.icon = groupCtx.icon; t.iconId = groupCtx.iconId; t.color = groupCtx.color; }
         DataService.persist(); Modal.close(document.getElementById('groupModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
       openGhConfig(cb) {
