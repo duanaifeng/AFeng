@@ -216,15 +216,36 @@ html.dark .badge-left { background: rgba(255,255,255,0.15); color: var(--text-1)
 .footer-info a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .divider { margin: 0 6px; opacity: 0.5; }
 .footer-copyright { font-size: 12px; color: var(--text-3); opacity: 0.8; font-family: monospace; }
+.footer-admin { display:inline-flex; align-items:center; gap:6px; margin-top:4px; padding:4px 10px; border:1px solid var(--border-1); border-radius:100px; background:transparent; color:var(--text-3); font-size:12px; font-family:inherit; cursor:pointer; transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.footer-admin:hover { color:var(--text-1); border-color:var(--border-2); }
+.footer-admin .admin-lamp { width:8px; height:8px; border-radius:50%; background:var(--text-3); opacity:.45; box-shadow:none; transition:background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.footer-admin.on .admin-lamp { background:var(--success); opacity:1; box-shadow:0 0 0 3px rgba(22,163,74,.16); }
+.footer-admin.on.dirty .admin-lamp { background:var(--warning); opacity:1; box-shadow:0 0 0 3px rgba(217,119,6,.16); animation:siPulse 1.4s ease-in-out infinite; }
+/* 版本号旁低调管理员灯：未配置=熄灯，已配置=绿灯，未同步=黄灯呼吸 */
+.version-pill .admin-lamp { width:7px; height:7px; border-radius:50%; background:var(--text-3); opacity:.4; flex:0 0 auto; transition:background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.version-pill.admin-on .admin-lamp { background:var(--success); opacity:1; box-shadow:0 0 0 3px rgba(22,163,74,.16); }
+.version-pill.admin-dirty .admin-lamp { background:var(--warning); opacity:1; box-shadow:0 0 0 3px rgba(217,119,6,.16); animation:siPulse 1.4s ease-in-out infinite; }
+html.dark .version-pill.admin-on .admin-lamp { box-shadow:0 0 0 3px rgba(74,222,128,.18); }
+@keyframes siPulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+.footer-admin.on .admin-label { color:var(--text-2); }
+html.dark .footer-admin.on .admin-lamp { box-shadow:0 0 0 3px rgba(74,222,128,.18); }
 .topbar { padding: 24px 0 12px; }
 @media (min-width:1024px) { .topbar { padding: 40px 0 20px; } }
 .topbar-inner { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px; }
 .topbar-inner .brand { flex:1 1 auto; min-width:0; }
 .brand { display:flex; flex-direction:column; gap:10px; min-width:0; }
-.brand-tag { display:inline-flex; align-items:center; gap:10px; align-self:flex-start; font-family:ui-monospace,monospace; font-size:11.5px; font-weight:700; color:var(--text-3); }
-.brand-tag-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:none; }
+.brand-tag { display:inline-flex; align-items:center; gap:10px; align-self:flex-start; font-family:ui-monospace,monospace; font-size:11.5px; font-weight:700; color:var(--text-3); cursor:pointer; border-radius:var(--radius-xs); -webkit-user-select:none; user-select:none; }
+.brand-tag:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.brand-tag-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--text-3); opacity:.4; box-shadow:none; transition:background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.brand-tag.admin-on .brand-tag-dot { background:var(--success); opacity:1; box-shadow:0 0 0 3px rgba(22,163,74,.16); }
+.brand-tag.admin-dirty .brand-tag-dot { background:var(--warning); opacity:1; box-shadow:0 0 0 3px rgba(217,119,6,.16); animation:siPulse 1.4s ease-in-out infinite; }
+html.dark .brand-tag.admin-on .brand-tag-dot { box-shadow:0 0 0 3px rgba(74,222,128,.18); }
 .brand-head { display:flex; align-items:center; gap:14px; min-width:0; }
-.brand-avatar-wrap { position:relative; flex:0 0 auto; display:inline-flex; width:44px; height:44px; }
+.brand-avatar-wrap { position:relative; flex:0 0 auto; display:inline-flex; width:44px; height:44px; cursor:pointer; -webkit-user-select:none; user-select:none; }
+.logo-lamp { position:absolute; right:-2px; bottom:-2px; width:9px; height:9px; border-radius:50%; background:var(--text-3); opacity:.38; z-index:2; box-shadow:0 0 0 2px var(--bg-b); transition:background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); pointer-events:none; }
+.brand-avatar-wrap.admin-on .logo-lamp { background:var(--success); opacity:1; box-shadow:0 0 0 2px var(--bg-b), 0 0 0 4px rgba(22,163,74,.16); }
+.brand-avatar-wrap.admin-dirty .logo-lamp { background:var(--warning); opacity:1; box-shadow:0 0 0 2px var(--bg-b), 0 0 0 4px rgba(217,119,6,.16); animation:siPulse 1.4s ease-in-out infinite; }
+html.dark .brand-avatar-wrap.admin-on .logo-lamp { box-shadow:0 0 0 2px var(--bg-b), 0 0 0 4px rgba(74,222,128,.18); }
 .brand-avatar-wrap::before { content:''; position:absolute; inset:-5px; border-radius:50%; border:1px solid var(--accent); opacity:.35; animation:avatarPulse 3.6s ease-in-out infinite; pointer-events:none; }
 @keyframes avatarPulse { 0%, 100% { transform:scale(1); opacity:.35; } 50% { transform:scale(1.18); opacity:0; } }
 .brand-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; background:var(--surface-2); box-shadow:none; transition:transform .3s var(--ease); }
@@ -390,14 +411,18 @@ html.dark .footer-btn { border-color:rgba(255,255,255,.16); background:rgba(255,
 
 /* ===== 顶部设置按钮 & 下拉菜单 ===== */
 .settings-wrap { position:relative; flex:0 0 auto; align-self:flex-start; }
-.settings-btn { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; padding:0; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,.55); background:rgba(255,255,255,20); box-shadow:none; color:var(--text-2); cursor:pointer; transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
-html.dark .settings-btn { border-color:rgba(255,255,255,.16); background:rgba(255,255,255,.9); box-shadow:none; }
-.settings-btn svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform var(--dur) var(--ease); }
+.settings-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-width:40px; height:40px; padding:0 10px; border-radius:var(--radius-md); border:1px solid var(--disclaim-b); background:var(--disclaim-bg); box-shadow:none; color:var(--text-2); cursor:pointer; transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), min-width var(--dur) var(--ease); }
+html.dark .settings-btn { border-color:var(--disclaim-b); background:var(--disclaim-bg); box-shadow:none; }
+.settings-btn svg { width:19px; height:19px; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; opacity:.5; transition:transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+.settings-btn .edit-label { display:none; font-size:13px; font-weight:700; white-space:nowrap; letter-spacing:.5px; }
 .settings-btn:hover { background:var(--accent-soft); border-color:var(--border-2); color:var(--accent); transform:translateY(-1px); }
+.settings-btn:hover svg { opacity:1; }
 .settings-btn:active { transform:translateY(0) scale(.96); }
 .settings-wrap.open .settings-btn { color:var(--accent); border-color:var(--border-2); background:var(--accent-soft); }
-.settings-wrap.open .settings-btn svg { transform:rotate(45deg); }
-body.editing .settings-btn, body.admin-mode .settings-btn { color:var(--accent); border-color:var(--border-2); }
+body.editing .settings-btn { min-width:0; }
+body.editing .settings-btn svg { opacity:1; }
+body.editing .settings-btn .edit-label { display:inline; }
+body.editing .settings-btn, body.admin-mode .settings-btn { color:var(--accent); border-color:var(--border-2); background:var(--accent-soft); }
 
 .settings-menu { position:absolute; right:0; top:calc(100% + 10px); z-index:300; width:230px; display:flex; flex-direction:column; gap:4px; padding:8px; border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.72); background:rgba(255,255,255,.86); box-shadow:none; opacity:0; visibility:hidden; transform:translateY(-8px) scale(.97); transform-origin:top right; transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur) var(--ease); }
 html.dark .settings-menu { border-color:rgba(255,255,255,.14); background:rgba(24,33,48,.95); box-shadow:none; }
@@ -681,8 +706,8 @@ body.editing .item-share{ display:none; }
     <header class="topbar">
       <div class="topbar-inner">
         <div class="brand">
-          <div class="brand-tag">
-            <span class="brand-tag-dot" aria-hidden="true"></span>
+          <div class="brand-tag" id="brandTag" role="button" tabindex="0" aria-label="管理员入口" title="">
+            <span class="brand-tag-dot" id="brandTagDot" aria-hidden="true"></span>
             <span>AI.FENG / NAVIGATOR</span>
           </div>
           <div class="brand-head">
@@ -695,26 +720,15 @@ body.editing .item-share{ display:none; }
         </div>
 
         <div class="settings-wrap" id="settingsWrap">
-          <button class="settings-btn" id="btnSettings" type="button" aria-label="设置" aria-haspopup="true" aria-expanded="false" title="设置">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <button class="settings-btn" id="btnSettings" type="button" aria-label="编辑" title="编辑">
+            <svg class="ico-gear" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/></svg>
+            <span class="edit-label">编辑中</span>
           </button>
-          <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="btnSettings" aria-hidden="true">
-            <button class="settings-item" id="menuEdit" type="button" role="menuitem">
-              <span class="si-icon" aria-hidden="true">📝</span>
-              <span class="si-text"><span class="si-title" id="menuEditText">编辑模式</span><span class="si-desc">本地增删改链接与分类</span></span>
-              <span class="si-state" id="menuEditState"></span>
-            </button>
-            <button class="settings-item cloud" id="menuCloud" type="button" role="menuitem">
-              <span class="si-icon" aria-hidden="true">☁</span>
-              <span class="si-text"><span class="si-title" id="menuCloudText">云端</span><span class="si-desc" id="menuCloudDesc">GitHub 配置 · 登录管理员</span></span>
-              <span class="si-state" id="menuCloudState"></span>
-            </button>
-          </div>
         </div>
       </div>
 
       <div class="version-bar" id="versionBar">
-        <button class="version-pill" id="versionPill" type="button">
+        <button class="version-pill" id="versionPill" type="button" aria-label="版本信息" title="版本信息">
           <span class="v-icon" aria-hidden="true">📍</span>
           <span id="versionText">本地版本 · 恢复官方</span>
         </button>
@@ -1381,9 +1395,9 @@ body.editing .item-share{ display:none; }
     init() { this.dirty = DataService.hasLocalEdits(); if (Auth.isAdmin()) { this.current = 'admin'; document.body.classList.add('editing', 'admin-mode'); } else if (DataService.hasLocalEdits()) { this.current = 'guest'; document.body.classList.add('editing'); } this.updateUI(); Renderer.render(); },
     isEditing() { return this.current !== 'browse'; },
     isAdmin() { return this.current === 'admin'; },
-    enterGuest() { if (this.current === 'admin') return; this.current = 'guest'; document.body.classList.add('editing'); document.body.classList.remove('admin-mode'); this.updateUI(); Renderer.render(); Toast.show('已进入编辑'); },
-    enterAdmin() { this.current = 'admin'; Auth.persist(); document.body.classList.add('editing', 'admin-mode'); this.updateUI(); Renderer.render(); Toast.show('管理员模式'); },
-    exit() { this.current = 'browse'; this.dirty = false; DataService.clearLocalEdits(); Auth.clear(); document.body.classList.remove('editing', 'admin-mode'); this.updateUI(); Renderer.render(); },
+    enterGuest() { this.current = 'guest'; this.dirty = DataService.hasLocalEdits(); document.body.classList.add('editing'); document.body.classList.remove('admin-mode'); this.updateUI(); Renderer.render(); Toast.show(this.dirty ? '已恢复上次的编辑' : '已进入编辑'); },
+    enterAdmin() { this.current = 'admin'; Auth.persist(); this.dirty = DataService.hasLocalEdits(); document.body.classList.add('editing', 'admin-mode'); this.updateUI(); Renderer.render(); Toast.show('管理员模式'); },
+    exit() { this.current = 'browse'; this.dirty = DataService.hasLocalEdits(); document.body.classList.remove('editing', 'admin-mode'); this.updateUI(); Renderer.render(); },
     markDirty() { this.dirty = true; DataService.markLocalEdits(); this.updateUI(); },
     markClean() { this.dirty = false; this.updateUI(); },
     updateUI() {
@@ -1394,25 +1408,19 @@ body.editing .item-share{ display:none; }
         else if (this.current === 'guest') { dot.className = 'edit-bar-dot guest'; st.textContent = '编辑中（本地）'; box.dataset.short = '编辑中'; }
         else { dot.className = 'edit-bar-dot guest'; st.textContent = ''; box.dataset.short = ''; }
       }
-      // 顶部设置菜单同步
-      const met = document.getElementById('menuEditText'), mes = document.getElementById('menuEditState');
-      // 未登录：编辑 / 云端；已登录（管理员）：退出编辑（编辑中则显示）/ 管理员
-      if (met) met.textContent = (this.isAdmin() && !this.dirty) ? '编辑' : (this.isEditing() ? '退出编辑' : '编辑');
-      if (mes) {
-        if (this.current === 'admin') { mes.textContent = '管理员'; mes.className = 'si-state ok'; }
-        else if (this.current === 'guest') { mes.textContent = '编辑中'; mes.className = 'si-state on'; }
-        else { mes.textContent = ''; mes.className = 'si-state'; }
+      // 编辑开关：编辑态高亮
+      const sw = document.getElementById('settingsWrap'), bsBtn = document.getElementById('btnSettings');
+      if (sw) sw.classList.toggle('open', this.isEditing());
+      if (bsBtn) {
+        const editing = this.isEditing();
+        bsBtn.setAttribute('title', editing ? '编辑中，点击退出' : '编辑');
+        bsBtn.setAttribute('aria-label', editing ? '编辑中' : '编辑');
       }
-      const mct = document.getElementById('menuCloudText'), mcs = document.getElementById('menuCloudState');
-      const mcd = document.getElementById('menuCloudDesc');
-      if (mct) {
-        if (Auth.isAdmin()) mct.textContent = Mode.dirty ? '管理员 · 未同步' : '管理员';
-        else mct.textContent = '云端';
-      }
-      if (mcd) mcd.textContent = Auth.isAdmin() ? (Mode.dirty ? '有改动未推送到 GitHub' : '已登录 · GitHub 云端管理') : 'GitHub 配置 · 登录管理员';
-      if (mcs) {
-        if (Auth.isAdmin()) { if (Mode.dirty) { mcs.textContent = '未同步'; mcs.className = 'si-state dirty'; } else { mcs.textContent = '已同步'; mcs.className = 'si-state ok'; } }
-        else { mcs.textContent = GitHubClient.loadConfig() ? '已配置' : '未配置'; mcs.className = 'si-state'; }
+      // 品牌标签灯：已配置=绿灯（有未同步改动=黄灯呼吸），未配置=熄灭
+      const btag = document.getElementById('brandTag');
+      if (btag) {
+        btag.classList.toggle('admin-on', Auth.isAdmin());
+        btag.classList.toggle('admin-dirty', Auth.isAdmin() && Mode.dirty);
       }
     }
   };
@@ -1888,39 +1896,29 @@ body.editing .item-share{ display:none; }
   };
 
   function bindEvents() {
-    // 顶部设置菜单：一点弹出「编辑 / 云端」
-    const sw = document.getElementById('settingsWrap'), bs = document.getElementById('btnSettings'), sm = document.getElementById('settingsMenu');
-    const closeSettings = () => { if (!sw) return; sw.classList.remove('open'); if (bs) bs.setAttribute('aria-expanded', 'false'); if (sm) sm.setAttribute('aria-hidden', 'true'); };
-    const openSettings = () => { if (!sw) return; sw.classList.add('open'); if (bs) bs.setAttribute('aria-expanded', 'true'); if (sm) sm.setAttribute('aria-hidden', 'false'); };
-    if (bs) {
-      bs.onclick = e => { e.stopPropagation(); sw.classList.contains('open') ? closeSettings() : openSettings(); };
-      // 点击外部自动关闭
-      document.addEventListener('click', e => { if (sw && !sw.contains(e.target)) closeSettings(); });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSettings(); const gm = document.getElementById('ghModal'); if (gm && gm.classList.contains('show')) Modal.close(gm); } });
-    }
     const must = id => { const el = document.getElementById(id); if (!el) throw new Error('缺少关键元素: ' + id); return el; };
-    const me = must('menuEdit');
-    me.onclick = () => { closeSettings(); Mode.isEditing() ? Mode.exit() : Mode.enterGuest(); };
-    const mc = document.getElementById('menuCloud');
-    if (mc) {
-      // 长按云端项重新配置 GitHub（管理员态）
-      let t = 0, fired = false;
-      mc.addEventListener('pointerdown', () => { fired = false; t = setTimeout(() => { t = 0; fired = true; if (Auth.isAdmin()) { closeSettings(); Forms.openGhConfig(); } }, CFG.LONG_PRESS_MS); });
-      const cancelLong = () => { if (t) clearTimeout(t); };
-      mc.addEventListener('pointerup', cancelLong); mc.addEventListener('pointerleave', cancelLong);
-      mc.onclick = e => {
-        if (fired) { fired = false; e.preventDefault(); return; }
-        closeSettings();
+    // 设置图标 = 纯编辑开关：单击直接进/出普通编辑模式，改动存本地
+    const bs = document.getElementById('btnSettings');
+    if (bs) bs.onclick = e => { e.stopPropagation(); Mode.isEditing() ? Mode.exit() : Mode.enterGuest(); };
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { const gm = document.getElementById('ghModal'); if (gm && gm.classList.contains('show')) Modal.close(gm); } });
+    // 管理员入口：单击页眉「AI.FENG / NAVIGATOR」进入（未配置先配置）
+    const brandTag = document.getElementById('brandTag');
+    if (brandTag) {
+      const triggerAdmin = () => {
         if (Auth.isAdmin()) Mode.enterAdmin();
         else Forms.openGhConfig(() => { Auth.persist(); Mode.enterAdmin(); });
       };
+      brandTag.addEventListener('click', triggerAdmin);
+      brandTag.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerAdmin(); }
+      });
     }
 
-    must('btnExitEdit').onclick = () => { if (Mode.isAdmin() && Mode.dirty && !confirm('未同步，确定退出？')) return; Mode.exit(); };
+    must('btnExitEdit').onclick = () => Mode.exit();
     must('btnReset').onclick = () => Cloud.resetToOfficial();
     must('btnSync').onclick = () => Cloud.sync();
     must('btnPull').onclick = () => Cloud.pull();
-    must('versionPill').onclick = () => Cloud.resetToOfficial();
+    // 版本号恢复原有行为（管理员入口已移到页眉 Logo 连点）
     must('btnAddLink').onclick = () => DataService.data.length ? Forms.openLinkForm(0, -1) : Toast.show('请先添加分类');
     must('btnAddGroup').onclick = () => Forms.openGroupForm(-1);
     must('btnVisit').onclick = function(e) {
