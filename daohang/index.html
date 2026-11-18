@@ -18,10 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="favicon.ico?v=3.8">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.8">
-<link rel="shortcut icon" href="favicon.ico?v=3.8">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.8">
+<link rel="icon" href="favicon.ico?v=3.6">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.6">
+<link rel="shortcut icon" href="favicon.ico?v=3.6">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.6">
 <title>AiFeng · 资源导航站</title>
 
 <script>
@@ -37,9 +37,9 @@
       start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
       background_color: '#e9eff9', theme_color: '#2f6bff', lang: 'zh-CN',
       icons: [
-        { src: 'web-app-manifest-192x192.png?v=3.8', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.8', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.8', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: 'web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -125,7 +125,6 @@
   --sp-7: 44px;
 
   --ease: cubic-bezier(.22,.61,.36,1);
-  /* Q 弹曲线：带过冲回弹 */
   --spring: cubic-bezier(.34, 1.56, .64, 1);
   --spring-soft: cubic-bezier(.3, 1.28, .4, 1);
   --dur: 200ms;
@@ -204,6 +203,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 400ms var(--ease), color 400ms var(--ease);
+}
+
+a, button, input, select, textarea, label, [role="button"] {
+  touch-action: manipulation;
 }
 
 :focus { outline: none; }
@@ -421,10 +424,11 @@ html.dark .glass-inset {
 @media (min-width: 1024px) { .page { --pad-x: 44px; } }
 
 /* ============================================================
-   6. Hero（不裁剪，保证搜索建议浮层完整展开）
+   6. Hero（提升层级，保证搜索建议浮层不被压住）
    ============================================================ */
 .hero {
   position: relative;
+  z-index: 30;
   margin: var(--sp-6) 0 var(--sp-5);
   padding: var(--sp-6) var(--sp-6) var(--sp-5);
   border-radius: var(--r-2xl);
@@ -814,36 +818,7 @@ html.dark .search-box:focus-within {
 }
 
 /* ============================================================
-   8. 版本条
-   ============================================================ */
-.version-bar {
-  display: none;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-4);
-}
-.version-bar.show { display: flex; }
-
-.version-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: 7px 16px;
-  border-radius: var(--r-full);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .01em;
-  color: #a86900;
-  cursor: pointer;
-  transition: transform var(--spring), box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-html.dark .version-pill { color: var(--warning); }
-.version-pill:hover { transform: translateY(-2px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
-.version-pill:active { transform: translateY(0) scale(.96); }
-
-/* ============================================================
-   9. 区块
+   8. 区块
    ============================================================ */
 .section {
   position: relative;
@@ -929,7 +904,7 @@ html.dark .section-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
 body.editing .section-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ============================================================
-   10. 条目卡片
+   9. 条目卡片
    ============================================================ */
 .item-list {
   list-style: none;
@@ -1035,7 +1010,7 @@ html.dark .item-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
   justify-content: center;
   gap: 5px;
   padding: 6px 12px;
-  min-height: 30px;
+  min-height: 32px;
   border-radius: var(--r-full);
   color: var(--text-3);
   font-family: inherit;
@@ -1087,13 +1062,13 @@ body.editing .item::after { display: none; }
 body.editing .item-actions { display: flex; }
 
 .item-action-btn {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 9px;
   border: 1px solid var(--glass-bd);
   background: var(--glass-2);
   box-shadow: var(--rim-top);
@@ -1124,7 +1099,7 @@ body.editing .add-zone { display: flex; }
   padding: 14px 16px;
   border-radius: var(--r-md);
   border: 1.5px dashed rgba(120,145,180,.45);
-  background: transparent;
+  background: var(--glass-3);
   color: var(--accent);
   font-family: inherit;
   font-size: 13px;
@@ -1153,7 +1128,7 @@ html.dark .add-btn { border-color: rgba(255,255,255,.16); }
 }
 
 /* ============================================================
-   11. 图标徽标
+   10. 图标徽标
    ============================================================ */
 .icon-badge {
   font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -1171,7 +1146,7 @@ html.dark .add-btn { border-color: rgba(255,255,255,.16); }
 .detail-icon.icon-badge { font-size: 21px; border-radius: 15px; }
 
 /* ============================================================
-   12. 免责声明
+   11. 免责声明
    ============================================================ */
 .disclaimer {
   margin-top: var(--sp-6);
@@ -1213,7 +1188,7 @@ html.dark .add-btn { border-color: rgba(255,255,255,.16); }
 .disclaimer-body strong { color: var(--text-1); font-weight: 700; }
 
 /* ============================================================
-   13. 页脚
+   12. 页脚
    ============================================================ */
 .footer {
   display: flex;
@@ -1330,7 +1305,7 @@ html.dark .badge-left { background: rgba(255,255,255,.07); }
 }
 
 /* ============================================================
-   14. 编辑条
+   13. 编辑条
    ============================================================ */
 .edit-bar {
   position: fixed;
@@ -1374,7 +1349,8 @@ body.editing .edit-bar {
 .edit-bar-actions { display: flex; align-items: center; gap: var(--sp-1); flex: 0 0 auto; min-width: 0; }
 
 .edit-bar-btn {
-  padding: 7px 14px;
+  padding: 8px 14px;
+  min-height: 36px;
   border-radius: var(--r-full);
   border: 1px solid var(--glass-bd);
   background: var(--glass-3);
@@ -1410,12 +1386,13 @@ body.editing .edit-bar {
   overflow: hidden;
 }
 .edit-bar-seg-btn {
-  padding: 7px 12px;
+  padding: 8px 12px;
+  min-height: 36px;
   border: 0;
   background: transparent;
   color: var(--text-1);
   font-size: 12.5px;
-  font-weight:700;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   white-space: nowrap;
@@ -1433,17 +1410,17 @@ body.editing .footer { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0
   .edit-bar-status { gap: 6px; font-size: 11.5px; }
   .edit-bar-status #editStatus { display: none; }
   .edit-bar-status::after { content: attr(data-short); }
-  .edit-bar-btn { padding: 6px 11px; font-size: 11.5px; }
-  .edit-bar-seg-btn { padding: 6px 9px; font-size: 11.5px; }
+  .edit-bar-btn { padding: 7px 12px; font-size: 11.5px; min-height: 38px; }
+  .edit-bar-seg-btn { padding: 7px 10px; font-size: 11.5px; min-height: 38px; }
 }
 @media (max-width: 340px) {
   .edit-bar-status::after { display: none; }
-  .edit-bar-btn { padding: 6px 9px; }
-  .edit-bar-seg-btn { padding: 6px 8px; }
+  .edit-bar-btn { padding: 7px 10px; }
+  .edit-bar-seg-btn { padding: 7px 8px; }
 }
 
 /* ============================================================
-   15. 弹窗
+   14. 弹窗
    ============================================================ */
 .modal {
   position: fixed;
@@ -1511,8 +1488,8 @@ html.dark .modal-mask { background: rgba(2, 6, 16, .62); }
 }
 .modal-close {
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1599,7 +1576,6 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--spring);
 }
 .security-box.state-safe .shield-icon { animation: shieldPop var(--dur-bounce) var(--spring); }
 @keyframes shieldPop { 0% { transform: scale(1); } 55% { transform: scale(1.22); } 100% { transform: scale(1); } }
@@ -1664,7 +1640,7 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
 .btn-visit.ready:active { transform: scale(.97); }
 
 /* ============================================================
-   16. 表单
+   15. 表单
    ============================================================ */
 .form-field { margin-bottom: var(--sp-3); }
 .form-field:last-of-type { margin-bottom: 0; }
@@ -1758,7 +1734,8 @@ html.dark .form-hint code { background: rgba(255,255,255,.08); }
 html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
 .form-tab {
   flex: 1;
-  padding: 8px;
+  padding: 9px;
+  min-height: 40px;
   border: none;
   border-radius: 8px;
   font-family: inherit;
@@ -1787,7 +1764,8 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
 
 .btn {
   flex: 1;
-  padding: 11px 16px;
+  padding: 12px 16px;
+  min-height: 44px;
   border-radius: var(--r-sm);
   border: 1px solid var(--glass-bd);
   background: var(--glass-2);
@@ -1814,7 +1792,7 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
 .btn.danger { color: var(--danger); }
 
 /* ============================================================
-   17. 回到顶部
+   16. 回到顶部
    ============================================================ */
 .back-top {
   position: fixed;
@@ -1881,7 +1859,7 @@ body.editing .back-top { display: none; }
 }
 
 /* ============================================================
-   18. Toast
+   17. Toast
    ============================================================ */
 .toast {
   position: fixed;
@@ -1907,7 +1885,7 @@ body.editing .back-top { display: none; }
 .toast-msg { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .toast-action {
   flex: 0 0 auto;
-  padding: 5px 13px;
+  padding: 6px 13px;
   border-radius: var(--r-full);
   border: none;
   background: linear-gradient(150deg, var(--accent), var(--accent-2));
@@ -1923,7 +1901,7 @@ body.editing .back-top { display: none; }
 .toast-action:active { transform: scale(.92); }
 
 /* ============================================================
-   19. 时间锁
+   18. 时间锁
    ============================================================ */
 #timeLock {
   position: fixed;
@@ -2037,18 +2015,18 @@ body.editing .back-top { display: none; }
 }
 
 /* ============================================================
-   20. 响应式 & 降级
+   19. 响应式 & 降级
    ============================================================ */
 @media (max-width: 640px) {
   .hero-row { flex-direction: row; gap: var(--sp-3); }
-  .search-input { height: 47px; padding-left: 9px; }
+  .search-input { height: 48px; padding-left: 9px; }
   .search-icon { width: 17px; height: 17px; margin-left: 14px; }
   .section { padding: var(--sp-4) 0 var(--sp-2); }
   .item { padding: 12px 13px; gap: var(--sp-3); }
   .item-icon { width: 36px; height: 36px; font-size: 16px; }
   .item-title { font-size: 14.5px; }
   .item-desc { font-size: 12px; }
-  .item-share { padding: 7px 11px; min-height: 32px; font-size: 11px; }
+  .item-share { padding: 8px 12px; min-height: 36px; font-size: 11.5px; }
   .item-share-ico { width: 11px; height: 11px; }
   body.editing .item { padding-right: 100px; }
   .disclaimer { padding: var(--sp-4) var(--sp-4); margin-top: var(--sp-5); }
@@ -2063,7 +2041,7 @@ body.editing .back-top { display: none; }
   .section-head { gap: var(--sp-2); row-gap: var(--sp-2); }
   .form-input { font-size: 16px; }
   .btn { padding: 13px 16px; font-size: 14px; }
-  .form-tab { padding: 10px 8px; font-size: 13px; }
+  .form-tab { padding: 11px 8px; font-size: 13px; }
 }
 
 @media (max-width: 640px) {
@@ -2080,7 +2058,7 @@ body.editing .back-top { display: none; }
     gap: var(--sp-2);
     margin-top: 2px;
   }
-  .item-action-btn { width: 42px; height: 38px; font-size: 14px; border-radius: 9px; }
+  .item-action-btn { width: 42px; height: 40px; font-size: 14px; border-radius: 10px; }
   .edit-bar { overflow-x: auto; scrollbar-width: none; }
   .edit-bar::-webkit-scrollbar { display: none; }
   .edit-bar-actions { flex-wrap: nowrap; }
@@ -2089,7 +2067,7 @@ body.editing .back-top { display: none; }
 @media (max-width: 340px) {
   .section-head { gap: var(--sp-1); }
   .section-actions { gap: 2px; }
-  .item-action-btn { width: 24px; height: 24px; font-size: 11px; }
+  .item-action-btn { width: 26px; height: 26px; font-size: 11px; }
 }
 
 html.perf-lite .aurora span { animation: none; }
@@ -2191,7 +2169,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
           </div>
           <div class="brand-head">
             <span class="brand-avatar-wrap" id="avatarWrap">
-              <img class="brand-avatar" src="favicon.png?v=3.8" alt="AiFeng" width="46" height="46" loading="eager" decoding="async"
+              <img class="brand-avatar" src="favicon.png?v=3.6" alt="AiFeng" width="46" height="46" loading="eager" decoding="async"
                    onerror="this.style.opacity='0';var w=document.getElementById('avatarWrap');if(w)w.classList.add('no-avatar')">
             </span>
             <h1 class="brand-title">资源导航站</h1>
@@ -2218,10 +2196,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     </header>
 
     <main id="main" aria-busy="true">
-      <div class="version-bar" id="versionBar">
-        <button class="version-pill glass-soft" id="versionText" type="button">本地版本 · 恢复官方</button>
-      </div>
-
       <div id="skeleton" aria-hidden="true"></div>
       <div id="app"></div>
 
@@ -2271,7 +2245,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
           </span>
           <span class="badge-right c-dark">已部署</span>
         </a>
-        <span class="badge glass-soft"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.8</span></span></span>
+        <span class="badge glass-soft"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.6</span></span></span>
         <span class="badge glass-soft"><span class="badge-left">技术栈</span><span class="badge-right c-yellow">Vanilla JS</span></span>
         <span class="badge glass-soft"><span class="badge-left">框架</span><span class="badge-right c-red">零依赖</span></span>
         <span class="badge glass-soft"><span class="badge-left">体验</span><span class="badge-right c-blue">极速秒开</span></span>
@@ -2433,11 +2407,12 @@ html.perf-lite * { transition-duration: 80ms !important; }
   (function migrateOldCaches() {
     try {
       var keys = ['__af_nav_cache__', '__af_nav_local_edits__', '__af_gh_cfg__', '__af_admin__'];
-      var olds = ['v3.9', 'v3.6', 'v3.7'];
+      var olds = ['v3.9', 'v3.8', 'v3.7'];
+      var target = 'v3.6';
       for (var k = 0; k < keys.length; k++) {
         for (var o = 0; o < olds.length; o++) {
           var oldKey = keys[k] + olds[o] + '__';
-          var newKey = keys[k] + 'v3.8' + '__';
+          var newKey = keys[k] + target + '__';
           var v = localStorage.getItem(oldKey);
           if (v != null && localStorage.getItem(newKey) == null) {
             localStorage.setItem(newKey, v);
@@ -2447,10 +2422,10 @@ html.perf-lite * { transition-duration: 80ms !important; }
     } catch (e) {}
   })();
 
-  const AF_VER = '3.8';
+  const AF_VER = '3.6';
   const CFG = {
     APP_VERSION: AF_VER,
-    DISPLAY_VERSION: '3.8',
+    DISPLAY_VERSION: '3.6',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
     CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
@@ -2733,10 +2708,8 @@ html.perf-lite * { transition-duration: 80ms !important; }
   })();
 
   const Theme = (function () {
-    const ls = [];
     function apply(d) {
       document.documentElement.classList.toggle('dark', !!d);
-      ls.forEach(f => { try { f(!!d); } catch (e) {} });
     }
     return {
       init() {
@@ -2745,17 +2718,16 @@ html.perf-lite * { transition-duration: 80ms !important; }
           apply(mq.matches);
           mq.addEventListener('change', e => apply(e.matches));
         } catch (e) {}
-      },
-      onChange(f) { ls.push(f); }
+      }
     };
   })();
 
-  const CursorLight = (function () {
+  (function initCursorLight() {
     const el = document.getElementById('cursorLight');
-    if (!el) return { start() {}, stop() {} };
+    if (!el) return;
     if (window.__AF_LITE__ || Utils.isCoarsePointer() || Utils.prefersReducedMotion()) {
       el.style.display = 'none';
-      return { start() {}, stop() {} };
+      return;
     }
     let raf = 0, px = -9999, py = -9999;
     function apply() {
@@ -2769,14 +2741,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     document.addEventListener('mousemove', onMove, { passive: true });
     document.addEventListener('mouseleave', onLeave);
     document.addEventListener('visibilitychange', onHide);
-    return {
-      start() {},
-      stop() {
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseleave', onLeave);
-        document.removeEventListener('visibilitychange', onHide);
-      }
-    };
   })();
 
   const Schema = {
@@ -3257,7 +3221,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
   const Renderer = (function () {
     const nodes = {};
     function init() {
-      ['main', 'app', 'skeleton', 'versionBar', 'versionText'].forEach(k => { nodes[k] = document.getElementById(k); });
+      ['main', 'app', 'skeleton'].forEach(k => { nodes[k] = document.getElementById(k); });
     }
     function btn(o) {
       const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label);
@@ -3387,7 +3351,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
 
     function render() {
-      updateVersionBar();
       const app = nodes.app;
       if (!app) return;
       if (nodes.skeleton) nodes.skeleton.style.display = 'none';
@@ -3405,17 +3368,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
     }
 
-    function updateVersionBar() {
-      if (!nodes.versionBar || !nodes.versionText) return;
-      if (DataService.source === 'local' || DataService.hasLocalEdits()) {
-        nodes.versionBar.classList.add('show');
-        nodes.versionText.textContent = '本地版本 · 点击恢复官方';
-      } else {
-        nodes.versionBar.classList.remove('show');
-      }
-    }
-
-    return { init, render, updateVersionBar };
+    return { init, render };
   })();
 
   const Search = {
@@ -3536,8 +3489,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
     },
     renderResults(list, hint) {
       if (hint) {
-        const h = Dom.el('div', 'suggest-hint', hint);
-        this.suggest.appendChild(h);
+        this.suggest.appendChild(Dom.el('div', 'suggest-hint', hint));
       }
       list.forEach(r => {
         const a = Dom.el('a', 'suggest-item');
@@ -3603,7 +3555,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     openDetail(item, group) {
       const modal = document.getElementById('detailModal');
       if (!modal) return;
-      Actions._cur = item;
       const token = ++detailToken;
 
       const titleEl = document.getElementById('detailTitle');
@@ -3791,7 +3742,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
 
   const Forms = (function () {
     const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null };
-    const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR, en: '' };
+    const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR };
 
     function setLinkType(t) {
       linkCtx.type = t;
@@ -3812,7 +3763,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
         '<input class="form-input glass-inset p-url" placeholder="https://..." style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.url) + '">' +
         '<input class="form-input glass-inset p-desc" placeholder="卡片短描述(建议' + CFG.META.DESC_SUGGEST + '字内)" maxlength="' + CFG.META.DESC_MAX + '" style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.desc) + '">' +
         '<input class="form-input glass-inset p-detail" placeholder="内容描述" style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.detail) + '">' +
-        '<button type="button" class="btn del-row" style="padding:5px;font-size:11px;color:var(--danger);">删除</button>';
+        '<button type="button" class="btn del-row" style="padding:6px;font-size:11px;color:var(--danger);">删除</button>';
       const del = row.querySelector('.del-row');
       if (del) del.onclick = () => row.remove();
       list.appendChild(row);
@@ -3919,7 +3870,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
         groupCtx.gi = gi;
         groupCtx.icon = g.icon;
         groupCtx.color = g.color;
-        groupCtx.en = g.categoryEn || '';
 
         document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
         document.getElementById('groupName').value = g.category || '';
@@ -4069,7 +4019,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
         DataService.clearLocalEdits();
         DataService.source = 'official';
         Mode.markClean();
-        Renderer.updateVersionBar();
         Toast.show('已同步到云端');
       } catch (e) {
         Toast.show('失败：' + e.message);
@@ -4098,7 +4047,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
         DataService.source = 'official';
         Mode.markClean();
         Renderer.render();
-        Renderer.updateVersionBar();
         Toast.show('已从云端拉取');
       } catch (e) {
         Toast.show('失败：' + e.message);
@@ -4112,7 +4060,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
       if (!confirm('恢复官方数据？本地改动将丢失。')) return;
       await DataService.resetToOfficial();
       Renderer.render();
-      Renderer.updateVersionBar();
       Mode.markClean();
       Toast.show('已恢复官方数据');
     }
@@ -4152,9 +4099,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerAdmin(); }
       });
     }
-
-    const vbar = document.getElementById('versionBar');
-    if (vbar) vbar.addEventListener('click', () => Cloud.resetToOfficial());
 
     must('btnExitEdit').onclick = () => Mode.exit();
     must('btnReset').onclick = () => Cloud.resetToOfficial();
@@ -4296,7 +4240,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
       { text: 'On branch main', delay: 150 },
       { text: 'Your branch is up to date with \'origin/main\'.', delay: 100 },
       { text: '<span class="cmd">$</span> npm run build', delay: 600 },
-      { text: '> afeng@3.8 build', delay: 200 },
+      { text: '> afeng@3.6 build', delay: 200 },
       { text: '> vite build', delay: 100 },
       { text: '<span class="success">✓</span> 128 modules transformed.', delay: 500 },
       { text: 'dist/index.html                 0.54 kB', delay: 100 },
@@ -4368,7 +4312,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
 
       await DataService.load();
       Renderer.render();
-      Renderer.updateVersionBar();
       openSharedItem();
       DataService.revalidate();
 
