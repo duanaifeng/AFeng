@@ -1,6 +1,7 @@
 [
   {
     "category": "本站原创",
+    "icon": "✨",
     "color": "#60a5fa",
     "items": [
       {
@@ -70,11 +71,11 @@
         ]
       }
     ],
-    "categoryEn": "ORIGINAL",
-    "iconId": "star"
+    "categoryEn": "ORIGINAL"
   },
   {
     "category": "聆听音乐",
+    "icon": "🎵",
     "color": "#a78bfa",
     "items": [
       {
@@ -188,11 +189,11 @@
         ]
       }
     ],
-    "categoryEn": "MUSIC",
-    "iconId": "headphones"
+    "categoryEn": "MUSIC"
   },
   {
     "category": "随心观影",
+    "icon": "🎬",
     "color": "#f472b6",
     "items": [
       {
@@ -282,11 +283,11 @@
         ]
       }
     ],
-    "categoryEn": "VIDEO",
-    "iconId": "clapperboard"
+    "categoryEn": "VIDEO"
   },
   {
     "category": "聚合资源",
+    "icon": "📦",
     "color": "#fbbf24",
     "items": [
       {
@@ -401,12 +402,12 @@
         ]
       }
     ],
-    "categoryEn": "SOFTWARE",
-    "iconId": "package"
+    "categoryEn": "SOFTWARE"
   },
   {
     "category": "实用工具",
-    "color": "#cbd5e1",
+    "icon": "🧰",
+    "color": "#94a3b8",
     "items": [
       {
         "name": "在线PS",
@@ -453,23 +454,13 @@
           "邮箱",
           "隐私"
         ]
-      },
-      {
-        "name": "街历APK",
-        "desc": "好几家",
-        "detail": "你你你",
-        "url": "https://www.baidu.com",
-        "id": "jieli-app",
-        "tags": [
-          "工具"
-        ]
       }
     ],
-    "categoryEn": "TOOLS",
-    "iconId": "wrench"
+    "categoryEn": "TOOLS"
   },
   {
     "category": "系统装机",
+    "icon": "💻",
     "color": "#38bdf8",
     "items": [
       {
@@ -547,11 +538,11 @@
         ]
       }
     ],
-    "categoryEn": "SYSTEM",
-    "iconId": "disc"
+    "categoryEn": "SYSTEM"
   },
   {
     "category": "DNS 服务",
+    "icon": "🌐",
     "color": "#22d3ee",
     "items": [
       {
@@ -643,11 +634,11 @@
         ]
       }
     ],
-    "categoryEn": "DNS",
-    "iconId": "shield-check"
+    "categoryEn": "DNS"
   },
   {
     "category": "网络加速",
+    "icon": "🚀",
     "color": "#3b82f6",
     "items": [
       {
@@ -695,11 +686,11 @@
         ]
       }
     ],
-    "categoryEn": "PROXY",
-    "iconId": "zap"
+    "categoryEn": "PROXY"
   },
   {
     "category": "网络检测",
+    "icon": "📡",
     "color": "#14b8a6",
     "items": [
       {
@@ -772,11 +763,11 @@
         ]
       }
     ],
-    "categoryEn": "NET-TEST",
-    "iconId": "search"
+    "categoryEn": "NET-TEST"
   },
   {
     "category": "脚本与扩展",
+    "icon": "🧩",
     "color": "#4ade80",
     "items": [
       {
@@ -868,7 +859,6 @@
         ]
       }
     ],
-    "categoryEn": "EXTENSIONS",
-    "iconId": "puzzle"
+    "categoryEn": "EXTENSIONS"
   }
 ]

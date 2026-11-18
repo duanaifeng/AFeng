@@ -165,34 +165,6 @@ html.perf-lite .bg-vignette, html.perf-lite .bg-cursor-light, html.perf-lite .bg
 @media (max-width:480px) { .page { --container-pad-x:16px; } }
 @media (min-width:768px) { .page { --container-pad-x:32px; } }
 @media (min-width:1024px) { .page { --container-pad-x:48px; } }
-#timeLock {
-  position: fixed; inset: 0; z-index: 99999; background: #0d1117;
-  display: none; flex-direction: column; justify-content: center; align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  overflow: hidden; padding: 20px; box-sizing: border-box;
-}
-.terminal-window { width: 100%; max-width: 650px; height: 320px; background: rgba(22, 27, 34, 0.95); border: 1px solid #30363d; border-radius: 8px; box-shadow:none; display: flex; flex-direction: column; overflow: hidden; position: relative; margin-bottom: 40px; }
-.term-header { height: 36px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; align-items: center; padding: 0 16px; gap: 8px; }
-.term-header .dot { width: 12px; height: 12px; border-radius: 50%; }
-.term-header .dot.red { background: #ff5f56; }
-.term-header .dot.yellow { background: #ffbd2e; }
-.term-header .dot.green { background: #27c93f; }
-.term-title { flex: 1; text-align: center; color: #8b949e; font-size: 12px; margin-right: 44px; }
-.term-body { padding: 16px; flex: 1; overflow-y: auto; font-family: 'SF Mono', Consolas, monospace; font-size: 13.5px; line-height: 1.6; color: #c9d1d9; display: flex; flex-direction: column; gap: 4px; }
-.term-body::-webkit-scrollbar { display: none; }
-.cmd { color: #79c0ff; }
-.err { color: #ff7b72; font-weight: bold; }
-.warn { color: #d2a8ff; }
-.success { color: #3fb950; }
-.cursor { display: inline-block; width: 8px; height: 15px; background: #c9d1d9; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
-@keyframes blink { 50% { opacity: 0; } }
-.status-info { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.status-info.show { animation: fadeIn 1s ease forwards; }
-@keyframes fadeIn { to { opacity: 1; } }
-.status-code { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.3em; color: #38bdf8; margin-bottom: 12px; text-transform: uppercase; }
-.main-msg { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 1px; margin-bottom: 10px; }
-.sub-msg { font-size: 13px; color: #94a3b8; line-height: 1.8; max-width: 280px; }
-.date-highlight { color: #e2e8f0; font-family: monospace; font-size: 14px; margin-top: 20px; padding: 6px 16px; border: 1px solid #334155; border-radius: 6px; background: rgba(2, 6, 23, 0.5); }
 .footer { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 20px; padding: 32px 0 44px; border-top: 1px solid var(--border-1); width: 100%; }
 .uptime-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .uptime-title { font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; opacity: 0.8; }
@@ -296,11 +268,6 @@ html.dark .section-num { background:rgba(255,255,255,.08); border-color:rgba(255
   box-shadow:none;
 }
 html.dark .section-icon { box-shadow:none; }
-.section-icon svg { width:18px; height:18px; display:block; }
-.section-icon.has-svg { color:var(--c-accent, var(--accent)); }
-.icon-option svg { width:16px; height:16px; display:block; margin:auto; pointer-events:none; }
-.suggest-icon svg { width:14px; height:14px; display:block; }
-.detail-icon svg { width:22px; height:22px; display:block; }
 .section-title { flex:1 1 auto; min-width:min(100%, 8em); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:16.5px; font-weight:800; color:var(--text-1); letter-spacing:-.01em; }
 .section-count { flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs); border:1px solid rgba(255,255,255,.55); background:rgba(255,255,255,.7); box-shadow:none; font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--text-2); }
 html.dark .section-count { border-color:rgba(255,255,255,.16); background:rgba(255,255,255,10); box-shadow:none; }
@@ -649,22 +616,6 @@ body.editing .item-share{ display:none; }
 </div>
 <div class="bg-cursor-light" id="cursorLight" aria-hidden="true"></div>
 
-<div id="timeLock">
-  <div class="terminal-window">
-    <div class="term-header">
-      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-      <div class="term-title">bash - deploy.sh</div>
-    </div>
-    <div class="term-body" id="termBody"></div>
-  </div>
-  <div class="status-info" id="statusInfo">
-    <div class="status-code">System Standby</div>
-    <div class="main-msg">该网站正在部署中</div>
-    <div class="sub-msg">尚未正式上线，请稍后再试。<br>如果手机时间正常，请等待系统开放。</div>
-    <div class="date-highlight">预计上线: 2026-06-19</div>
-  </div>
-</div>
-
 <div id="mainContent">
   <div class="page">
     <header class="topbar">
@@ -690,6 +641,7 @@ body.editing .item-share{ display:none; }
           </button>
         </div>
       </div>
+
 
       <div class="search-area">
         <div class="search-box" id="searchBox">
@@ -835,7 +787,6 @@ body.editing .item-share{ display:none; }
       <button class="form-tab" type="button" data-link-type="multi">多链接</button>
     </div>
     <div class="form-field"><label class="form-label">名称</label><input class="form-input" id="linkName" type="text"></div>
-    <div class="form-field"><label class="form-label">图标（留空则跟随分类）</label><div class="icon-picker" id="linkIconPicker" style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:180px;overflow-y:auto;"></div><div style="margin-top:6px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);"><input type="checkbox" id="linkIconInherit" checked><label for="linkIconInherit">跟随分类图标</label></div></div>
     <div class="form-field" id="linkSingleField"><label class="form-label">网址</label><input class="form-input" id="linkUrl" type="url"></div>
     <div class="form-field" id="linkMultiField" hidden>
       <label class="form-label">子链接</label>
@@ -942,59 +893,10 @@ body.editing .item-share{ display:none; }
     GH_KEY: '__af_gh_cfg_v' + AF_VER + '__',
     ADMIN_KEY: '__af_admin_v' + AF_VER + '__',
     CACHE_VERSION: AF_VER,
-    SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, SCROLL_TOP_THRESHOLD: 300, LONG_PRESS_MS: 800,
+    SEARCH_DEBOUNCE: 160, SEARCH_LIMIT: 12, 
     GH: { API: 'https://api.github.com', DEFAULT_USER: 'duanaifeng', DEFAULT_REPO: 'AFeng', DEFAULT_BRANCH: 'main', DEFAULT_PATH: 'daohang/data.json' },
     ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
-    SVG_ICON_IDS: ['star','headphones','clapperboard','film','radio','package','download','cloud','wrench','wrench-tools','trash','disc','cpu','smartphone','gamepad','shield-check','lock','key','fingerprint','zap','zap-off','radio-tower','search','activity','gauge','puzzle','code','terminal','book-open','globe','link','list','layers','rss','compass','image','palette','users','user','shopping-bag','wallet','mail','flame','heart','award','smile'],
-    SVG_ICONS: {
-      star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 21.9 6.8 24l1-5.8L3.5 9.2l5.9-.9L12 3Z"/></svg>',
-      headphones: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/></svg>',
-      clapperboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="11" rx="2"/><path d="M3.5 8l2.2-3.5 3.3 1.5L6.8 9.5M9.5 4.5l3.3 1.5L10.6 9.5M15 6l3.3 1.5-2.4 3.5M3.5 12.5h17"/></svg>',
-      film: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M8 4.5v15M16 4.5v15M3.5 9.5h4.5M3.5 14.5h4.5M16 9.5h4.5M16 14.5h4.5"/></svg>',
-      radio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="12" rx="2"/><circle cx="8" cy="12" r="2.5"/><path d="M13 10h5M13 14h5"/></svg>',
-      package: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 7v10L12 21l7.5-4V7L12 3Z"/><path d="M4.5 7 12 11l7.5-4M12 11v10"/></svg>',
-      download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10m0 0 3.5-3.5M12 13l-3.5-3.5M4.5 20h15"/></svg>',
-      cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-8.97A5.5 5.5 0 0 1 17 8.5a3.75 3.75 0 0 1 .5 7.46"/></svg>',
-      wrench: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.1-.6-.6-2.1 2.1-2.1Z"/></svg>',
-      'wrench-tools': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="11" rx="2"/><path d="M8.5 8V6.5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2V8M3.5 13h4l1.5 2.5h6L16.5 13h4"/></svg>',
-      trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4.5h4V7M6.5 7l1 12.5h9L17.5 7M10 11v5M14 11v5"/></svg>',
-      disc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.5"/></svg>',
-      cpu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M10 4v3M14 4v3M10 17v3M14 17v3M4 10h3M4 14h3M17 10h3M17 14h3"/></svg>',
-      smartphone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3.5" width="10" height="17" rx="2"/><path d="M10.5 17.5h3"/></svg>',
-      gamepad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="9" rx="3"/><path d="M8 11v3M6.5 12.5h3M15 12h.01M17.5 13.5h.01"/></svg>',
-      'shield-check': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>',
-      lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>',
-      key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4"/><path d="m11 11 8 8M16 16l2-2M14 14l2-2"/></svg>',
-      fingerprint: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v3M8.5 8.5a5 5 0 0 1 7 0M6.5 12a7.5 7.5 0 0 1 1-3M17.5 12a7.5 7.5 0 0 0-1-3M9 20c-.5-2-.5-4 0-6M15 20c.5-2 .5-4 0-6M12 20v-4"/></svg>',
-      zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg>',
-      'zap-off': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-.6 5.2L14 13M18.5 9.5 17 12"/><path d="m4 4 16 16"/></svg>',
-      'radio-tower': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12v9M8 21h8M5 15a9 9 0 0 1 14 0M7.5 17.5a5 5 0 0 1 9 0"/><circle cx="12" cy="12" r="1"/></svg>',
-      search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.5-4.5"/></svg>',
-      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5 7 5-14L17 12h4"/></svg>',
-      gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 1 1 16 0"/><path d="m12 12 4-2.5"/></svg>',
-      puzzle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4a2 2 0 0 1 4 0c0 .5-.2 1-.5 1.5H16a1 1 0 0 1 1 1v2.5c.5-.3 1-.5 1.5-.5a2 2 0 0 1 0 4c-.5 0-1-.2-1.5-.5V16a1 1 0 0 1-1 1h-2.5c.3.5.5 1 .5 1.5a2 2 0 0 1-4 0c0-.5.2-1 .5-1.5H8a1 1 0 0 1-1-1v-2.5c-.5.3-1 .5-1.5.5a2 2 0 0 1 0-4C6 8.5 6.5 8.7 7 9V6.5a1 1 0 0 1 1-1h1Z"/></svg>',
-      code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-4 4 4 4M15 8l4 4-4 4"/></svg>',
-      terminal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="m7 9 2.5 2.5L7 14M12 14h4"/></svg>',
-      'book-open': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.2-3.5-1.5-5.5-1.5C5 4.5 4 4.5 4 4.5v12s1 0 2.5 0c2 0 4 .3 5.5 1.5 1.5-1.2 3.5-1.5 5.5-1.5 1.5 0 2.5 0 2.5 0v-12s-1 0-2.5 0C15.5 4.5 13.5 4.8 12 6Z"/><path d="M12 6v12"/></svg>',
-      globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14 0 17M12 3.5c-2.5 2.5-2.5 14 0 17"/></svg>',
-      link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15l6-6M10 6.5 11.5 5a4.5 4.5 0 0 1 6.5 6.5L16 13M8 11l-1.5 1.5A4.5 4.5 0 0 0 13 19l1.5-1.5"/></svg>',
-      list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/></svg>',
-      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8.5 4.5L12 12 3.5 7.5 12 3Z"/><path d="m4 12 8 4.5 8-4.5M4 16.5l8 4.5 8-4.5"/></svg>',
-      rss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11a8 8 0 0 1 8 8M5 6a13 13 0 0 1 13 13M6 18h.01"/></svg>',
-      compass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m14.5 9.5-4 1.5-1.5 4 4-1.5 1.5-4Z"/></svg>',
-      image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="m5 17 4.5-4.5L14 17l2.5-2.5L20 18"/></svg>',
-      palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.5-.8 1.5-1.5 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.8.7-1.5 1.5-1.5H16a4.5 4.5 0 0 0 4.5-4.5C20.5 6.5 16.5 3 12 3Z"/><circle cx="7.5" cy="11.5" r="1"/><circle cx="10" cy="8" r="1"/><circle cx="14.5" cy="8" r="1"/></svg>',
-      users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM20 19v-1.5a3.5 3.5 0 0 0-2.5-3.3M15 5.5a3.5 3.5 0 0 1 0 6.8"/></svg>',
-      user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 19v-.5a5.5 5.5 0 0 1 11 0v.5"/></svg>',
-      'shopping-bag': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 11H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
-      wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M16 12h.01M3.5 10h17"/></svg>',
-      mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
-      flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s5 4.5 5 9a5 5 0 0 1-10 0c0-1.5.5-2.5 1.5-3.5C9 10 9.5 11 10.5 11 10.5 8.5 12 6 12 3Z"/></svg>',
-      heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9C1 8 2 5 5 5c2 0 3 1 4 2.5C10 6 11 5 13 5c3 0 4 3 2.5 6-2.5 4.5-9.5 9-9.5 9Z" transform="translate(1.5 0)"/></svg>',
-      award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="m8.5 13-1.5 7 5-2.5 5 2.5-1.5-7"/></svg>',
-      smile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg>'
-    },
     META: { ID_MAX: 60, TAG_MAX: 20, TAG_COUNT: 8, CATEGORY_EN_MAX: 50, DESC_SUGGEST: 18, DESC_MAX: 200, DETAIL_MAX: 1000 },
     FALLBACK_DATA: [{ category: '加载异常', icon: '🔄', color: '#94a3b8', items: [{ name: '数据加载失败', url: 'https://duanaifeng.github.io/AFeng/daohang/', desc: '请刷新页面重试', detail: '线上数据与本地缓存均不可用，请刷新页面重试；恢复后会自动同步最新内容。' }] }]
   };
@@ -1006,16 +908,9 @@ body.editing .item-share{ display:none; }
     clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; },
     delegate(r, t, s, h) { r.addEventListener(t, e => { const el = e.target.closest(s); if (el && r.contains(el)) h(e, el); }); },
     // 字母图标（如 AF）：非 emoji 的短 ASCII 文本，渲染成徽标而非表情
-    iconEl(cls, icon, iconId) {
+    iconEl(cls, icon) {
       const n = document.createElement('span');
       n.className = cls;
-      const id = iconId || ((typeof Schema !== 'undefined' && CFG.SVG_ICON_IDS && CFG.SVG_ICON_IDS.indexOf(icon) > -1) ? icon : '');
-      const svg = id && CFG.SVG_ICONS[id];
-      if (svg) {
-        n.classList.add('has-svg');
-        n.innerHTML = svg;
-        return n;
-      }
       const t = icon || Schema.DEFAULT_ICON;
       n.textContent = t;
       if (/^[A-Za-z0-9]{1,4}$/.test(t)) n.classList.add('icon-badge');
@@ -1238,7 +1133,6 @@ body.editing .item-share{ display:none; }
           }
         }
         const node = { category: cat, icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON, color: Utils.safeColor(g.color) || this.DEFAULT_COLOR, items };
-        if (CFG.SVG_ICONS[g.iconId]) node.iconId = g.iconId;
         if (en) node.categoryEn = en;
         if (g.itemOrder === 'manual') node.itemOrder = 'manual';
         out.push(node);
@@ -1446,14 +1340,14 @@ body.editing .item-share{ display:none; }
 
   const Renderer = (function () {
     const nodes = {};
-    function init() { ['main','app','skeleton'].forEach(k => nodes[k] = document.getElementById(k)); }
+    function init() { ['main','app','skeleton','versionBar','versionText'].forEach(k => nodes[k] = document.getElementById(k)); }
     function btn(o) { const b = Dom.el('button', 'item-action-btn' + (o.danger ? ' del' : ''), o.label); b.type = 'button'; b.dataset.act = o.act; b.dataset.gi = String(o.gi); if (o.ii != null) b.dataset.ii = String(o.ii); b.disabled = !!o.disabled; return b; }
 
     function build(item, group, gi, ii) {
       const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), fg = Utils.contrastFg(group.color);
       const li = Dom.el('li', 'item');
       li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${fg};`;
-      const icon = Dom.iconEl('item-icon', item.icon || group.icon, item.iconId || group.iconId);
+      const icon = Dom.iconEl('item-icon', group.icon);
       const body = Dom.el('span', 'item-body');
       body.appendChild(Dom.el('span', 'item-title', item.name));
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
@@ -1493,7 +1387,7 @@ body.editing .item-share{ display:none; }
       const num = Dom.el('span', 'section-num', String(gi + 1).padStart(2, '0'));
       num.setAttribute('aria-hidden', 'true');
 
-      const icon = Dom.iconEl('section-icon', group.icon, group.iconId);
+      const icon = Dom.iconEl('section-icon', group.icon);
       icon.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${Utils.contrastFg(group.color)};`;
       const title = Dom.el('h2', 'section-title', group.category); title.id = 'sec-' + gi;
       const cnt = Dom.el('span', 'section-count', group.items.length + ' 条');
@@ -1529,6 +1423,7 @@ body.editing .item-share{ display:none; }
     }
 
     function render() {
+      updateVersionBar();
       const app = nodes.app; if (!app) return;
       if (nodes.skeleton) nodes.skeleton.style.display = 'none';
       Dom.clear(app);
@@ -1542,6 +1437,10 @@ body.editing .item-share{ display:none; }
       data.forEach((g, i) => { frag.appendChild(buildSection(g, i, data.length)); });
       app.appendChild(frag);
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
+    }
+      if (!nodes.versionBar || !nodes.versionText) return;
+      if (DataService.source === 'local' || DataService.hasLocalEdits()) { nodes.versionBar.classList.add('show'); nodes.versionText.textContent = '本地版本 · 恢复官方'; }
+      else nodes.versionBar.classList.remove('show');
     }
     return { init, render };
   })();
@@ -1586,11 +1485,7 @@ body.editing .item-share{ display:none; }
       if (!this.results.length) { this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>'; this.suggest.classList.add('show'); return; }
       this.results.forEach((r, idx) => {
         const a = Dom.el('a', 'suggest-item'); a.href = 'javascript:void(0)';
-        const svgId = r.group.iconId || (CFG.SVG_ICON_IDS && CFG.SVG_ICON_IDS.indexOf(r.group.icon) > -1 ? r.group.icon : '');
-        const ic = Dom.el('span', 'suggest-icon');
-        if (CFG.SVG_ICONS[svgId]) { ic.classList.add('has-svg'); ic.innerHTML = CFG.SVG_ICONS[svgId]; }
-        else ic.textContent = r.group.icon || Schema.DEFAULT_ICON;
-        ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
+        const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON); ic.style.color = r.group.color; ic.style.background = Utils.hexToRgba(r.group.color, .14);
         const bd = Dom.el('span', 'suggest-body');
         bd.appendChild(Dom.el('span', 'suggest-name', r.item.name));
         bd.appendChild(Dom.el('span', 'suggest-path', r.group.category + (r.item.desc ? ' · ' + r.item.desc : '')));
@@ -1622,12 +1517,8 @@ body.editing .item-share{ display:none; }
       document.getElementById('detailDesc').textContent = item.detail || item.desc || '暂无详细介绍。';
 
       const iconEl = document.getElementById('detailIcon');
-      const dSvgId = group.iconId || (CFG.SVG_ICON_IDS && CFG.SVG_ICON_IDS.indexOf(group.icon) > -1 ? group.icon : '');
-      if (CFG.SVG_ICONS[dSvgId]) { iconEl.textContent = ''; iconEl.classList.add('has-svg'); iconEl.innerHTML = CFG.SVG_ICONS[dSvgId]; iconEl.classList.remove('icon-badge'); }
-      else {
-        iconEl.textContent = group.icon || Schema.DEFAULT_ICON;
-        iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(group.icon || ''));
-      }
+      iconEl.textContent = group.icon || Schema.DEFAULT_ICON;
+      iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(group.icon || ''));
       iconEl.style.setProperty('--c-bg', Utils.hexToRgba(group.color, .14));
       iconEl.style.setProperty('--c-border', Utils.hexToRgba(group.color, .32));
 
@@ -1742,8 +1633,8 @@ body.editing .item-share{ display:none; }
   };
 
   const Forms = (function () {
-    const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null, icon: '', iconId: '', inherit: true };
-    const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, iconId: '', color: Schema.DEFAULT_COLOR, en: '' };
+    const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null };
+    const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR, en: '' };
     function setLinkType(t) {
       linkCtx.type = t;
       Dom.$$('.form-tab').forEach(x => x.classList.toggle('active', x.dataset.linkType === t));
@@ -1767,8 +1658,7 @@ body.editing .item-share{ display:none; }
         const modal = document.getElementById('linkModal'), g = DataService.data[gi];
         if (!modal || !g) return;
         const isNew = ii < 0 || !g.items[ii], item = isNew ? { name: '', url: '', desc: '', detail: '', tags: [], id: '' } : g.items[ii];
-        Object.assign(linkCtx, { gi, ii: isNew ? -1 : ii, isNew, origin: isNew ? null : item,
-          icon: item.icon || '', iconId: item.iconId || '', inherit: !(item.icon || item.iconId) });
+        Object.assign(linkCtx, { gi, ii: isNew ? -1 : ii, isNew, origin: isNew ? null : item });
 
         document.getElementById('linkTitle').textContent = isNew ? '添加链接' : '编辑链接';
         document.getElementById('linkName').value = item.name || '';
@@ -1784,19 +1674,6 @@ body.editing .item-share{ display:none; }
 
         const sel = document.getElementById('linkGroup'); Dom.clear(sel);
         DataService.data.forEach((x, i) => sel.add(new Option(x.category, i, false, i === gi)));
-
-        // 项目图标选择器（方案A：项目可独立选 SVG/emoji；勾选“跟随分类”则不用）
-        const lip = document.getElementById('linkIconPicker'), inh = document.getElementById('linkIconInherit');
-        const curColor = (g && g.color) ? g.color : Schema.DEFAULT_COLOR;
-        if (inh) {
-          inh.checked = linkCtx.inherit;
-          inh.onchange = () => { linkCtx.inherit = inh.checked; if (lip) lip.style.opacity = inh.checked ? '.4' : '1'; };
-        }
-        if (lip) {
-          lip.style.opacity = linkCtx.inherit ? '.4' : '1';
-          this.renderIconPicker(lip, linkCtx.icon || g.icon, linkCtx.iconId || '', curColor,
-            (icon, iconId) => { linkCtx.icon = icon; linkCtx.iconId = iconId; linkCtx.inherit = false; if (inh) { inh.checked = false; lip.style.opacity = '1'; } });
-        }
         Modal.open(modal, { initialFocus: '#linkName' });
       },
       submitLink() {
@@ -1825,59 +1702,32 @@ body.editing .item-share{ display:none; }
         }
 
         if (tags.length) ni.tags = tags;
-        if (!linkCtx.inherit) { if (linkCtx.iconId) ni.iconId = linkCtx.iconId; if (linkCtx.icon) ni.icon = linkCtx.icon; }
         if (linkCtx.origin && linkCtx.origin.insecure && ni.url && ni.url.startsWith('http://')) ni.insecure = true;
 
         if (!linkCtx.isNew && tgt === linkCtx.gi) DataService.data[linkCtx.gi].items[linkCtx.ii] = ni;
         else { if (!linkCtx.isNew) DataService.data[linkCtx.gi].items.splice(linkCtx.ii, 1); DataService.data[tgt].items.push(ni); }
         DataService.persist(); Modal.close(document.getElementById('linkModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
-      // 共用图标选择器：第一行 SVG 线性图标，第二行 emoji 兼容旧数据。
-      // 事件绑容器 + closest 兜底：移动端 tap 命中的是 <svg>/<path> 而非 <button>，
-      // 若 onclick 直接绑 button 会点不动（svg 是独立事件目标）；配合 CSS pointer-events:none 双保险。
-      renderIconPicker(ip, curIcon, curIconId, colorVar, onPick) {
-        Dom.clear(ip);
-        ip.classList.add('svg-picker');
-        const svgList = CFG.SVG_ICON_IDS;
-        const activeId = (curIconId && CFG.SVG_ICONS[curIconId]) ? curIconId : (svgList.indexOf(curIcon) > -1 ? curIcon : '');
-        svgList.forEach(sid => {
-          const active = sid === activeId;
-          const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''));
-          b.type = 'button'; b.title = sid; b.dataset.svg = sid; b.innerHTML = CFG.SVG_ICONS[sid];
-          b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;color:' + (colorVar || Schema.DEFAULT_COLOR) + ';' +
-            'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
-            'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
-            'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
-          ip.appendChild(b);
-        });
+      openGroupForm(gi) {
+        const modal = document.getElementById('groupModal'), isNew = gi < 0, g = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[gi];
+        if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, color: g.color, en: g.categoryEn || '' });
+        document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
+        document.getElementById('groupName').value = g.category || '';
+        const ip = document.getElementById('iconPicker'); Dom.clear(ip);
         CFG.ICON_PRESETS.forEach(ic => {
-          const active = !activeId && ic === curIcon;
+          const active = ic === groupCtx.icon;
           const b = Dom.el('button', 'icon-option' + (active ? ' active' : ''), ic);
-          b.type = 'button'; b.dataset.emoji = ic;
           b.style.cssText = 'aspect-ratio:1;border-radius:6px;cursor:pointer;font-size:16px;' +
             'border:1px solid ' + (active ? 'var(--accent)' : 'rgba(255,255,255,.60)') + ';' +
             'background:linear-gradient(140deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.38) 100%);' +
             'box-shadow:inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(255,255,255,.22);';
+          b.onclick = () => {
+            Dom.$$('.icon-option', ip).forEach(x => x.style.borderColor = 'rgba(255,255,255,.60)');
+            b.style.borderColor = 'var(--accent)';
+            groupCtx.icon = ic;
+          };
           ip.appendChild(b);
         });
-        ip.onclick = (e) => {
-          const opt = e.target.closest('.icon-option'); if (!opt || !ip.contains(opt)) return;
-          Dom.$$('.icon-option', ip).forEach(x => x.classList.remove('active'));
-          opt.classList.add('active');
-          if (opt.dataset.svg) onPick(opt.dataset.svg, opt.dataset.svg);
-          else onPick(opt.dataset.emoji, '');
-        };
-      },
-      openGroupForm(gi) {
-        const modal = document.getElementById('groupModal'), isNew = gi < 0, g = isNew ? { category: '', icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR } : DataService.data[gi];
-        if (!g) return; Object.assign(groupCtx, { gi, icon: g.icon, iconId: g.iconId || '', color: g.color, en: g.categoryEn || '' });
-        document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
-        document.getElementById('groupName').value = g.category || '';
-        this.renderIconPicker(
-          document.getElementById('iconPicker'), groupCtx.icon, groupCtx.iconId,
-          groupCtx.color || Schema.DEFAULT_COLOR,
-          (icon, iconId) => { groupCtx.icon = icon; groupCtx.iconId = iconId; }
-        );
         const cp = document.getElementById('colorPicker'); Dom.clear(cp);
         CFG.COLOR_PRESETS.forEach(c => {
           const b = Dom.el('button', 'color-option');
@@ -1890,8 +1740,8 @@ body.editing .item-share{ display:none; }
       },
       submitGroup() {
         const name = Utils.clean(document.getElementById('groupName').value, 50); if (!name) return alert('请填写名称');
-        if (groupCtx.gi < 0) DataService.data.push({ category: name, icon: groupCtx.icon, iconId: groupCtx.iconId || undefined, color: groupCtx.color, items: [] });
-        else { const t = DataService.data[groupCtx.gi]; t.category = name; t.icon = groupCtx.icon; if (groupCtx.iconId) t.iconId = groupCtx.iconId; else delete t.iconId; t.color = groupCtx.color; }
+        if (groupCtx.gi < 0) DataService.data.push({ category: name, icon: groupCtx.icon, color: groupCtx.color, items: [] });
+        else { const t = DataService.data[groupCtx.gi]; t.category = name; t.icon = groupCtx.icon; t.color = groupCtx.color; }
         DataService.persist(); Modal.close(document.getElementById('groupModal')); Mode.markDirty(); Renderer.render(); Toast.show('已保存');
       },
       openGhConfig(cb) {
@@ -2024,7 +1874,8 @@ body.editing .item-share{ display:none; }
 
   const startDate = new Date('2026-06-19T00:00:00+08:00');
   function updateUptime() {
-    const now = new Date(); let diff = now.getTime() - startDate.getTime(); if (diff < 0) { const ze = n => '0' + n; ['upY','upM','upD'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 0; }); ['upH','upMin','upS'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '00'; }); return; }
+    const now = new Date();
+    if (now.getTime() < startDate.getTime()) return;
     let years = now.getFullYear() - startDate.getFullYear(), months = now.getMonth() - startDate.getMonth(), days = now.getDate() - startDate.getDate(), hours = now.getHours() - startDate.getHours(), minutes = now.getMinutes() - startDate.getMinutes(), seconds = now.getSeconds() - startDate.getSeconds();
     if (seconds < 0) { seconds += 60; minutes--; } if (minutes < 0) { minutes += 60; hours--; } if (hours < 0) { hours += 24; days--; }
     if (days < 0) { let prevMonth = new Date(now.getFullYear(), now.getMonth(), 0); days += prevMonth.getDate(); months--; }
@@ -2035,8 +1886,6 @@ body.editing .item-share{ display:none; }
     if (eH) eH.textContent = pad(hours); if (eMin) eMin.textContent = pad(minutes); if (eS) eS.textContent = pad(seconds);
   }
 
-  const LAUNCH_TIME = new Date('2026-06-19T00:00:00+08:00');
-  function startTerminalLock() {
     const lines = [
       { text: '<span class="cmd">$</span> git status', delay: 400 },
       { text: 'On branch main', delay: 150 },
@@ -2094,13 +1943,14 @@ body.editing .item-share{ display:none; }
       setInterval(updateUptime, 1000);
       updateUptime();
 
-      await DataService.load(); Renderer.render();
+      await DataService.load();
+      try { Renderer.render(); } finally { openSharedItem(); }
       openSharedItem();
       DataService.revalidate();
       if (DataService.source === 'fallback') Toast.show('网络异常，显示备用数据', { duration: 2600 });
     } catch (e) {
       console.error('[启动失败]', e);
-      DataService.data = CFG.FALLBACK_DATA; Renderer.render(); Toast.show('数据加载失败', { duration: 2600 });
+      try { if (!Array.isArray(DataService.data) || !DataService.data.length) DataService.data = Schema.validate(CFG.FALLBACK_DATA); } catch (_) { }
     }
   }
 
