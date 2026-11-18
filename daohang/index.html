@@ -18,10 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="favicon.ico?v=3.7">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.7">
-<link rel="shortcut icon" href="favicon.ico?v=3.7">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.7">
+<link rel="icon" href="favicon.ico?v=3.8">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.8">
+<link rel="shortcut icon" href="favicon.ico?v=3.8">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.8">
 <title>AiFeng · 资源导航站</title>
 
 <script>
@@ -37,9 +37,9 @@
       start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
       background_color: '#e9eff9', theme_color: '#2f6bff', lang: 'zh-CN',
       icons: [
-        { src: 'web-app-manifest-192x192.png?v=3.7', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.7', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.7', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: 'web-app-manifest-192x192.png?v=3.8', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=3.8', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=3.8', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -78,17 +78,14 @@
 :root {
   color-scheme: light;
 
-  /* 背景 */
   --bg-1: #eaf0fa;
   --bg-2: #e3ecf8;
   --bg-3: #dbe6f5;
 
-  /* 文字 */
   --text-1: #08111f;
   --text-2: #33445c;
   --text-3: #68798f;
 
-  /* 主题色 */
   --accent: #2f6bff;
   --accent-2: #1a4fdb;
   --accent-soft: rgba(47, 107, 255, .12);
@@ -97,7 +94,6 @@
   --success: #12a150;
   --warning: #c07c00;
 
-  /* 玻璃 */
   --blur: 30px;
   --sat: 190%;
   --glass-1: linear-gradient(158deg, rgba(255,255,255,.82) 0%, rgba(255,255,255,.50) 56%, rgba(255,255,255,.42) 100%);
@@ -108,12 +104,10 @@
   --rim-bot: inset 0 -1px 0 rgba(255,255,255,.24);
   --bloom: radial-gradient(130% 90% at 50% -25%, rgba(255,255,255,.90), transparent 62%);
 
-  /* 落影：三级 */
   --lift-1: 0 1px 1px rgba(16,34,68,.04), 0 6px 18px -8px rgba(16,34,68,.14);
   --lift-2: 0 1px 1px rgba(16,34,68,.05), 0 10px 26px -10px rgba(16,34,68,.17), 0 30px 64px -28px rgba(16,34,68,.20);
   --lift-3: 0 1px 2px rgba(16,34,68,.06), 0 16px 40px -14px rgba(16,34,68,.24), 0 48px 96px -36px rgba(16,34,68,.28);
 
-  /* 圆角 */
   --r-xs: 10px;
   --r-sm: 12px;
   --r-md: 16px;
@@ -122,7 +116,6 @@
   --r-2xl: 34px;
   --r-full: 999px;
 
-  /* 间距 */
   --sp-1: 4px;
   --sp-2: 8px;
   --sp-3: 12px;
@@ -131,10 +124,13 @@
   --sp-6: 30px;
   --sp-7: 44px;
 
-  /* 动效 */
   --ease: cubic-bezier(.22,.61,.36,1);
+  /* Q 弹曲线：带过冲回弹 */
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --spring-soft: cubic-bezier(.3, 1.28, .4, 1);
   --dur: 200ms;
   --dur-slow: 320ms;
+  --dur-bounce: 420ms;
 
   --focus: 0 0 0 3.5px rgba(47, 107, 255, .26);
   --container: 1080px;
@@ -245,7 +241,7 @@ body {
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
-  transition: top var(--dur) var(--ease);
+  transition: top var(--spring);
 }
 .skip-link:focus { top: 12px; }
 
@@ -425,14 +421,13 @@ html.dark .glass-inset {
 @media (min-width: 1024px) { .page { --pad-x: 44px; } }
 
 /* ============================================================
-   6. Hero
+   6. Hero（不裁剪，保证搜索建议浮层完整展开）
    ============================================================ */
 .hero {
   position: relative;
   margin: var(--sp-6) 0 var(--sp-5);
   padding: var(--sp-6) var(--sp-6) var(--sp-5);
   border-radius: var(--r-2xl);
-  overflow: hidden;
   transition: box-shadow var(--dur-slow) var(--ease);
 }
 .hero::after {
@@ -484,9 +479,10 @@ html.perf-lite .hero::after { display: none; }
   padding: 3px 2px;
   -webkit-user-select: none;
   user-select: none;
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), transform var(--spring);
 }
 .brand-tag:hover { color: var(--text-2); }
+.brand-tag:active { transform: scale(.97); }
 .brand-tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .brand-tag-dot {
@@ -544,10 +540,10 @@ html.perf-lite .hero::after { display: none; }
   display: block;
   background: var(--glass-2);
   box-shadow: var(--rim-top), 0 4px 14px -4px rgba(16,34,68,.22);
-  transition: transform var(--dur-slow) var(--ease);
+  transition: transform var(--spring);
 }
 @media (hover: hover) and (pointer: fine) {
-  .brand-avatar:hover { transform: scale(1.05); }
+  .brand-avatar:hover { transform: scale(1.08); }
 }
 .brand-avatar-wrap.no-avatar::before { display: none; }
 
@@ -575,7 +571,6 @@ html.perf-lite .hero::after { display: none; }
   z-index: 1;
 }
 
-/* 设置按钮 */
 .settings-wrap { position: relative; flex: 0 0 auto; }
 
 .settings-btn {
@@ -591,7 +586,7 @@ html.perf-lite .hero::after { display: none; }
   cursor: pointer;
   font-family: inherit;
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
-              transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+              transform var(--spring), box-shadow var(--dur-slow) var(--ease),
               min-width var(--dur-slow) var(--ease);
 }
 .settings-btn svg {
@@ -604,7 +599,7 @@ html.perf-lite .hero::after { display: none; }
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: .55;
-  transition: transform var(--dur-slow) var(--ease), opacity var(--dur) var(--ease);
+  transition: transform var(--spring), opacity var(--dur) var(--ease);
 }
 .settings-btn .edit-label {
   display: none;
@@ -613,10 +608,9 @@ html.perf-lite .hero::after { display: none; }
   white-space: nowrap;
   letter-spacing: .02em;
 }
-.settings-btn:hover { color: var(--accent); transform: translateY(-1px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
+.settings-btn:hover { color: var(--accent); transform: translateY(-2px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
 .settings-btn:hover svg { opacity: 1; }
-.settings-btn:active { transform: translateY(0) scale(.95); }
-
+.settings-btn:active { transform: translateY(0) scale(.94); }
 body.editing .settings-btn { min-width: 0; color: var(--accent); }
 body.editing .settings-btn svg { opacity: 1; transform: rotate(-8deg); }
 body.editing .settings-btn .edit-label { display: inline; }
@@ -625,7 +619,7 @@ body.admin-mode .settings-btn { color: var(--accent); }
 /* ============================================================
    7. 搜索
    ============================================================ */
-.search-area { position: relative; z-index: 2; }
+.search-area { position: relative; z-index: 40; }
 
 .search-box {
   position: relative;
@@ -633,7 +627,7 @@ body.admin-mode .settings-btn { color: var(--accent); }
   align-items: center;
   border-radius: var(--r-md);
   overflow: hidden;
-  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--spring);
 }
 .search-box:focus-within {
   border-color: rgba(47,107,255,.55);
@@ -653,9 +647,9 @@ html.dark .search-box:focus-within {
   margin-left: 17px;
   color: var(--text-3);
   pointer-events: none;
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), transform var(--spring);
 }
-.search-box:focus-within .search-icon { color: var(--accent); }
+.search-box:focus-within .search-icon { color: var(--accent); transform: scale(1.12); }
 .search-icon svg {
   width: 100%;
   height: 100%;
@@ -703,10 +697,16 @@ html.dark .search-box:focus-within {
   font-family: inherit;
   opacity: 0;
   visibility: hidden;
+  transform: scale(.7) rotate(-90deg);
   transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease),
-              background var(--dur) var(--ease), color var(--dur) var(--ease);
+              background var(--dur) var(--ease), color var(--dur) var(--ease),
+              transform var(--spring);
 }
-.search-box.has-value .search-clear { opacity: 1; visibility: visible; }
+.search-box.has-value .search-clear {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) rotate(0deg);
+}
 .search-clear:hover { background: var(--accent-soft); color: var(--accent); }
 .search-clear svg {
   width: 13px;
@@ -715,7 +715,6 @@ html.dark .search-box:focus-within {
   fill: none;
   stroke-width: 2.4;
   stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .search-suggest {
@@ -723,8 +722,8 @@ html.dark .search-box:focus-within {
   top: calc(100% + 10px);
   left: 0;
   right: 0;
-  z-index: 50;
-  max-height: 360px;
+  z-index: 60;
+  max-height: 380px;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -732,10 +731,26 @@ html.dark .search-box:focus-within {
   padding: 6px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-6px) scale(.99);
-  transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transform: translateY(-12px) scale(.96);
+  transform-origin: top center;
+  transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease),
+              transform var(--spring);
 }
-.search-suggest.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.search-suggest.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.suggest-hint {
+  padding: 7px 12px 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  opacity: .8;
+}
 
 .suggest-item {
   display: flex;
@@ -746,9 +761,13 @@ html.dark .search-box:focus-within {
   color: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), transform var(--spring);
 }
-.suggest-item:hover, .suggest-item.active { background: var(--accent-soft); }
+.suggest-item:hover, .suggest-item.active {
+  background: var(--accent-soft);
+  transform: translateX(3px);
+}
+.suggest-item:active { transform: translateX(3px) scale(.98); }
 
 .suggest-icon {
   flex: 0 0 auto;
@@ -817,11 +836,11 @@ html.dark .search-box:focus-within {
   letter-spacing: .01em;
   color: #a86900;
   cursor: pointer;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
+  transition: transform var(--spring), box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 html.dark .version-pill { color: var(--warning); }
-.version-pill:hover { transform: translateY(-1px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
-.version-pill:active { transform: translateY(0) scale(.98); }
+.version-pill:hover { transform: translateY(-2px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
+.version-pill:active { transform: translateY(0) scale(.96); }
 
 /* ============================================================
    9. 区块
@@ -867,8 +886,10 @@ html.dark .version-pill { color: var(--warning); }
   color: var(--c-accent, var(--text-1));
   font-size: 15px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.50);
+  transition: transform var(--spring);
 }
 html.dark .section-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
+.section:hover .section-icon { transform: scale(1.06); }
 
 .section-title {
   flex: 0 1 auto;
@@ -928,7 +949,7 @@ body.editing .section-actions { display: flex; flex-wrap: wrap; justify-content:
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
-  transition: transform var(--dur-slow) var(--ease), box-shadow var(--dur-slow) var(--ease),
+  transition: transform var(--spring), box-shadow var(--dur-slow) var(--ease),
               border-color var(--dur) var(--ease), background var(--dur-slow) var(--ease);
 }
 .item::after {
@@ -947,12 +968,12 @@ html.dark .item::after {
 
 @media (hover: hover) and (pointer: fine) {
   .item:hover, .item:focus-visible {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3);
   }
   .item:hover::after, .item:focus-visible::after { opacity: 1; }
 }
-.item:active { transform: translateY(0) scale(.994); }
+.item:active { transform: translateY(-1px) scale(.98); }
 
 .item-icon {
   position: relative;
@@ -970,8 +991,10 @@ html.dark .item::after {
   color: var(--c-accent, var(--text-1));
   font-size: 17px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.50);
+  transition: transform var(--spring);
 }
 html.dark .item-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
+.item:hover .item-icon { transform: scale(1.08); }
 
 .item-body { position: relative; z-index: 1; display: block; flex: 1; min-width: 0; }
 
@@ -1001,7 +1024,6 @@ html.dark .item-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
   line-height: 1.5;
 }
 
-/* 分享胶囊 */
 .item-share {
   position: relative;
   z-index: 2;
@@ -1023,7 +1045,7 @@ html.dark .item-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
   white-space: nowrap;
   cursor: pointer;
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
-              transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+              transform var(--spring), box-shadow var(--dur) var(--ease);
 }
 .item-share-ico {
   width: 12px;
@@ -1034,21 +1056,21 @@ html.dark .item-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform var(--dur) var(--ease);
+  transition: transform var(--spring);
 }
 @media (hover: hover) and (pointer: fine) {
   .item-share:hover {
     background: var(--accent-soft);
     color: var(--accent);
     box-shadow: inset 0 0 0 1px rgba(47,107,255,.22);
+    transform: translateY(-1px);
   }
   .item-share:hover .item-share-ico { transform: translateY(-1px); }
 }
-.item-share:active { transform: scale(.95); }
+.item-share:active { transform: scale(.92); }
 .item-share.copied { background: var(--accent); color: #fff; box-shadow: none; }
 body.editing .item-share { display: none; }
 
-/* 编辑态 */
 body.editing .item { padding-right: 108px; }
 body.editing .item:hover { transform: none; box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
 body.editing .item::after { display: none; }
@@ -1079,18 +1101,18 @@ body.editing .item-actions { display: flex; }
   font-size: 12px;
   font-family: inherit;
   cursor: pointer;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease), transform var(--spring);
 }
-.item-action-btn:hover { background: var(--accent-soft); color: var(--accent); }
+.item-action-btn:hover { background: var(--accent-soft); color: var(--accent); transform: translateY(-1px); }
+.item-action-btn:active { transform: scale(.9); }
 .item-action-btn.del:hover { background: var(--danger-soft); color: var(--danger); }
 
-/* 占位条目 */
 .item.placeholder { cursor: default; opacity: .62; }
 .item.placeholder:hover { transform: none; box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
 .item.placeholder::after { display: none; }
 .item.placeholder .item-title { color: var(--text-2); }
 
-/* 添加区 */
 .add-zone { display: none; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4) 0 var(--sp-1); }
 body.editing .add-zone { display: flex; }
 
@@ -1108,10 +1130,12 @@ body.editing .add-zone { display: flex; }
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), border-style var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              border-style var(--dur) var(--ease), transform var(--spring);
 }
 html.dark .add-btn { border-color: rgba(255,255,255,.16); }
-.add-btn:hover { background: var(--accent-soft); border-style: solid; border-color: var(--accent); }
+.add-btn:hover { background: var(--accent-soft); border-style: solid; border-color: var(--accent); transform: translateY(-2px); }
+.add-btn:active { transform: scale(.97); }
 .add-btn svg {
   flex: 0 0 16px;
   width: 16px;
@@ -1154,8 +1178,6 @@ html.dark .add-btn { border-color: rgba(255,255,255,.16); }
   padding: var(--sp-5) var(--sp-5);
   border-radius: var(--r-xl);
 }
-html.dark .disclaimer { border-color: var(--glass-bd); }
-
 .disclaimer-head {
   display: flex;
   align-items: center;
@@ -1174,7 +1196,6 @@ html.dark .disclaimer { border-color: var(--glass-bd); }
   background: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
-
 .disclaimer-body { font-size: 12.5px; line-height: 1.78; color: var(--text-2); }
 .disclaimer-body p { position: relative; padding-left: 16px; margin-bottom: 9px; }
 .disclaimer-body p:last-child { margin-bottom: 0; }
@@ -1259,9 +1280,10 @@ html.dark .disclaimer { border-color: var(--glass-bd); }
   font-weight: 600;
   text-decoration: none;
   line-height: 1.5;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: transform var(--spring), box-shadow var(--dur) var(--ease);
 }
 .badge:hover { transform: translateY(-2px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
+.badge:active { transform: scale(.96); }
 .badge-left {
   background: rgba(120,145,180,.16);
   color: var(--text-2);
@@ -1323,11 +1345,17 @@ html.dark .badge-left { background: rgba(255,255,255,.07); }
   border-radius: var(--r-full);
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, 110px);
-  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease), visibility var(--dur-slow) var(--ease);
+  transform: translate(-50%, 120px) scale(.9);
+  transform-origin: bottom center;
+  transition: opacity var(--dur-slow) var(--ease), transform var(--spring),
+              visibility var(--dur-slow) var(--ease);
 }
 .edit-bar.glass { box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3); }
-body.editing .edit-bar { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+body.editing .edit-bar {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0) scale(1);
+}
 
 .edit-bar-status {
   display: flex;
@@ -1357,9 +1385,10 @@ body.editing .edit-bar { opacity: 1; visibility: visible; transform: translate(-
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--spring);
 }
-.edit-bar-btn:hover { background: var(--accent-soft); color: var(--accent); }
+.edit-bar-btn:hover { background: var(--accent-soft); color: var(--accent); transform: translateY(-1px); }
+.edit-bar-btn:active { transform: scale(.94); }
 .edit-bar-btn.primary {
   background: linear-gradient(150deg, var(--accent) 0%, var(--accent-2) 100%);
   color: #fff;
@@ -1386,7 +1415,7 @@ body.editing .edit-bar { opacity: 1; visibility: visible; transform: translate(-
   background: transparent;
   color: var(--text-1);
   font-size: 12.5px;
-  font-weight: 700;
+  font-weight:700;
   font-family: inherit;
   cursor: pointer;
   white-space: nowrap;
@@ -1452,9 +1481,9 @@ html.dark .modal-mask { background: rgba(2, 6, 16, .62); }
   border-radius: var(--r-xl);
 }
 .modal-box.glass { box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3); }
-.modal.show .modal-box { animation: modalIn var(--dur-slow) var(--ease); }
+.modal.show .modal-box { animation: modalIn var(--dur-bounce) var(--spring); }
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(12px) scale(.975); }
+  from { opacity: 0; transform: translateY(20px) scale(.92); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .modal-box-lg { max-width: 548px; }
@@ -1493,9 +1522,10 @@ html.dark .modal-mask { background: rgba(2, 6, 16, .62); }
   box-shadow: var(--rim-top);
   color: var(--text-2);
   cursor: pointer;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--spring);
 }
 .modal-close:hover { background: var(--danger-soft); color: var(--danger); transform: rotate(90deg); }
+.modal-close:active { transform: rotate(90deg) scale(.9); }
 .modal-close svg {
   width: 13px;
   height: 13px;
@@ -1505,7 +1535,6 @@ html.dark .modal-mask { background: rgba(2, 6, 16, .62); }
   stroke-linecap: round;
 }
 
-/* 详情 */
 .detail-header { display: flex; gap: var(--sp-4); align-items: center; margin-bottom: var(--sp-4); }
 .detail-icon {
   width: 56px;
@@ -1520,6 +1549,7 @@ html.dark .modal-mask { background: rgba(2, 6, 16, .62); }
   font-size: 27px;
   flex: 0 0 auto;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.50);
+  transition: transform var(--spring);
 }
 html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
 
@@ -1552,7 +1582,6 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
   white-space: pre-wrap;
 }
 
-/* 安全检测框 */
 .security-box {
   position: relative;
   overflow: hidden;
@@ -1570,7 +1599,10 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform var(--spring);
 }
+.security-box.state-safe .shield-icon { animation: shieldPop var(--dur-bounce) var(--spring); }
+@keyframes shieldPop { 0% { transform: scale(1); } 55% { transform: scale(1.22); } 100% { transform: scale(1); } }
 .shield-icon svg {
   width: 100%;
   height: 100%;
@@ -1618,7 +1650,7 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
 .btn-visit {
   pointer-events: none;
   opacity: .45;
-  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease), filter var(--dur) var(--ease);
+  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease), filter var(--dur) var(--ease), transform var(--spring);
 }
 .btn-visit.ready {
   pointer-events: auto;
@@ -1628,7 +1660,8 @@ html.dark .detail-icon { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
   border-color: transparent;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 6px 18px -6px rgba(47,107,255,.52);
 }
-.btn-visit.ready:hover { filter: brightness(1.07); }
+.btn-visit.ready:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.btn-visit.ready:active { transform: scale(.97); }
 
 /* ============================================================
    16. 表单
@@ -1734,9 +1767,10 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
   cursor: pointer;
   background: transparent;
   color: var(--text-3);
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--spring);
 }
 .form-tab:hover { color: var(--text-1); }
+.form-tab:active { transform: scale(.97); }
 .form-tab.active {
   background: var(--glass-1);
   color: var(--text-1);
@@ -1751,7 +1785,6 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
   margin-bottom: 7px;
 }
 
-/* 按钮 */
 .btn {
   flex: 1;
   padding: 11px 16px;
@@ -1767,10 +1800,10 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
   text-align: center;
   text-decoration: none;
   transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
-              color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+              color var(--dur) var(--ease), transform var(--spring), box-shadow var(--dur) var(--ease);
 }
-.btn:hover { background: var(--glass-1); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-1); }
-.btn:active { transform: scale(.985); }
+.btn:hover { background: var(--glass-1); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-1); transform: translateY(-1px); }
+.btn:active { transform: scale(.96); }
 .btn.primary {
   background: linear-gradient(150deg, var(--accent) 0%, var(--accent-2) 100%);
   color: #fff;
@@ -1798,8 +1831,8 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(14px);
-  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease),
+  transform: translateY(16px) scale(.8);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--spring),
               visibility var(--dur-slow) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur-slow) var(--ease);
 }
 .back-top.glass-soft { box-shadow: var(--rim-top), var(--rim-bot), var(--lift-2); }
@@ -1827,16 +1860,20 @@ html.dark .form-tabs { box-shadow: inset 0 1px 2px rgba(0,0,0,.30); }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.back-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
 
 @media (hover: hover) and (pointer: fine) {
-  .back-top:hover { transform: translateY(-2px); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3); }
+  .back-top:hover { transform: translateY(-2px) scale(1.05); box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3); }
   .back-top:hover .rocket { animation: rocketFloat 1.8s ease-in-out infinite; }
   .back-top:hover .flame { animation: flameFlicker 1.2s ease-in-out infinite; }
 }
 @keyframes rocketFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 @keyframes flameFlicker { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
-.back-top:active { transform: scale(.94); }
+.back-top:active { transform: scale(.9); }
 
 body.editing .back-top { display: none; }
 @media (min-width: 1024px) {
@@ -1862,11 +1899,11 @@ body.editing .back-top { display: none; }
   font-weight: 700;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 18px);
-  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  transform: translate(-50%, 20px) scale(.9);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--spring);
 }
 .toast.glass { box-shadow: var(--rim-top), var(--rim-bot), var(--lift-3); }
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
 .toast-msg { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .toast-action {
   flex: 0 0 auto;
@@ -1880,8 +1917,10 @@ body.editing .back-top { display: none; }
   font-weight: 800;
   letter-spacing: .02em;
   cursor: pointer;
+  transition: transform var(--spring), filter var(--dur) var(--ease);
 }
 .toast-action:hover { filter: brightness(1.08); }
+.toast-action:active { transform: scale(.92); }
 
 /* ============================================================
    19. 时间锁
@@ -1926,7 +1965,14 @@ body.editing .back-top { display: none; }
 .term-header .dot.red { background: #ff5f56; }
 .term-header .dot.yellow { background: #ffbd2e; }
 .term-header .dot.green { background: #27c93f; }
-.term-title { flex: 1; text-align: center; color: #7d8c a1; color: #7d8ca1; font-size: 11.5px; margin-right: 44px; font-family: ui-monospace, monospace; }
+.term-title {
+  flex: 1;
+  text-align: center;
+  color: #7d8ca1;
+  font-size: 11.5px;
+  margin-right: 44px;
+  font-family: ui-monospace, monospace;
+}
 .term-body {
   padding: 16px;
   flex: 1;
@@ -2067,7 +2113,9 @@ html.perf-lite * { transition-duration: 80ms !important; }
   .brand-avatar-wrap::before,
   .scan-line,
   .back-top .rocket,
-  .back-top .flame { animation: none !important; }
+  .back-top .flame,
+  .shield-icon { animation: none !important; }
+  .scan-line { display: none; }
   .bg-cursor-light,
   .bg-grain,
   .hero::after,
@@ -2143,7 +2191,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
           </div>
           <div class="brand-head">
             <span class="brand-avatar-wrap" id="avatarWrap">
-              <img class="brand-avatar" src="favicon.png?v=3.7" alt="AiFeng" width="46" height="46" loading="eager" decoding="async"
+              <img class="brand-avatar" src="favicon.png?v=3.8" alt="AiFeng" width="46" height="46" loading="eager" decoding="async"
                    onerror="this.style.opacity='0';var w=document.getElementById('avatarWrap');if(w)w.classList.add('no-avatar')">
             </span>
             <h1 class="brand-title">资源导航站</h1>
@@ -2223,7 +2271,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
           </span>
           <span class="badge-right c-dark">已部署</span>
         </a>
-        <span class="badge glass-soft"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.7</span></span></span>
+        <span class="badge glass-soft"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.8</span></span></span>
         <span class="badge glass-soft"><span class="badge-left">技术栈</span><span class="badge-right c-yellow">Vanilla JS</span></span>
         <span class="badge glass-soft"><span class="badge-left">框架</span><span class="badge-right c-red">零依赖</span></span>
         <span class="badge glass-soft"><span class="badge-left">体验</span><span class="badge-right c-blue">极速秒开</span></span>
@@ -2385,11 +2433,11 @@ html.perf-lite * { transition-duration: 80ms !important; }
   (function migrateOldCaches() {
     try {
       var keys = ['__af_nav_cache__', '__af_nav_local_edits__', '__af_gh_cfg__', '__af_admin__'];
-      var olds = ['v3.9', 'v3.6'];
+      var olds = ['v3.9', 'v3.6', 'v3.7'];
       for (var k = 0; k < keys.length; k++) {
         for (var o = 0; o < olds.length; o++) {
           var oldKey = keys[k] + olds[o] + '__';
-          var newKey = keys[k] + 'v3.7' + '__';
+          var newKey = keys[k] + 'v3.8' + '__';
           var v = localStorage.getItem(oldKey);
           if (v != null && localStorage.getItem(newKey) == null) {
             localStorage.setItem(newKey, v);
@@ -2399,10 +2447,10 @@ html.perf-lite * { transition-duration: 80ms !important; }
     } catch (e) {}
   })();
 
-  const AF_VER = '3.7';
+  const AF_VER = '3.8';
   const CFG = {
     APP_VERSION: AF_VER,
-    DISPLAY_VERSION: '3.7',
+    DISPLAY_VERSION: '3.8',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
     CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
@@ -2433,7 +2481,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }]
   };
 
-  /* ---------------- DOM 工具 ---------------- */
   const Dom = {
     $(s, r) { return (r || document).querySelector(s); },
     $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
@@ -2455,7 +2502,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 通用工具 ---------------- */
   const Utils = {
     calcVisualWidth(str) {
       if (!str) return 0;
@@ -2569,7 +2615,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     } catch (e) {}
   }
 
-  /* ---------------- 文本宽度测量（梯形排序） ---------------- */
   const Measure = (function () {
     let el = null;
     const cache = new Map();
@@ -2623,7 +2668,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 错误提示 ---------------- */
   const Reporter = (function () {
     let node = null, timer = 0, count = 0;
     function ensure() {
@@ -2658,7 +2702,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     return { show };
   })();
 
-  /* ---------------- 存储 ---------------- */
   const Store = (function () {
     const mem = {};
     const avail = (() => {
@@ -2689,7 +2732,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 主题 ---------------- */
   const Theme = (function () {
     const ls = [];
     function apply(d) {
@@ -2708,7 +2750,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 光标光晕 ---------------- */
   const CursorLight = (function () {
     const el = document.getElementById('cursorLight');
     if (!el) return { start() {}, stop() {} };
@@ -2738,7 +2779,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 数据校验 ---------------- */
   const Schema = {
     MAX_CATEGORIES: 100,
     MAX_ITEMS: 500,
@@ -2820,7 +2860,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 数据服务 ---------------- */
   const DataService = {
     data: [],
     source: 'init',
@@ -2922,7 +2961,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- Toast ---------------- */
   const Toast = (function () {
     const root = document.getElementById('toast');
     let t = 0;
@@ -2949,7 +2987,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 焦点陷阱 ---------------- */
   const FocusTrap = (function () {
     const F = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
     const st = { el: null, prev: null, esc: null, inerted: [] };
@@ -3047,7 +3084,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     clear() { Store.remove(CFG.ADMIN_KEY); }
   };
 
-  /* ---------------- GitHub ---------------- */
   const GitHubClient = (function () {
     function load() {
       const c = Store.getJSON(CFG.GH_KEY, null);
@@ -3140,7 +3176,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 模式 ---------------- */
   const Mode = {
     current: 'browse',
     dirty: false,
@@ -3219,7 +3254,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 渲染 ---------------- */
   const Renderer = (function () {
     const nodes = {};
     function init() {
@@ -3262,7 +3296,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
       shareBtn.addEventListener('click', async e => {
         e.stopPropagation();
         e.preventDefault();
-        if (Mode.isEditing()) return;          // 编辑态下不触发分享
+        if (Mode.isEditing()) return;
         await copyText(shareUrlFor(item));
         const label = shareBtn.querySelector('.item-share-text');
         const old = label ? label.textContent : '分享';
@@ -3384,7 +3418,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     return { init, render, updateVersionBar };
   })();
 
-  /* ---------------- 搜索 ---------------- */
   const Search = {
     input: null, box: null, clearBtn: null, suggest: null,
     results: [], activeIndex: -1,
@@ -3403,6 +3436,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
       });
       this.input.addEventListener('focus', () => {
         if (this.input.value) this.renderSuggest(this.input.value);
+        else this.renderDefault();
       });
 
       this.input.addEventListener('keydown', e => {
@@ -3473,22 +3507,39 @@ html.perf-lite * { transition-duration: 80ms !important; }
       }
       return out;
     },
-    renderSuggest(kw) {
+    flatDefault() {
+      const out = [], data = DataService.data || [];
+      for (let gi = 0; gi < data.length; gi++) {
+        const g = data[gi];
+        for (let ii = 0; ii < g.items.length; ii++) {
+          const it = g.items[ii];
+          if (it.placeholder) continue;
+          out.push({ item: it, group: g });
+          if (out.length >= CFG.SEARCH_LIMIT) break;
+        }
+        if (out.length >= CFG.SEARCH_LIMIT) break;
+      }
+      return out;
+    },
+    renderDefault() {
       if (!this.suggest) return;
-      this.results = this.build(kw);
+      this.results = this.flatDefault();
       this.activeIndex = -1;
       Dom.clear(this.suggest);
-
-      if (!String(kw).trim()) { this.closeSuggest(); return; }
-
       if (!this.results.length) {
-        this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>';
-        this.suggest.classList.add('show');
-        this.suggest.setAttribute('aria-hidden', 'false');
-        return;
+        this.suggest.innerHTML = '<div class="suggest-empty">暂无站点</div>';
+      } else {
+        this.renderResults(this.results, '快速访问');
       }
-
-      this.results.forEach(r => {
+      this.suggest.classList.add('show');
+      this.suggest.setAttribute('aria-hidden', 'false');
+    },
+    renderResults(list, hint) {
+      if (hint) {
+        const h = Dom.el('div', 'suggest-hint', hint);
+        this.suggest.appendChild(h);
+      }
+      list.forEach(r => {
         const a = Dom.el('a', 'suggest-item');
         a.href = 'javascript:void(0)';
         const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON);
@@ -3508,7 +3559,23 @@ html.perf-lite * { transition-duration: 80ms !important; }
         });
         this.suggest.appendChild(a);
       });
+    },
+    renderSuggest(kw) {
+      if (!this.suggest) return;
+      this.results = this.build(kw);
+      this.activeIndex = -1;
+      Dom.clear(this.suggest);
 
+      if (!String(kw).trim()) { this.closeSuggest(); return; }
+
+      if (!this.results.length) {
+        this.suggest.innerHTML = '<div class="suggest-empty">未找到匹配站点<br><b>回车</b> 搜全网</div>';
+        this.suggest.classList.add('show');
+        this.suggest.setAttribute('aria-hidden', 'false');
+        return;
+      }
+
+      this.renderResults(this.results, '搜索结果');
       this.suggest.classList.add('show');
       this.suggest.setAttribute('aria-hidden', 'false');
     },
@@ -3531,7 +3598,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 动作 ---------------- */
   let detailToken = 0;
   const Actions = {
     openDetail(item, group) {
@@ -3723,7 +3789,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 表单 ---------------- */
   const Forms = (function () {
     const linkCtx = { gi: -1, ii: -1, isNew: true, type: 'single', origin: null };
     const groupCtx = { gi: -1, icon: Schema.DEFAULT_ICON, color: Schema.DEFAULT_COLOR, en: '' };
@@ -3991,7 +4056,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     };
   })();
 
-  /* ---------------- 云端 ---------------- */
   const Cloud = {
     async sync() {
       const cfg = GitHubClient.loadConfig();
@@ -4054,7 +4118,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   };
 
-  /* ---------------- 事件绑定 ---------------- */
   function bindEvents() {
     const must = id => {
       const el = document.getElementById(id);
@@ -4090,7 +4153,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
       });
     }
 
-    // 版本条 → 恢复官方
     const vbar = document.getElementById('versionBar');
     if (vbar) vbar.addEventListener('click', () => Cloud.resetToOfficial());
 
@@ -4151,7 +4213,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     document.getElementById('ghClear').onclick = () => Forms.clearGhConfig();
     Forms.bindLinkModalEvents();
 
-    /* 回到顶部 */
     const bt = document.getElementById('backTop');
     if (bt) {
       const fg = bt.querySelector('.ring-fg');
@@ -4176,27 +4237,22 @@ html.perf-lite * { transition-duration: 80ms !important; }
     }
   }
 
-  /* ---------------- 运行时长 ---------------- */
   const startDate = new Date('2026-06-19T00:00:00+08:00');
 
   function elapsedParts(start, end) {
-    // 锚点游标逐级推进，绝对准确，无借位误差
     let cursor = new Date(start.getTime());
     let y = 0, mo = 0, d = 0;
 
-    // 年
     for (;;) {
       const nxt = new Date(cursor.getTime());
       nxt.setFullYear(nxt.getFullYear() + 1);
       if (nxt.getTime() <= end.getTime()) { cursor = nxt; y++; } else break;
     }
-    // 月
     for (;;) {
       const nxt = new Date(cursor.getTime());
       nxt.setMonth(nxt.getMonth() + 1);
       if (nxt.getTime() <= end.getTime()) { cursor = nxt; mo++; } else break;
     }
-    // 日
     for (;;) {
       const nxt = new Date(cursor.getTime());
       nxt.setDate(nxt.getDate() + 1);
@@ -4232,7 +4288,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     set(ids.s, pad(p.s));
   }
 
-  /* ---------------- 上线锁 ---------------- */
   const LAUNCH_TIME = new Date('2026-06-19T00:00:00+08:00');
 
   function startTerminalLock() {
@@ -4241,7 +4296,7 @@ html.perf-lite * { transition-duration: 80ms !important; }
       { text: 'On branch main', delay: 150 },
       { text: 'Your branch is up to date with \'origin/main\'.', delay: 100 },
       { text: '<span class="cmd">$</span> npm run build', delay: 600 },
-      { text: '> afeng@3.7 build', delay: 200 },
+      { text: '> afeng@3.8 build', delay: 200 },
       { text: '> vite build', delay: 100 },
       { text: '<span class="success">✓</span> 128 modules transformed.', delay: 500 },
       { text: 'dist/index.html                 0.54 kB', delay: 100 },
@@ -4279,7 +4334,6 @@ html.perf-lite * { transition-duration: 80ms !important; }
     setTimeout(typeLine, 320);
   }
 
-  /* ---------------- 启动 ---------------- */
   async function boot() {
     try {
       if (Date.now() < LAUNCH_TIME.getTime()) {
