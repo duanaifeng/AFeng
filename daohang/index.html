@@ -309,6 +309,11 @@ html.dark .section-num { background:rgba(255,255,255,.08); border-color:rgba(255
   box-shadow:none;
 }
 html.dark .section-icon { box-shadow:none; }
+.icon-badge {
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-weight:800; font-size:11px; letter-spacing:.02em; line-height:1;
+  color:var(--c-fg, var(--text-1));
+}
 .section-title { flex:1 1 auto; min-width:min(100%, 8em); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:16.5px; font-weight:800; color:var(--text-1); letter-spacing:-.01em; }
 .section-count { flex:0 0 auto; padding:2px 8px; border-radius:var(--radius-xs); border:1px solid rgba(255,255,255,.55); background:rgba(255,255,255,.7); box-shadow:none; font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:var(--text-2); }
 html.dark .section-count { border-color:rgba(255,255,255,.16); background:rgba(255,255,255,10); box-shadow:none; }
@@ -957,7 +962,16 @@ body.editing .item-share{ display:none; }
     $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
     el(t, c, x) { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; },
     clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; },
-    delegate(r, t, s, h) { r.addEventListener(t, e => { const el = e.target.closest(s); if (el && r.contains(el)) h(e, el); }); }
+    delegate(r, t, s, h) { r.addEventListener(t, e => { const el = e.target.closest(s); if (el && r.contains(el)) h(e, el); }); },
+    // 字母图标（如 AF）：非 emoji 的短 ASCII 文本，渲染成徽标而非表情
+    iconEl(cls, icon) {
+      const n = document.createElement('span');
+      n.className = cls;
+      const t = icon || Schema.DEFAULT_ICON;
+      n.textContent = t;
+      if (/^[A-Za-z0-9]{1,4}$/.test(t)) n.classList.add('icon-badge');
+      return n;
+    }
   };
 
   const Utils = {
@@ -1389,7 +1403,7 @@ body.editing .item-share{ display:none; }
       const tint = Utils.hexToRgba(group.color, .14), brd = Utils.hexToRgba(group.color, .32), fg = Utils.contrastFg(group.color);
       const li = Dom.el('li', 'item');
       li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};--c-fg:${fg};`;
-      const icon = Dom.el('span', 'item-icon', group.icon || Schema.DEFAULT_ICON);
+      const icon = Dom.iconEl('item-icon', group.icon);
       const body = Dom.el('span', 'item-body');
       body.appendChild(Dom.el('span', 'item-title', item.name));
       body.appendChild(Dom.el('span', 'item-desc', item.desc || ''));
@@ -1429,7 +1443,7 @@ body.editing .item-share{ display:none; }
       const num = Dom.el('span', 'section-num', String(gi + 1).padStart(2, '0'));
       num.setAttribute('aria-hidden', 'true');
 
-      const icon = Dom.el('span', 'section-icon', group.icon || Schema.DEFAULT_ICON);
+      const icon = Dom.iconEl('section-icon', group.icon);
       icon.style.cssText = `--c-bg:${tint};--c-border:${brd};`;
       const title = Dom.el('h2', 'section-title', group.category); title.id = 'sec-' + gi;
       const cnt = Dom.el('span', 'section-count', group.items.length + ' 条');
@@ -1561,6 +1575,7 @@ body.editing .item-share{ display:none; }
 
       const iconEl = document.getElementById('detailIcon');
       iconEl.textContent = group.icon || Schema.DEFAULT_ICON;
+      iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(group.icon || ''));
       iconEl.style.setProperty('--c-bg', Utils.hexToRgba(group.color, .14));
       iconEl.style.setProperty('--c-border', Utils.hexToRgba(group.color, .32));
 
