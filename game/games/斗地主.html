@@ -185,6 +185,12 @@ button:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-o
   text-shadow:0 0 14px rgba(244,214,125,.28);text-align:center;
 }
 .play-cards{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;min-height:48px;align-items:center}
+#playOwner{min-height:18px;display:flex;justify-content:center;align-items:center}
+.play-owner-inner{font-size:11px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;border:1px solid transparent;line-height:1.5;text-align:center}
+.play-owner-inner b{font-weight:900}
+.play-owner-inner.mate{color:#7ae0a6;background:rgba(121,214,154,.12);border-color:rgba(121,214,154,.32)}
+.play-owner-inner.enemy{color:#ff9a92;background:rgba(255,119,119,.12);border-color:rgba(255,119,119,.32)}
+.play-owner-inner.mine{color:#f5e3ae;background:rgba(244,214,125,.08);border-color:rgba(244,214,125,.25)}
 .card-fly{animation:flyIn .34s var(--ease) both}
 @keyframes flyIn{from{opacity:0;transform:translate(var(--fly-x,0),var(--fly-y,-30px)) scale(.6)}to{opacity:1;transform:translate(0,0) scale(1)}}
 .multiplier-float{
@@ -248,7 +254,7 @@ button:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-o
 .act-btn.green{background:rgba(79,190,158,.1);border-color:rgba(79,190,158,.25);color:#b9eddc}
 .act-btn.off{opacity:.44}
 
-/* 牌面：只有左上角一个点数和一个小花色 */
+/* 牌面 */
 .card{
   position:relative;width:var(--cw);height:var(--ch);flex-shrink:0;
   border-radius:6px;overflow:hidden;cursor:pointer;touch-action:manipulation;
@@ -419,6 +425,7 @@ button:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-o
   #centerArea{min-height:78px;padding:30px 4px 8px}
   .play-hint{font-size:11px}
   .play-cards{min-height:40px;gap:2px}
+  .play-owner-inner{font-size:9px;padding:2px 8px}
   #topBar{font-size:9px;padding:3px 9px;gap:7px}
   #bottomCards{top:4px;right:6px}
   .bottom-label{font-size:8px}
@@ -539,6 +546,7 @@ button:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-o
       <div id="bottomCards"><span class="bottom-label">底牌</span></div>
       <div id="lastPlayArea">
         <div class="play-hint" id="playHint">准备开始...</div>
+        <div id="playOwner"></div>
         <div class="play-cards" id="lastPlayCards"></div>
       </div>
     </div>
@@ -608,8 +616,8 @@ const MAX_SEQ = 11;
 const SURNAMES = ['王','李','张','刘','陈','杨','赵','黄','周','吴','徐','孙','胡','朱','高','林','何','郭','马','罗','梁','宋','郑','谢','韩','唐','冯','于','董','萧','程','曹','袁','邓','许','傅','沈','曾','彭','吕'];
 
 const TIMING = {
-  AI_THINK:850, AFTER_PLAY:620, AFTER_PASS:620, BID_AI:800,
-  LANDLORD_START:900, END_GAME:900, DEAL_INTERVAL:70
+  AI_THINK:1100, AFTER_PLAY:950, AFTER_PASS:950, BID_AI:800,
+  LANDLORD_START:900, END_GAME:1100, DEAL_INTERVAL:70
 };
 const STATS_KEY = 'doudizhu_stats_v9';
 const VOICE_KEY = 'doudizhu_voice_enabled';
@@ -824,7 +832,7 @@ const ai1Count = $('ai1Count'), ai2Count = $('ai2Count');
 const ai1Played = $('ai1Played'), ai2Played = $('ai2Played');
 const bottomCardsEl = $('bottomCards');
 const multiplierDisp = $('multiplierDisp'), baseScoreDisp = $('baseScoreDisp');
-const playHint = $('playHint'), lastPlayCards = $('lastPlayCards');
+const playHint = $('playHint'), lastPlayCards = $('lastPlayCards'), playOwner = $('playOwner');
 const humanHand = $('humanHand'), humanRole = $('humanRole'), humanAvatar = $('humanAvatar'), humanAreaEl = $('humanArea');
 const playBtn = $('playBtn'), passBtn = $('passBtn'), hintBtn = $('hintBtn');
 const counterBtn = $('counterBtn'), historyBtn = $('historyBtn'), menuBtn = $('menuBtn'), voiceBtn = $('voiceBtn');
@@ -1055,6 +1063,38 @@ function setHint(text,cards,fromSeat){
   });
   lastPlayCards.appendChild(frag);
 }
+function setHintKeep(text){ playHint.textContent = text; }
+function hintTurn(text){
+  if(G.lastPlay && G.lastPlay.cards && G.lastPlay.cards.length){
+    setHintKeep(text);
+  }else{
+    setHint(text);
+  }
+}
+function renderPlayOwner(){
+  playOwner.innerHTML = '';
+  if(!G.lastPlay || !G.lastPlay.cards || !G.lastPlay.cards.length) return;
+  const seat = G.lastPlay.playerIndex;
+  const p = G.players[seat];
+  if(!p) return;
+  let label, cls, advice = '';
+  if(seat === 0){
+    label = '你出的牌'; cls = 'mine';
+  }else{
+    const humanIsLandlord = G.players[0].role === 'landlord';
+    if(humanIsLandlord){
+      label = p.name + '（敌方）出的牌'; cls = 'enemy'; advice = '需要压';
+    }else if(p.role === 'landlord'){
+      label = p.name + '（敌方·地主）出的牌'; cls = 'enemy'; advice = '需要压';
+    }else{
+      label = p.name + '（队友）出的牌'; cls = 'mate'; advice = '建议不压';
+    }
+  }
+  const div = document.createElement('div');
+  div.className = 'play-owner-inner ' + cls;
+  div.innerHTML = '<b>'+label+'</b>' + (advice ? ' · '+advice : '');
+  playOwner.appendChild(div);
+}
 function showMultFloat(text){
   const el = document.createElement('div');
   el.className = 'multiplier-float';
@@ -1244,6 +1284,7 @@ function deal(){
   renderMultiplier();
   updateActionButtons();
   setHint('发牌中...');
+  renderPlayOwner();
   SFX.deal();
   Voice.interrupt('开始发牌',{rate:1.15});
 
@@ -1450,7 +1491,7 @@ function finalizeLandlord(idx){
   Timers.setTimeout(()=>{
     if(G.phase!=='playing') return;
     if(G.players[G.currentPlayer].isHuman){
-      setHint('轮到你出牌');
+      setHint('轮到你出牌（自由出牌）');
       SFX.turn();
       Voice.interrupt('轮到你出牌',{rate:1.2});
       updateActionButtons();
@@ -1502,6 +1543,7 @@ function playCards(playerIdx,cards){
   setHint(p.name+' 出牌：',cards,playerIdx);
   updateActionButtons();
   recordHistoryPlay(playerIdx,cards);
+  renderPlayOwner();
 
   if(p.hand.length===0){ Timers.setTimeout(()=>endGame(playerIdx),TIMING.END_GAME); return true; }
   if(p.hand.length===1) Timers.setTimeout(()=>vSayAlmostWin(p.name),350);
@@ -1537,11 +1579,11 @@ function nextTurn(){
   renderHumanHand(); renderAI(); updateActionButtons();
   const cur = G.players[G.currentPlayer];
   if(cur.isHuman){
-    setHint('轮到你出牌');
+    hintTurn(G.lastPlay ? '轮到你出牌（压过上面的牌）' : '轮到你出牌（自由出牌）');
     SFX.turn();
     Voice.interrupt('轮到你出牌',{rate:1.2});
   }else{
-    setHint(cur.name+' 思考中...');
+    hintTurn(cur.name+' 思考中...');
     const idx = G.currentPlayer;
     Timers.setTimeout(()=>{
       if(!G.running||G.phase!=='playing'||G.currentPlayer!==idx) return;
@@ -1555,7 +1597,7 @@ function passTurn(playerIdx){
   G.players[playerIdx].played = [];
   G.passCount++;
   renderAI();
-  setHint(G.players[playerIdx].name+' 过');
+  setHintKeep(G.players[playerIdx].name+' 过');
   SFX.pass();
   vSayPass(G.players[playerIdx].name);
   recordHistoryPass(playerIdx);
@@ -1566,6 +1608,7 @@ function passTurn(playerIdx){
     G.lastPlay = null;
     G.passCount = 0;
     G.currentPlayer = prevWinner>=0?prevWinner:nextSeat(playerIdx);
+    renderPlayOwner();
   }else{
     G.currentPlayer = nextSeat(playerIdx);
   }
@@ -1579,11 +1622,11 @@ function passTurn(playerIdx){
     if(!G.running||G.phase!=='playing'||G.currentPlayer!==idx) return;
     const cur = G.players[idx];
     if(cur.isHuman){
-      setHint('轮到你出牌');
+      hintTurn(G.lastPlay ? '轮到你出牌（压过上面的牌）' : '轮到你出牌（自由出牌）');
       SFX.turn();
       Voice.interrupt('轮到你出牌',{rate:1.2});
     }else{
-      setHint(cur.name+' 思考中...');
+      hintTurn(cur.name+' 思考中...');
       Timers.setTimeout(()=>{
         if(!G.running||G.phase!=='playing'||G.currentPlayer!==idx) return;
         aiTurn(idx);
