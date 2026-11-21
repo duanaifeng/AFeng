@@ -18,10 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="favicon.ico?v=3.6">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.6">
-<link rel="shortcut icon" href="favicon.ico?v=3.6">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.6">
+<link rel="icon" href="favicon.ico?v=4.0">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=4.0">
+<link rel="shortcut icon" href="favicon.ico?v=4.0">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4.0">
 <title>AiFeng · 资源导航站</title>
 
 <script>
@@ -45,9 +45,9 @@
       theme_color: '#0a84ff',
       lang: 'zh-CN',
       icons: [
-        { src: 'web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -1003,7 +1003,7 @@ select.form-input{
 .btn.danger{color:var(--danger)}
 .btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
 
-.icon-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:210px;overflow-y:auto;padding:2px}
+.icon-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:262px;overflow-y:auto;padding:2px;overscroll-behavior:contain}
 .icon-option{
   aspect-ratio:1;border-radius:10px;display:grid;place-items:center;
   font-size:16px;line-height:1;border:1px solid var(--line);background:var(--chip-bg);
@@ -1031,14 +1031,27 @@ select.form-input{
   transform:translateY(16px) scale(.8);
   transition:opacity .3s var(--ease),transform .4s var(--jelly),visibility .3s var(--ease),color .2s var(--ease)
 }
-html.dark .back-top{box-shadow:0 14px 34px -12px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1)}
+.back-top::before{
+  content:"";position:absolute;inset:5px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,var(--accent-soft) 0%,transparent 72%)
+}
+html.dark .back-top{
+  box-shadow:0 14px 34px -12px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1)
+}
 .back-top .ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
 .back-top .ring circle{fill:none;stroke-width:2.2}
-.back-top .ring .ring-bg{stroke:var(--line-2)}
-.back-top .ring .ring-fg{stroke:var(--accent);stroke-linecap:round}
-.back-top .rocket{position:relative;z-index:1;width:19px;height:19px;display:block;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.back-top .ring .ring-bg{stroke:var(--accent-soft)}
+.back-top .ring .ring-fg{stroke:currentColor;stroke-linecap:round}
+.back-top .arrow-up{
+  position:relative;z-index:1;width:18px;height:18px;display:block;
+  stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .32s var(--jelly)
+}
 .back-top.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
-@media (hover:hover) and (pointer:fine){.back-top:hover{transform:translateY(-2px) scale(1.05);color:var(--accent)}}
+@media (hover:hover) and (pointer:fine){
+  .back-top:hover{transform:translateY(-2px) scale(1.05)}
+  .back-top:hover .arrow-up{transform:translateY(-1.5px)}
+}
 .back-top:active{transform:scale(.9)}
 body.editing .back-top{display:none}
 @media (min-width:1024px){.back-top{right:32px;bottom:calc(28px + env(safe-area-inset-bottom,0px));width:52px;height:52px}}
@@ -1128,6 +1141,7 @@ body.editing .back-top{display:none}
   .btn{padding:13px 16px;font-size:14px}
   .popup-entry{padding:11px 12px}
   .popup-entry-icon{width:36px;height:36px}
+  .icon-grid{grid-template-columns:repeat(6,1fr)}
   body.editing .item{flex-wrap:wrap;padding-right:12px;row-gap:8px}
   body.editing .item-actions{position:static;transform:none;width:100%;justify-content:flex-end;gap:8px;margin-top:2px}
   .item-action-btn{width:42px;height:38px;font-size:14px;border-radius:10px}
@@ -1204,7 +1218,7 @@ html.perf-lite *{transition-duration:90ms!important}
           </div>
           <div class="brand-head">
             <span class="brand-avatar-wrap" id="avatarWrap">
-              <img class="brand-avatar" src="favicon.png?v=3.6" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
+              <img class="brand-avatar" src="favicon.png?v=4.0" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
                    onerror="this.style.opacity='0';var w=document.getElementById('avatarWrap');if(w)w.classList.add('no-avatar')">
             </span>
             <h1 class="brand-title">资源导航站</h1>
@@ -1280,7 +1294,7 @@ html.perf-lite *{transition-duration:90ms!important}
           </span>
           <span class="badge-right c-dark">已部署</span>
         </a>
-        <span class="badge"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.6</span></span></span>
+        <span class="badge"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v4.0</span></span></span>
         <span class="badge"><span class="badge-left">技术栈</span><span class="badge-right c-yellow dark-text">Vanilla JS</span></span>
         <span class="badge"><span class="badge-left">框架</span><span class="badge-right c-red">零依赖</span></span>
         <span class="badge"><span class="badge-left">体验</span><span class="badge-right c-blue">极速秒开</span></span>
@@ -1296,7 +1310,7 @@ html.perf-lite *{transition-duration:90ms!important}
           <span class="divider">·</span>
           <a href="mailto:88061995@qq.com">88061995@qq.com</a>
         </div>
-        <div class="footer-copyright">© 2026 AI.FENG · ALL RIGHTS RESERVED</div>
+        <div class="footer-copyright" id="footerCopy">© 2026 AI.FENG · ALL RIGHTS RESERVED</div>
       </div>
     </footer>
   </div>
@@ -1424,12 +1438,9 @@ html.perf-lite *{transition-duration:90ms!important}
     <circle class="ring-bg" cx="24" cy="24" r="21"/>
     <circle class="ring-fg" cx="24" cy="24" r="21"/>
   </svg>
-  <svg class="rocket" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 2.6c-1.6 2.4-2.4 5.2-2.4 8.2v3.4h4.8v-3.4c0-3-.8-5.8-2.4-8.2z"/>
-    <circle cx="12" cy="8.4" r="1.4"/>
-    <path d="M9.6 11.2 7.2 13.6l2.4 1"/>
-    <path d="M14.4 11.2 16.8 13.6l-2.4 1"/>
-    <path class="flame" d="M10.8 15.2 12 19l1.2-3.8"/>
+  <svg class="arrow-up" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 18.6V6.2"/>
+    <path d="M6.6 11.2 12 6.2l5.4 5"/>
   </svg>
 </button>
 
@@ -1440,12 +1451,10 @@ html.perf-lite *{transition-duration:90ms!important}
   'use strict';
 
   /* ===== 配置 ===== */
-  const AF_VER = '3.6';
+  const AF_VER = '4.0';
 
   const CFG = {
     APP_VERSION: AF_VER,
-    CACHE_VERSION: AF_VER,
-    DISPLAY_VERSION: '3.6',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
     CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
@@ -1455,6 +1464,7 @@ html.perf-lite *{transition-duration:90ms!important}
     THEME_KEY: 'af-theme',
     SEARCH_DEBOUNCE: 160,
     SEARCH_LIMIT: 12,
+    LAUNCH_TIME: '2026-06-19T00:00:00+08:00',
     GH: {
       API: 'https://api.github.com',
       DEFAULT_USER: 'duanaifeng',
@@ -1471,7 +1481,17 @@ html.perf-lite *{transition-duration:90ms!important}
       DESC_MAX: 200,
       DETAIL_MAX: 1000
     },
-    ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
+    ICON_PRESETS: [
+      '🏠','📌','📁','⭐','🔥','💡','📋','🔖','🏷️','📎','🌐','🔗','🧭','🎯','🚀','✨','🌟','🌈','🧩','⚡','🎉','🏆',
+      '📡','📶','🛰️','🔌','🧪','🔍','🔎','🕵️','🛡️','🔐','🔑','🔒','🧲','🧰','🛠️','⚙️','🔧','🔨','🪛','🚦','🔄','📤','📥','⬇️','⬆️',
+      '☁️','🗂️','🗃️','🗄️','📦','🗜️','💽','💾','💿','📀','🔋',
+      '🖥️','💻','⌨️','🖱️','🖲️','🖨️','📟','📠','☎️','📱','📲',
+      '🎵','🎼','🎹','🎤','🎧','🎙️','📻','🎬','🎞️','📽️','📺','🍿','🎭',
+      '🎨','🖌️','🖍️','✒️','🖼️','📷','📸',
+      '🎲','🕹️','🎮','🃏','🎰',
+      '📚','📖','📘','📕','📗','📙','📓','📔','📒','📝','✏️','🖊️','🖋️','📐','📏','🧮','🎓','🧠','🔬','🔭','📊','📈','📉','🗓️','⏰','⏱️','🕒','💼','📇','🗒️','🖇️',
+      '🛒','🛍️','💳','💰','🎁','✉️','📧','📨','📩','📮','💬','🗣️','👥','🤝','🏃','💊','⛅','🌤️','🗺️','🚗','✈️','🍽️','☕','🐙','🤖','🧬','🔣','🔡','🔤','🈯','🆔','🔢'
+    ],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
     FALLBACK_DATA: [{
       category: '加载异常',
@@ -1488,7 +1508,6 @@ html.perf-lite *{transition-duration:90ms!important}
 
   /* ===== DOM 工具 ===== */
   const Dom = {
-    $(selector, root) { return (root || document).querySelector(selector); },
     $$(selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); },
     el(tag, className, text) {
       const node = document.createElement(tag);
@@ -1632,7 +1651,7 @@ html.perf-lite *{transition-duration:90ms!important}
     return ok ? 'copied' : 'failed';
   }
 
-  /* ===== 文本宽度测量（梯形排序） ===== */
+  /* ===== 文本宽度测量 ===== */
   const Measure = (function () {
     let node = null;
     const cache = new Map();
@@ -1689,7 +1708,7 @@ html.perf-lite *{transition-duration:90ms!important}
   };
 
   /* ===== 全局异常提示 ===== */
-  const Reporter = (function () {
+  (function bindErrorReporter() {
     let node = null;
     let timer = 0;
     let count = 0;
@@ -1726,8 +1745,6 @@ html.perf-lite *{transition-duration:90ms!important}
       if (IGNORE.test(message)) return;
       show('请求失败：' + message);
     });
-
-    return { show };
   })();
 
   /* ===== 本地存储 ===== */
@@ -1789,6 +1806,7 @@ html.perf-lite *{transition-duration:90ms!important}
       node.style.display = 'none';
       return;
     }
+
     let raf = 0;
     let px = -9999;
     let py = -9999;
@@ -1926,7 +1944,7 @@ html.perf-lite *{transition-duration:90ms!important}
 
     persist(keepOfficial) {
       const ok = Store.setJSON(CFG.CACHE_KEY, {
-        version: CFG.CACHE_VERSION,
+        version: AF_VER,
         ts: Date.now(),
         data: this.data
       });
@@ -1961,7 +1979,7 @@ html.perf-lite *{transition-duration:90ms!important}
         }
       }
 
-      if (hasCache && cache.version === CFG.CACHE_VERSION) {
+      if (hasCache && cache.version === AF_VER) {
         try {
           this.data = Schema.validate(cache.data);
           this.keepSourceOrder(this.data);
@@ -2064,8 +2082,7 @@ html.perf-lite *{transition-duration:90ms!important}
     }
 
     function setInert(on, keep) {
-      const children = document.body.children;
-      for (const node of children) {
+      for (const node of document.body.children) {
         if (node === keep) continue;
         if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE' || node.tagName === 'LINK') continue;
         if (on) {
@@ -2156,7 +2173,7 @@ html.perf-lite *{transition-duration:90ms!important}
     };
   })();
 
-  /* ===== 弹窗（滚动锁 + 关闭时不跳动） ===== */
+  /* ===== 弹窗 ===== */
   const Modal = (function () {
     let count = 0;
     let lockedY = 0;
@@ -2460,9 +2477,7 @@ html.perf-lite *{transition-duration:90ms!important}
       li.setAttribute('role', 'button');
       li.setAttribute('aria-label', item.name + (item.desc ? '，' + item.desc : ''));
 
-      const icon = Dom.iconEl('item-icon', group.icon);
       const body = Dom.el('span', 'item-body');
-
       const title = Dom.el('span', 'item-title', item.name);
       if (Array.isArray(item.tags) && item.tags.length) {
         title.appendChild(Dom.el('span', 'item-tag', item.tags[0]));
@@ -2496,7 +2511,7 @@ html.perf-lite *{transition-duration:90ms!important}
         }
       });
 
-      li.appendChild(icon);
+      li.appendChild(Dom.iconEl('item-icon', group.icon));
       li.appendChild(body);
       li.appendChild(shareBtn);
       li.appendChild(actions);
@@ -3114,7 +3129,7 @@ html.perf-lite *{transition-duration:90ms!important}
         const select = document.getElementById('linkGroup');
         if (select) {
           Dom.clear(select);
-          DataService.data.forEach((group, index) => select.add(new Option(group.category, index, false, index === gi)));
+          DataService.data.forEach((option, index) => select.add(new Option(option.category, index, false, index === gi)));
         }
 
         Modal.open(modal, { initialFocus: '#linkName' });
@@ -3194,8 +3209,7 @@ html.perf-lite *{transition-duration:90ms!important}
         if (iconPicker) {
           Dom.clear(iconPicker);
           CFG.ICON_PRESETS.forEach(icon => {
-            const selected = icon === groupCtx.icon;
-            const button = Dom.el('button', 'icon-option' + (selected ? ' selected' : ''), icon);
+            const button = Dom.el('button', 'icon-option' + (icon === groupCtx.icon ? ' selected' : ''), icon);
             button.type = 'button';
             button.addEventListener('click', () => {
               Dom.$$('.icon-option', iconPicker).forEach(node => node.classList.remove('selected'));
@@ -3366,7 +3380,7 @@ html.perf-lite *{transition-duration:90ms!important}
         const list = Schema.validate(JSON.parse(file.content));
         DataService.keepSourceOrder(list);
         DataService.data = list;
-        Store.setJSON(CFG.CACHE_KEY, { version: CFG.CACHE_VERSION, ts: Date.now(), data: list });
+        Store.setJSON(CFG.CACHE_KEY, { version: AF_VER, ts: Date.now(), data: list });
         DataService.clearLocalEdits();
         DataService.source = 'official';
         Mode.markClean();
@@ -3472,7 +3486,7 @@ html.perf-lite *{transition-duration:90ms!important}
     if ($('ghClear')) $('ghClear').addEventListener('click', () => Forms.clearGhConfig());
     Forms.bindLinkModalEvents();
 
-    const backTop = document.getElementById('backTop');
+    const backTop = $('backTop');
     if (backTop) {
       const ring = backTop.querySelector('.ring-fg');
       const CIRC = 2 * Math.PI * 21;
@@ -3499,8 +3513,8 @@ html.perf-lite *{transition-duration:90ms!important}
     }
   }
 
-  /* ===== 运行时间 ===== */
-  const startDate = new Date('2026-06-19T00:00:00+08:00');
+  /* ===== 运行时间与版权年 ===== */
+  const startDate = new Date(CFG.LAUNCH_TIME);
 
   function addYearsClamped(date, n) {
     const d = new Date(date.getTime());
@@ -3577,9 +3591,16 @@ html.perf-lite *{transition-duration:90ms!important}
     set(ids.s, pad(parts.s));
   }
 
-  /* ===== 上线锁 ===== */
-  const LAUNCH_TIME = new Date('2026-06-19T00:00:00+08:00');
+  function updateCopyright() {
+    const node = document.getElementById('footerCopy');
+    if (!node) return;
+    const base = startDate.getFullYear();
+    const current = new Date().getFullYear();
+    const range = current > base ? base + '~' + current : String(base);
+    node.textContent = '© ' + range + ' AI.FENG · ALL RIGHTS RESERVED';
+  }
 
+  /* ===== 上线锁 ===== */
   function formatLaunch(date) {
     const pad = n => (String(n).length < 2 ? '0' + n : String(n));
     return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate()) + ' ' +
@@ -3655,9 +3676,9 @@ html.perf-lite *{transition-duration:90ms!important}
   async function boot() {
     try {
       const lockDate = document.getElementById('lockDate');
-      if (lockDate) lockDate.textContent = '预计上线: ' + formatLaunch(LAUNCH_TIME);
+      if (lockDate) lockDate.textContent = '预计上线: ' + formatLaunch(startDate);
 
-      if (Date.now() < LAUNCH_TIME.getTime()) {
+      if (Date.now() < startDate.getTime()) {
         const mainContent = document.getElementById('mainContent');
         const timeLock = document.getElementById('timeLock');
         if (mainContent) mainContent.style.display = 'none';
@@ -3675,7 +3696,7 @@ html.perf-lite *{transition-duration:90ms!important}
       Mode.init();
 
       const footerVer = document.getElementById('footerVer');
-      if (footerVer) footerVer.textContent = 'v' + CFG.DISPLAY_VERSION;
+      if (footerVer) footerVer.textContent = 'v' + CFG.APP_VERSION;
 
       const descInput = document.getElementById('linkDesc');
       if (descInput) {
@@ -3683,6 +3704,7 @@ html.perf-lite *{transition-duration:90ms!important}
         descInput.maxLength = CFG.META.DESC_MAX;
       }
 
+      updateCopyright();
       setInterval(updateUptime, 1000);
       updateUptime();
 
