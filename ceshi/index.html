@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f3f8ff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f1f6fd" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#04070d" media="(prefers-color-scheme: dark)">
 <meta name="description" content="AiFeng 资源导航站：工具、系统软件、影音资源、开源脚本聚合。">
 <meta name="keywords" content="资源导航,工具导航,系统软件,影音资源,开源脚本">
@@ -18,17 +18,17 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="favicon.ico?v=4.1">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=4.1">
-<link rel="shortcut icon" href="favicon.ico?v=4.1">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4.1">
+<link rel="icon" href="favicon.ico?v=4.0">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=4.0">
+<link rel="shortcut icon" href="favicon.ico?v=4.0">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4.0">
 <title>AiFeng · 资源导航站</title>
 
 <script>
 (function () {
   'use strict';
 
-  /* PWA manifest：内联生成，免去额外文件 */
+  /* PWA manifest：内联生成 */
   try {
     var path = location.pathname;
     if (/\.html?$/i.test(path)) path = path.replace(/[^\/]*$/, '');
@@ -42,9 +42,9 @@
       display: 'standalone', orientation: 'portrait',
       background_color: '#04070d', theme_color: '#2f6be0', lang: 'zh-CN',
       icons: [
-        { src: 'web-app-manifest-192x192.png?v=4.1', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=4.1', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=4.1', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -81,7 +81,7 @@
 <style>
 /* ══════════════════════════════════════════════════════════
    01 · 设计令牌
-   全站只有一个冷蓝色系：所有色相收敛在 198°–242°
+   全站唯一色相家族：198°–242° 冰蓝，其余只靠明度分层
    ══════════════════════════════════════════════════════════ */
 :root{
   color-scheme:light;
@@ -99,7 +99,7 @@
   --grid-line:rgba(32,66,116,.05);
 
   /* 玻璃填充：三档厚度 */
-  --g-fill-1:linear-gradient(160deg,rgba(252,254,255,.74) 0%,rgba(244,249,255,.44) 36%,rgba(236,244,255,.30) 64%,rgba(250,253,255,.48) 100%);
+  --g-fill-1:linear-gradient(160deg,rgba(252,254,255,.80) 0%,rgba(244,249,255,.52) 36%,rgba(236,244,255,.38) 64%,rgba(250,253,255,.56) 100%);
   --g-fill-2:linear-gradient(160deg,rgba(250,253,255,.62) 0%,rgba(240,247,255,.36) 38%,rgba(232,242,255,.26) 66%,rgba(247,251,255,.40) 100%);
   --g-fill-3:linear-gradient(160deg,rgba(253,255,255,.975) 0%,rgba(247,251,255,.955) 42%,rgba(242,248,255,.945) 72%,rgba(251,254,255,.975) 100%);
 
@@ -187,7 +187,7 @@ html.dark{
   --amb-2:rgba(30,80,180,.18);
   --grid-line:rgba(120,170,255,.045);
 
-  --g-fill-1:linear-gradient(160deg,rgba(198,224,255,.100) 0%,rgba(180,208,250,.050) 40%,rgba(172,202,246,.032) 68%,rgba(200,224,255,.062) 100%);
+  --g-fill-1:linear-gradient(160deg,rgba(198,224,255,.105) 0%,rgba(180,208,250,.055) 40%,rgba(172,202,246,.036) 68%,rgba(200,224,255,.066) 100%);
   --g-fill-2:linear-gradient(160deg,rgba(198,224,255,.082) 0%,rgba(180,208,250,.040) 42%,rgba(172,202,246,.026) 70%,rgba(200,224,255,.050) 100%);
   --g-fill-3:linear-gradient(160deg,rgba(20,29,45,.985) 0%,rgba(15,22,35,.982) 42%,rgba(12,19,31,.982) 72%,rgba(17,25,40,.985) 100%);
 
@@ -345,25 +345,28 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
 
 /* ══════════════════════════════════════════════════════════
    04 · 液态玻璃材质
-   填充 padding-box + 边缘 border-box，零伪元素层级
+   只有承载大面积的 surface / overlay 做 backdrop-filter；
+   卡片与胶囊靠填充 + 边缘高光出质感，长列表滚动不掉帧
    ══════════════════════════════════════════════════════════ */
 .surface,.overlay,.pill,.card{
   position:relative;
   isolation:isolate;
   border:1px solid transparent;
-  -webkit-backdrop-filter:var(--g-blur);
-          backdrop-filter:var(--g-blur);
 }
 
 .surface{
   background:var(--g-fill-2) padding-box, var(--g-edge) border-box;
   box-shadow:var(--glass);
   border-radius:var(--r-panel);
+  -webkit-backdrop-filter:var(--g-blur);
+          backdrop-filter:var(--g-blur);
 }
 .overlay{
   background:var(--g-fill-3) padding-box, var(--g-edge) border-box;
   box-shadow:var(--glass-hi);
   border-radius:var(--r-panel);
+  -webkit-backdrop-filter:var(--g-blur);
+          backdrop-filter:var(--g-blur);
 }
 .card{
   background:var(--g-fill-1) padding-box, var(--g-edge) border-box;
@@ -385,27 +388,19 @@ html.dark .itab{
 }
 
 html.perf-lite .surface,
-html.perf-lite .overlay,
-html.perf-lite .card,
-html.perf-lite .pill{
+html.perf-lite .overlay{
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
 html.perf-lite .surface{ background:rgba(244,249,255,.94) padding-box, var(--g-edge) border-box; }
 html.perf-lite .overlay{ background:rgba(248,252,255,.98) padding-box, var(--g-edge) border-box; }
-html.perf-lite .card,
-html.perf-lite .pill{ background:rgba(250,253,255,.90) padding-box, var(--g-edge-soft) border-box; }
 html.dark.perf-lite .surface{ background:rgba(8,15,26,.94) padding-box, var(--g-edge) border-box; }
 html.dark.perf-lite .overlay{ background:rgba(12,19,31,.98) padding-box, var(--g-edge) border-box; }
-html.dark.perf-lite .card,
-html.dark.perf-lite .pill{ background:rgba(11,18,30,.92) padding-box, var(--g-edge-soft) border-box; }
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .surface{ background:rgba(244,249,255,.94) padding-box, var(--g-edge) border-box; }
   .overlay{ background:rgba(248,252,255,.98) padding-box, var(--g-edge) border-box; }
-  .card,.pill{ background:rgba(250,253,255,.92) padding-box, var(--g-edge-soft) border-box; }
   html.dark .surface{ background:rgba(8,15,26,.94) padding-box, var(--g-edge) border-box; }
   html.dark .overlay{ background:rgba(12,19,31,.98) padding-box, var(--g-edge) border-box; }
-  html.dark .card,html.dark .pill{ background:rgba(11,18,30,.92) padding-box, var(--g-edge-soft) border-box; }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -653,14 +648,14 @@ body.editing .section-actions{ display:flex; }
 .item-icon svg{ width:19px; height:19px; display:block; }
 .detail-icon{ width:52px; height:52px; font-size:24px; }
 .detail-icon svg{ width:22px; height:22px; display:block; }
-.empty-icon{ width:46px; height:46px; font-size:20px; }
+.empty-icon{ width:46px; height:46px; font-size:20px; margin:0 auto 12px; }
 .empty-icon svg{ width:22px; height:22px; display:block; }
 .suggest-icon{ width:34px; height:34px; font-size:15px; }
 .suggest-icon svg{ width:16px; height:16px; display:block; }
 .popup-entry-icon{ width:36px; height:36px; font-size:15px; }
 .popup-entry-icon svg{ width:16px; height:16px; display:block; }
 
-/* 无 SVG 时用字符/字母做徽标 */
+/* 无 SVG 时降级为字符徽标 */
 .icon-badge{
   font-family:var(--mono); font-weight:800; letter-spacing:var(--ls-label);
   color:#fff;
@@ -694,10 +689,10 @@ body.editing .section-actions{ display:flex; }
 .item::before{
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit;
   background:radial-gradient(112% 132% at 0% 50%, var(--c-bg,transparent) 0%, transparent 56%);
-  opacity:.52;
+  opacity:.5;
 }
 
-/* 悬停时掠过的一道镜面反光 */
+/* 悬停掠过的一道镜面反光 */
 .item::after{
   content:''; position:absolute; inset:-1px; z-index:2; pointer-events:none;
   background:linear-gradient(112deg,
@@ -755,11 +750,16 @@ body.editing .section-actions{ display:flex; }
   color:var(--ink-3);
   font-family:inherit; font-size:var(--fs-sm); line-height:1;
   transition:background var(--dur-1) var(--ease), color var(--dur-1) var(--ease),
-             transform var(--dur-2) var(--spring);
+             transform var(--dur-2) var(--spring), box-shadow var(--dur-1) var(--ease);
 }
-.item-share{ position:relative; z-index:3; align-self:center; margin-left:auto; }
+/* 分享按钮默认透明，只在交互时才起玻璃，避免每张卡挂一枚圆片 */
+.item-share{
+  position:relative; z-index:3; align-self:center; margin-left:auto;
+  background:transparent; box-shadow:none;
+}
 .item-share-ico{ width:13px; height:13px; display:block; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .item-action-btn svg{ width:1em; height:1em; display:block; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.item-action-btn:disabled{ opacity:.32; cursor:default; }
 
 @media (hover:hover) and (pointer:fine){
   .item-share:hover,.item-action-btn:hover{ background:var(--acc-soft); color:var(--acc); }
@@ -798,7 +798,7 @@ body.editing .add-zone{ display:flex; }
 @media (min-width:720px){ .add-zone{ flex-direction:row; } .add-btn{ flex:1; } }
 
 .empty-state{ padding:52px 20px; text-align:center; color:var(--ink-3); }
-.empty-title{ font-size:var(--fs-lg); font-weight:800; color:var(--ink); margin:12px 0 4px; }
+.empty-title{ font-size:var(--fs-lg); font-weight:800; color:var(--ink); margin-bottom:4px; }
 .empty-desc{ font-size:var(--fs-sm); line-height:1.7; }
 
 /* ══════════════════════════════════════════════════════════
@@ -1295,16 +1295,19 @@ html.dark .form-tabs{ box-shadow:inset 0 1px 2px rgba(0,0,0,.50); }
   border:1px solid var(--ln);
   box-shadow:inset 0 1px 2px rgba(16,38,74,.07), inset 0 -1px 0 rgba(255,255,255,.40);
   -webkit-appearance:none; appearance:none;
-  transition:border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
+  transition:border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
 }
 html.dark .form-input{
   box-shadow:inset 0 1px 2px rgba(0,0,0,.50), inset 0 -1px 0 rgba(255,255,255,.04);
 }
 .form-input::placeholder{ color:var(--ink-3); opacity:.85; }
+/* 只改边框与光环：用 background 简写会清掉 select 的箭头图层 */
 .form-input:focus-visible{
   border-color:var(--acc);
   box-shadow:inset 0 1px 2px rgba(16,38,74,.06), 0 0 0 3px var(--acc-ring);
-  background:var(--g-fill-1);
+}
+html.dark .form-input:focus-visible{
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.50), 0 0 0 3px var(--acc-ring);
 }
 textarea.form-input{ min-height:70px; resize:vertical; line-height:1.6; padding:12px 15px; }
 select.form-input{
@@ -1745,7 +1748,7 @@ html.perf-lite .item::after{ display:none; }
           </div>
           <div class="brand-head">
             <span class="brand-avatar-wrap" id="avatarWrap">
-              <img class="brand-avatar" src="favicon.png?v=4.1" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
+              <img class="brand-avatar" src="favicon.png?v=4.0" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
                    onerror="this.style.opacity='0';var w=document.getElementById('avatarWrap');if(w)w.classList.add('no-avatar')">
             </span>
             <h1 class="brand-title">资源导航站</h1>
@@ -1818,7 +1821,7 @@ html.perf-lite .item::after{ display:none; }
           <span class="badge-key">GitHub Pages</span>
           <span class="badge-val">已部署</span>
         </a>
-        <span class="badge pill"><span class="badge-dot" aria-hidden="true"></span><span class="badge-key">版本</span><span class="badge-val" id="footerVer">v4.1</span></span>
+        <span class="badge pill"><span class="badge-dot" aria-hidden="true"></span><span class="badge-key">版本</span><span class="badge-val" id="footerVer">v4.0</span></span>
         <span class="badge pill"><span class="badge-dot" aria-hidden="true"></span><span class="badge-key">技术栈</span><span class="badge-val">Vanilla JS</span></span>
         <span class="badge pill"><span class="badge-dot" aria-hidden="true"></span><span class="badge-key">框架</span><span class="badge-val">零依赖</span></span>
         <span class="badge pill"><span class="badge-dot" aria-hidden="true"></span><span class="badge-key">体验</span><span class="badge-val">极速秒开</span></span>
@@ -1996,7 +1999,7 @@ html.perf-lite .item::after{ display:none; }
 (function (global, document) {
   'use strict';
 
-  var VERSION = '4.1';
+  var VERSION = '4.0';
 
   /* ══════════════════════════════════════════════════════════
      01 · 配置
@@ -2044,7 +2047,7 @@ html.perf-lite .item::after{ display:none; }
 
   /* ══════════════════════════════════════════════════════════
      02 · 色相收敛器
-     任何分类色都被折进 198°–242° 的冰蓝色域，且幂等
+     任意分类色 → 折进 198°–242° 冰蓝色域，且幂等
      ══════════════════════════════════════════════════════════ */
   var Tone = (function () {
     var RAMP = ['#5b95ea', '#6a9eec', '#78a8ee', '#86b2f0', '#94bcf2', '#a2c6f4'];
@@ -2052,9 +2055,11 @@ html.perf-lite .item::after{ display:none; }
     var LO = { r: 0x5b, g: 0x95, b: 0xea };
 
     function norm(hex) {
-      var c = String(hex == null ? '' : hex).replace('#', '');
+      var c = String(hex == null ? '' : hex).replace('#', '').toLowerCase();
       if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
-      return /^[0-9a-fA-F]{6}$/.test(c) ? c.toLowerCase() : '';
+      else if (c.length === 4) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+      else if (c.length === 8) c = c.slice(0, 6);
+      return /^[0-9a-f]{6}$/.test(c) ? c : '';
     }
     function h2(n) {
       n = Math.max(0, Math.min(255, n)).toString(16);
@@ -2074,9 +2079,9 @@ html.perf-lite .item::after{ display:none; }
 
         var max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
         var sat = max === 0 ? 0 : d / max;
-        var hue = max === b && d > 0 ? 60 * ((r - g) / d + 4) : -1;
+        var hue = (max === b && d > 0) ? 60 * ((r - g) / d + 4) : -1;
 
-        /* 已经是冷蓝：原样返回，保证多次校验不会漂移 */
+        /* 已经是冷蓝：原样返回，保证多次校验不漂移 */
         if (hue >= 198 && hue <= 242 && sat <= 0.72) return '#' + c;
 
         var l = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
@@ -2089,7 +2094,7 @@ html.perf-lite .item::after{ display:none; }
   })();
 
   /* ══════════════════════════════════════════════════════════
-     03 · 图标预设（编辑分类时可选）
+     03 · 图标预设
      ══════════════════════════════════════════════════════════ */
   var ICON_PRESETS = [
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.9 2.4L22 18l-2.1.6L19 21l-.9-2.4L16 18l2.1-.6z"/></svg>',
@@ -2129,7 +2134,7 @@ html.perf-lite .item::after{ display:none; }
   ];
 
   /* ══════════════════════════════════════════════════════════
-     04 · 工具
+     04 · 通用工具
      ══════════════════════════════════════════════════════════ */
   var Dom = {
     $$: function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
@@ -2272,7 +2277,7 @@ html.perf-lite .item::after{ display:none; }
     return fallback();
   }
 
-  /* 文本宽度测量：用于「梯形排序」与弹出层排序 */
+  /* 文本宽度测量：梯形排序与多入口排序共用 */
   var Measure = (function () {
     var el = null;
     var cache = new Map();
@@ -2418,7 +2423,6 @@ html.perf-lite .item::after{ display:none; }
     };
   })();
 
-  /* 跟随系统深浅色切换 */
   var Theme = {
     watch: function () {
       try {
@@ -2642,7 +2646,7 @@ html.perf-lite .item::after{ display:none; }
         });
     },
 
-    /* 缓存先行，后台再校验一次线上数据 */
+    /* 缓存先行，后台再校验线上数据 */
     revalidate: function () {
       if (this.source !== 'cache') return;
       if (this.hasLocalEdits()) return;
@@ -2958,7 +2962,7 @@ html.perf-lite .item::after{ display:none; }
   })();
 
   /* ══════════════════════════════════════════════════════════
-     09 · 模式状态（浏览 / 访客编辑 / 管理员）
+     09 · 模式状态
      ══════════════════════════════════════════════════════════ */
   var Mode = {
     current: 'browse',
@@ -3051,7 +3055,7 @@ html.perf-lite .item::after{ display:none; }
       nodes.app = document.getElementById('app');
     }
 
-    /* 只保留一层极淡的冰蓝雾，用于体积感 */
+    /* 只留一层极淡的冰蓝雾：分类之间的差异到此为止 */
     function tintVars(color) {
       return '--c-bg:' + Utils.hexToRgba(color, .16) + ';';
     }
@@ -3103,7 +3107,7 @@ html.perf-lite .item::after{ display:none; }
       acts.appendChild(actionBtn({ act: 'del-item', gi: gi, ii: ii, label: ICON.del, title: '删除', danger: true }));
 
       var shareBtn = document.createElement('button');
-      shareBtn.className = 'item-share pill';
+      shareBtn.className = 'item-share';
       shareBtn.type = 'button';
       shareBtn.title = '分享';
       shareBtn.setAttribute('aria-label', '分享 ' + (item.name || ''));
@@ -3498,7 +3502,7 @@ html.perf-lite .item::after{ display:none; }
   }
 
   /* ══════════════════════════════════════════════════════════
-     12 · 交互：详情 / 多入口 / 增删改
+     12 · 详情 / 多入口 / 增删改
      ══════════════════════════════════════════════════════════ */
   var SEC_ICON = {
     ok: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
