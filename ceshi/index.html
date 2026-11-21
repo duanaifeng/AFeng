@@ -18,10 +18,10 @@
 <meta property="og:url" content="https://duanaifeng.github.io/AFeng/daohang/">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="favicon.ico?v=3.6">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3.6">
-<link rel="shortcut icon" href="favicon.ico?v=3.6">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.6">
+<link rel="icon" href="favicon.ico?v=4.0">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=4.0">
+<link rel="shortcut icon" href="favicon.ico?v=4.0">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4.0">
 <title>AiFeng · 资源导航站</title>
 
 <script>
@@ -45,9 +45,9 @@
       theme_color: '#0a84ff',
       lang: 'zh-CN',
       icons: [
-        { src: 'web-app-manifest-192x192.png?v=3.6', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: 'web-app-manifest-512x512.png?v=3.6', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
       ]
     };
     var link = document.createElement('link');
@@ -697,6 +697,13 @@ body.editing .add-zone{display:flex}
   color:#fff;background:var(--c-accent,var(--accent));border-color:var(--c-accent,var(--accent));
   text-shadow:0 1px 1px rgba(0,0,0,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)
 }
+.icon-svg{display:grid;place-items:center}
+.icon-svg svg{width:1em;height:1em;display:block}
+.section-icon.icon-svg svg{width:17px;height:17px}
+.item-icon.icon-svg svg{width:19px;height:19px}
+.detail-icon.icon-svg svg{width:24px;height:24px}
+.suggest-icon.icon-svg svg{width:16px;height:16px}
+.popup-entry-icon.icon-svg svg{width:16px;height:16px}
 .section-icon.icon-badge{font-size:11px}
 .item-icon.icon-badge{font-size:12px}
 .detail-icon.icon-badge{font-size:21px;border-radius:15px}
@@ -1039,6 +1046,7 @@ select.form-input{
   font-size:16px;line-height:1;border:1px solid var(--line);background:var(--chip-bg);
   cursor:pointer;transition:border-color .14s var(--ease),transform .3s var(--jelly),background .14s var(--ease)
 }
+.icon-option svg{width:18px;height:18px;display:block}
 .icon-option:hover{border-color:var(--accent-ring);transform:scale(1.08)}
 .icon-option.selected{border-color:var(--accent);background:var(--accent-soft)}
 .color-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
@@ -1197,46 +1205,6 @@ html.perf-lite *{transition-duration:90ms!important}
   .glass::before,.card::before,.item::before{display:none}
   a{color:#000;text-decoration:none}
 }
-
-
-/* ===== 新增：标签筛选 / 分类英文 / 徽标 / 表单 ===== */
-.tag-bar::-webkit-scrollbar {display:none}
-.tag-chip {display:inline-flex;align-items:center;gap:5px;
-  padding:6px 12px;border-radius:999px;
-  font-size:12px;font-weight:700;color:var(--txt-2);
-  background:var(--chip-bg);border:1px solid var(--chip-bd);
-  box-shadow:inset 0 1px 0 var(--card-sheen);
-  -webkit-backdrop-filter:blur(10px) saturate(160%);backdrop-filter:blur(10px) saturate(160%);
-  cursor:pointer;user-select:none;
-  transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .34s var(--jelly)}
-.tag-chip-label {white-space:nowrap}
-.tag-chip-n {font-family:var(--mono);font-size:10px;font-weight:800;color:var(--txt-3);opacity:.85;line-height:1}
-.tag-chip:hover {color:var(--accent);border-color:var(--accent-ring);transform:translateY(-1px)}
-.tag-chip:active {transform:scale(.94)}
-.tag-chip.active {background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;
-  box-shadow:0 6px 16px -8px var(--accent-glow),inset 0 1px 0 rgba(255,255,255,.25)}
-.tag-chip.active .tag-chip-n {color:rgba(255,255,255,.85)}
-.section-title-en {font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--txt-3);opacity:.7;margin-left:8px;text-transform:uppercase;vertical-align:1px}
-.section-share {flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
-  border:1px solid var(--chip-bd);background:var(--chip-bg);color:var(--txt-3);
-  opacity:.55;transition:opacity .2s var(--ease),color .2s var(--ease),background .2s var(--ease),transform .34s var(--jelly)}
-.section-share svg {width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.section-share:hover {opacity:1;color:var(--accent);background:var(--accent-soft);border-color:var(--accent-ring);transform:translateY(-1px)}
-.section-share:active {transform:scale(.9)}
-.section-share.copied {background:var(--accent);color:#fff;border-color:transparent;opacity:1}
-.item-badge {flex:0 0 auto;font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.04em;
-  color:var(--c-accent,var(--accent));padding:1px 6px;border-radius:5px;
-  background:var(--c-bg,var(--accent-soft));border:1px solid var(--c-border,var(--accent-ring));line-height:1.5}
-.form-advanced {margin:2px 0 14px;padding:10px 12px;border-radius:13px;background:var(--track);border:1px solid var(--line)}
-.form-advanced summary {font-size:12px;font-weight:700;color:var(--txt-3);cursor:pointer;min-height:28px;line-height:28px}
-.form-advanced .form-field {margin:8px 0 0}
-.popup-row-extra {display:grid;grid-template-columns:72px minmax(0,1fr);gap:5px;margin-bottom:5px}
-.tag-chip {min-height:40px;flex:0 0 auto}
-.section-share {width:32px;height:32px}
-.tag-chip:hover {color:var(--txt-2);border-color:var(--chip-bd);transform:none}
-.tag-chip:hover {color:var(--accent);border-color:var(--accent-ring);transform:translateY(-1px)}
-.section-share {width:44px;height:44px;flex-basis:44px}
-.tag-chip {min-height:44px}
 </style>
 </head>
 <body>
@@ -1280,7 +1248,7 @@ html.perf-lite *{transition-duration:90ms!important}
           </div>
           <div class="brand-head">
             <span class="brand-avatar-wrap" id="avatarWrap">
-              <img class="brand-avatar" src="favicon.png?v=3.6" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
+              <img class="brand-avatar" src="favicon.png?v=4.0" alt="AiFeng" width="48" height="48" loading="eager" decoding="async"
                    onerror="this.style.opacity='0';var w=document.getElementById('avatarWrap');if(w)w.classList.add('no-avatar')">
             </span>
             <h1 class="brand-title">资源导航站</h1>
@@ -1304,7 +1272,6 @@ html.perf-lite *{transition-duration:90ms!important}
         </div>
         <div class="search-suggest solid" id="searchSuggest" role="listbox" aria-label="搜索建议" aria-hidden="true"></div>
       </div>
-      <div class="tag-bar" id="tagBar" role="group" aria-label="按标签筛选"></div>
     </header>
 
     <main id="main" aria-busy="true">
@@ -1357,7 +1324,7 @@ html.perf-lite *{transition-duration:90ms!important}
           </span>
           <span class="badge-right c-dark">已部署</span>
         </a>
-        <span class="badge"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v3.6</span></span></span>
+        <span class="badge"><span class="badge-left">版本</span><span class="badge-right c-purple"><span id="footerVer">v4.0</span></span></span>
         <span class="badge"><span class="badge-left">技术栈</span><span class="badge-right c-yellow dark-text">Vanilla JS</span></span>
         <span class="badge"><span class="badge-left">框架</span><span class="badge-right c-red">零依赖</span></span>
         <span class="badge"><span class="badge-left">体验</span><span class="badge-right c-blue">极速秒开</span></span>
@@ -1373,7 +1340,7 @@ html.perf-lite *{transition-duration:90ms!important}
           <span class="divider">·</span>
           <a href="mailto:88061995@qq.com">88061995@qq.com</a>
         </div>
-        <div class="footer-copyright">© <span id="footerYear">2026</span> AI.FENG · ALL RIGHTS RESERVED</div>
+        <div class="footer-copyright">© <span id="copyYear">2026</span> AI.FENG · ALL RIGHTS RESERVED</div>
       </div>
     </footer>
   </div>
@@ -1450,12 +1417,6 @@ html.perf-lite *{transition-duration:90ms!important}
     <div class="form-field"><label class="form-label" id="linkDescLabel">卡片短描述</label><textarea class="form-input inset" id="linkDesc" rows="1" placeholder="建议18字内，一眼看懂"></textarea></div>
     <div class="form-field"><label class="form-label">内容描述（详情 / 菜单总纲）</label><textarea class="form-input inset" id="linkDetail" rows="3" placeholder="根据网址内容总结"></textarea></div>
     <div class="form-field"><label class="form-label">标签（用逗号或空格分隔）</label><input class="form-input inset" id="linkTags" type="text" placeholder="例如：工具, 效率, 系统"></div>
-    <div class="form-field"><label class="form-label">独立图标（可选）</label><input class="form-input inset" id="linkIcon" type="text" placeholder="留空沿用分类图标，例如：🎵"></div>
-    <div class="form-field"><label class="form-label">展示徽标（可选）</label><input class="form-input inset" id="linkBadge" type="text" placeholder="例如：原创、推荐、NEW"></div>
-    <details class="form-advanced">
-      <summary>搜索别名（可选）</summary>
-      <div class="form-field"><input class="form-input inset" id="linkKeywords" type="text" placeholder="多个别名用逗号或空格分隔，仅在搜索时匹配"></div>
-    </details>
     <div class="form-field"><label class="form-label">唯一 ID（留空自动生成）</label><input class="form-input inset" id="linkId" type="text" placeholder="例如：my-custom-id"></div>
     <div class="form-field"><label class="form-label">所属分类</label><select class="form-input inset" id="linkGroup"></select></div>
     <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="linkOk" type="button">保存</button></div>
@@ -1470,7 +1431,6 @@ html.perf-lite *{transition-duration:90ms!important}
       <button class="modal-close" type="button" data-modal-close aria-label="关闭"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
     </div>
     <div class="form-field"><label class="form-label">分类名称</label><input class="form-input inset" id="groupName" type="text"></div>
-    <div class="form-field"><label class="form-label">英文标识（可选）</label><input class="form-input inset" id="groupNameEn" type="text" placeholder="例如：TOOLS，用于副标题与分类直达链接"></div>
     <div class="form-field"><label class="form-label">图标</label><div class="icon-grid" id="iconPicker"></div></div>
     <div class="form-field"><label class="form-label">主题色</label><div class="color-grid" id="colorPicker"></div></div>
     <div class="form-actions"><button class="btn" type="button" data-modal-close>取消</button><button class="btn primary" id="groupOk" type="button">保存</button></div>
@@ -1525,9 +1485,9 @@ html.perf-lite *{transition-duration:90ms!important}
 
   (function migrateOldCaches() {
     try {
-      var keys = ['__af_nav_cache_', '__af_nav_local_edits_', '__af_gh_cfg_', '__af_admin_'];
+      var keys = ['__af_nav_cache__', '__af_nav_local_edits__', '__af_gh_cfg__', '__af_admin__'];
       var olds = ['v3.9', 'v3.8', 'v3.7'];
-      var target = 'v3.6';
+      var target = 'v4.0';
       for (var k = 0; k < keys.length; k++) {
         for (var o = 0; o < olds.length; o++) {
           var oldKey = keys[k] + olds[o] + '__';
@@ -1541,10 +1501,10 @@ html.perf-lite *{transition-duration:90ms!important}
     } catch (e) {}
   })();
 
-  const AF_VER = '3.6';
+  const AF_VER = '4.0';
   const CFG = {
     APP_VERSION: AF_VER,
-    DISPLAY_VERSION: '3.6',
+    DISPLAY_VERSION: '4.0',
     DATA_URL: './data.json',
     DATA_TIMEOUT: 15000,
     CACHE_KEY: '__af_nav_cache_v' + AF_VER + '__',
@@ -1562,7 +1522,18 @@ html.perf-lite *{transition-duration:90ms!important}
       DEFAULT_BRANCH: 'main',
       DEFAULT_PATH: 'daohang/data.json'
     },
-    ICON_PRESETS: ['🏠','📌','📁','⭐','🔥','💡','📋','🔖','🌐','📡','🔗','🔒','🔑','📶','🔧','🧰','🔨','💻','🎵','🎬','🎨','📷','🎧','📻','🎮','🃏','📱','💾','📀','💿','📺','📦','📚','📖','📰','📝','🧭','🎯','🚀','✨','🌟','🌈','🌍','🧩','📊','📈','🧪','🔍','🧮','⚡','🎓'],
+    ICON_PRESETS: [
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.9 2.4L22 18l-2.1.6L19 21l-.9-2.4L16 18l2.1-.6z"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z"/></svg>'
+    ],
     COLOR_PRESETS: ['#60a5fa','#38bdf8','#22d3ee','#818cf8','#7dd3fc','#93c5fd','#a5b4fc','#a78bfa','#c4b5fd','#94a3b8','#f472b6','#fb923c','#4ade80','#fbbf24'],
     META: { ID_MAX: 60, TAG_MAX: 20, TAG_COUNT: 8, CATEGORY_EN_MAX: 50, DESC_SUGGEST: 18, DESC_MAX: 200, DETAIL_MAX: 1000 },
     FALLBACK_DATA: [{
@@ -1581,7 +1552,7 @@ html.perf-lite *{transition-duration:90ms!important}
   const Dom = {
     $(s, r) { return (r || document).querySelector(s); },
     $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); },
-    el(t, c, x) { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; },
+    el(t, c, x) { const n = document.createElement(t); if (c) n.className = c; if (x != null) { if (typeof x === 'string' && /^<svg[\s>]/i.test(x.trim())) { n.innerHTML = x; n.classList.add('icon-svg'); const svg = n.querySelector('svg'); if (svg) { svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); } } else { n.textContent = x; } } return n; },
     clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; },
     delegate(r, t, s, h) {
       r.addEventListener(t, e => {
@@ -1592,9 +1563,16 @@ html.perf-lite *{transition-duration:90ms!important}
     iconEl(cls, icon) {
       const n = document.createElement('span');
       n.className = cls;
-      const t = icon || Schema.DEFAULT_ICON;
-      n.textContent = t;
-      if (/^[A-Za-z0-9]{1,4}$/.test(t)) n.classList.add('icon-badge');
+      const t = String(icon == null ? '' : icon).trim() || Schema.DEFAULT_ICON;
+      if (/^<svg[\s>]/i.test(t)) {
+        n.innerHTML = t;
+        n.classList.add('icon-svg');
+        const svg = n.querySelector('svg');
+        if (svg) { svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); }
+      } else {
+        n.textContent = t;
+        if (/^[A-Za-z0-9]{1,4}$/.test(t)) n.classList.add('icon-badge');
+      }
       return n;
     }
   };
@@ -1712,28 +1690,9 @@ html.perf-lite *{transition-duration:90ms!important}
 
   function openSharedItem() {
     try {
-      const params = new URLSearchParams(location.search);
-      const id = params.get('item');
-      const cat = params.get('cat');
-      const data = DataService.data;
-
-      if (cat) {
-        const q = Utils.normalize(cat);
-        for (let gi = 0; gi < data.length; gi++) {
-          const g = data[gi];
-          const en = Utils.normalize(g.categoryEn || '');
-          const cn = Utils.normalize(g.category || '');
-          if (en === q || cn === q) {
-            const el = document.getElementById('cat-' + (g.categoryEn || '').toLowerCase());
-            if (el) {
-              setTimeout(() => el.scrollIntoView({ behavior: Utils.prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' }), 120);
-            }
-            return;
-          }
-        }
-      }
-
+      const id = new URLSearchParams(location.search).get('item');
       if (!id) return;
+      const data = DataService.data;
       for (let gi = 0; gi < data.length; gi++) {
         const g = data[gi];
         for (let ii = 0; ii < g.items.length; ii++) {
@@ -1799,63 +1758,6 @@ html.perf-lite *{transition-duration:90ms!important}
       if (group.itemOrder === 'manual') return;
       group.items = this.order(group).map(x => x.item);
       group.itemOrder = 'manual';
-    }
-  };
-
-  let globalTag = null;
-
-  const TagFilter = {
-    collect() {
-      const counts = {};
-      const data = DataService.data || [];
-      for (let gi = 0; gi < data.length; gi++) {
-        const items = (data[gi] && data[gi].items) || [];
-        for (let ii = 0; ii < items.length; ii++) {
-          const it = items[ii];
-          if (!it || it.placeholder || !Array.isArray(it.tags)) continue;
-          for (let k = 0; k < it.tags.length; k++) counts[it.tags[k]] = (counts[it.tags[k]] || 0) + 1;
-        }
-      }
-      return Object.keys(counts).map(t => ({ tag: t, n: counts[t] }))
-        .sort((a, b) => b.n - a.n || (a.tag < b.tag ? -1 : 1));
-    },
-    render() {
-      const bar = document.getElementById('tagBar');
-      if (!bar) return;
-      if (document.body.classList.contains('editing')) { bar.style.display = 'none'; return; }
-      const tags = this.collect();
-      if (!tags.length) { bar.style.display = 'none'; return; }
-      bar.style.display = '';
-      Dom.clear(bar);
-      tags.forEach(({ tag, n }) => {
-        const chip = Dom.el('button', 'tag-chip' + (globalTag === tag ? ' active' : ''));
-        chip.type = 'button';
-        chip.setAttribute('aria-pressed', globalTag === tag ? 'true' : 'false');
-        chip.setAttribute('aria-label', '筛选标签 ' + tag + '，' + n + ' 个站点');
-        chip.appendChild(Dom.el('span', 'tag-chip-label', tag));
-        chip.appendChild(Dom.el('span', 'tag-chip-n', String(n)));
-        chip.addEventListener('click', () => {
-          const url = new URL(location.href);
-          if (globalTag === tag) {
-            globalTag = null;
-            url.search = ''; url.hash = '';
-          } else {
-            globalTag = tag;
-            url.search = '?tag=' + encodeURIComponent(tag); url.hash = '';
-          }
-          try { history.replaceState(null, '', url.toString()); } catch (e) {}
-          Renderer.render();
-        });
-        bar.appendChild(chip);
-      });
-    },
-    applyFromUrl() {
-      try {
-        const t = Utils.clean(new URLSearchParams(location.search).get('tag'), 20);
-        if (!t) return;
-        globalTag = t;
-        Renderer.render();
-      } catch (e) {}
     }
   };
 
@@ -2007,12 +1909,6 @@ html.perf-lite *{transition-duration:90ms!important}
             if (id) item.id = id;
             const tags = Utils.cleanTags(s.tags);
             if (tags.length) item.tags = tags;
-            const icon = Utils.clean(s.icon, 8);
-            if (icon) item.icon = icon;
-            const badge = Utils.clean(s.badge, 12);
-            if (badge) item.badge = badge;
-            const keywords = Utils.cleanTags(s.keywords);
-            if (keywords.length) item.keywords = keywords;
             if (s.insecure === true) item.insecure = true;
 
             if (hasPop) {
@@ -2022,17 +1918,12 @@ html.perf-lite *{transition-duration:90ms!important}
                 if (!p || typeof p !== 'object') continue;
                 const pu = Utils.safeUrl(p.url);
                 if (!pu) continue;
-                const popup = {
+                item.popup.push({
                   label: Utils.clean(p.label, 50) || '打开',
                   desc: Utils.clean(p.desc, CFG.META.DESC_MAX),
                   detail: Utils.clean(p.detail, CFG.META.DETAIL_MAX),
                   url: pu
-                };
-                const pIcon = Utils.clean(p.icon, 8);
-                if (pIcon) popup.icon = pIcon;
-                const pKeywords = Utils.cleanTags(p.keywords);
-                if (pKeywords.length) popup.keywords = pKeywords;
-                item.popup.push(popup);
+                });
               }
               if (!item.popup.length) continue;
             }
@@ -2041,7 +1932,7 @@ html.perf-lite *{transition-duration:90ms!important}
         }
         const node = {
           category: cat,
-          icon: Utils.clean(g.icon, 8) || this.DEFAULT_ICON,
+          icon: (typeof g.icon === 'string' && /^<svg[\s>]/i.test(g.icon.trim())) ? g.icon.trim() : (Utils.clean(g.icon, 8) || this.DEFAULT_ICON),
           color: Utils.safeColor(g.color) || this.DEFAULT_COLOR,
           items
         };
@@ -2508,11 +2399,10 @@ html.perf-lite *{transition-duration:90ms!important}
       li.setAttribute('role', 'button');
       li.setAttribute('aria-label', item.name + (item.desc ? '，' + item.desc : ''));
 
-      const icon = Dom.iconEl('item-icon', item.icon || group.icon);
+      const icon = Dom.iconEl('item-icon', group.icon);
       const body = Dom.el('span', 'item-body');
 
       const title = Dom.el('span', 'item-title', item.name);
-      if (item.badge) title.appendChild(Dom.el('span', 'item-badge', item.badge));
       if (Array.isArray(item.tags) && item.tags.length) {
         const tag = Dom.el('span', 'item-tag', item.tags[0]);
         title.appendChild(tag);
@@ -2579,14 +2469,6 @@ html.perf-lite *{transition-duration:90ms!important}
       const sec = Dom.el('section', 'section');
       sec.dataset.group = String(gi);
       sec.setAttribute('aria-labelledby', 'sec-' + gi);
-      if (group.categoryEn) sec.id = 'cat-' + group.categoryEn.toLowerCase();
-
-      let orderedView = group.items.map((item, idx) => ({ item, idx }));
-      if (globalTag) {
-        orderedView = orderedView.filter(x => x.item.placeholder || (Array.isArray(x.item.tags) && x.item.tags.includes(globalTag)));
-        if (!orderedView.some(x => !x.item.placeholder)) { sec.hidden = true; return sec; }
-      }
-      const matchedCount = globalTag ? orderedView.filter(x => !x.item.placeholder).length : group.items.length;
 
       const tint = Utils.hexToRgba(group.color, .15);
       const brd = Utils.hexToRgba(group.color, .30);
@@ -2601,38 +2483,10 @@ html.perf-lite *{transition-duration:90ms!important}
 
       const title = Dom.el('h2', 'section-title', group.category);
       title.id = 'sec-' + gi;
-      if (group.categoryEn) {
-        const en = Dom.el('span', 'section-title-en', group.categoryEn);
-        title.appendChild(en);
-      }
 
-      const cnt = Dom.el('span', 'section-count', globalTag ? (matchedCount + ' / ' + group.items.length + ' 条') : (group.items.length + ' 条'));
+      const cnt = Dom.el('span', 'section-count', group.items.length + ' 条');
       const rule = Dom.el('div', 'section-rule');
       rule.style.setProperty('--c-line', lin);
-
-      if (group.categoryEn) {
-        const shareCat = Dom.el('button', 'section-share');
-        shareCat.type = 'button';
-        shareCat.title = '复制分类链接';
-        shareCat.setAttribute('aria-label', '复制分类 ' + group.category + ' 的链接');
-        shareCat.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-        shareCat.addEventListener('click', async e => {
-          e.stopPropagation();
-          e.preventDefault();
-          const u = new URL(location.href);
-          u.search = '?cat=' + encodeURIComponent(group.categoryEn);
-          u.hash = '';
-          const ok = await copyText(u.toString());
-          if (ok) {
-            shareCat.classList.add('copied');
-            Toast.show('分类链接已复制');
-            setTimeout(() => shareCat.classList.remove('copied'), 1200);
-          } else {
-            Toast.show('复制失败，请手动复制');
-          }
-        });
-        head.appendChild(shareCat);
-      }
 
       const acts = Dom.el('div', 'section-actions');
       acts.appendChild(btn({ act: 'up-group', gi, label: '↑', disabled: gi === 0 }));
@@ -2649,8 +2503,7 @@ html.perf-lite *{transition-duration:90ms!important}
       sec.appendChild(head);
 
       const list = Dom.el('ul', 'item-list');
-      const ordered = globalTag ? orderedView : SortUtil.order(group);
-      ordered.forEach(({ item, idx }) => {
+      SortUtil.order(group).forEach(({ item, idx }) => {
         if (item.placeholder) {
           const li = Dom.el('li', 'item placeholder');
           li.style.cssText = `--c-bg:${tint};--c-border:${brd};--c-accent:${group.color};`;
@@ -2681,7 +2534,6 @@ html.perf-lite *{transition-duration:90ms!important}
     function render() {
       const app = nodes.app;
       if (!app) return;
-      if (document.body.classList && document.body.classList.contains('editing') && globalTag) globalTag = null;
       if (nodes.skeleton) nodes.skeleton.style.display = 'none';
       Dom.clear(app);
 
@@ -2695,7 +2547,6 @@ html.perf-lite *{transition-duration:90ms!important}
       data.forEach((g, i) => frag.appendChild(buildSection(g, i, data.length)));
       app.appendChild(frag);
       if (nodes.main) nodes.main.setAttribute('aria-busy', 'false');
-      TagFilter.render();
     }
 
     return { init, render };
@@ -2791,9 +2642,7 @@ html.perf-lite *{transition-duration:90ms!important}
           const d = Utils.normalize(i.desc);
           const dt = Utils.normalize(i.detail);
           const t = Array.isArray(i.tags) ? Utils.normalize(i.tags.join(' ')) : '';
-          const keys = Array.isArray(i.keywords) ? Utils.normalize(i.keywords.join(' ')) : '';
-          const pl = Array.isArray(i.popup) ? Utils.normalize(i.popup.map(p => (p.label || '') + ' ' + (p.desc || '') + ' ' + (Array.isArray(p.keywords) ? p.keywords.join(' ') : '')).join(' ')) : '';
-          if (n.indexOf(q) >= 0 || d.indexOf(q) >= 0 || dt.indexOf(q) >= 0 || gn.indexOf(q) >= 0 || t.indexOf(q) >= 0 || keys.indexOf(q) >= 0 || pl.indexOf(q) >= 0) {
+          if (n.indexOf(q) >= 0 || d.indexOf(q) >= 0 || dt.indexOf(q) >= 0 || gn.indexOf(q) >= 0 || t.indexOf(q) >= 0) {
             out.push({ item: i, group: g });
           }
         }
@@ -2833,7 +2682,7 @@ html.perf-lite *{transition-duration:90ms!important}
         const a = Dom.el('a', 'suggest-item');
         a.href = '#';
         a.setAttribute('role', 'option');
-        const ic = Dom.el('span', 'suggest-icon', r.item.icon || r.group.icon || Schema.DEFAULT_ICON);
+        const ic = Dom.el('span', 'suggest-icon', r.group.icon || Schema.DEFAULT_ICON);
         ic.style.color = r.group.color;
         ic.style.background = Utils.hexToRgba(r.group.color, .15);
         const bd = Dom.el('span', 'suggest-body');
@@ -2900,9 +2749,18 @@ html.perf-lite *{transition-duration:90ms!important}
 
       const iconEl = document.getElementById('detailIcon');
       if (iconEl) {
-        const displayIcon = item.icon || group.icon || Schema.DEFAULT_ICON;
-        iconEl.textContent = displayIcon;
-        iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(displayIcon));
+        const _ic = String(group.icon == null ? '' : group.icon).trim() || Schema.DEFAULT_ICON;
+        if (/^<svg[\s>]/i.test(_ic)) {
+          iconEl.innerHTML = _ic;
+          iconEl.classList.add('icon-svg');
+          iconEl.classList.remove('icon-badge');
+          const svg = iconEl.querySelector('svg');
+          if (svg) { svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); }
+        } else {
+          iconEl.textContent = _ic;
+          iconEl.classList.remove('icon-svg');
+          iconEl.classList.toggle('icon-badge', /^[A-Za-z0-9]{1,4}$/.test(_ic));
+        }
         iconEl.style.setProperty('--c-bg', Utils.hexToRgba(group.color, .15));
         iconEl.style.setProperty('--c-border', Utils.hexToRgba(group.color, .30));
         iconEl.style.setProperty('--c-accent', group.color);
@@ -3007,7 +2865,7 @@ html.perf-lite *{transition-duration:90ms!important}
         const link = Dom.el('a', 'popup-entry');
         link.href = '#';
 
-        const icon = Dom.iconEl('popup-entry-icon', entry.icon || ic);
+        const icon = Dom.el('span', 'popup-entry-icon', ic);
         icon.style.color = cl;
         icon.style.background = Utils.hexToRgba(cl, .15);
 
@@ -3120,7 +2978,6 @@ html.perf-lite *{transition-duration:90ms!important}
         '<input class="form-input inset p-url" placeholder="https://..." style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.url) + '">' +
         '<input class="form-input inset p-desc" placeholder="卡片短描述(建议' + CFG.META.DESC_SUGGEST + '字内)" maxlength="' + CFG.META.DESC_MAX + '" style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.desc) + '">' +
         '<input class="form-input inset p-detail" placeholder="内容描述" style="margin-bottom:5px;font-size:12px;" value="' + e(d && d.detail) + '">' +
-        '<div class="popup-row-extra"><input class="form-input inset p-icon" placeholder="图标" style="font-size:12px;" value="' + e(d && d.icon) + '"><input class="form-input inset p-keywords" placeholder="搜索别名（可选）" style="font-size:12px;" value="' + e(d && Array.isArray(d.keywords) ? d.keywords.join(', ') : '') + '"></div>' +
         '<button type="button" class="btn del-row" style="padding:6px;font-size:11px;color:var(--danger);">删除</button>';
       const del = row.querySelector('.del-row');
       if (del) del.onclick = () => row.remove();
@@ -3149,9 +3006,6 @@ html.perf-lite *{transition-duration:90ms!important}
         document.getElementById('linkDesc').value = item.desc || '';
         document.getElementById('linkDetail').value = item.detail || '';
         document.getElementById('linkTags').value = Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || '');
-        document.getElementById('linkIcon').value = item.icon || '';
-        document.getElementById('linkBadge').value = item.badge || '';
-        document.getElementById('linkKeywords').value = Array.isArray(item.keywords) ? item.keywords.join(', ') : '';
         document.getElementById('linkId').value = item.id || '';
 
         const hasPop = !isNew && item.popup && item.popup.length > 0;
@@ -3184,9 +3038,6 @@ html.perf-lite *{transition-duration:90ms!important}
 
         const rawTags = document.getElementById('linkTags').value;
         const tags = Utils.cleanTags(rawTags.split(/[,，\s]+/));
-        const icon = Utils.clean(document.getElementById('linkIcon').value, 8);
-        const badge = Utils.clean(document.getElementById('linkBadge').value, 12);
-        const keywords = Utils.cleanTags(document.getElementById('linkKeywords').value.split(/[,，\s]+/));
 
         if (!name) {
           Toast.show('请填写名称');
@@ -3208,19 +3059,12 @@ html.perf-lite *{transition-duration:90ms!important}
           }
           ni = { id, name, url, desc, detail };
         } else {
-          const ps = Dom.$$('.popup-row').map(r => {
-            const p = {
-              label: Utils.clean(r.querySelector('.p-label').value, 50),
-              url: Utils.safeUrl(r.querySelector('.p-url').value),
-              desc: Utils.clean(r.querySelector('.p-desc').value, CFG.META.DESC_MAX),
-              detail: Utils.clean(r.querySelector('.p-detail').value, CFG.META.DETAIL_MAX)
-            };
-            const pIcon = Utils.clean(r.querySelector('.p-icon').value, 8);
-            if (pIcon) p.icon = pIcon;
-            const pKeywords = Utils.cleanTags(r.querySelector('.p-keywords').value.split(/[,，\s]+/));
-            if (pKeywords.length) p.keywords = pKeywords;
-            return p;
-          }).filter(x => x.label && x.url);
+          const ps = Dom.$$('.popup-row').map(r => ({
+            label: Utils.clean(r.querySelector('.p-label').value, 50),
+            url: Utils.safeUrl(r.querySelector('.p-url').value),
+            desc: Utils.clean(r.querySelector('.p-desc').value, CFG.META.DESC_MAX),
+            detail: Utils.clean(r.querySelector('.p-detail').value, CFG.META.DETAIL_MAX)
+          })).filter(x => x.label && x.url);
           if (!ps.length) {
             Toast.show('至少添加 1 条子链接');
             return;
@@ -3229,9 +3073,6 @@ html.perf-lite *{transition-duration:90ms!important}
         }
 
         if (tags.length) ni.tags = tags;
-        if (icon) ni.icon = icon;
-        if (badge) ni.badge = badge;
-        if (keywords.length) ni.keywords = keywords;
         if (linkCtx.origin && linkCtx.origin.insecure && ni.url && ni.url.indexOf('http://') === 0) ni.insecure = true;
 
         if (!linkCtx.isNew && tgt === linkCtx.gi) {
@@ -3262,7 +3103,6 @@ html.perf-lite *{transition-duration:90ms!important}
 
         document.getElementById('groupTitle').textContent = isNew ? '添加分类' : '编辑分类';
         document.getElementById('groupName').value = g.category || '';
-        document.getElementById('groupNameEn').value = g.categoryEn || '';
 
         const ip = document.getElementById('iconPicker');
         if (ip) {
@@ -3307,24 +3147,18 @@ html.perf-lite *{transition-duration:90ms!important}
           return;
         }
 
-        const categoryEn = Utils.clean(document.getElementById('groupNameEn').value, CFG.META.CATEGORY_EN_MAX);
-
         if (groupCtx.gi < 0) {
-          const group = {
+          DataService.data.push({
             category: name,
             icon: groupCtx.icon,
             color: groupCtx.color,
             items: []
-          };
-          if (categoryEn) group.categoryEn = categoryEn;
-          DataService.data.push(group);
+          });
         } else {
           const t = DataService.data[groupCtx.gi];
           t.category = name;
           t.icon = groupCtx.icon;
           t.color = groupCtx.color;
-          if (categoryEn) t.categoryEn = categoryEn;
-          else delete t.categoryEn;
         }
 
         const ok = DataService.persist();
@@ -3693,11 +3527,9 @@ html.perf-lite *{transition-duration:90ms!important}
 
       const fv = document.getElementById('footerVer');
       if (fv) fv.textContent = 'v' + CFG.DISPLAY_VERSION;
-      const fy = document.getElementById('footerYear');
-      if (fy) {
-        const currentYear = new Date().getFullYear();
-        fy.textContent = currentYear > 2026 ? '2026–' + currentYear : '2026';
-      }
+
+      const cy = document.getElementById('copyYear');
+      if (cy) { const y = new Date().getFullYear(); cy.textContent = y > 2026 ? '2026~' + y : '2026'; }
 
       const dl = document.getElementById('linkDescLabel');
       if (dl) dl.textContent = '卡片短描述';
@@ -3711,7 +3543,6 @@ html.perf-lite *{transition-duration:90ms!important}
       updateUptime();
 
       openSharedItem();
-      TagFilter.applyFromUrl();
       DataService.revalidate();
 
       if (DataService.source === 'fallback') {

@@ -1,7 +1,7 @@
 [
   {
     "category": "本站原创",
-    "icon": "💎",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z\"/><path d=\"M19 15l.9 2.4L22 18l-2.1.6L19 21l-.9-2.4L16 18l2.1-.6z\"/></svg>",
     "color": "#60a5fa",
     "items": [
       {
@@ -10,9 +10,6 @@
         "detail": "站长的个人主页，汇总项目笔记与技术分享文章，也是本站各工具的出发页。",
         "url": "https://duanaifeng.github.io/AFeng/",
         "id": "aifeng-zhuye",
-        "icon": "🏠",
-        "badge": "原创",
-        "keywords": ["主页", "个人博客", "站长"],
         "tags": [
           "个人"
         ]
@@ -23,9 +20,6 @@
         "detail": "网页端工时工资计算器，分临时工与正式工两种模式，录入每日工时自动核算月薪或日结。",
         "url": "https://duanaifeng.github.io/AFeng/gongshi/",
         "id": "gongshi-jizhang",
-        "icon": "🧮",
-        "badge": "原创",
-        "keywords": ["工资", "记账", "计算器"],
         "tags": [
           "工具",
           "效率"
@@ -37,9 +31,6 @@
         "detail": "支持本地西邑街、永信街、羊邑街、丙麻街日历查询。支持导入到手机日历，形成日历推送提醒。",
         "url": "",
         "id": "xiyi-ganji-rili",
-        "icon": "📅",
-        "badge": "原创",
-        "keywords": ["赶集", "街历", "日历", "西邑"],
         "tags": [
           "生活",
           "工具"
@@ -47,14 +38,12 @@
         "popup": [
           {
             "label": "网页版（免安装）",
-            "icon": "🌐",
             "desc": "点开就查，可导出日历订阅",
             "detail": "不用装东西，浏览器打开就能按日期查四街循环，支持选 1/3/6/10 年导出 .ics 文件，导入手机日历后形成订阅提醒。微信/QQ 里点不动时，复制网址用系统浏览器打开即可。适合临时查一下、或不想装 APP 的人",
             "url": "https://duanaifeng.github.io/AFeng/ganji"
           },
           {
             "label": "街历 · 安卓 APP",
-            "icon": "📱",
             "desc": "一键导入安卓日历，集日前提醒",
             "detail": "「街历」是西邑赶集日历的安卓 APP 版，装到手机上不用每次开网页。四街循环按天查询，一键把集日导入安卓系统日历，到日子自动提醒，赶集不迷路。适合本地常赶集、想长期订阅提醒的人。",
             "url": "https://yun.139.com/shareweb/#/w/i/2yA8HUwfyWepc"
@@ -67,9 +56,6 @@
         "detail": "浏览器内直接运行的老游戏合集，涵盖街机、掌机、Flash 类小游戏，无需下载客户端。",
         "url": "https://duanaifeng.github.io/AFeng/game/",
         "id": "huaijiu-youxiku",
-        "icon": "🎮",
-        "badge": "原创",
-        "keywords": ["街机", "小游戏", "掌机"],
         "tags": [
           "娱乐",
           "游戏"
@@ -81,9 +67,6 @@
         "detail": "站长用易语言编写的维护工具合集，含装机辅助、系统故障排查等小工具，经百度网盘分发。打包即用、针对国内常见故障；易语言程序常被杀软误报，无毒放心使用！",
         "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
         "id": "diannao-weihu-gongju",
-        "icon": "🛠️",
-        "badge": "原创",
-        "keywords": ["装机", "维护", "易语言"],
         "tags": [
           "工具",
           "系统"
@@ -95,9 +78,6 @@
         "detail": "自动拓扑图＋三协议探活，设备在线状态一眼看清；局域网网段、名称、IP、图标全自定义；宽带账号、路由后台地址、WiFi 密码按节点存档，纯本地存储，零上传，支持备份导出。",
         "url": "https://yun.139.com/shareweb/#/w/i/2yA8HGvm3X8qc",
         "id": "wangluo-guanjia",
-        "icon": "🌐",
-        "badge": "原创",
-        "keywords": ["拓扑", "网络管理", "设备管理"],
         "tags": [
           "局域网",
           "设备",
@@ -109,7 +89,7 @@
   },
   {
     "category": "聆听音乐",
-    "icon": "🎧",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 14v-3a9 9 0 0 1 18 0v3\"/><path d=\"M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z\"/></svg>",
     "color": "#a78bfa",
     "items": [
       {
@@ -205,7 +185,7 @@
         "tags": [
           "音乐",
           "无损",
-          "精选"
+          "自整理"
         ],
         "popup": [
           {
@@ -227,7 +207,7 @@
   },
   {
     "category": "随心观影",
-    "icon": "🎬",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z\"/><path d=\"m6.2 5.3 3.1 3.9\"/><path d=\"m12.4 3.4 3.1 4\"/><path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/></svg>",
     "color": "#f472b6",
     "items": [
       {
@@ -321,7 +301,7 @@
   },
   {
     "category": "聚合资源",
-    "icon": "📥",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/></svg>",
     "color": "#fbbf24",
     "items": [
       {
@@ -374,7 +354,6 @@
         "detail": "聚焦 QQ 相关的资讯号，记录点亮图标玩法、活动线报与配套小工具。⚠ 全站未启用 HTTPS，请勿在此输入任何账号密码。",
         "url": "http://m.qqyewu.com/",
         "id": "qq-yewu-leyuan",
-        "insecure": true,
         "tags": [
           "资源",
           "线报"
@@ -408,7 +387,6 @@
         "detail": "海量网址的分类收藏库，按生活、工具、资源等类目平铺罗列入口。⚠ 未启用 HTTPS，访问时留意隐私与跳转。永硕空间已改版，需输入访问密码，密码与空间账号（用户名）相同。",
         "url": "http://12122.ysepan.com",
         "id": "wangzhi-cangjingge",
-        "insecure": true,
         "tags": [
           "导航",
           "收藏"
@@ -442,7 +420,7 @@
   },
   {
     "category": "实用工具",
-    "icon": "🧰",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"/></svg>",
     "color": "#cbd5e1",
     "items": [
       {
@@ -496,7 +474,7 @@
   },
   {
     "category": "系统装机",
-    "icon": "💿",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"22\" x2=\"2\" y1=\"12\" y2=\"12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/><line x1=\"6\" x2=\"6.01\" y1=\"16\" y2=\"16\"/><line x1=\"10\" x2=\"10.01\" y1=\"16\" y2=\"16\"/></svg>",
     "color": "#38bdf8",
     "items": [
       {
@@ -578,7 +556,7 @@
   },
   {
     "category": "DNS 服务",
-    "icon": "🛡️",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/></svg>",
     "color": "#22d3ee",
     "items": [
       {
@@ -674,7 +652,7 @@
   },
   {
     "category": "网络加速",
-    "icon": "🚀",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\"/></svg>",
     "color": "#3b82f6",
     "items": [
       {
@@ -726,7 +704,7 @@
   },
   {
     "category": "网络检测",
-    "icon": "📡",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\"/></svg>",
     "color": "#14b8a6",
     "items": [
       {
@@ -803,7 +781,7 @@
   },
   {
     "category": "脚本与扩展",
-    "icon": "🧩",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z\"/></svg>",
     "color": "#4ade80",
     "items": [
       {
