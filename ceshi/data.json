@@ -1,6 +1,7 @@
 [
   {
     "category": "本站原创",
+    "categoryEn": "ORIGINAL",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z\"/><path d=\"M19 15l.9 2.4L22 18l-2.1.6L19 21l-.9-2.4L16 18l2.1-.6z\"/></svg>",
     "color": "#60a5fa",
     "items": [
@@ -10,9 +11,7 @@
         "detail": "站长的个人主页，汇总项目笔记与技术分享文章，也是本站各工具的出发页。",
         "url": "https://duanaifeng.github.io/AFeng/",
         "id": "aifeng-zhuye",
-        "tags": [
-          "个人"
-        ]
+        "tags": ["个人"]
       },
       {
         "name": "工时记账",
@@ -20,10 +19,7 @@
         "detail": "网页端工时工资计算器，分临时工与正式工两种模式，录入每日工时自动核算月薪或日结。",
         "url": "https://duanaifeng.github.io/AFeng/gongshi/",
         "id": "gongshi-jizhang",
-        "tags": [
-          "工具",
-          "效率"
-        ]
+        "tags": ["工具", "效率"]
       },
       {
         "name": "西邑赶集日历",
@@ -31,16 +27,13 @@
         "detail": "支持本地西邑街、永信街、羊邑街、丙麻街日历查询。支持导入到手机日历，形成日历推送提醒。",
         "url": "",
         "id": "xiyi-ganji-rili",
-        "tags": [
-          "生活",
-          "工具"
-        ],
+        "tags": ["生活", "工具"],
         "popup": [
           {
             "label": "网页版（免安装）",
             "desc": "点开就查，可导出日历订阅",
             "detail": "不用装东西，浏览器打开就能按日期查四街循环，支持选 1/3/6/10 年导出 .ics 文件，导入手机日历后形成订阅提醒。微信/QQ 里点不动时，复制网址用系统浏览器打开即可。适合临时查一下、或不想装 APP 的人",
-            "url": "https://duanaifeng.github.io/AFeng/ganji"
+            "url": "https://duanaifeng.github.io/AFeng/ganji/"
           },
           {
             "label": "街历 · 安卓 APP",
@@ -56,10 +49,7 @@
         "detail": "浏览器内直接运行的老游戏合集，涵盖街机、掌机、Flash 类小游戏，无需下载客户端。",
         "url": "https://duanaifeng.github.io/AFeng/game/",
         "id": "huaijiu-youxiku",
-        "tags": [
-          "娱乐",
-          "游戏"
-        ]
+        "tags": ["娱乐", "游戏"]
       },
       {
         "name": "电脑维护工具合集",
@@ -67,10 +57,7 @@
         "detail": "站长用易语言编写的维护工具合集，含装机辅助、系统故障排查等小工具，经百度网盘分发。打包即用、针对国内常见故障；易语言程序常被杀软误报，无毒放心使用！",
         "url": "https://pan.baidu.com/s/1hQTemxFEXxPJOMQtIlEo2w?pwd=8888",
         "id": "diannao-weihu-gongju",
-        "tags": [
-          "工具",
-          "系统"
-        ]
+        "tags": ["工具", "系统"]
       },
       {
         "name": "网络管家",
@@ -78,17 +65,13 @@
         "detail": "自动拓扑图＋三协议探活，设备在线状态一眼看清；局域网网段、名称、IP、图标全自定义；宽带账号、路由后台地址、WiFi 密码按节点存档，纯本地存储，零上传，支持备份导出。",
         "url": "https://yun.139.com/shareweb/#/w/i/2yA8HGvm3X8qc",
         "id": "wangluo-guanjia",
-        "tags": [
-          "局域网",
-          "设备",
-          "管家"
-        ]
+        "tags": ["局域网", "设备", "管家"]
       }
-    ],
-    "categoryEn": "ORIGINAL"
+    ]
   },
   {
     "category": "聆听音乐",
+    "categoryEn": "MUSIC",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 14v-3a9 9 0 0 1 18 0v3\"/><path d=\"M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z\"/></svg>",
     "color": "#a78bfa",
     "items": [
@@ -98,10 +81,7 @@
         "detail": "跨平台开源音乐播放器，通过接入第三方音源接口聚合并发平台曲库，支持无损试听、歌词与批量下载。",
         "url": "https://lxmusic.toside.cn/",
         "id": "lx-music",
-        "tags": [
-          "音乐",
-          "开源"
-        ]
+        "tags": ["音乐", "开源"]
       },
       {
         "name": "MoeKoe Music",
@@ -109,10 +89,7 @@
         "detail": "基于酷狗曲库的开源第三方客户端，界面简洁，主打 Hi-Res 与 Hi-Fi 高音质播放。",
         "url": "https://music.moekoe.cn/",
         "id": "moekoe-music",
-        "tags": [
-          "音乐",
-          "开源"
-        ]
+        "tags": ["音乐", "开源"]
       },
       {
         "name": "GD音乐台",
@@ -120,10 +97,7 @@
         "detail": "网页端聚合播放器，把网易云、QQ 音乐与 Tidal、Qobuz 等国内外曲库放在一个页面里播放。",
         "url": "https://music.gdstudio.org/",
         "id": "gd-yinyuetai",
-        "tags": [
-          "音乐",
-          "聚合"
-        ]
+        "tags": ["音乐", "聚合"]
       },
       {
         "name": "音乐接口监控",
@@ -131,11 +105,7 @@
         "detail": "监控网易云等主流音源 API 的存活状态，提供简易状态页与多节点运维看板两种视图。",
         "url": "",
         "id": "yinyue-jiekou-jiankong",
-        "tags": [
-          "音乐",
-          "监控",
-          "聚合"
-        ],
+        "tags": ["音乐", "监控", "聚合"],
         "popup": [
           {
             "label": "简易状态页",
@@ -157,10 +127,7 @@
         "detail": "第三方聚合音乐客户端，覆盖 iOS（需自签）、Android、Windows、macOS 四端，支持多源解析、歌曲下载与歌单迁移。",
         "url": "",
         "id": "tunefree-next",
-        "tags": [
-          "音乐",
-          "聚合"
-        ],
+        "tags": ["音乐", "聚合"],
         "popup": [
           {
             "label": "客户端下载",
@@ -182,11 +149,7 @@
         "detail": "站长逐张搜集整理的高品质曲库，含周杰伦全专辑 CD 抓轨、个人精选 CD 抓轨与 Apple Music 音源补充三个包，每首均已手工补全封面、歌词与标签。⚠ 网盘分享随时可能失效，仅供个人备份用途。",
         "url": "",
         "id": "aifeng-music",
-        "tags": [
-          "音乐",
-          "无损",
-          "自整理"
-        ],
+        "tags": ["音乐", "无损", "自整理"],
         "popup": [
           {
             "label": "百度网盘",
@@ -202,11 +165,11 @@
           }
         ]
       }
-    ],
-    "categoryEn": "MUSIC"
+    ]
   },
   {
     "category": "随心观影",
+    "categoryEn": "VIDEO",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z\"/><path d=\"m6.2 5.3 3.1 3.9\"/><path d=\"m12.4 3.4 3.1 4\"/><path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/></svg>",
     "color": "#f472b6",
     "items": [
@@ -216,10 +179,7 @@
         "detail": "AI 驱动的影视检索站，可用「想看类似XX的深夜剧」这类口语描述找片，附相似推荐。",
         "url": "https://kanju.ai/",
         "id": "kanju-ai",
-        "tags": [
-          "影视",
-          "AI"
-        ]
+        "tags": ["影视", "AI"]
       },
       {
         "name": "蛋播星球",
@@ -227,10 +187,7 @@
         "detail": "蛋蛋不语（DANBO）全能客户端，影视、直播、音乐、阅读四合一，覆盖 iOS、Android、Android TV、macOS、Windows、Linux，站内附完整安装与排错教程。",
         "url": "https://danboxingqiu.cn/",
         "id": "danbo-xingqiu",
-        "tags": [
-          "影视",
-          "直播"
-        ]
+        "tags": ["影视", "直播"]
       },
       {
         "name": "ZY Player",
@@ -238,10 +195,7 @@
         "detail": "Windows / macOS 影视播放器，导入第三方点播接口后解析播放，自身不含任何资源。",
         "url": "https://zyplayer.fun/",
         "id": "zy-player",
-        "tags": [
-          "影视",
-          "播放器"
-        ]
+        "tags": ["影视", "播放器"]
       },
       {
         "name": "iOS·追剧",
@@ -249,10 +203,7 @@
         "detail": "整理 App Store 上以工具、计算器名义伪装上架的追剧类 App 及其获取途径。",
         "url": "https://yinghezhinan.com/ios-app/",
         "id": "ios-zhuiju",
-        "tags": [
-          "影视",
-          "APP"
-        ]
+        "tags": ["影视", "APP"]
       },
       {
         "name": "Android·追剧",
@@ -260,10 +211,7 @@
         "detail": "安卓端追剧 App 与盒子客户端的整理合集，可按设备类型与系统版本筛选适配版本。⚠ 非商店来源 apk，安装前请查毒并留意索取权限。",
         "url": "https://yinghezhinan.com/sitetag/android%E5%AE%A2%E6%88%B7%E7%AB%AF/",
         "id": "android-zhuiju",
-        "tags": [
-          "影视",
-          "APP"
-        ]
+        "tags": ["影视", "APP"]
       },
       {
         "name": "TVBox 接口备份",
@@ -271,10 +219,7 @@
         "detail": "用 Python + GitHub Actions 定时抓取公开 TVBox 接口，汇总点播、直播与采集站地址，纯静态前端展示并提供多域名互备。⚠ 接口来源为网络公开搬运，版权与稳定性均无保障。",
         "url": "",
         "id": "tvbox-jiekou-beifen",
-        "tags": [
-          "影视",
-          "盒子"
-        ],
+        "tags": ["影视", "盒子"],
         "popup": [
           {
             "label": "在线访问（主）",
@@ -296,11 +241,11 @@
           }
         ]
       }
-    ],
-    "categoryEn": "VIDEO"
+    ]
   },
   {
     "category": "聚合资源",
+    "categoryEn": "SOFTWARE",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65\"/><path d=\"m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65\"/></svg>",
     "color": "#fbbf24",
     "items": [
@@ -310,10 +255,7 @@
         "detail": "老牌绿色软件站，主打重新打包去除捆绑与推广弹窗，多数免注册直下。",
         "url": "https://www.423down.com/",
         "id": "423down",
-        "tags": [
-          "软件",
-          "资源"
-        ]
+        "tags": ["软件", "资源"]
       },
       {
         "name": "果核剥壳",
@@ -321,10 +263,7 @@
         "detail": "更新勤快的资源站，覆盖 Windows 绿色版、安卓改版 App 与开源小工具，作者常写实测点评。",
         "url": "https://www.ghxi.com/",
         "id": "guohe-boke",
-        "tags": [
-          "软件",
-          "资源"
-        ]
+        "tags": ["软件", "资源"]
       },
       {
         "name": "易破解",
@@ -332,10 +271,7 @@
         "detail": "长期更新的资源站，收录便携版、直装版、运行库与开源工具，分类清晰、带签到积分机制。",
         "url": "https://www.ypojie.com/",
         "id": "yipojie",
-        "tags": [
-          "资源",
-          "线报"
-        ]
+        "tags": ["资源", "线报"]
       },
       {
         "name": "小刀娱乐网",
@@ -343,10 +279,7 @@
         "detail": "老牌综合资源站，板块覆盖活动线报、绿色软件、网站源码与建站教程。",
         "url": "https://www.x6d.com/",
         "id": "xiaodao-yule",
-        "tags": [
-          "资源",
-          "线报"
-        ]
+        "tags": ["资源", "线报"]
       },
       {
         "name": "QQ业务乐园",
@@ -354,10 +287,8 @@
         "detail": "聚焦 QQ 相关的资讯号，记录点亮图标玩法、活动线报与配套小工具。⚠ 全站未启用 HTTPS，请勿在此输入任何账号密码。",
         "url": "http://m.qqyewu.com/",
         "id": "qq-yewu-leyuan",
-        "tags": [
-          "资源",
-          "线报"
-        ]
+        "insecure": true,
+        "tags": ["资源", "线报"]
       },
       {
         "name": "下次一定",
@@ -365,10 +296,7 @@
         "detail": "个人向导航站，聚合网盘影视资源、AI 工具与装机软件入口，卡片式分类。",
         "url": "https://www.iiice.cn/",
         "id": "xiaci-yiding",
-        "tags": [
-          "导航",
-          "收藏"
-        ]
+        "tags": ["导航", "收藏"]
       },
       {
         "name": "导航天下",
@@ -376,10 +304,7 @@
         "detail": "偏技术向的网址导航，收录 QQ 玩法外挂站、源码与各类网络资源入口。",
         "url": "https://www.daohangtx.com/",
         "id": "daohang-tianxia",
-        "tags": [
-          "导航",
-          "收藏"
-        ]
+        "tags": ["导航", "收藏"]
       },
       {
         "name": "网址藏经阁",
@@ -387,10 +312,8 @@
         "detail": "海量网址的分类收藏库，按生活、工具、资源等类目平铺罗列入口。⚠ 未启用 HTTPS，访问时留意隐私与跳转。永硕空间已改版，需输入访问密码，密码与空间账号（用户名）相同。",
         "url": "http://12122.ysepan.com",
         "id": "wangzhi-cangjingge",
-        "tags": [
-          "导航",
-          "收藏"
-        ]
+        "insecure": true,
+        "tags": ["导航", "收藏"]
       },
       {
         "name": "HAP Store",
@@ -398,10 +321,7 @@
         "detail": "公益性质的鸿蒙原生 HAP 应用分发平台，可下载适配 HarmonyOS 的原生安装包。⚠ 侧载安装请确认来源，避免授权不明应用。",
         "url": "https://www.sydxky.cn/index.php",
         "id": "hap-store",
-        "tags": [
-          "鸿蒙",
-          "资源"
-        ]
+        "tags": ["鸿蒙", "资源"]
       },
       {
         "name": "吾爱破解",
@@ -409,17 +329,13 @@
         "detail": "2008 年建站的技术论坛，聚焦软件逆向、安全分析、脱壳与编程交流，精华区沉淀大量教程。",
         "url": "https://www.52pojie.cn/",
         "id": "wuai-pojie",
-        "tags": [
-          "技术",
-          "逆向",
-          "安全"
-        ]
+        "tags": ["技术", "逆向", "安全"]
       }
-    ],
-    "categoryEn": "SOFTWARE"
+    ]
   },
   {
     "category": "实用工具",
+    "categoryEn": "TOOLS",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"/></svg>",
     "color": "#fb923c",
     "items": [
@@ -429,10 +345,7 @@
         "detail": "网页版图像处理工具，操作逻辑贴近 Photoshop，支持图层、裁剪、调色与常见格式导出。",
         "url": "https://tugaigai.com/online_ps/",
         "id": "zaixian-ps",
-        "tags": [
-          "工具",
-          "图片"
-        ]
+        "tags": ["工具", "图片"]
       },
       {
         "name": "久创云运动",
@@ -440,10 +353,7 @@
         "detail": "对接多款运动与健康类 App 的接口工具，提交账号后可改写同步的步数成绩。⚠ 需提交账号密码，建议专用小号，勿用主账号。",
         "url": "https://zepp.net.cn/",
         "id": "jiuchuangyun-yundong",
-        "tags": [
-          "运动",
-          "工具"
-        ]
+        "tags": ["运动", "工具"]
       },
       {
         "name": "LocalSend",
@@ -451,11 +361,7 @@
         "detail": "开源局域网传输工具，同一网络内的手机、电脑、平板互传文件、文件夹与剪贴板，全程端对端不经服务器。",
         "url": "https://localsend.org/zh-CN#/",
         "id": "localsend",
-        "tags": [
-          "工具",
-          "局域网",
-          "开源"
-        ]
+        "tags": ["工具", "局域网", "开源"]
       },
       {
         "name": "AdGuard 临时邮箱",
@@ -463,17 +369,13 @@
         "detail": "AdGuard 官方提供的临时邮箱，打开即用、无需注册，收件箱最长保留约六个月。⚠ 国内访问不稳定，勿用于注册重要账号。",
         "url": "https://tempmail.adguard.com",
         "id": "adguard-linshiyouxiang",
-        "tags": [
-          "工具",
-          "邮箱",
-          "隐私"
-        ]
+        "tags": ["工具", "邮箱", "隐私"]
       }
-    ],
-    "categoryEn": "TOOLS"
+    ]
   },
   {
     "category": "系统装机",
+    "categoryEn": "SYSTEM",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"22\" x2=\"2\" y1=\"12\" y2=\"12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/><line x1=\"6\" x2=\"6.01\" y1=\"16\" y2=\"16\"/><line x1=\"10\" x2=\"10.01\" y1=\"16\" y2=\"16\"/></svg>",
     "color": "#38bdf8",
     "items": [
@@ -483,10 +385,7 @@
         "detail": "老牌装机工具站，主力产品为优启通 PE、万能驱动包与系统部署工具，论坛沉淀大量装机经验帖。",
         "url": "https://m.itsk.com/",
         "id": "it-tiankong",
-        "tags": [
-          "系统",
-          "工具"
-        ]
+        "tags": ["系统", "工具"]
       },
       {
         "name": "系统总裁",
@@ -494,10 +393,7 @@
         "detail": "系统维护工具站，提供封装工具 SC、U 盘维护盘 USM 与各类驱动辅助，偏技术向。",
         "url": "https://www.sysceo.com/",
         "id": "xitong-zongcai",
-        "tags": [
-          "系统",
-          "封装"
-        ]
+        "tags": ["系统", "封装"]
       },
       {
         "name": "不忘初心系统",
@@ -505,9 +401,7 @@
         "detail": "第三方 Windows 精简优化镜像，剔除广告推送与预装冗余组件，兼顾游戏与办公场景。⚠ 非官方镜像，建议先备份再装。",
         "url": "https://www.pc528.net/",
         "id": "buwang-chuxin-xitong",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
       },
       {
         "name": "小鱼儿yr系统",
@@ -515,9 +409,7 @@
         "detail": "第三方 Windows 精简母盘，以稳定性为第一优先，裁剪幅度相对保守。⚠ 非官方镜像，安装前备份数据。",
         "url": "https://www.yrxitong.com/",
         "id": "xiaoyuer-yr-xitong",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
       },
       {
         "name": "又要重装系统站",
@@ -525,9 +417,7 @@
         "detail": "收集网上流传的优化版 Windows 镜像并附重装图文教程，适合首次自己装机的人照着走。",
         "url": "https://www.yyczxt.com/",
         "id": "youyao-chongzhuang",
-        "tags": [
-          "系统"
-        ]
+        "tags": ["系统"]
       },
       {
         "name": "Ventoy",
@@ -535,10 +425,7 @@
         "detail": "国产开源启动盘工具，把 ISO 文件直接拷进 U 盘即可在开机菜单里多选启动，无需反复格式化。",
         "url": "https://www.ventoy.net/",
         "id": "ventoy",
-        "tags": [
-          "系统",
-          "U盘"
-        ]
+        "tags": ["系统", "U盘"]
       },
       {
         "name": "Rufus",
@@ -546,16 +433,13 @@
         "detail": "免安装的启动盘制作工具，单文件运行、自带数字签名，简体中文界面，适配 Windows 与各类 Linux 镜像。",
         "url": "https://rufus.ie/",
         "id": "rufus",
-        "tags": [
-          "系统",
-          "U盘"
-        ]
+        "tags": ["系统", "U盘"]
       }
-    ],
-    "categoryEn": "SYSTEM"
+    ]
   },
   {
     "category": "DNS 服务",
+    "categoryEn": "DNS",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/></svg>",
     "color": "#22d3ee",
     "items": [
@@ -565,10 +449,7 @@
         "detail": "国内公共 DNS，主打钓鱼与恶意域名拦截，附带广告与追踪过滤，另有面向企业的版本。",
         "url": "https://www.onedns.net/",
         "id": "onedns",
-        "tags": [
-          "DNS",
-          "安全"
-        ]
+        "tags": ["DNS", "安全"]
       },
       {
         "name": "NextDNS",
@@ -576,10 +457,7 @@
         "detail": "云端 DNS 防火墙，按账号提供可勾选的拦截清单、家长控制、日志查询与各设备独立配置。",
         "url": "https://nextdns.io/zh",
         "id": "nextdns",
-        "tags": [
-          "DNS",
-          "安全"
-        ]
+        "tags": ["DNS", "安全"]
       },
       {
         "name": "果冻调度加速PRO",
@@ -587,10 +465,7 @@
         "detail": "个人运营的智能调度 DNS，自动解析到低延迟线路，主打游戏加速与苹果 APNs 推送优化。",
         "url": "https://www.gddns.org/",
         "id": "guodong-diaodu-pro",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       },
       {
         "name": "关圣DNS",
@@ -598,10 +473,7 @@
         "detail": "公益加密 DNS，DoH / DoT / DoQ 三种协议全支持，免费版每日 10 万次、20 次每秒限速，付费版不限量并附解析统计。",
         "url": "https://dns1.top/",
         "id": "guansheng-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       },
       {
         "name": "23-4 DNS",
@@ -609,10 +481,7 @@
         "detail": "个人自建的加密 DNS，过滤广告与追踪器，只统计查询总量不记录具体域名，站内附自检页验证是否生效。",
         "url": "https://dns.23-4.cn/",
         "id": "23-4-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       },
       {
         "name": "Sofmed DNS",
@@ -620,10 +489,7 @@
         "detail": "支持 DoH / DoH3 / DoT / DoQ 与明文 DNS，广告黑名单定时更新，可导出为 AdGuard 规则直接复用，站点另附 KMS 激活工具。⚠ 站内附带的 KMS 激活属版权灰色区，仅作信息收录，不建议用于商用授权。",
         "url": "https://dns.sofmed.cn/",
         "id": "sofmed-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       },
       {
         "name": "18Bit DNS",
@@ -631,10 +497,7 @@
         "detail": "免费公益加密 DNS，拦截广告、追踪器与钓鱼域名，TLS 评级 A+，对 GitHub 相关域名做过解析优化。",
         "url": "https://go.18bit.cn/",
         "id": "18bit-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       },
       {
         "name": "XLXBK DNS",
@@ -642,16 +505,13 @@
         "detail": "面向 VIP 付费用户的 DNS 服务，官网不公开解析地址与端口，节点信息需登录后台查看。⚠ 付费前建议先小额试水，确认可退。",
         "url": "https://svip.xlxbk.cn/login",
         "id": "xlxbk-dns",
-        "tags": [
-          "DNS",
-          "自建"
-        ]
+        "tags": ["DNS", "自建"]
       }
-    ],
-    "categoryEn": "DNS"
+    ]
   },
   {
     "category": "网络加速",
+    "categoryEn": "PROXY",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\"/></svg>",
     "color": "#3b82f6",
     "items": [
@@ -661,10 +521,7 @@
         "detail": "跨境网络加速服务商，提供多条备用访问域名，主域名被墙时可切换。⚠ 商业服务有跑路风险，建议月付、勿年付。",
         "url": "https://cloud.52iplc.com/",
         "id": "52iplc",
-        "tags": [
-          "网络",
-          "代理"
-        ]
+        "tags": ["网络", "代理"]
       },
       {
         "name": "一元机场",
@@ -672,10 +529,7 @@
         "detail": "低价代理订阅服务，提供 Clash、V2ray、Shadowrocket 等客户端通用订阅链接。⚠ 只买短周期、勿充值大额，重要账号勿走不明线路。",
         "url": "https://xn--4gq62f52gdss.top/#/register?code=pJTq1IRF",
         "id": "yiyuan-jichang",
-        "tags": [
-          "网络",
-          "代理"
-        ]
+        "tags": ["网络", "代理"]
       },
       {
         "name": "yfamilys",
@@ -683,10 +537,7 @@
         "detail": "Loon 用户的插件与规则订阅源集合，含 yfamilys、Kelee Hub 等主流源，覆盖分流、去广告与去重。",
         "url": "https://yfamilys.com/loon",
         "id": "yfamilys",
-        "tags": [
-          "网络",
-          "代理"
-        ]
+        "tags": ["网络", "代理"]
       },
       {
         "name": "Kelee Hub",
@@ -694,16 +545,13 @@
         "detail": "个人维护的 Loon 插件与规则订阅源，在 Loon 内填入订阅地址即可同步分流与去广告规则。",
         "url": "https://hub.kelee.one/",
         "id": "kelee-hub",
-        "tags": [
-          "网络",
-          "代理"
-        ]
+        "tags": ["网络", "代理"]
       }
-    ],
-    "categoryEn": "PROXY"
+    ]
   },
   {
     "category": "网络检测",
+    "categoryEn": "NET-TEST",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\"/></svg>",
     "color": "#14b8a6",
     "items": [
@@ -713,10 +561,7 @@
         "detail": "网易官方网络诊断组合，读出本机出口 IP 与所用 DNS 服务器判断是否遭劫持，另配 IPv4/IPv6 双栈连通检测。",
         "url": "",
         "id": "wangyi-wangluo-zhenduan",
-        "tags": [
-          "网络",
-          "检测"
-        ],
+        "tags": ["网络", "检测"],
         "popup": [
           {
             "label": "DNS 检测",
@@ -738,10 +583,7 @@
         "detail": "DNS 泄露检测站，列出你的请求最终由哪些 DNS 服务器应答、归属哪家机构。",
         "url": "https://dnsleaktest.com/",
         "id": "dns-leak-test",
-        "tags": [
-          "网络",
-          "检测"
-        ]
+        "tags": ["网络", "检测"]
       },
       {
         "name": "test-ipv6",
@@ -749,10 +591,7 @@
         "detail": "老牌 IPv6 连通性检测，跑完给 0–10 分报告，列出地址、隧道方式与常见网站的可达情况。",
         "url": "https://test-ipv6.com/",
         "id": "test-ipv6",
-        "tags": [
-          "网络",
-          "检测"
-        ]
+        "tags": ["网络", "检测"]
       },
       {
         "name": "TCPTest",
@@ -760,10 +599,7 @@
         "detail": "国内多节点网络诊断工具，支持 Ping、TCPing、IPv6 检测、路由追踪与网站测速。",
         "url": "https://www.tcptest.cn/",
         "id": "tcptest",
-        "tags": [
-          "网络",
-          "测速"
-        ]
+        "tags": ["网络", "测速"]
       },
       {
         "name": "中科大测速",
@@ -771,16 +607,13 @@
         "detail": "中国科学技术大学的官方测速站，支持 IPv4 / IPv6 双协议上下行测速。",
         "url": "https://test.ustc.edu.cn/",
         "id": "zhongkeda-cesu",
-        "tags": [
-          "网络",
-          "测速"
-        ]
+        "tags": ["网络", "测速"]
       }
-    ],
-    "categoryEn": "NET-TEST"
+    ]
   },
   {
     "category": "脚本与扩展",
+    "categoryEn": "EXTENSIONS",
     "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z\"/></svg>",
     "color": "#4ade80",
     "items": [
@@ -790,10 +623,7 @@
         "detail": "老牌用户脚本管理器，覆盖 Chrome、Edge、Firefox、Safari 与安卓浏览器，脚本生态兼容度最高。",
         "url": "https://www.tampermonkey.net/",
         "id": "tampermonkey",
-        "tags": [
-          "脚本",
-          "油猴"
-        ]
+        "tags": ["脚本", "油猴"]
       },
       {
         "name": "ScriptCat脚本猫",
@@ -801,10 +631,7 @@
         "detail": "国产开源脚本管理器，兼容油猴脚本 API，额外提供后台脚本、定时执行与脚本订阅更新。",
         "url": "https://github.com/scriptscat/scriptcat",
         "id": "scriptcat",
-        "tags": [
-          "脚本",
-          "油猴"
-        ]
+        "tags": ["脚本", "油猴"]
       },
       {
         "name": "Violentmonkey暴力猴",
@@ -812,10 +639,7 @@
         "detail": "开源的用户脚本管理器，界面极简、无推广内容，主流浏览器商店均可直装。",
         "url": "https://violentmonkey.github.io/",
         "id": "violentmonkey",
-        "tags": [
-          "脚本",
-          "油猴"
-        ]
+        "tags": ["脚本", "油猴"]
       },
       {
         "name": "Crx搜搜",
@@ -823,10 +647,7 @@
         "detail": "浏览器扩展搜索下载站，可获取 Chrome / Edge 扩展的 crx 离线安装包，免去特殊网络环境。⚠ 第三方转存的 crx 未经官方校验，装前确认来源。",
         "url": "https://www.crxsoso.com/",
         "id": "crx-sousuo",
-        "tags": [
-          "扩展",
-          "脚本"
-        ]
+        "tags": ["扩展", "脚本"]
       },
       {
         "name": "Greasy Fork",
@@ -834,10 +655,7 @@
         "detail": "社区驱动的脚本托管站，按网站分类收录大量用户脚本，配油猴类扩展一键安装。⚠ 安装前读一遍脚本权限与源码，优先选高星且近期更新的。",
         "url": "https://greasyfork.org/zh-CN",
         "id": "greasy-fork",
-        "tags": [
-          "扩展",
-          "脚本"
-        ]
+        "tags": ["扩展", "脚本"]
       },
       {
         "name": "AdGuard",
@@ -845,10 +663,7 @@
         "detail": "跨平台的广告拦截套件，覆盖浏览器扩展、Windows、macOS、安卓与 iOS（DNS 方式），拦网页广告、应用内广告与跟踪请求。",
         "url": "https://adguard.com/zh_cn/welcome.html",
         "id": "adguard",
-        "tags": [
-          "广告",
-          "拦截"
-        ]
+        "tags": ["广告", "拦截"]
       },
       {
         "name": "uBlock Origin",
@@ -856,10 +671,7 @@
         "detail": "开源内容拦截器，以极低内存占用过滤广告、弹窗与跟踪脚本，规则可自定义到元素级。",
         "url": "https://github.com/gorhill/uBlock",
         "id": "ublock-origin",
-        "tags": [
-          "广告",
-          "拦截"
-        ]
+        "tags": ["广告", "拦截"]
       },
       {
         "name": "AdBlock Filters",
@@ -867,12 +679,8 @@
         "detail": "定时抓取并合并多家主流拦截规则，输出适配 AdGuard 与 uBlock Origin 的订阅地址。",
         "url": "https://github.com/217heidai/adblockfilters",
         "id": "adblock-filters",
-        "tags": [
-          "广告",
-          "拦截"
-        ]
+        "tags": ["广告", "拦截"]
       }
-    ],
-    "categoryEn": "EXTENSIONS"
+    ]
   }
 ]
