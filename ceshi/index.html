@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f5f8fc" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#06080d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f3f8ff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#04070e" media="(prefers-color-scheme: dark)">
 <meta name="description" content="AiFeng 资源导航站：工具、系统软件、影音资源、开源脚本聚合。">
 <meta name="keywords" content="资源导航,工具导航,系统软件,影音资源,开源脚本">
 <meta name="robots" content="index,follow">
@@ -39,7 +39,7 @@
       description: '工具 · 软件 · 影音 · 脚本聚合',
       start_url: scope, scope: scope,
       display: 'standalone', orientation: 'portrait',
-      background_color: '#06080d', theme_color: '#2f6fed', lang: 'zh-CN',
+      background_color: '#04070e', theme_color: '#2f6fed', lang: 'zh-CN',
       icons: [
         { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'any' },
         { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'any' },
@@ -83,26 +83,26 @@
 :root{
   color-scheme: light;
 
-  /* 画布：冷中性，几乎无彩，靠明暗起伏托起玻璃 */
-  --bg-1:#f5f8fc;
-  --bg-2:#ecf1f8;
-  --bg-3:#e3eaf4;
-  --bg-4:#e6ecf6;
-  --bg-5:#edf2f9;
-  --bg-6:#f4f7fc;
+  /* 画布：冷蓝基调 */
+  --bg-1:#f3f8ff;
+  --bg-2:#e9f1fd;
+  --bg-3:#dee9fb;
+  --bg-4:#e3ecfd;
+  --bg-5:#ecf3fe;
+  --bg-6:#f4f9ff;
 
-  --amb-1:rgba(118,166,255,.28);
-  --amb-2:rgba(92,206,222,.15);
-  --grid-line:rgba(24,50,104,.055);
+  --amb-1:rgba(88,148,255,.34);
+  --amb-2:rgba(72,196,232,.16);
+  --grid-line:rgba(28,66,132,.065);
 
-  /* 玻璃填充三档 */
-  --g-fill-1:linear-gradient(158deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.26) 34%,rgba(255,255,255,.14) 62%,rgba(255,255,255,.30) 100%);
-  --g-fill-2:linear-gradient(158deg,rgba(255,255,255,.44) 0%,rgba(255,255,255,.20) 38%,rgba(255,255,255,.12) 66%,rgba(255,255,255,.24) 100%);
-  --g-fill-3:linear-gradient(158deg,rgba(255,255,255,.74) 0%,rgba(255,255,255,.52) 40%,rgba(255,255,255,.46) 70%,rgba(255,255,255,.62) 100%);
+  /* 玻璃填充三档：蓝白 */
+  --g-fill-1:linear-gradient(158deg,rgba(250,253,255,.68) 0%,rgba(240,247,255,.36) 34%,rgba(232,243,255,.24) 62%,rgba(245,250,255,.40) 100%);
+  --g-fill-2:linear-gradient(158deg,rgba(248,252,255,.54) 0%,rgba(236,245,255,.28) 38%,rgba(228,240,255,.20) 66%,rgba(242,249,255,.32) 100%);
+  --g-fill-3:linear-gradient(158deg,rgba(252,254,255,.985) 0%,rgba(245,250,255,.975) 40%,rgba(240,248,255,.97) 70%,rgba(250,253,255,.985) 100%);
 
-  /* 玻璃边缘：左上亮 → 中段暗 → 右下回光 */
-  --g-edge:linear-gradient(150deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.20) 24%,rgba(255,255,255,.04) 56%,rgba(255,255,255,.72) 100%);
-  --g-edge-soft:linear-gradient(150deg,rgba(255,255,255,.90) 0%,rgba(255,255,255,.16) 26%,rgba(255,255,255,.03) 58%,rgba(255,255,255,.66) 100%);
+  /* 玻璃边缘：白 → 淡蓝 → 白，形成折射感 */
+  --g-edge:linear-gradient(150deg,rgba(255,255,255,.98) 0%,rgba(226,240,255,.34) 24%,rgba(210,230,255,.10) 56%,rgba(255,255,255,.78) 100%);
+  --g-edge-soft:linear-gradient(150deg,rgba(255,255,255,.94) 0%,rgba(224,238,255,.28) 26%,rgba(208,228,255,.08) 58%,rgba(255,255,255,.70) 100%);
 
   --g-blur:blur(26px) saturate(180%);
   --g-blur-strong:blur(38px) saturate(190%);
@@ -117,21 +117,21 @@
     inset 0 1px 0 rgba(255,255,255,.82),
     inset 0 -1px 0 rgba(255,255,255,.20);
 
-  /* 中性阴影三档 */
-  --sh-1:0 1px 2px rgba(15,23,42,.05), 0 6px 16px -12px rgba(15,23,42,.30);
-  --sh-2:0 1px 2px rgba(15,23,42,.06), 0 14px 32px -20px rgba(15,23,42,.36);
-  --sh-3:0 2px 6px rgba(15,23,42,.07), 0 40px 88px -44px rgba(15,23,42,.44);
+  /* 阴影三档：中性 */
+  --sh-1:0 1px 2px rgba(15,32,64,.06), 0 6px 16px -12px rgba(15,32,64,.34);
+  --sh-2:0 1px 2px rgba(15,32,64,.07), 0 14px 32px -20px rgba(15,32,64,.38);
+  --sh-3:0 2px 6px rgba(15,32,64,.08), 0 40px 88px -44px rgba(15,32,64,.46);
 
-  /* 文本 */
-  --ink:#0d1520;
-  --ink-2:#3a4757;
-  --ink-3:#68758a;
+  /* 文本：带蓝的冷灰 */
+  --ink:#0a1a2e;
+  --ink-2:#35506e;
+  --ink-3:#61788f;
 
-  --ln:rgba(15,23,42,.10);
-  --ln-2:rgba(15,23,42,.18);
-  --groove:rgba(15,23,42,.045);
+  --ln:rgba(24,58,110,.12);
+  --ln-2:rgba(24,58,110,.20);
+  --groove:rgba(24,58,110,.055);
 
-  /* 主色：单一冰蓝，不做紫渐变 */
+  /* 主色：单一冰蓝 */
   --acc:#2f6fed;
   --acc-2:#7dd3fc;
   --grad:linear-gradient(140deg,#2559dc 0%,#2f6fed 52%,#4b8bff 100%);
@@ -159,7 +159,7 @@
   --ls-kicker:.16em;
   --ls-label:.06em;
 
-  /* 动效：高刚度弹簧为主，微过冲只给极小元素 */
+  /* 动效 */
   --ease:cubic-bezier(.22,.61,.36,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
   --spring:cubic-bezier(.2,.9,.2,1);
@@ -178,44 +178,44 @@
 html.dark{
   color-scheme: dark;
 
-  --bg-1:#06080d;
-  --bg-2:#090c13;
-  --bg-3:#0c1018;
-  --bg-4:#0a0e16;
-  --bg-5:#080b12;
-  --bg-6:#06080d;
+  --bg-1:#04070e;
+  --bg-2:#070d18;
+  --bg-3:#0a1322;
+  --bg-4:#08101d;
+  --bg-5:#060c16;
+  --bg-6:#04070e;
 
-  --amb-1:rgba(56,120,255,.30);
-  --amb-2:rgba(20,180,200,.14);
-  --grid-line:rgba(120,170,255,.055);
+  --amb-1:rgba(56,120,255,.36);
+  --amb-2:rgba(24,180,210,.14);
+  --grid-line:rgba(110,170,255,.065);
 
-  --g-fill-1:linear-gradient(158deg,rgba(255,255,255,.105) 0%,rgba(255,255,255,.052) 38%,rgba(255,255,255,.032) 66%,rgba(255,255,255,.062) 100%);
-  --g-fill-2:linear-gradient(158deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.040) 40%,rgba(255,255,255,.026) 68%,rgba(255,255,255,.050) 100%);
-  --g-fill-3:linear-gradient(158deg,rgba(34,44,62,.88) 0%,rgba(22,30,44,.84) 42%,rgba(18,25,38,.86) 72%,rgba(28,38,54,.88) 100%);
+  --g-fill-1:linear-gradient(158deg,rgba(214,232,255,.105) 0%,rgba(198,222,255,.052) 38%,rgba(190,216,255,.032) 66%,rgba(210,230,255,.062) 100%);
+  --g-fill-2:linear-gradient(158deg,rgba(214,232,255,.085) 0%,rgba(198,222,255,.040) 40%,rgba(190,216,255,.026) 68%,rgba(210,230,255,.050) 100%);
+  --g-fill-3:linear-gradient(158deg,rgba(22,32,50,.985) 0%,rgba(16,23,37,.98) 42%,rgba(13,20,33,.98) 72%,rgba(18,27,43,.985) 100%);
 
-  --g-edge:linear-gradient(150deg,rgba(255,255,255,.50) 0%,rgba(255,255,255,.08) 26%,rgba(255,255,255,.02) 58%,rgba(255,255,255,.30) 100%);
-  --g-edge-soft:linear-gradient(150deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.06) 28%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.24) 100%);
+  --g-edge:linear-gradient(150deg,rgba(210,232,255,.52) 0%,rgba(180,212,255,.10) 26%,rgba(160,200,255,.02) 58%,rgba(210,232,255,.32) 100%);
+  --g-edge-soft:linear-gradient(150deg,rgba(210,232,255,.44) 0%,rgba(180,212,255,.08) 28%,rgba(160,200,255,.02) 60%,rgba(210,232,255,.26) 100%);
 
   --bevel:
-    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 1px 0 rgba(215,234,255,.20),
     inset 0 -1px 0 rgba(0,0,0,.45),
-    inset 1px 0 0 rgba(255,255,255,.08),
-    inset -1px 0 0 rgba(255,255,255,.03);
+    inset 1px 0 0 rgba(215,234,255,.09),
+    inset -1px 0 0 rgba(215,234,255,.03);
   --bevel-soft:
-    inset 0 1px 0 rgba(255,255,255,.14),
+    inset 0 1px 0 rgba(215,234,255,.15),
     inset 0 -1px 0 rgba(0,0,0,.38);
 
   --sh-1:0 1px 2px rgba(0,0,0,.55), 0 8px 20px -14px rgba(0,0,0,.85);
   --sh-2:0 1px 2px rgba(0,0,0,.60), 0 18px 38px -22px rgba(0,0,0,.95);
   --sh-3:0 2px 8px rgba(0,0,0,.65), 0 44px 96px -46px rgba(0,0,0,1);
 
-  --ink:#eef3fb;
-  --ink-2:#b6c3d6;
-  --ink-3:#8494a9;
+  --ink:#eaf2ff;
+  --ink-2:#b3c6de;
+  --ink-3:#7f93ab;
 
-  --ln:rgba(255,255,255,.10);
-  --ln-2:rgba(255,255,255,.18);
-  --groove:rgba(0,0,0,.22);
+  --ln:rgba(150,190,255,.12);
+  --ln-2:rgba(150,190,255,.20);
+  --groove:rgba(0,0,0,.24);
 
   --acc:#6aa9ff;
   --acc-2:#9ad4ff;
@@ -321,12 +321,12 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .fx-glow{ position:absolute; border-radius:50%; filter:blur(70px); will-change:transform; }
 .fx-glow:nth-child(1){
   width:min(70vw,620px); height:min(70vw,620px); left:-12%; top:-14%;
-  background:radial-gradient(circle,rgba(150,190,255,.40) 0%,transparent 68%);
+  background:radial-gradient(circle,rgba(150,190,255,.42) 0%,transparent 68%);
   animation:glowA 38s ease-in-out infinite alternate;
 }
 .fx-glow:nth-child(2){
   width:min(56vw,520px); height:min(56vw,520px); right:-10%; top:26%;
-  background:radial-gradient(circle,rgba(96,206,222,.20) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(96,196,228,.22) 0%,transparent 70%);
   animation:glowB 46s ease-in-out infinite alternate;
 }
 @keyframes glowA{ 0%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(5%,-4%,0) scale(1.10)} 100%{transform:translate3d(-3%,4%,0) scale(1.02)} }
@@ -334,7 +334,7 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 
 .fx-vignette{
   position:absolute; inset:0;
-  background:radial-gradient(ellipse 82% 62% at 50% 28%,transparent 48%,rgba(12,22,44,.10) 100%);
+  background:radial-gradient(ellipse 82% 62% at 50% 28%,transparent 48%,rgba(14,32,66,.10) 100%);
 }
 html.dark .fx-vignette{ background:radial-gradient(ellipse 78% 60% at 50% 26%,transparent 34%,rgba(0,0,0,.55) 100%); }
 
@@ -350,7 +350,7 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
 
 /* ══════════════════════════════════════════════════════════
    04 · 玻璃三材质
-   填充用 padding-box，边缘用 border-box，零伪元素、零 mask
+   填充 padding-box + 边缘 border-box，零伪元素
    ══════════════════════════════════════════════════════════ */
 .surface,.overlay,.pill,.card{
   position:relative;
@@ -358,7 +358,6 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
   border:1px solid transparent;
 }
 
-/* 大面板：真实折射 */
 .surface{
   background:var(--g-fill-2) padding-box, var(--g-edge) border-box;
   box-shadow:var(--bevel), var(--sh-2);
@@ -367,7 +366,6 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
   border-radius:var(--r-panel);
 }
 
-/* 浮层：强折射 + 高不透，保证可读 */
 .overlay{
   background:var(--g-fill-3) padding-box, var(--g-edge) border-box;
   box-shadow:var(--bevel), var(--sh-3);
@@ -376,13 +374,11 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
   border-radius:var(--r-panel);
 }
 
-/* 胶囊：一切可点与小标签 */
 .pill{
   background:var(--g-fill-1) padding-box, var(--g-edge-soft) border-box;
   box-shadow:var(--bevel-soft), var(--sh-1);
 }
 
-/* 卡片：假折射，不挂 backdrop（50 张实卡会掉帧） */
 .card{
   background:var(--g-fill-1) padding-box, var(--g-edge) border-box;
   box-shadow:var(--bevel), var(--sh-1);
@@ -391,28 +387,28 @@ html.perf-lite .fx-cursor,html.perf-lite .fx-vignette{ display:none; }
 .itab{
   background:var(--groove);
   border:1px solid rgba(255,255,255,.34);
-  box-shadow:inset 0 1px 2px rgba(15,23,42,.10), inset 0 -1px 0 rgba(255,255,255,.45);
+  box-shadow:inset 0 1px 2px rgba(15,32,64,.10), inset 0 -1px 0 rgba(255,255,255,.45);
   border-radius:var(--r-card);
 }
 html.dark .itab{
   background:rgba(0,0,0,.24);
-  border-color:rgba(255,255,255,.07);
+  border-color:rgba(180,212,255,.08);
   box-shadow:inset 0 1px 2px rgba(0,0,0,.55), inset 0 -1px 0 rgba(255,255,255,.04);
 }
 
 html.perf-lite .surface,html.perf-lite .overlay{
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
-html.perf-lite .surface{ background:rgba(244,248,253,.94) padding-box, var(--g-edge) border-box; }
-html.perf-lite .overlay{ background:rgba(246,250,255,.97) padding-box, var(--g-edge) border-box; }
-html.dark.perf-lite .surface{ background:rgba(14,19,28,.94) padding-box, var(--g-edge) border-box; }
-html.dark.perf-lite .overlay{ background:rgba(17,23,34,.97) padding-box, var(--g-edge) border-box; }
+html.perf-lite .surface{ background:rgba(244,249,255,.94) padding-box, var(--g-edge) border-box; }
+html.perf-lite .overlay{ background:rgba(248,252,255,.98) padding-box, var(--g-edge) border-box; }
+html.dark.perf-lite .surface{ background:rgba(10,19,34,.94) padding-box, var(--g-edge) border-box; }
+html.dark.perf-lite .overlay{ background:rgba(13,20,33,.98) padding-box, var(--g-edge) border-box; }
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .surface{ background:rgba(244,248,253,.94) padding-box, var(--g-edge) border-box; }
-  .overlay{ background:rgba(246,250,255,.97) padding-box, var(--g-edge) border-box; }
-  html.dark .surface{ background:rgba(14,19,28,.94) padding-box, var(--g-edge) border-box; }
-  html.dark .overlay{ background:rgba(17,23,34,.97) padding-box, var(--g-edge) border-box; }
+  .surface{ background:rgba(244,249,255,.94) padding-box, var(--g-edge) border-box; }
+  .overlay{ background:rgba(248,252,255,.98) padding-box, var(--g-edge) border-box; }
+  html.dark .surface{ background:rgba(10,19,34,.94) padding-box, var(--g-edge) border-box; }
+  html.dark .overlay{ background:rgba(13,20,33,.98) padding-box, var(--g-edge) border-box; }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -518,17 +514,26 @@ body.editing .settings-btn .edit-label{ display:inline; }
 .search-box{
   position:relative; display:flex; align-items:center;
   border-radius:var(--r-pill);
+  background:
+    linear-gradient(158deg,rgba(250,253,255,.92) 0%,rgba(238,247,255,.76) 44%,rgba(230,242,255,.68) 72%,rgba(246,251,255,.86) 100%) padding-box,
+    var(--g-edge) border-box;
+  box-shadow:var(--bevel), var(--sh-1);
   transition:box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
 }
 .search-box:focus-within{
-  box-shadow:var(--bevel), var(--sh-1), 0 0 0 4px var(--acc-ring);
   background:
-    linear-gradient(158deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.42) 40%,rgba(255,255,255,.34) 70%,rgba(255,255,255,.52) 100%) padding-box,
+    linear-gradient(158deg,rgba(255,255,255,.98) 0%,rgba(244,250,255,.92) 44%,rgba(238,247,255,.88) 72%,rgba(252,254,255,.97) 100%) padding-box,
+    var(--g-edge) border-box;
+  box-shadow:var(--bevel), var(--sh-2), 0 0 0 4px var(--acc-ring);
+}
+html.dark .search-box{
+  background:
+    linear-gradient(158deg,rgba(205,228,255,.135) 0%,rgba(190,218,255,.080) 44%,rgba(182,212,255,.062) 72%,rgba(205,228,255,.105) 100%) padding-box,
     var(--g-edge) border-box;
 }
 html.dark .search-box:focus-within{
   background:
-    linear-gradient(158deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.07) 40%,rgba(255,255,255,.05) 70%,rgba(255,255,255,.10) 100%) padding-box,
+    linear-gradient(158deg,rgba(205,228,255,.20) 0%,rgba(190,218,255,.13) 44%,rgba(182,212,255,.11) 72%,rgba(205,228,255,.17) 100%) padding-box,
     var(--g-edge) border-box;
 }
 
@@ -547,7 +552,7 @@ html.dark .search-box:focus-within{
   font-family:inherit; font-size:var(--fs-lg); outline:none;
   -webkit-appearance:none; appearance:none;
 }
-.search-input::placeholder{ color:var(--ink-3); opacity:1; }
+.search-input::placeholder{ color:var(--ink-2); opacity:.60; }
 .search-input::-webkit-search-cancel-button{ -webkit-appearance:none; }
 
 .search-clear{
@@ -602,6 +607,7 @@ html.dark .search-box:focus-within{
   display:block; width:100%;
   font-size:var(--fs-sm); color:var(--ink-3); line-height:1.45;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  opacity:.85;
 }
 .suggest-empty{
   padding:26px 16px; text-align:center;
@@ -688,14 +694,12 @@ body.editing .section-actions{ display:flex; }
              background var(--dur-2) var(--ease);
 }
 
-/* 分类色微光：像玻璃侧面折射出来的一层薄色 */
 .item::before{
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit;
   background:radial-gradient(112% 132% at 0% 50%, var(--c-bg,transparent) 0%, transparent 54%);
   opacity:.9;
 }
 
-/* 液体扫光：只在 hover 掠过一次 */
 .item::after{
   content:''; position:absolute; inset:-1px; z-index:2; pointer-events:none;
   background:linear-gradient(112deg,
@@ -712,13 +716,13 @@ body.editing .section-actions{ display:flex; }
   .item:hover{
     transform:translate3d(0,-2px,0);
     background:
-      linear-gradient(158deg,rgba(255,255,255,.76) 0%,rgba(255,255,255,.46) 34%,rgba(255,255,255,.30) 62%,rgba(255,255,255,.48) 100%) padding-box,
+      linear-gradient(158deg,rgba(252,254,255,.86) 0%,rgba(242,249,255,.54) 34%,rgba(234,244,255,.38) 62%,rgba(248,252,255,.56) 100%) padding-box,
       var(--g-edge) border-box;
     box-shadow:var(--bevel), var(--sh-2), 0 0 0 1px var(--c-ring,var(--acc-ring));
   }
   html.dark .item:hover{
     background:
-      linear-gradient(158deg,rgba(255,255,255,.145) 0%,rgba(255,255,255,.085) 38%,rgba(255,255,255,.060) 66%,rgba(255,255,255,.100) 100%) padding-box,
+      linear-gradient(158deg,rgba(214,232,255,.165) 0%,rgba(198,222,255,.100) 38%,rgba(190,216,255,.072) 66%,rgba(210,230,255,.118) 100%) padding-box,
       var(--g-edge) border-box;
   }
   .item:hover::after{
@@ -903,8 +907,8 @@ body.editing .add-zone{ display:flex; }
 
 .footer-badges{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
 .badge{
-  --c:#64748b;
-  --c-bg:rgba(100,116,139,.14);
+  --c:#5b6b80;
+  --c-bg:rgba(91,107,128,.14);
   display:inline-flex; align-items:center; gap:7px;
   padding:5px 12px 5px 10px;
   border-radius:var(--r-pill);
@@ -1052,7 +1056,7 @@ body.editing .footer{ padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)
 .modal-mask{
   position:absolute; inset:0;
   border:none; padding:0; margin:0;
-  background:rgba(12,20,38,.26);
+  background:rgba(10,22,46,.28);
   -webkit-backdrop-filter:blur(18px) saturate(150%);
           backdrop-filter:blur(18px) saturate(150%);
   opacity:0;
@@ -1060,7 +1064,7 @@ body.editing .footer{ padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)
   cursor:pointer;
 }
 .modal.show .modal-mask{ opacity:1; }
-html.dark .modal-mask{ background:rgba(2,5,12,.60); }
+html.dark .modal-mask{ background:rgba(1,4,10,.62); }
 html.perf-lite .modal-mask{ -webkit-backdrop-filter:none; backdrop-filter:none; }
 
 .modal-box{
@@ -1181,7 +1185,7 @@ html.dark .detail-icon{ box-shadow:inset 0 1px 0 rgba(255,255,255,.10); }
   padding:3px 11px; border-radius:var(--r-pill);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
-html.dark .detail-host{ border-color:rgba(255,255,255,.08); }
+html.dark .detail-host{ border-color:rgba(180,212,255,.10); }
 
 .detail-desc{
   font-size:var(--fs-md); line-height:1.75; color:var(--ink-2);
@@ -1291,12 +1295,12 @@ html.dark .detail-host{ border-color:rgba(255,255,255,.08); }
   transition:background var(--dur-1) var(--ease), transform var(--dur-2) var(--spring), box-shadow var(--dur-2) var(--ease);
 }
 .popup-entry:hover{
-  background:linear-gradient(158deg,rgba(255,255,255,.80) 0%,rgba(255,255,255,.50) 40%,rgba(255,255,255,.38) 70%,rgba(255,255,255,.56) 100%) padding-box, var(--g-edge) border-box;
+  background:linear-gradient(158deg,rgba(252,254,255,.92) 0%,rgba(242,249,255,.64) 40%,rgba(234,244,255,.50) 70%,rgba(248,252,255,.70) 100%) padding-box, var(--g-edge) border-box;
   box-shadow:var(--bevel), var(--sh-2);
   transform:translateX(2px);
 }
 html.dark .popup-entry:hover{
-  background:linear-gradient(158deg,rgba(255,255,255,.15) 0%,rgba(255,255,255,.09) 40%,rgba(255,255,255,.06) 70%,rgba(255,255,255,.11) 100%) padding-box, var(--g-edge) border-box;
+  background:linear-gradient(158deg,rgba(214,232,255,.175) 0%,rgba(198,222,255,.105) 40%,rgba(190,216,255,.075) 70%,rgba(210,230,255,.125) 100%) padding-box, var(--g-edge) border-box;
 }
 .popup-entry:active{ transform:scale(.995); }
 .popup-entry-icon{
@@ -1334,9 +1338,9 @@ html.dark .popup-entry:hover{
   border-radius:var(--r-pill);
   background:var(--groove);
   border:1px solid rgba(255,255,255,.34);
-  box-shadow:inset 0 1px 2px rgba(15,23,42,.08);
+  box-shadow:inset 0 1px 2px rgba(15,32,64,.08);
 }
-html.dark .form-tabs{ border-color:rgba(255,255,255,.07); box-shadow:inset 0 1px 2px rgba(0,0,0,.45); }
+html.dark .form-tabs{ border-color:rgba(180,212,255,.08); box-shadow:inset 0 1px 2px rgba(0,0,0,.45); }
 .form-tab{
   flex:1; padding:9px; min-height:40px;
   border:none; border-radius:var(--r-pill);
@@ -1369,18 +1373,18 @@ html.dark .form-tabs{ border-color:rgba(255,255,255,.07); box-shadow:inset 0 1px
   outline:none;
   background:var(--groove);
   border:1px solid rgba(255,255,255,.34);
-  box-shadow:inset 0 1px 2px rgba(15,23,42,.10), inset 0 -1px 0 rgba(255,255,255,.45);
+  box-shadow:inset 0 1px 2px rgba(15,32,64,.10), inset 0 -1px 0 rgba(255,255,255,.45);
   -webkit-appearance:none; appearance:none;
   transition:border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
 }
 html.dark .form-input{
-  border-color:rgba(255,255,255,.07);
+  border-color:rgba(180,212,255,.08);
   box-shadow:inset 0 1px 2px rgba(0,0,0,.55), inset 0 -1px 0 rgba(255,255,255,.04);
 }
 .form-input::placeholder{ color:var(--ink-3); opacity:.85; }
 .form-input:focus-visible{
   border-color:var(--acc);
-  box-shadow:inset 0 1px 2px rgba(15,23,42,.08), 0 0 0 4px var(--acc-ring);
+  box-shadow:inset 0 1px 2px rgba(15,32,64,.08), 0 0 0 4px var(--acc-ring);
   background:rgba(255,255,255,.5);
 }
 html.dark .form-input:focus-visible{ background:rgba(255,255,255,.08); }
@@ -1402,7 +1406,7 @@ select.form-input{
   background:var(--groove);
   border:1px solid rgba(255,255,255,.30);
 }
-html.dark .form-hint{ border-color:rgba(255,255,255,.06); }
+html.dark .form-hint{ border-color:rgba(180,212,255,.07); }
 .form-hint strong{ color:var(--ink); font-weight:800; }
 .form-hint code{
   font-family:var(--mono); font-size:var(--fs-xs);
@@ -1418,7 +1422,7 @@ html.dark .form-hint{ border-color:rgba(255,255,255,.06); }
   background:var(--groove);
   border:1px solid rgba(255,255,255,.30);
 }
-html.dark .gh-adv{ border-color:rgba(255,255,255,.06); }
+html.dark .gh-adv{ border-color:rgba(180,212,255,.07); }
 .gh-adv > summary{
   list-style:none; cursor:pointer;
   display:flex; align-items:center; gap:8px;
@@ -1451,7 +1455,7 @@ html.dark .gh-adv{ border-color:rgba(255,255,255,.06); }
   border-color:rgba(255,255,255,.5);
   border-radius:var(--r-pill);
 }
-html.dark .popup-row .form-input{ background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.10); }
+html.dark .popup-row .form-input{ background:rgba(255,255,255,.07); border-color:rgba(180,212,255,.10); }
 
 .form-actions{
   display:flex; gap:10px;
@@ -1500,7 +1504,7 @@ html.dark .popup-row .form-input{ background:rgba(255,255,255,.07); border-color
   transition:border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease),
              background var(--dur-1) var(--ease), transform var(--dur-2) var(--spring), box-shadow var(--dur-1) var(--ease);
 }
-html.dark .icon-option{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); }
+html.dark .icon-option{ background:rgba(255,255,255,.06); border-color:rgba(180,212,255,.09); }
 .icon-option svg{ width:17px; height:17px; display:block; }
 .icon-option:hover{ border-color:var(--acc-ring); transform:scale(1.06); }
 .icon-option.selected{
@@ -1524,7 +1528,7 @@ html.dark .icon-option{ background:rgba(255,255,255,.06); border-color:rgba(255,
   border-color:#fff;
   box-shadow:0 0 0 2px var(--acc), 0 0 0 5px var(--acc-ring);
 }
-html.dark .color-option.selected{ border-color:#0c1018; }
+html.dark .color-option.selected{ border-color:#0a1322; }
 
 /* ══════════════════════════════════════════════════════════
    16 · FLOAT：BACK TOP / TOAST
@@ -1619,8 +1623,8 @@ body.editing .back-top{
   display:none; flex-direction:column; align-items:center; justify-content:center;
   gap:30px; padding:22px;
   background:
-    radial-gradient(ellipse 88% 58% at 50% 0%,rgba(47,111,237,.22) 0%,transparent 62%),
-    #06080d;
+    radial-gradient(ellipse 88% 58% at 50% 0%,rgba(47,111,237,.24) 0%,transparent 62%),
+    #04070e;
   overflow:hidden;
 }
 #timeLock::after{
@@ -1631,7 +1635,7 @@ body.editing .back-top{
 .term{
   position:relative; width:100%; max-width:620px;
   border-radius:var(--r-card); overflow:hidden;
-  background:linear-gradient(168deg,rgba(20,28,42,.86) 0%,rgba(8,11,18,.92) 100%);
+  background:linear-gradient(168deg,rgba(18,26,40,.88) 0%,rgba(6,9,16,.94) 100%);
   border:1px solid rgba(120,180,255,.14);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 26px 56px -26px rgba(0,8,24,.9);
   -webkit-backdrop-filter:blur(20px) saturate(160%);
@@ -2127,7 +2131,7 @@ html.perf-lite .item::after{ display:none; }
       category: '加载异常',
       categoryEn: 'ERROR',
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>',
-      color: '#64748b',
+      color: '#5b6b80',
       items: [{
         name: '数据加载失败',
         url: 'https://duanaifeng.github.io/AFeng/daohang/',
