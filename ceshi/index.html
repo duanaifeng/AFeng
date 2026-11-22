@@ -204,7 +204,7 @@ body{
   background-attachment:fixed;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  padding-bottom:calc(74px + env(safe-area-inset-bottom, 0px));
+  padding-bottom:calc(80px + env(safe-area-inset-bottom, 0px));
 }
 
 a,button,input,select,textarea,label{ touch-action:manipulation; }
@@ -776,7 +776,6 @@ html.dark .preview{ background:linear-gradient(150deg, rgba(255,255,255,.07), rg
   font-variant-numeric:tabular-nums;
   flex:0 0 auto; color:var(--txt);
 }
-.pv-line:empty{ display:none; }
 .pv-total{
   display:flex; align-items:baseline; justify-content:space-between; gap:12px;
   margin-top:9px; padding-top:9px;
@@ -1136,7 +1135,7 @@ html.dark .btn{ background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(2
 .btn.danger:active{ background:var(--bad-soft); }
 
 /* ══════════════════════════════════════════════════════════
-   23 · 更多作品
+   23 · 更多作品 / 云端恢复
    ══════════════════════════════════════════════════════════ */
 .link-grid{ list-style:none; display:grid; gap:8px; grid-template-columns:1fr 1fr; position:relative; z-index:1; }
 @media (min-width:640px){ .link-grid{ grid-template-columns:repeat(3,1fr); } }
@@ -1155,6 +1154,21 @@ html.dark .link-item{ background:linear-gradient(150deg, rgba(255,255,255,.06), 
 .link-item:active{ background:var(--accent-soft); transform:scale(.98); }
 .link-ico{ font-size:15px; line-height:1; flex:0 0 auto; }
 .link-txt{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.cloud-sync{ margin-top:10px; position:relative; z-index:1; }
+.cloud-btn{
+  width:100%; min-height:46px; padding:0 16px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--txt-2);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  font-size:13px; font-weight:800; letter-spacing:.02em;
+  transition:background .2s var(--ease), border-color .2s var(--ease), transform .16s var(--ease), opacity .2s var(--ease);
+}
+.cloud-btn svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.cloud-btn:active{ transform:scale(.98); background:var(--accent-soft); color:var(--accent); border-color:var(--accent-ring); }
+.cloud-btn:disabled{ opacity:.6; cursor:not-allowed; }
 
 /* ══════════════════════════════════════════════════════════
    24 · 页脚
@@ -1216,28 +1230,71 @@ html.dark .link-item{ background:linear-gradient(150deg, rgba(255,255,255,.06), 
 .divider{ margin:0 5px; opacity:.45; }
 
 /* ══════════════════════════════════════════════════════════
-   25 · 状态栏 / Toast / 回到顶部
+   25 · 状态栏（左：状态文字 / 右：同步按钮）
    ══════════════════════════════════════════════════════════ */
 .status-bar{
   position:fixed; left:0; right:0; bottom:0; z-index:50;
-  padding:9px 16px;
+  display:flex; align-items:center; gap:10px;
+  padding:9px 14px;
   padding-bottom:calc(9px + env(safe-area-inset-bottom, 0px));
   border-top:1px solid var(--hairline);
   background:var(--surface-float);
   -webkit-backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
           backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
   box-shadow:inset 0 1px 0 var(--glass-sheen);
-  text-align:center;
   font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.05em;
   color:var(--txt-3);
+  overflow:hidden;
+}
+.status-text{
+  flex:1 1 auto; min-width:0;
+  text-align:center;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.status-bar.ok{ color:var(--ok); font-weight:800; }
-.status-bar.err{ color:var(--bad); font-weight:800; }
-.status-bar.loading{ color:var(--warn); font-weight:800; }
+.status-bar.ok      .status-text{ color:var(--ok);   font-weight:800; }
+.status-bar.err     .status-text{ color:var(--bad);  font-weight:800; }
+.status-bar.loading .status-text{ color:var(--warn); font-weight:800; }
 
+.status-sync{
+  flex:0 0 auto;
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  min-height:30px; padding:0 12px;
+  border-radius:999px;
+  border:1px solid var(--accent-ring);
+  background:var(--accent-soft);
+  color:var(--accent);
+  font-family:var(--sans); font-size:11.5px; font-weight:800; letter-spacing:.02em;
+  transition:transform .16s var(--ease), background .2s var(--ease),
+             color .2s var(--ease), border-color .2s var(--ease), opacity .2s var(--ease);
+}
+.status-sync svg{ width:13px; height:13px; stroke:currentColor; fill:none;
+  stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+.status-sync:active{ transform:scale(.94); }
+.status-sync[disabled]{ opacity:.7; cursor:not-allowed; }
+.status-sync.is-busy{ color:var(--warn); background:var(--warn-soft); border-color:rgba(180,83,9,.35); }
+.status-sync.is-busy svg{ animation:spin 1s linear infinite; }
+.status-sync.is-ok{
+  color:#fff; border-color:transparent;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  box-shadow:0 6px 14px -8px rgba(22,163,74,.8), inset 0 1px 0 rgba(255,255,255,.3);
+}
+.status-sync.is-err{
+  color:#fff; border-color:transparent;
+  background:linear-gradient(135deg,#f87171,#dc2626);
+  box-shadow:0 6px 14px -8px rgba(220,38,38,.8), inset 0 1px 0 rgba(255,255,255,.3);
+}
+.status-sync.is-off{ color:var(--txt-3); border-color:var(--line); background:transparent; }
+@media (max-width:380px){
+  .status-sync{ padding:0 10px; }
+  .status-sync .ss-txt{ display:none; }
+}
+html.perf-lite .status-sync.is-busy svg{ animation:none; }
+
+/* ══════════════════════════════════════════════════════════
+   26 · Toast / 回到顶部
+   ══════════════════════════════════════════════════════════ */
 .toast{
-  position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom, 0px));
+  position:fixed; left:50%; bottom:calc(70px + env(safe-area-inset-bottom, 0px));
   z-index:10000;
   display:flex; align-items:center; gap:12px;
   max-width:calc(100vw - 36px);
@@ -1268,8 +1325,8 @@ html.dark .link-item{ background:linear-gradient(150deg, rgba(255,255,255,.06), 
 
 .back-top{
   position:fixed; right:18px;
-  bottom:calc(56px + env(safe-area-inset-bottom, 0px));
-  z-index:80;
+  bottom:calc(64px + env(safe-area-inset-bottom, 0px));
+  z-index:40;
   width:48px; height:48px; padding:0; border-radius:50%;
   display:grid; place-items:center;
   border:1px solid var(--hairline);
@@ -1305,11 +1362,11 @@ html.dark .link-item{ background:linear-gradient(150deg, rgba(255,255,255,.06), 
 }
 .back-top:active{ transform:scale(.9); }
 @media (min-width:1024px){
-  .back-top{ right:32px; bottom:calc(64px + env(safe-area-inset-bottom, 0px)); width:52px; height:52px; }
+  .back-top{ right:32px; bottom:calc(72px + env(safe-area-inset-bottom, 0px)); width:52px; height:52px; }
 }
 
 /* ══════════════════════════════════════════════════════════
-   26 · 弹窗
+   27 · 弹窗
    ══════════════════════════════════════════════════════════ */
 .modal{
   position:fixed; inset:0; z-index:400;
@@ -1412,7 +1469,7 @@ html.dark .chip{ background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(
 .welcome-tip strong{ color:var(--txt); font-weight:800; }
 
 /* ══════════════════════════════════════════════════════════
-   27 · 响应 / 打印 / 降级
+   28 · 响应 / 打印 / 降级
    ══════════════════════════════════════════════════════════ */
 @media (max-width:380px){
   .period-label{ min-width:120px; font-size:11px; }
@@ -1436,7 +1493,7 @@ html.perf-lite .tb-orb{ animation:none; }
 
 @media print{
   .fx, .fx-cursor, .topbar, .status-bar, .toast, .back-top, .skip-link,
-  .datebar, .cfg-panel, .big-btn, .allow-add, .rec-del, .allow-del{ display:none !important; }
+  .datebar, .cfg-panel, .big-btn, .allow-add, .rec-del, .allow-del, .cloud-sync{ display:none !important; }
   body{ background:#fff; color:#000; padding:0; }
   .shell{ max-width:100%; padding:0; }
   .glass{
@@ -1703,7 +1760,7 @@ html.perf-lite .tb-orb{ animation:none; }
       </div>
 
       <details class="cfg-adv" id="cfgAdvanced">
-        <summary>高级设置 · 用户名 / 仓库 / 路径</summary>
+        <summary>高级设置 · 用户名 / 仓库 / 分支 / 路径</summary>
         <div class="cfg-adv-body">
           <div class="form-field">
             <label class="form-label" for="cfgUser">GitHub 用户名</label>
@@ -1712,6 +1769,10 @@ html.perf-lite .tb-orb{ animation:none; }
           <div class="form-field">
             <label class="form-label" for="cfgRepo">仓库名</label>
             <input class="form-input" id="cfgRepo" type="text" value="AFeng" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="cfgBranch">分支（默认 main）</label>
+            <input class="form-input" id="cfgBranch" type="text" value="main" autocomplete="off" spellcheck="false">
           </div>
           <div class="form-field">
             <label class="form-label" for="cfgPath">数据文件路径（固定）</label>
@@ -1747,6 +1808,12 @@ html.perf-lite .tb-orb{ animation:none; }
         <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/?item=wangluo-guanjia" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">📡</span><span class="link-txt">网络管家</span></a></li>
         <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/?item=diannao-weihu-gongju" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">💻</span><span class="link-txt">电脑维护</span></a></li>
       </ul>
+      <div class="cloud-sync">
+        <button class="cloud-btn" id="btnCloudPull" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11.5"/><polyline points="7.5 10.5 12 15 16.5 10.5"/><path d="M4 16.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.5"/></svg>
+          <span>从云端恢复本机数据</span>
+        </button>
+      </div>
     </section>
   </main>
 
@@ -1899,7 +1966,16 @@ html.perf-lite .tb-orb{ animation:none; }
   </div>
 </div>
 
-<div class="status-bar" id="statusBar" role="status" aria-live="polite"><span id="statusText">未连接</span></div>
+<div class="status-bar" id="statusBar">
+  <span class="status-text" id="statusText" role="status" aria-live="polite">未连接</span>
+  <button class="status-sync is-off" id="btnStatusSync" type="button" aria-label="同步到云端" title="同步到云端">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/><path d="M3 12a9 9 0 0 1 15.4-6.4L21 8"/>
+      <polyline points="3 21 3 16 8 16"/><polyline points="21 3 21 8 16 8"/>
+    </svg>
+    <span class="ss-txt">同步</span>
+  </button>
+</div>
 
 <button class="back-top" id="backTop" type="button" aria-label="回到顶部">
   <svg class="ring" viewBox="0 0 48 48" aria-hidden="true">
@@ -1945,7 +2021,7 @@ html.perf-lite .tb-orb{ animation:none; }
     HOLIDAY_RATE: 3,
     HOURS_MIN: 0.5,
     HOURS_MAX: 24,
-    SALARY_MIN: 0,
+    SALARY_MIN: 1,
     SALARY_MAX: 9999999,
     FULL_DEFAULT_HOURS: 12,
     TEMP_DEFAULT_HOURS: 8,
@@ -2098,6 +2174,12 @@ html.perf-lite .tb-orb{ animation:none; }
     dayLabel: function (dateStr) {
       var p = String(dateStr).split('-').map(Number);
       return Utils.pad2(p[1]) + '/' + Utils.pad2(p[2]);
+    },
+    /* 统一取“合法的考勤类型”，脏数据一律当“上班”处理（防白屏） */
+    attOf: function (record) {
+      if (!record) return 'work';
+      var a = record.att;
+      return (a && ATT[a]) ? a : 'work';
     }
   };
 
@@ -2173,7 +2255,7 @@ html.perf-lite .tb-orb{ animation:none; }
     document.addEventListener('visibilitychange', function () { if (document.hidden) onLeave(); });
   }
 
-  /* ══════════ 焦点陷阱 ══════════ */
+  /* ══════════ 焦点陷阱（关闭时还原 aria-hidden / inert 原值） ══════════ */
   var FocusTrap = (function () {
     var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
     var st = { el: null, prev: null, onEsc: null, inerted: [] };
@@ -2192,15 +2274,18 @@ html.perf-lite .tb-orb{ animation:none; }
         if (el === keep) continue;
         var tag = el.tagName;
         if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK') continue;
-        if (on) {
-          if ('inert' in el) { el.inert = true; st.inerted.push(el); }
-          else { el.setAttribute('aria-hidden', 'true'); st.inerted.push(el); }
-        }
+        if (!on) continue;
+        st.inerted.push({ el: el, inert: el.inert, hid: el.getAttribute('aria-hidden') });
+        if ('inert' in el) el.inert = true;
+        el.setAttribute('aria-hidden', 'true');
       }
     }
     function release() {
-      st.inerted.forEach(function (el) {
-        if ('inert' in el) el.inert = false; else el.removeAttribute('aria-hidden');
+      st.inerted.forEach(function (rec) {
+        var el = rec.el;
+        if ('inert' in el) el.inert = !!rec.inert;
+        if (rec.hid === null) el.removeAttribute('aria-hidden');
+        else el.setAttribute('aria-hidden', rec.hid);
       });
       st.inerted.length = 0;
     }
@@ -2315,8 +2400,8 @@ html.perf-lite .tb-orb{ animation:none; }
     data: {
       version: CFG.DATA_VERSION,
       currentMode: 'full',
-      full: { settings: { baseSalary: null }, customHolidays: {}, allowances: [], records: {} },
-      temp: { settings: { rate: null }, allowances: [], records: {} }
+      full: { settings: { baseSalary: null }, customHolidays: {}, allowances: [], records: {}, tomb: {} },
+      temp: { settings: { rate: null }, allowances: [], records: {}, tomb: {} }
     },
     currentDate: Utils.today(),
     calendarDate: Utils.today(),
@@ -2335,9 +2420,10 @@ html.perf-lite .tb-orb{ animation:none; }
       }
       return false;
     },
-    save: function (user, repo, token) {
-      Store.setJSON(CFG.CFG_KEY, { user: user, repo: repo, token: token, branch: CFG.GH_BRANCH });
-      App.config = { user: user, repo: repo, token: token, branch: CFG.GH_BRANCH };
+    save: function (user, repo, token, branch) {
+      branch = Utils.clean(branch, 80) || CFG.GH_BRANCH;
+      Store.setJSON(CFG.CFG_KEY, { user: user, repo: repo, token: token, branch: branch });
+      App.config = { user: user, repo: repo, token: token, branch: branch };
     },
     clear: function () {
       Store.remove(CFG.CFG_KEY);
@@ -2346,6 +2432,7 @@ html.perf-lite .tb-orb{ animation:none; }
   };
 
   var Data = {
+    /* 修复：只清 temp 里的 customHolidays，full 的必须保留（否则节假日每次加载即丢） */
     normalize: function (raw) {
       if (!raw || typeof raw !== 'object') raw = {};
       if (raw.currentMode !== 'temp') raw.currentMode = 'full';
@@ -2357,8 +2444,9 @@ html.perf-lite .tb-orb{ animation:none; }
         if (!m.settings || typeof m.settings !== 'object') m.settings = {};
         if (!m.allowances || !Array.isArray(m.allowances)) m.allowances = [];
         if (!m.records || typeof m.records !== 'object') m.records = {};
-        /* 节假日只有一份（原先 temp 里也存了一份但从不读取，这里直接清掉） */
-        delete m.customHolidays;
+        if (!m.tomb || typeof m.tomb !== 'object') m.tomb = {};
+        /* 节假日只存在 full 一份，temp 里历史遗留的直接清掉 */
+        if (k === 'temp') delete m.customHolidays;
       });
 
       if (!raw.full.customHolidays || typeof raw.full.customHolidays !== 'object') raw.full.customHolidays = {};
@@ -2383,7 +2471,13 @@ html.perf-lite .tb-orb{ animation:none; }
     isSetupDone: function () { try { return Store.get(CFG.SETUP_KEY) === '1'; } catch (e) { return false; } },
     markSetupDone: function () { Store.set(CFG.SETUP_KEY, '1'); },
 
-    /* 云端 + 本地合并：记录按 timestamp 取新，节假日取并集，设置/补贴“云端缺才用本地” */
+    /* 云端 + 本地合并：
+       ① 底薪/时薪带时间戳，离线改的不被云端旧值覆盖
+       ② 记录按 timestamp 取新
+       ③ 删除墓碑取较新者，避免“删掉的记录在别的设备复活”
+       ④ 补贴按 id 并集
+       ⑤ 节假日（只存 full）取并集
+    */
     merge: function (cloudRaw, localRaw) {
       var out = this.normalize(JSON.parse(JSON.stringify(cloudRaw || {})));
       var local = localRaw ? this.normalize(JSON.parse(JSON.stringify(localRaw))) : null;
@@ -2395,12 +2489,20 @@ html.perf-lite .tb-orb{ animation:none; }
         var l = local[k];
         if (!l) return;
 
+        /* ① 底薪 / 时薪 */
         var key = (k === 'full') ? 'baseSalary' : 'rate';
-        if ((c.settings[key] == null) && (l.settings && l.settings[key] != null)) {
+        var atKey = key + 'At';
+        var cHas = c.settings[key] != null;
+        var lHas = l.settings && l.settings[key] != null;
+        var cAt = Number(c.settings[atKey]) || 0;
+        var lAt = l.settings ? (Number(l.settings[atKey]) || 0) : 0;
+        if (lHas && (!cHas || lAt > cAt)) {
           c.settings[key] = l.settings[key];
+          if (lAt) c.settings[atKey] = lAt;
           changed = true;
         }
 
+        /* ② 记录 */
         var lr = l.records || {};
         Object.keys(lr).forEach(function (date) {
           var localRec = lr[date];
@@ -2411,18 +2513,40 @@ html.perf-lite .tb-orb{ animation:none; }
           }
         });
 
-        var lh = l.customHolidays || {};
-        Object.keys(lh).forEach(function (date) {
-          if (!c.customHolidays[date]) {
-            c.customHolidays[date] = lh[date];
-            changed = true;
-          }
+        /* ③ 墓碑 */
+        var lt = l.tomb || {};
+        if (!c.tomb) c.tomb = {};
+        Object.keys(lt).forEach(function (date) {
+          if ((lt[date] || 0) > (c.tomb[date] || 0)) { c.tomb[date] = lt[date]; changed = true; }
         });
 
-        if (!c.allowances.length && l.allowances.length) {
-          c.allowances = l.allowances.slice();
-          changed = true;
+        /* ④ 补贴：按 id 并集，避免整组被云端吞掉 */
+        if (l.allowances && l.allowances.length) {
+          var used = {};
+          c.allowances.forEach(function (a) { if (a && a.id) used[a.id] = 1; });
+          l.allowances.forEach(function (a) {
+            if (!a) return;
+            if (a.id && used[a.id]) return;
+            c.allowances.push(a);
+            if (a.id) used[a.id] = 1;
+            changed = true;
+          });
         }
+      });
+
+      /* ⑤ 节假日并集 */
+      var lh = (local.full && local.full.customHolidays) || {};
+      Object.keys(lh).forEach(function (d) {
+        if (!out.full.customHolidays[d]) { out.full.customHolidays[d] = lh[d]; changed = true; }
+      });
+
+      /* ③ 应用墓碑：删除时间 >= 记录时间 => 记录作废 */
+      ['full', 'temp'].forEach(function (k) {
+        var m = out[k], t = m.tomb || {};
+        Object.keys(t).forEach(function (d) {
+          var rec = m.records[d];
+          if (rec && (t[d] || 0) >= (rec.timestamp || 0)) { delete m.records[d]; changed = true; }
+        });
       });
 
       out.currentMode = local.currentMode || out.currentMode;
@@ -2445,14 +2569,16 @@ html.perf-lite .tb-orb{ animation:none; }
       return (wd === 0 || wd === 6) ? 'weekend' : 'workday';
     },
 
+    /* 修复：优先用保存当时的时薪/日薪快照，改底薪不再改动历史月份 */
     fullRecordPay: function (record, dateStr) {
       if (!record) return null;
-      if (record.att && record.att !== 'work') return { pay: 0, type: record.att, base: 0, ot: 0 };
+      var att = Utils.attOf(record);
+      if (att !== 'work') return { pay: 0, type: att, base: 0, ot: 0 };
       var hours = Utils.safeNumber(record.hours, 0, 24);
       if (hours === null) hours = 0;
       var type = this.dateType(dateStr);
-      var hourly = this.baseHourly();
-      var daily = this.dailySalary();
+      var hourly = (typeof record.hourlyRate === 'number' && record.hourlyRate > 0) ? record.hourlyRate : this.baseHourly();
+      var daily = (typeof record.dailySalary === 'number' && record.dailySalary > 0) ? record.dailySalary : this.dailySalary();
       if (type === 'holiday') return { pay: hours * hourly * CFG.HOLIDAY_RATE, type: 'holiday', base: 0, ot: hours * hourly * CFG.HOLIDAY_RATE };
       if (type === 'weekend') return { pay: hours * hourly * CFG.WEEKEND_RATE, type: 'weekend', base: 0, ot: hours * hourly * CFG.WEEKEND_RATE };
       if (hours <= CFG.DAILY_HOURS) return { pay: daily, type: 'workday', base: daily, ot: 0 };
@@ -2462,7 +2588,7 @@ html.perf-lite .tb-orb{ animation:none; }
 
     tempRecordPay: function (record) {
       if (!record) return 0;
-      if (record.att && record.att !== 'work') return 0;
+      if (Utils.attOf(record) !== 'work') return 0;
       var hours = Utils.safeNumber(record.hours, 0, 24) || 0;
       return hours * this.tempRate();
     }
@@ -2470,16 +2596,20 @@ html.perf-lite .tb-orb{ animation:none; }
 
   /* ══════════ GitHub 同步 ══════════ */
   var GH = {
-    /* 关键修复：按段编码，保留路径分隔符 */
+    branch: function () { return App.config.branch || CFG.GH_BRANCH; },
+    /* 按段编码，保留路径分隔符 */
     contentsUrl: function () {
       var cfg = App.config;
       return CFG.GH_API + cfg.user + '/' + cfg.repo + '/contents/'
         + CFG.DATA_PATH.split('/').map(encodeURIComponent).join('/');
     },
 
+    /* 修复：读取时带上分支 ref，避免「读默认分支 / 写 main」不一致 */
     getFile: function () {
       var cfg = App.config;
-      var url = this.contentsUrl() + '?t=' + Date.now();
+      var url = this.contentsUrl()
+        + '?ref=' + encodeURIComponent(this.branch())
+        + '&t=' + Date.now();
       var ctrl = ('AbortController' in global) ? new AbortController() : null;
       var timer = setTimeout(function () { if (ctrl) { try { ctrl.abort(); } catch (e) {} } }, CFG.FETCH_TIMEOUT);
       return fetch(url, {
@@ -2522,7 +2652,7 @@ html.perf-lite .tb-orb{ animation:none; }
       } catch (e) {
         base64 = btoa(unescape(encodeURIComponent(contentStr)));
       }
-      var body = { message: '更新工时 ' + new Date().toLocaleString('zh-CN'), content: base64, branch: cfg.branch || CFG.GH_BRANCH };
+      var body = { message: '更新工时 ' + new Date().toLocaleString('zh-CN'), content: base64, branch: this.branch() };
       if (sha) body.sha = sha;
       var ctrl = ('AbortController' in global) ? new AbortController() : null;
       var timer = setTimeout(function () { if (ctrl) { try { ctrl.abort(); } catch (e) {} } }, CFG.FETCH_TIMEOUT);
@@ -2536,6 +2666,7 @@ html.perf-lite .tb-orb{ animation:none; }
         if (res.status === 401) throw new Error('Token 无效或已过期');
         if (res.status === 403) throw new Error('Token 权限不足');
         if (res.status === 409) throw new Error('云端已修改（409）');
+        if (res.status === 422) throw new Error('分支 ' + GH.branch() + ' 不存在或无写入权限，请检查高级设置里的分支名');
         if (!res.ok) {
           return res.text().then(function (text) { throw new Error('写入失败 ' + res.status + '：' + String(text).slice(0, 150)); });
         }
@@ -2592,7 +2723,10 @@ html.perf-lite .tb-orb{ animation:none; }
       })
       .catch(function (err) {
         StatusBar.set('❌ 保存失败：' + err.message, 'err');
-        Toast.show('已存本地，联网后会同步', { duration: 2400 });
+        Toast.show('已存本地，点右侧「同步」重试上云', {
+          duration: 5200,
+          action: { text: '同步', onClick: function () { CloudSync.push(); } }
+        });
         return false;
       })
       .then(function (res) {
@@ -2606,7 +2740,11 @@ html.perf-lite .tb-orb{ animation:none; }
   }
 
   function connectGitHub() {
-    if (!App.config.user || !App.config.repo || !App.config.token) { StatusBar.set('未配置', 'err'); return Promise.resolve(false); }
+    if (!App.config.user || !App.config.repo || !App.config.token) {
+      StatusBar.set('未配置', 'err');
+      CloudSync.refresh();
+      return Promise.resolve(false);
+    }
 
     var local = Data.loadLocal();
     if (local) App.data = local;
@@ -2625,6 +2763,7 @@ html.perf-lite .tb-orb{ animation:none; }
 
         App.connected = true;
         StatusBar.set('✅ 已连接 · ' + App.config.user + '/' + App.config.repo, 'ok');
+        CloudSync.refresh();
         restoreInput();
         Render.all();
 
@@ -2638,13 +2777,19 @@ html.perf-lite .tb-orb{ animation:none; }
       /* 云端还没有文件：把本地推上去 */
       App.connected = true;
       Data.persist();
+      CloudSync.refresh();
       restoreInput();
       Render.all();
       return saveToGitHub().then(function () { return true; });
     }).catch(function (err) {
       App.connected = false;
       StatusBar.set('❌ ' + err.message, 'err');
-      if (local) { restoreInput(); Render.all(); Toast.show('网络异常，已用本地缓存'); }
+      CloudSync.refresh();
+      if (local) {
+        restoreInput();
+        Render.all();
+        Toast.show('网络异常，已用本地缓存；可点右侧「同步」重试', { duration: 3200 });
+      }
       return false;
     });
   }
@@ -2662,7 +2807,8 @@ html.perf-lite .tb-orb{ animation:none; }
       'fullLine1Label','fullLine1Value','fullLine2Label','fullLine2Value',
       'baseSalaryDisplay','baseSalaryHint','tempRateDisplay','btnEditBase','btnEditTemp',
       'btnSaveFull','btnSaveTemp','btnAddAllow','btnConfig','btnExport','recordBox','recordTitle',
-      'allowList','statsBox','statsMeta','cfgPanel','backTop','fullWorkSection','tempWorkSection'
+      'allowList','statsBox','statsMeta','cfgPanel','backTop','fullWorkSection','tempWorkSection',
+      'statusBar','statusText','btnStatusSync','btnCloudPull','footerCopy','footerVer'
     ].forEach(function (id) { DOM[id] = document.getElementById(id); });
   }
 
@@ -2684,10 +2830,9 @@ html.perf-lite .tb-orb{ animation:none; }
       DOM.stat2Label.textContent = isFull ? '加班费' : '总天数';
       DOM.stat3Label.textContent = isFull ? '补贴' : '时薪';
 
-      var p = App.currentDate.split('-').map(Number).map(Number);
+      var p = App.currentDate.split('-').map(Number);
       var isToday = App.currentDate === Utils.today();
       DOM.recordTitle.textContent = isToday ? '今日记录' : (Utils.pad2(p[1]) + ' 月 ' + Utils.pad2(p[2]) + ' 日记录');
-      DOM.recordTitle.dataset.day = App.currentDate === Utils.today() ? 'today' : 'other';
 
       this.updateRates();
       this.dateBar();
@@ -2698,18 +2843,23 @@ html.perf-lite .tb-orb{ animation:none; }
       this.shiftRow(DOM.tempShift, App.tempInput);
       this.attRow(DOM.fullAtt, App.fullInput);
       this.attRow(DOM.tempAtt, App.tempInput);
-      DOM.fullWorkSection.classList.toggle('is-hidden', App.fullInput.att !== 'work');
-      DOM.tempWorkSection.classList.toggle('is-hidden', App.tempInput.att !== 'work');
-      this.updateFullPreview();
-      this.updateTempPreview();
-      this.banner(DOM.fullBanner, App.data.full.records[App.currentDate], true, App.currentDate);
-      this.banner(DOM.tempBanner, App.data.temp.records[App.currentDate], false, App.currentDate);
+      this.attUi();
       this.record();
       this.allowances();
       this.stats();
+      /* 注意：这里不再 persist()，只在真正改数据时写盘 */
+    },
+
+    /* 考勤相关的局部 UI：只更新工作区显隐、状态条、按钮文案（不重建日历/时长格） */
+    attUi: function () {
+      DOM.fullWorkSection.classList.toggle('is-hidden', App.fullInput.att !== 'work');
+      DOM.tempWorkSection.classList.toggle('is-hidden', App.tempInput.att !== 'work');
+      this.banner(DOM.fullBanner, App.data.full.records[App.currentDate], true, App.currentDate);
+      this.banner(DOM.tempBanner, App.data.temp.records[App.currentDate], false, App.currentDate);
       this.saveBtn('full');
       this.saveBtn('temp');
-      /* 注意：这里不再 persist()，只在真正改数据时写盘 */
+      this.updateFullPreview();
+      this.updateTempPreview();
     },
 
     updateRates: function () {
@@ -2737,7 +2887,7 @@ html.perf-lite .tb-orb{ animation:none; }
       var p = App.currentDate.split('-').map(Number);
       var wd = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(p[0], p[1] - 1, p[2]).getDay()];
       var dtype = Calc.dateType(App.currentDate);
-      var tagLabel = { workday: '工作日', weekend: '周末', holiday: '节假日' }[dtype];
+      var tagLabel = { workday: '工作日', weekend: '周末', holiday: '节假日' }[dtype] || '工作日';
 
       DOM.dateDisplay.innerHTML = '';
       DOM.dateDisplay.appendChild(document.createTextNode(Utils.pad2(p[1]) + '-' + Utils.pad2(p[2]) + ' ' + wd));
@@ -2750,12 +2900,12 @@ html.perf-lite .tb-orb{ animation:none; }
       var rec = isFull ? App.data.full.records[App.currentDate] : App.data.temp.records[App.currentDate];
       if (!rec) {
         DOM.dateSub.textContent = '这一天还没有记录';
-      } else if ((rec.att || 'work') === 'work') {
+      } else if (Utils.attOf(rec) === 'work') {
         var h = Utils.safeNumber(rec.hours, 0, 24) || 0;
         var pay = isFull ? ((Calc.fullRecordPay(rec, App.currentDate) || { pay: 0 }).pay) : Calc.tempRecordPay(rec);
-        DOM.dateSub.textContent = (rec.shift === '夜班' ? '🌙 ' : '🌞 ') + rec.shift + ' · ' + Utils.hours(h) + 'h · ' + Utils.money(pay);
+        DOM.dateSub.textContent = (rec.shift === '夜班' ? '🌙 ' : '🌞 ') + (rec.shift || '白班') + ' · ' + Utils.hours(h) + 'h · ' + Utils.money(pay);
       } else {
-        DOM.dateSub.textContent = '已记录：' + ATT[rec.att].label;
+        DOM.dateSub.textContent = '已记录：' + ATT[Utils.attOf(rec)].label;
       }
 
       /* 只在值不同且未聚焦时同步，避免用户正在挑日期被重置 */
@@ -2818,7 +2968,7 @@ html.perf-lite .tb-orb{ animation:none; }
         }
 
         if (rec) {
-          var att = rec.att || 'work';
+          var att = Utils.attOf(rec);
           if (att === 'work') {
             var h = Utils.safeNumber(rec.hours, 0, 24) || 0;
             statusCls = rec.shift === '夜班' ? 'shift-night' : 'shift-day';
@@ -2907,7 +3057,11 @@ html.perf-lite .tb-orb{ animation:none; }
         var active = att === input.att;
         btn.classList.toggle('active', active);
         btn.setAttribute('aria-checked', active ? 'true' : 'false');
-        btn.onclick = function () { input.att = att; Render.all(); };
+        btn.onclick = function () {
+          input.att = att;
+          Render.attRow(rowEl, input);
+          Render.attUi();      /* 只做局部刷新，不再整页重建 */
+        };
       });
     },
 
@@ -2915,12 +3069,12 @@ html.perf-lite .tb-orb{ animation:none; }
       if (!el) return;
       var head = (dateStr === Utils.today()) ? '今日' : Utils.dayLabel(dateStr);
       if (!record) { el.className = 'banner todo'; el.textContent = head + '未记'; return; }
-      var att = record.att || 'work';
+      var att = Utils.attOf(record);
       if (att === 'work') {
         var h = Utils.safeNumber(record.hours, 0, 24) || 0;
         var pay = isFull ? ((Calc.fullRecordPay(record, dateStr) || { pay: 0 }).pay) : Calc.tempRecordPay(record);
         el.className = 'banner done';
-        el.textContent = '✅ 已记：' + (record.shift === '夜班' ? '🌙' : '🌞') + record.shift + ' · ' + Utils.hours(h) + 'h · ' + Utils.money(pay);
+        el.textContent = '✅ 已记：' + (record.shift === '夜班' ? '🌙' : '🌞') + (record.shift || '白班') + ' · ' + Utils.hours(h) + 'h · ' + Utils.money(pay);
       } else {
         el.className = 'banner ' + ATT[att].cls;
         el.textContent = '📌 ' + head + '：' + ATT[att].label;
@@ -2980,7 +3134,7 @@ html.perf-lite .tb-orb{ animation:none; }
         return;
       }
 
-      var att = rec.att || 'work';
+      var att = Utils.attOf(rec);
       var row = document.createElement('div');
       row.className = 'record-row';
 
@@ -2996,9 +3150,11 @@ html.perf-lite .tb-orb{ animation:none; }
 
       if (att === 'work') {
         var h = Utils.safeNumber(rec.hours, 0, 24) || 0;
-        title.textContent = (rec.shift === '夜班' ? '🌙 ' : '🌞 ') + rec.shift + ' · ' + Utils.hours(h) + 'h';
-        var rateText = isFull ? '时薪 ' + Utils.money(Calc.baseHourly()) : '时薪 ' + Utils.money(Calc.tempRate());
-        sub.textContent = rateText + ' · 保存于 ' + time;
+        title.textContent = (rec.shift === '夜班' ? '🌙 ' : '🌞 ') + (rec.shift || '白班') + ' · ' + Utils.hours(h) + 'h';
+        var rateVal = isFull
+          ? ((typeof rec.hourlyRate === 'number' && rec.hourlyRate > 0) ? rec.hourlyRate : Calc.baseHourly())
+          : Calc.tempRate();
+        sub.textContent = '时薪 ' + Utils.money(rateVal) + ' · 保存于 ' + time;
       } else {
         title.textContent = ATT[att].label;
         sub.textContent = '保存于 ' + time;
@@ -3099,21 +3255,21 @@ html.perf-lite .tb-orb{ animation:none; }
         Object.keys(App.data.full.records).forEach(function (dateStr) {
           if (dateStr.indexOf(prefix) !== 0) return;
           var r = App.data.full.records[dateStr];
-          var att = r.att || 'work';
+          var att = Utils.attOf(r);
           if (att === 'work') {
             cntWork++;
             var result = Calc.fullRecordPay(r, dateStr);
             if (result.type === 'workday') {
               sumBase += result.base;
               sumWeekdayOT += result.ot;
-              sumWeekdayHours += Math.max(0, (r.hours || 0) - CFG.DAILY_HOURS);
+              sumWeekdayHours += Math.max(0, (Utils.safeNumber(r.hours, 0, 24) || 0) - CFG.DAILY_HOURS);
               workdayCount++;
             } else if (result.type === 'weekend') {
               sumWeekendOT += result.pay;
-              sumWeekendHours += r.hours || 0;
+              sumWeekendHours += Utils.safeNumber(r.hours, 0, 24) || 0;
             } else if (result.type === 'holiday') {
               sumHolidayOT += result.pay;
-              sumHolidayHours += r.hours || 0;
+              sumHolidayHours += Utils.safeNumber(r.hours, 0, 24) || 0;
             }
             daysWithRecord++;
           } else if (att === 'rest') cntRest++;
@@ -3151,7 +3307,7 @@ html.perf-lite .tb-orb{ animation:none; }
         Object.keys(App.data.temp.records).forEach(function (dateStr) {
           if (dateStr.indexOf(prefix) !== 0) return;
           var r = App.data.temp.records[dateStr];
-          var att = r.att || 'work';
+          var att = Utils.attOf(r);
           if (att === 'work') {
             cntWork++;
             var h = Utils.safeNumber(r.hours, 0, 24) || 0;
@@ -3204,7 +3360,7 @@ html.perf-lite .tb-orb{ animation:none; }
       var dayTag = App.currentDate === Utils.today() ? '今日' : Utils.dayLabel(App.currentDate);
 
       if (att === 'work') {
-        if (rec && (rec.att === 'work' || !rec.att)) {
+        if (rec && Utils.attOf(rec) === 'work') {
           btn.textContent = '替换' + dayTag + '记录';
           btn.classList.add('replace');
         } else {
@@ -3356,7 +3512,7 @@ html.perf-lite .tb-orb{ animation:none; }
   function restoreInput() {
     var fullRec = App.data.full.records[App.currentDate];
     if (fullRec) {
-      App.fullInput.att = fullRec.att || 'work';
+      App.fullInput.att = Utils.attOf(fullRec);
       App.fullInput.shift = fullRec.shift || '白班';
       if (typeof fullRec.hours === 'number') {
         App.fullInput.hours = fullRec.hours;
@@ -3371,7 +3527,7 @@ html.perf-lite .tb-orb{ animation:none; }
 
     var tempRec = App.data.temp.records[App.currentDate];
     if (tempRec) {
-      App.tempInput.att = tempRec.att || 'work';
+      App.tempInput.att = Utils.attOf(tempRec);
       App.tempInput.shift = tempRec.shift || '白班';
       if (typeof tempRec.hours === 'number') {
         App.tempInput.hours = tempRec.hours;
@@ -3385,22 +3541,27 @@ html.perf-lite .tb-orb{ animation:none; }
     }
   }
 
-  /* ══════════ 删除（带撤销） ══════════ */
+  /* ══════════ 删除（带撤销 + 墓碑，防跨设备复活） ══════════ */
   function deleteRecordWithUndo(isFull) {
-    var store = isFull ? App.data.full.records : App.data.temp.records;
-    var backup = store[App.currentDate];
+    var mode = isFull ? App.data.full : App.data.temp;
+    var dateStr = App.currentDate;           /* 修复：捕获日期，撤销不会写到别的日子 */
+    var backup = mode.records[dateStr];
     if (!backup) return;
-    delete store[App.currentDate];
+
+    delete mode.records[dateStr];
+    mode.tomb[dateStr] = Date.now();         /* 墓碑：让其它设备的旧记录同步时作废 */
     Data.persist();
     Render.all();
     saveToGitHub();
+
     Toast.show('已删除记录', {
       duration: 4000,
       action: {
         text: '撤销',
         onClick: function () {
-          if (store[App.currentDate]) return;
-          store[App.currentDate] = backup;
+          if (mode.records[dateStr]) return;
+          mode.records[dateStr] = backup;
+          delete mode.tomb[dateStr];
           Data.persist();
           Render.all();
           saveToGitHub();
@@ -3415,17 +3576,18 @@ html.perf-lite .tb-orb{ animation:none; }
     var arr = isFull ? App.data.full.allowances : App.data.temp.allowances;
     if (idx < 0 || idx >= arr.length) return;
     var backup = arr[idx];
-    var pos = idx;
+    var pos = arr.indexOf(backup);
     arr.splice(idx, 1);
     Data.persist();
     Render.all();
     saveToGitHub();
+
     Toast.show('已删除补贴', {
       duration: 4000,
       action: {
         text: '撤销',
         onClick: function () {
-          if (arr.indexOf(backup) >= 0) return;   /* 已经恢复过，不重复插入 */
+          if (arr.indexOf(backup) >= 0) return;
           arr.splice(Math.min(pos, arr.length), 0, backup);
           Data.persist();
           Render.all();
@@ -3447,6 +3609,7 @@ html.perf-lite .tb-orb{ animation:none; }
       .catch(function (e) { btn.disabled = false; Render.saveBtn(App.data.currentMode); throw e; });
   }
 
+  /* 修复：云同步改到后台进行，不再让「保存」按钮等 15s 网络超时 */
   function saveFullRecord() {
     if (App.data.full.settings.baseSalary == null) { Toast.show('请先设置底薪'); return; }
     var hours = Utils.safeNumber(App.fullInput.hours, CFG.HOURS_MIN, CFG.HOURS_MAX);
@@ -3454,8 +3617,10 @@ html.perf-lite .tb-orb{ animation:none; }
 
     withLoading(DOM.btnSaveFull, function () {
       var att = App.fullInput.att;
+      var mode = App.data.full;
+
       if (att === 'work') {
-        App.data.full.records[App.currentDate] = {
+        mode.records[App.currentDate] = {
           id: Utils.genId(), att: 'work', hours: hours,
           shift: App.fullInput.shift,
           hourlyRate: Calc.baseHourly(),
@@ -3463,18 +3628,20 @@ html.perf-lite .tb-orb{ animation:none; }
           timestamp: Date.now()
         };
       } else {
-        App.data.full.records[App.currentDate] = { id: Utils.genId(), att: att, timestamp: Date.now() };
+        mode.records[App.currentDate] = { id: Utils.genId(), att: att, timestamp: Date.now() };
       }
+      delete mode.tomb[App.currentDate];
+
       Data.persist();
       Render.all();
 
       if (att === 'work') {
-        var r = Calc.fullRecordPay(App.data.full.records[App.currentDate], App.currentDate);
+        var r = Calc.fullRecordPay(mode.records[App.currentDate], App.currentDate);
         Toast.show('已保存 ' + (App.fullInput.shift === '夜班' ? '🌙' : '🌞') + App.fullInput.shift + ' ' + Utils.hours(hours) + 'h · ' + Utils.money(r.pay));
       } else {
         Toast.show('已保存：' + ATT[att].label);
       }
-      return saveToGitHub();
+      saveToGitHub();       /* 后台推送，不阻塞按钮 */
     }).catch(function (e) { Reporter.show('保存异常：' + ((e && e.message) || e)); });
   }
 
@@ -3485,11 +3652,15 @@ html.perf-lite .tb-orb{ animation:none; }
 
     withLoading(DOM.btnSaveTemp, function () {
       var att = App.tempInput.att;
+      var mode = App.data.temp;
+
       if (att === 'work') {
-        App.data.temp.records[App.currentDate] = { id: Utils.genId(), att: 'work', hours: hours, shift: App.tempInput.shift, timestamp: Date.now() };
+        mode.records[App.currentDate] = { id: Utils.genId(), att: 'work', hours: hours, shift: App.tempInput.shift, timestamp: Date.now() };
       } else {
-        App.data.temp.records[App.currentDate] = { id: Utils.genId(), att: att, timestamp: Date.now() };
+        mode.records[App.currentDate] = { id: Utils.genId(), att: att, timestamp: Date.now() };
       }
+      delete mode.tomb[App.currentDate];
+
       Data.persist();
       Render.all();
 
@@ -3498,7 +3669,7 @@ html.perf-lite .tb-orb{ animation:none; }
       } else {
         Toast.show('已保存：' + ATT[att].label);
       }
-      return saveToGitHub();
+      saveToGitHub();
     }).catch(function (e) { Reporter.show('保存异常：' + ((e && e.message) || e)); });
   }
 
@@ -3546,13 +3717,145 @@ html.perf-lite .tb-orb{ animation:none; }
   function showWelcome() {
     var modal = document.getElementById('welcomeModal');
     if (!modal) return;
-    Modal.open(modal, { initialFocus: '#welcomeOk' });
+    /* 修复：ESC 关闭也要写 SETUP_KEY，避免下次再弹 */
+    Modal.open(modal, { initialFocus: '#welcomeOk', onEsc: closeWelcome });
   }
   function closeWelcome() {
     var modal = document.getElementById('welcomeModal');
     Data.markSetupDone();
     Modal.close(modal);
   }
+
+  /* ══════════ 配置面板 ══════════ */
+  function showCfgPanel() {
+    if (!DOM.cfgPanel) return;
+    var u = document.getElementById('cfgUser');
+    var r = document.getElementById('cfgRepo');
+    var b = document.getElementById('cfgBranch');
+    var t = document.getElementById('cfgToken');
+    if (u) u.value = App.config.user || 'duanaifeng';
+    if (r) r.value = App.config.repo || 'AFeng';
+    if (b) b.value = App.config.branch || CFG.GH_BRANCH;
+    if (t) t.value = '';
+    DOM.cfgPanel.classList.remove('is-hidden');
+    setTimeout(function () {
+      try { DOM.cfgPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    }, 60);
+  }
+
+  /* ══════════ 手动云端同步（底部状态条最右侧按钮） ══════════ */
+  var CloudSync = {
+    bStatus: null, bPull: null, timer: 0,
+
+    init: function () {
+      var self = this;
+      this.bStatus = document.getElementById('btnStatusSync');
+      this.bPull = document.getElementById('btnCloudPull');
+      if (this.bStatus) this.bStatus.addEventListener('click', function () { self.push(); });
+      if (this.bPull) this.bPull.addEventListener('click', function () { self.pull(); });
+      this.refresh();
+    },
+
+    refresh: function () {
+      var ok = !!(App.config && App.config.token);
+      if (this.bStatus) {
+        this.bStatus.classList.toggle('is-off', !ok);
+        this.bStatus.title = ok ? '同步到云端' : '未配置 Token，点右上角 ⚙️';
+      }
+    },
+
+    busy: function (on) {
+      var b = this.bStatus;
+      if (b) {
+        if (on) b.classList.remove('is-ok', 'is-err');
+        b.disabled = !!on;
+        b.classList.toggle('is-busy', !!on);
+      }
+      if (this.bPull) this.bPull.disabled = !!on;
+    },
+
+    flash: function (cls) {
+      var self = this, b = this.bStatus;
+      if (!b) return;
+      clearTimeout(this.timer);
+      b.classList.remove('is-ok', 'is-err');
+      if (!cls) return;
+      b.classList.add(cls);
+      this.timer = setTimeout(function () {
+        b.classList.remove(cls);
+        self.refresh();
+      }, 2600);
+    },
+
+    /* 本地 → 云端（手动上传，随时可点，兜住自动同步失败的情况） */
+    push: function () {
+      var self = this;
+      if (!App.config || !App.config.token) {
+        Toast.show('请先填写 GitHub Token');
+        showCfgPanel();
+        return;
+      }
+      if (SyncState.saving) { Toast.show('正在同步，请稍候…'); return; }
+
+      SyncState.saving = true;
+      SyncState.sha = null;              /* 重取远端 sha，规避 409 */
+      Data.persist();
+      this.busy(true);
+      StatusBar.set('正在同步到云端…', 'loading');
+
+      pushRemote().then(function () {
+        App.connected = true;
+        var t = new Date();
+        var hh = Utils.pad2(t.getHours()) + ':' + Utils.pad2(t.getMinutes());
+        StatusBar.set('✅ 已同步 ' + hh + ' · ' + App.config.user + '/' + App.config.repo, 'ok');
+        Toast.show('☁️ 已同步到云端 ' + hh, { duration: 2200 });
+        self.flash('is-ok');
+      }).catch(function (err) {
+        var msg = (err && err.message) || String(err);
+        StatusBar.set('❌ 同步失败：' + msg, 'err');
+        Toast.show('同步失败：' + msg, { duration: 3600 });
+        self.flash('is-err');
+      }).then(function () {
+        self.busy(false);
+        SyncState.saving = false;
+        if (SyncState.pending) { SyncState.pending = false; setTimeout(saveToGitHub, 400); }
+      });
+    },
+
+    /* 云端 → 覆盖本地 */
+    pull: function () {
+      var self = this;
+      if (!App.config || !App.config.token) {
+        Toast.show('请先填写 GitHub Token');
+        showCfgPanel();
+        return;
+      }
+      if (!confirm('从云端恢复会覆盖本机现有数据，确定继续？')) return;
+
+      this.busy(true);
+      StatusBar.set('正在从云端读取…', 'loading');
+
+      GH.getFile().then(function (f) {
+        if (!f.content) throw new Error('云端还没有数据文件');
+        App.data = Data.normalize(JSON.parse(f.content));
+        SyncState.sha = f.sha;
+        App.connected = true;
+        Store.set(CFG.MODE_KEY, App.data.currentMode);
+        Data.persist();
+        restoreInput();
+        Render.all();
+        self.refresh();
+        StatusBar.set('✅ 已从云端恢复', 'ok');
+        Toast.show('已从云端恢复');
+        self.flash('is-ok');
+      }).catch(function (err) {
+        var msg = (err && err.message) || String(err);
+        StatusBar.set('❌ 读取失败：' + msg, 'err');
+        Toast.show('读取失败：' + msg, { duration: 3200 });
+        self.flash('is-err');
+      }).then(function () { self.busy(false); });
+    }
+  };
 
   /* ══════════ 月报图片导出 ══════════ */
   var Exporter = {
@@ -3570,13 +3873,13 @@ html.perf-lite .tb-orb{ animation:none; }
         Object.keys(App.data.full.records).forEach(function (d) {
           if (d.indexOf(prefix) !== 0) return;
           var r = App.data.full.records[d];
-          var att = r.att || 'work';
+          var att = Utils.attOf(r);
           if (att === 'work') {
             out.work++;
             var res = Calc.fullRecordPay(r, d);
             if (res.type === 'workday') { out.base += res.base; out.ot += res.ot; }
             else out.ot += res.pay;
-            out.hours += (r.hours || 0);
+            out.hours += Utils.safeNumber(r.hours, 0, 24) || 0;
             daysWithRecord++;
             var day = parseInt(d.slice(8, 10), 10);
             if (day >= 1 && day <= 31) map[day] += res.pay;
@@ -3594,7 +3897,7 @@ html.perf-lite .tb-orb{ animation:none; }
         Object.keys(App.data.temp.records).forEach(function (d) {
           if (d.indexOf(prefix) !== 0) return;
           var r = App.data.temp.records[d];
-          var att = r.att || 'work';
+          var att = Utils.attOf(r);
           if (att === 'work') {
             out.work++;
             var h = Utils.safeNumber(r.hours, 0, 24) || 0;
@@ -3847,14 +4150,13 @@ html.perf-lite .tb-orb{ animation:none; }
     }
   };
 
-  /* ══════════ 跨天检测（修正版：不会再把人弹回今天） ══════════ */
+  /* ══════════ 跨天检测（只在原本就在“今天”时自动跟随） ══════════ */
   var lastToday = Utils.today();
 
   function checkDateChange() {
     var today = Utils.today();
     if (today === lastToday) return;
 
-    /* 只有“日期真的翻页”，且用户原本就停在今天，才自动跟随 */
     var followed = (App.currentDate === lastToday);
     lastToday = today;
 
@@ -3862,7 +4164,6 @@ html.perf-lite .tb-orb{ animation:none; }
       goToDate(today);
       Toast.show('已自动切换至新的一天');
     } else {
-      /* 用户在看历史，仅刷新日历上的“今天”高亮与版权 */
       Render.calendar();
     }
 
@@ -3939,11 +4240,14 @@ html.perf-lite .tb-orb{ animation:none; }
       });
     });
 
+    /* 修复：月份切换时同时移动选中日期，避免“顶部月份”与“今日记录”不同步 */
     function shiftViewMonth(delta) {
       var p = App.calendarDate.split('-').map(Number);
+      var cur = App.currentDate.split('-').map(Number);
       var d = new Date(p[0], p[1] - 1 + delta, 1);
-      App.calendarDate = d.getFullYear() + '-' + Utils.pad2(d.getMonth() + 1) + '-01';
-      Render.all();
+      var ty = d.getFullYear(), tm = d.getMonth() + 1;
+      var day = Math.min(cur[2] || 1, new Date(ty, tm, 0).getDate());
+      goToDate(ty + '-' + Utils.pad2(tm) + '-' + Utils.pad2(day));
     }
 
     DOM.prevMonth.addEventListener('click', function () { shiftViewMonth(-1); });
@@ -3969,6 +4273,7 @@ html.perf-lite .tb-orb{ animation:none; }
         has ? App.data.full.settings.baseSalary : 6000,
         function (v) {
           App.data.full.settings.baseSalary = v;
+          App.data.full.settings.baseSalaryAt = Date.now();   /* 时间戳：合并时用它比新旧 */
           Data.persist(); Render.all(); saveToGitHub();
           Toast.show('已更新底薪');
         },
@@ -3981,6 +4286,7 @@ html.perf-lite .tb-orb{ animation:none; }
         has ? App.data.temp.settings.rate : 25,
         function (v) {
           App.data.temp.settings.rate = v;
+          App.data.temp.settings.rateAt = Date.now();
           Data.persist(); Render.all(); saveToGitHub();
           Toast.show('已更新时薪');
         },
@@ -3999,15 +4305,10 @@ html.perf-lite .tb-orb{ animation:none; }
     }
 
     DOM.btnConfig.addEventListener('click', function () {
-      var willShow = DOM.cfgPanel.classList.contains('is-hidden');
-      if (willShow) {
-        document.getElementById('cfgUser').value = App.config.user || 'duanaifeng';
-        document.getElementById('cfgRepo').value = App.config.repo || 'AFeng';
-        document.getElementById('cfgToken').value = '';
+      if (DOM.cfgPanel.classList.contains('is-hidden')) {
+        showCfgPanel();
         var adv = document.getElementById('cfgAdvanced');
         if (adv) adv.open = false;
-        DOM.cfgPanel.classList.remove('is-hidden');
-        setTimeout(function () { try { DOM.cfgPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 60);
       } else {
         DOM.cfgPanel.classList.add('is-hidden');
       }
@@ -4016,6 +4317,7 @@ html.perf-lite .tb-orb{ animation:none; }
     document.getElementById('cfgSave').addEventListener('click', function () {
       var user = Utils.clean(document.getElementById('cfgUser').value, 50);
       var repo = Utils.clean(document.getElementById('cfgRepo').value, 80);
+      var branch = Utils.clean(document.getElementById('cfgBranch').value, 80) || CFG.GH_BRANCH;
       var token = Utils.clean(document.getElementById('cfgToken').value, 300);
       var errEl = document.getElementById('cfgError');
 
@@ -4024,7 +4326,7 @@ html.perf-lite .tb-orb{ animation:none; }
         return;
       }
       errEl.textContent = '';
-      Config.save(user, repo, token);
+      Config.save(user, repo, token, branch);
       SyncState.sha = null;
       DOM.cfgPanel.classList.add('is-hidden');
       connectGitHub();
@@ -4036,6 +4338,7 @@ html.perf-lite .tb-orb{ animation:none; }
       App.connected = false;
       SyncState.sha = null;
       StatusBar.set('未配置 GitHub（数据仅保存在本地）', '');
+      CloudSync.refresh();
       Toast.show('已清除配置');
     });
 
@@ -4080,6 +4383,7 @@ html.perf-lite .tb-orb{ animation:none; }
       restoreInput();
       Render.all();
       BackTop.init();
+      CloudSync.init();                 /* 底部状态条最右侧「同步」按钮 */
 
       var now = Date.now();
       renderCopyright(now);
@@ -4092,8 +4396,12 @@ html.perf-lite .tb-orb{ animation:none; }
       global.addEventListener('pagehide', function () { Clock.stop(); });
       global.addEventListener('pageshow', function () { Clock.start(); });
 
-      if (Config.load()) connectGitHub();
-      else StatusBar.set('未配置 GitHub（数据仅保存在本地）', '');
+      if (Config.load()) {
+        connectGitHub();
+      } else {
+        StatusBar.set('未配置 GitHub（数据仅保存在本地）', '');
+        CloudSync.refresh();
+      }
 
       if (!Data.isSetupDone() && !local) setTimeout(showWelcome, 600);
     } catch (e) {
