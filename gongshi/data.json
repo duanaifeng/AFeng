@@ -33,6 +33,11 @@
         "hourlyRate": 13.218390804597702,
         "dailySalary": 105.74712643678161,
         "timestamp": 1795318250770
+      },
+      "2026-11-22": {
+        "id": "1795318385167-ixoap6",
+        "att": "rest",
+        "timestamp": 1795318385167
       }
     },
     "customHolidays": {}
