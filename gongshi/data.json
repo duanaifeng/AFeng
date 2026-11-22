@@ -1,0 +1,29 @@
+{
+  "version": 6,
+  "currentMode": "full",
+  "full": {
+    "settings": {
+      "baseSalary": 2300
+    },
+    "allowances": [],
+    "records": {
+      "2026-11-23": {
+        "id": "1795318180803-x4awhc",
+        "att": "work",
+        "hours": 12,
+        "shift": "白班",
+        "hourlyRate": 13.218390804597702,
+        "dailySalary": 105.74712643678161,
+        "timestamp": 1795318180804
+      }
+    },
+    "customHolidays": {}
+  },
+  "temp": {
+    "settings": {
+      "rate": null
+    },
+    "allowances": [],
+    "records": {}
+  }
+}
