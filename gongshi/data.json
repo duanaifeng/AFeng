@@ -40,13 +40,15 @@
         "timestamp": 1795318385167
       }
     },
-    "customHolidays": {}
+    "customHolidays": {},
+    "tomb": {}
   },
   "temp": {
     "settings": {
       "rate": null
     },
     "allowances": [],
-    "records": {}
+    "records": {},
+    "tomb": {}
   }
 }
