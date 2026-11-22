@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eef2f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05080e" media="(prefers-color-scheme: dark)">
+<meta name="description" content="西邑赶集日历：永信街、羊邑街、丙麻街、西邑街四天循环查询。">
+<meta name="keywords" content="西邑赶集,永信街,羊邑街,丙麻街,西邑街,保山隆阳">
+<meta name="robots" content="index,follow">
+<meta name="author" content="AiFeng">
+<link rel="canonical" href="https://duanaifeng.github.io/AFeng/ganji/">
+<meta property="og:title" content="西邑乡赶集日历">
+<meta property="og:description" content="四街循环，按天查询，赶集不迷路">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duanaifeng.github.io/AFeng/ganji/">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="favicon.ico?v=4.0">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=4.0">
+<link rel="shortcut icon" href="favicon.ico?v=4.0">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4.0">
+<title>西邑乡赶集日历 · AiFeng</title>
+
+<script>
+(function () {
+  'use strict';
+
+  /* PWA manifest（内联） */
+  try {
+    var path = location.pathname;
+    if (/\.html?$/i.test(path)) path = path.replace(/[^\/]*$/, '');
+    else if (!/\/$/.test(path)) path += '/';
+    var scope = location.origin + path;
+    var manifest = {
+      name: '西邑乡赶集日历', short_name: '赶集日历',
+      description: '永信街、羊邑街、丙麻街、西邑街四天循环',
+      start_url: scope, scope: scope, display: 'standalone', orientation: 'portrait',
+      background_color: '#05080e', theme_color: '#5b9dff', lang: 'zh-CN',
+      icons: [
+        { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: 'web-app-manifest-192x192.png?v=4.0', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+        { src: 'web-app-manifest-512x512.png?v=4.0', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+      ]
+    };
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(link);
+  } catch (e) {}
+
+  /* 轻量模式（与导航站同一阈值） */
+  var lite = false;
+  try {
+    var s = location.search || '';
+    if (/[?&]full=1/.test(s)) lite = false;
+    else if (/[?&]lite=1/.test(s)) lite = true;
+    else {
+      if (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2) lite = true;
+      if (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 2) lite = true;
+      if (navigator.connection && navigator.connection.saveData) lite = true;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) lite = true;
+    }
+  } catch (e) { lite = true; }
+  if (lite) document.documentElement.classList.add('perf-lite');
+  window.__AF_LITE__ = lite;
+
+  /* 主题：手动优先，其次系统 */
+  try {
+    var saved = null;
+    try { saved = localStorage.getItem('af-theme'); } catch (e2) {}
+    var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) document.documentElement.classList.add('dark');
+  } catch (e) {}
+})();
+</script>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   01 · 设计变量
+   ══════════════════════════════════════════════════════════ */
+:root{
+  color-scheme: light;
+
+  --bg-0:#eef2f9;
+  --bg-1:#dde6f2;
+  --bg-fade:rgba(238,242,249,.60);
+  --glow-1:rgba(118,168,255,.46);
+  --glow-2:rgba(96,224,224,.26);
+  --glow-3:rgba(170,150,255,.22);
+  --grid-line:rgba(20,50,100,.06);
+
+  /* 表面材质（与导航站同一套：面板 / 浮层 / 发丝线 / 高程 / 三级模糊） */
+  --surface-panel:linear-gradient(150deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.36) 52%,rgba(255,255,255,.50) 100%);
+  --surface-float:linear-gradient(155deg,rgba(255,255,255,.945) 0%,rgba(246,250,255,.905) 54%,rgba(250,253,255,.935) 100%);
+  --fallback-solid:rgba(248,251,255,.97);
+  --hairline:rgba(255,255,255,.72);
+  --glass-sheen:rgba(255,255,255,.95);
+
+  --blur-m:28px; --sat-m:180%;
+  --blur-l:44px; --sat-l:200%;
+
+  --elv-1:inset 0 1px 0 rgba(255,255,255,.88),0 6px 18px -14px rgba(16,42,84,.34);
+  --elv-3:inset 0 1px 0 rgba(255,255,255,.70),0 14px 32px -16px rgba(10,26,58,.38);
+  --elv-4:inset 0 1px 0 rgba(255,255,255,.92),0 28px 64px -30px rgba(15,40,84,.46),0 8px 22px -16px rgba(15,40,84,.24);
+
+  --txt:#081426;
+  --txt-2:#3d5371;
+  --txt-3:#6a7f96;
+  --line:rgba(12,32,62,.10);
+  --line-2:rgba(12,32,62,.20);
+
+  --accent:#2160e8;
+  --accent-2:#0d9aa8;
+  --accent-soft:rgba(33,96,232,.10);
+  --accent-glow:rgba(33,96,232,.30);
+  --accent-ring:rgba(33,96,232,.22);
+  --accent-2-soft:rgba(13,154,168,.12);
+
+  --sig-green:#16a34a;  --sig-green-soft:rgba(22,163,74,.12);  --sig-green-tint:rgba(22,163,74,.07);
+  --sig-amber:#b45309;  --sig-amber-soft:rgba(180,83,9,.12);   --sig-amber-tint:rgba(180,83,9,.07);
+  --sig-red:#dc2626;    --sig-red-soft:rgba(220,38,38,.10);    --sig-red-tint:rgba(220,38,38,.06);
+
+  --festive:#c0392b;
+  --gold:#c68b1c;
+  --gold-bright:#d4a017;
+
+  --badge-l-bg:#1d2733;
+  --badge-l-fg:#eef2f9;
+
+  --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+  --maxw:1060px;
+  --pad:clamp(16px,4.5vw,32px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+
+  --mono:ui-monospace,'SF Mono','JetBrains Mono','Menlo','Consolas','Liberation Mono',monospace;
+  --serif:'Songti SC','STSong','SimSun',Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,'HarmonyOS Sans SC','HarmonyOS Sans','PingFang SC','Hiragino Sans GB','Segoe UI','Microsoft YaHei',Arial,sans-serif;
+}
+
+html.dark{
+  color-scheme: dark;
+  --bg-0:#05080e;
+  --bg-1:#0a1018;
+  --bg-fade:rgba(5,8,14,.60);
+  --glow-1:rgba(40,110,240,.34);
+  --glow-2:rgba(30,200,200,.16);
+  --glow-3:rgba(120,80,255,.20);
+  --grid-line:rgba(110,170,255,.055);
+
+  --surface-panel:linear-gradient(150deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.035) 52%,rgba(255,255,255,.07) 100%);
+  --surface-float:linear-gradient(155deg,rgba(26,35,50,.95) 0%,rgba(16,24,37,.925) 52%,rgba(22,31,45,.94) 100%);
+  --fallback-solid:rgba(16,24,36,.98);
+  --hairline:rgba(255,255,255,.14);
+  --glass-sheen:rgba(255,255,255,.13);
+
+  --elv-1:inset 0 1px 0 rgba(255,255,255,.10),0 8px 22px -16px rgba(0,0,0,.70);
+  --elv-3:inset 0 1px 0 rgba(255,255,255,.10),0 16px 34px -16px rgba(0,0,0,.72);
+  --elv-4:inset 0 1px 0 rgba(255,255,255,.14),0 32px 70px -32px rgba(0,0,0,.92),0 10px 26px -18px rgba(0,0,0,.72);
+
+  --txt:#e8f0fb;
+  --txt-2:#a3b8d2;
+  --txt-3:#6f859e;
+  --line:rgba(255,255,255,.09);
+  --line-2:rgba(255,255,255,.17);
+
+  --accent:#5b9dff;
+  --accent-2:#43e0d4;
+  --accent-soft:rgba(91,157,255,.15);
+  --accent-glow:rgba(91,157,255,.45);
+  --accent-ring:rgba(91,157,255,.30);
+  --accent-2-soft:rgba(67,224,212,.13);
+
+  --sig-green:#4ade80;  --sig-green-soft:rgba(74,222,128,.16);  --sig-green-tint:rgba(74,222,128,.08);
+  --sig-amber:#fbbf24;  --sig-amber-soft:rgba(251,191,36,.16);  --sig-amber-tint:rgba(251,191,36,.08);
+  --sig-red:#f87171;    --sig-red-soft:rgba(248,113,113,.14);   --sig-red-tint:rgba(248,113,113,.07);
+
+  --festive:#e07a5f;
+  --gold:#f0c96b;
+  --gold-bright:#fcd34d;
+
+  --badge-l-bg:rgba(255,255,255,.15);
+  --badge-l-fg:#e8f0fb;
+}
+
+/* ══════════════════════════════════════════════════════════
+   02 · 基础重置
+   ══════════════════════════════════════════════════════════ */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-behavior:smooth; overflow-anchor:none; }
+html.perf-lite{ scroll-behavior:auto; }
+html,body{ overflow-x:clip; }
+@supports not (overflow: clip){ html{ overflow-x:hidden; } }
+
+body{
+  min-height:100vh;
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.6;
+  color:var(--txt);
+  background:
+    radial-gradient(ellipse 130% 70% at 50% -18%, var(--glow-1) 0%, transparent 58%),
+    radial-gradient(ellipse 90% 60% at 100% 8%, var(--glow-2) 0%, transparent 62%),
+    radial-gradient(ellipse 90% 60% at 0% 92%, var(--glow-3) 0%, transparent 62%),
+    linear-gradient(175deg, var(--bg-0) 0%, var(--bg-1) 52%, var(--bg-0) 100%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+a,button,input,select,textarea,label{ touch-action:manipulation; }
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+:focus{ outline:none; }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:var(--r-sm); }
+::selection{ background:var(--accent-soft); color:var(--txt); }
+
+@media (min-width:1024px){
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:var(--line-2); border-radius:10px; border:3px solid transparent; background-clip:padding-box; }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--accent-glow); background-clip:padding-box; }
+}
+
+.skip-link{
+  position:absolute; left:12px; top:-64px; z-index:10000;
+  padding:10px 18px; border-radius:var(--r-md);
+  background:var(--accent); color:#fff; font-weight:700; font-size:13px;
+  transition:top 160ms var(--ease);
+}
+.skip-link:focus{ top:12px; }
+
+.visually-hidden{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+/* ══════════════════════════════════════════════════════════
+   03 · 背景特效
+   ══════════════════════════════════════════════════════════ */
+.fx{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+
+.fx-grid{
+  position:absolute; inset:-2px;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size:76px 76px;
+  -webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 18%, #000 0%, transparent 80%);
+          mask-image:radial-gradient(ellipse 85% 65% at 50% 18%, #000 0%, transparent 80%);
+}
+
+.fx-aurora span{
+  position:absolute; display:block; border-radius:50%;
+  filter:blur(10px); will-change:transform;
+}
+.fx-aurora span:nth-child(1){
+  width:min(96vw,880px); height:min(96vw,880px); left:-24%; top:-28%;
+  background:radial-gradient(circle, rgba(120,170,255,.34) 0%, rgba(120,170,255,.12) 36%, transparent 68%);
+  animation:aurora1 32s ease-in-out infinite alternate;
+}
+.fx-aurora span:nth-child(2){
+  width:min(80vw,760px); height:min(80vw,760px); right:-22%; top:-14%;
+  background:radial-gradient(circle, rgba(90,225,225,.24) 0%, rgba(90,225,225,.08) 38%, transparent 70%);
+  animation:aurora2 40s ease-in-out infinite alternate;
+}
+.fx-aurora span:nth-child(3){
+  width:min(100vw,940px); height:min(100vw,940px); left:6%; bottom:-46%;
+  background:radial-gradient(circle, rgba(160,140,255,.22) 0%, rgba(160,140,255,.07) 38%, transparent 70%);
+  animation:aurora3 36s ease-in-out infinite alternate;
+}
+@keyframes aurora1{ 0%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(7%,-5%,0) scale(1.14)} 100%{transform:translate3d(-5%,6%,0) scale(1.04)} }
+@keyframes aurora2{ 0%{transform:translate3d(0,0,0) scale(1.02)} 50%{transform:translate3d(-8%,6%,0) scale(1.16)} 100%{transform:translate3d(5%,-4%,0) scale(1)} }
+@keyframes aurora3{ 0%{transform:translate3d(0,0,0) scale(1.06)} 50%{transform:translate3d(6%,-7%,0) scale(1)} 100%{transform:translate3d(-6%,-3%,0) scale(1.12)} }
+
+.fx-scan{
+  position:absolute; inset:0; opacity:.45;
+  background:repeating-linear-gradient(180deg, rgba(120,180,255,.05) 0 1px, transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+.fx-vignette{
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 82% 62% at 50% 32%, transparent 40%, rgba(8,22,48,.10) 100%);
+}
+html.dark .fx-vignette{
+  background:radial-gradient(ellipse 78% 60% at 50% 30%, transparent 30%, rgba(0,0,0,.62) 100%);
+}
+
+.fx-cursor{
+  position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0;
+  transition:opacity .9s var(--ease);
+  background:radial-gradient(560px circle at var(--gx,-9999px) var(--gy,-9999px),
+             var(--accent-soft) 0%, transparent 62%);
+}
+@media (hover:hover) and (pointer:fine){ .fx-cursor{ opacity:1; } }
+
+html.perf-lite .fx-aurora span{ animation:none; }
+html.perf-lite .fx-scan,
+html.perf-lite .fx-cursor,
+html.perf-lite .fx-vignette{ display:none; }
+
+/* ══════════════════════════════════════════════════════════
+   04 · 表面材质（面板 / 实心浮层）
+   ══════════════════════════════════════════════════════════ */
+.glass{
+  position:relative;
+  border-radius:var(--r-lg);
+  background:var(--surface-panel);
+  border:1px solid var(--hairline);
+  box-shadow:var(--elv-1);
+  -webkit-backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+          backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+  isolation:isolate;
+}
+.glass::before{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+  background:
+    radial-gradient(120% 90% at 12% -18%, rgba(255,255,255,.78) 0%, rgba(255,255,255,.16) 34%, transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.14) 0%, transparent 34%);
+  opacity:.7;
+}
+html.dark .glass::before{ opacity:.55; }
+
+/* 轻量模式 / 不支持 backdrop-filter：退回实色，保证可读 */
+html.perf-lite .glass,
+html.perf-lite .topbar-inner,
+html.perf-lite .today,
+html.perf-lite .result-card.show,
+html.perf-lite .back-top,
+html.perf-lite .toast{
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  background:var(--fallback-solid);
+}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass,.topbar-inner,.today,.result-card.show,.back-top,.toast{ background:var(--fallback-solid); }
+}
+
+.card{ padding:clamp(16px,3vw,26px); margin-bottom:14px; }
+@media (min-width:1024px){ .card{ margin-bottom:18px; } }
+
+/* ══════════════════════════════════════════════════════════
+   05 · 布局
+   ══════════════════════════════════════════════════════════ */
+.shell{
+  width:100%; max-width:var(--maxw);
+  margin:0 auto; padding:0 var(--pad);
+  position:relative; z-index:2;
+  display:flex; flex-direction:column;
+}
+
+.sec{ margin-top:clamp(26px,4vw,44px); scroll-margin-top:88px; }
+
+.sec-head{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.sec-idx{
+  flex:0 0 auto;
+  font-family:var(--mono); font-size:11px; font-weight:800; letter-spacing:.1em;
+  color:var(--accent);
+  padding:3px 8px; border-radius:var(--r-xs);
+  background:var(--accent-soft);
+  border:1px solid var(--line);
+}
+.sec-title{
+  flex:0 0 auto;
+  font-size:13px; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--txt);
+}
+.sec-line{
+  flex:1; height:1px;
+  background:linear-gradient(90deg, var(--line-2) 0%, var(--line) 45%, transparent 100%);
+}
+.sec-meta{
+  flex:0 0 auto;
+  font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.12em;
+  color:var(--txt-3);
+  padding:3px 9px; border-radius:999px;
+  border:1px solid var(--line);
+  white-space:nowrap;
+}
+@media (max-width:420px){ .sec-meta{ display:none; } }
+
+/* ══════════════════════════════════════════════════════════
+   06 · 顶栏
+   ══════════════════════════════════════════════════════════ */
+.topbar{
+  position:sticky; top:0; z-index:60;
+  display:flex; justify-content:center;
+  padding:10px var(--pad) 0;
+  pointer-events:none;
+}
+.topbar::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:130%; z-index:-1;
+  background:linear-gradient(180deg, var(--bg-0) 0%, var(--bg-fade) 62%, transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);
+          mask-image:linear-gradient(180deg,#000 55%,transparent);
+}
+.topbar-inner{
+  pointer-events:auto;
+  width:100%; max-width:var(--maxw);
+  display:flex; align-items:center; gap:10px;
+  padding:8px 8px 8px 15px;
+  border-radius:999px;
+  background:var(--surface-panel);
+  border:1px solid var(--hairline);
+  box-shadow:var(--elv-3);
+  -webkit-backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+          backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+}
+.tb-brand{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.14em;
+  color:var(--txt); white-space:nowrap;
+}
+.tb-orb{
+  width:7px; height:7px; border-radius:50%; background:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft), 0 0 12px var(--accent-glow);
+  animation:orbPulse 2.8s ease-in-out infinite;
+}
+@keyframes orbPulse{
+  0%,100%{ box-shadow:0 0 0 3px var(--accent-soft), 0 0 12px var(--accent-glow); }
+  50%{ box-shadow:0 0 0 7px transparent, 0 0 20px var(--accent-glow); }
+}
+.tb-sep{ width:1px; height:14px; background:var(--line-2); flex:0 0 auto; }
+.tb-today{
+  font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.1em;
+  color:var(--txt-3); white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tb-today b{ color:var(--sig-green); font-weight:800; }
+.tb-right{ margin-left:auto; display:flex; align-items:center; gap:7px; }
+.tb-clock{
+  display:none;
+  font-family:var(--mono); font-size:11px; font-weight:700;
+  color:var(--txt-2); font-variant-numeric:tabular-nums;
+  padding:5px 9px; border-radius:999px;
+  border:1px solid var(--line); background:var(--accent-soft);
+  letter-spacing:.06em;
+}
+@media (min-width:560px){ .tb-clock{ display:inline-flex; } }
+.tb-btn{
+  width:33px; height:33px; border-radius:50%;
+  display:grid; place-items:center;
+  border:1px solid var(--line); color:var(--txt-2);
+  transition:color .22s var(--ease), border-color .22s var(--ease), background .22s var(--ease);
+}
+.tb-btn:hover{ color:var(--accent); border-color:var(--line-2); background:var(--accent-soft); }
+.tb-btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.tb-btn .i-sun{ display:none; }
+html.dark .tb-btn .i-sun{ display:block; }
+html.dark .tb-btn .i-moon{ display:none; }
+
+/* ══════════════════════════════════════════════════════════
+   07 · 首屏
+   ══════════════════════════════════════════════════════════ */
+.hero{
+  margin-top:clamp(14px,2.6vw,24px);
+  padding:clamp(22px,4vw,40px) clamp(16px,3vw,32px) clamp(18px,3vw,28px);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  text-align:center;
+}
+.hero::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(80% 60% at 50% -10%, var(--accent-soft) 0%, transparent 62%),
+    radial-gradient(70% 50% at 50% 110%, var(--accent-soft) 0%, transparent 60%);
+}
+.hud{ position:absolute; inset:11px; z-index:3; pointer-events:none; }
+.hud span{ position:absolute; width:15px; height:15px; border:0 solid var(--accent); opacity:.45; }
+.hud span:nth-child(1){ top:0; left:0; border-top-width:1.5px; border-left-width:1.5px; border-top-left-radius:3px; }
+.hud span:nth-child(2){ top:0; right:0; border-top-width:1.5px; border-right-width:1.5px; border-top-right-radius:3px; }
+.hud span:nth-child(3){ bottom:0; left:0; border-bottom-width:1.5px; border-left-width:1.5px; border-bottom-left-radius:3px; }
+.hud span:nth-child(4){ bottom:0; right:0; border-bottom-width:1.5px; border-right-width:1.5px; border-bottom-right-radius:3px; }
+
+.hero-content{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; }
+
+.brand-tag{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.2em;
+  color:var(--txt-2); text-transform:uppercase;
+}
+.brand-dot{
+  width:6px; height:6px; border-radius:50%; background:var(--accent-2);
+  box-shadow:0 0 0 3px var(--accent-2-soft), 0 0 10px var(--accent-2);
+  flex:0 0 auto;
+}
+.title-cn{
+  font-family:var(--serif);
+  font-size:clamp(26px,6.4vw,42px);
+  font-weight:900; letter-spacing:.06em; line-height:1.14;
+  margin-top:10px;
+  color:var(--txt);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)){
+  .title-cn{
+    background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+}
+.title-en{
+  margin-top:6px;
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase;
+  color:var(--accent); opacity:.8;
+}
+@media (min-width:768px){ .title-en{ font-size:10.5px; letter-spacing:.42em; } }
+
+.street-chips{
+  display:grid; grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:7px; list-style:none;
+  margin-top:clamp(14px,2.6vw,20px);
+  width:100%; max-width:460px;
+}
+.street-chip{
+  position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; padding:8px 4px 7px 14px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.14), rgba(255,255,255,.03));
+  font-family:var(--mono);
+  min-width:0; text-align:center;
+  transition:border-color .24s var(--ease), background .24s var(--ease), color .24s var(--ease);
+}
+html.dark .street-chip{ background:linear-gradient(150deg, rgba(255,255,255,.07), rgba(255,255,255,.015)); }
+.street-chip::before{
+  content:''; position:absolute; left:7px; top:50%; transform:translateY(-50%);
+  width:5px; height:5px; border-radius:50%;
+  background:var(--accent); opacity:.5;
+}
+.street-chip-cn{
+  font-size:11.5px; font-weight:800; letter-spacing:.02em; color:var(--txt-2);
+  line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+  font-family:var(--sans);
+}
+.street-chip-en{
+  font-size:7px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--txt-3); line-height:1; opacity:.85;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+}
+.street-chip.active{
+  background:var(--sig-green-soft);
+  border-color:var(--sig-green);
+}
+.street-chip.active::before{ background:var(--sig-green); opacity:1; }
+.street-chip.active .street-chip-cn{ color:var(--sig-green); }
+.street-chip.active .street-chip-en{ color:var(--sig-green); opacity:.85; }
+@media (min-width:1024px){
+  .street-chip{ padding:10px 10px 9px 20px; }
+  .street-chip::before{ left:10px; width:6px; height:6px; }
+  .street-chip-cn{ font-size:13px; }
+  .street-chip-en{ font-size:8.5px; letter-spacing:.18em; }
+}
+
+.deco{
+  position:absolute; top:0; width:70px; height:180px;
+  pointer-events:none; z-index:1;
+  display:flex; flex-direction:column; align-items:center;
+  opacity:.92;
+}
+.deco--left{ left:10px; }
+.deco--right{ right:10px; }
+@media (max-width:639px){ .deco{ display:none; } }
+@media (min-width:1024px){ .deco{ width:96px; height:210px; } .deco--left{ left:26px; } .deco--right{ right:26px; } }
+
+.lantern{
+  position:relative; width:40px; height:48px;
+  transform-origin:top center;
+  animation:lanternSwing 4.5s ease-in-out infinite;
+  flex:0 0 auto;
+}
+.deco--right .lantern{ animation-delay:-2.25s; }
+@keyframes lanternSwing{ 0%,100%{ transform:rotate(-3.5deg) } 50%{ transform:rotate(3.5deg) } }
+.lantern::before{
+  content:''; position:absolute; top:-9px; left:50%; width:1.5px; height:11px;
+  background:linear-gradient(180deg, transparent, var(--festive));
+  transform:translateX(-50%);
+}
+.lantern-body{
+  position:absolute; top:0; left:50%; width:40px; height:46px;
+  background:radial-gradient(ellipse at 30% 28%, #ff9d8a 0%, #e63946 38%, var(--festive) 65%, #8c1c13 100%);
+  border-radius:50%;
+  transform:translateX(-50%);
+  box-shadow:0 0 18px rgba(230,57,70,.36), inset -4px -4px 9px rgba(0,0,0,.30), inset 3px 3px 9px rgba(255,220,140,.45);
+  display:flex; align-items:center; justify-content:center;
+}
+html.dark .lantern-body{
+  box-shadow:0 0 22px rgba(255,138,122,.55), inset -4px -4px 9px rgba(0,0,0,.30), inset 3px 3px 9px rgba(255,220,140,.45);
+}
+.lantern-body::before,
+.lantern-body::after{
+  content:''; position:absolute; left:50%; transform:translateX(-50%);
+  width:25px; height:3px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+  border-radius:2px; box-shadow:0 0 5px rgba(240,201,107,.5);
+}
+.lantern-body::before{ top:-1.5px; }
+.lantern-body::after{ bottom:-1.5px; }
+.lantern-word{
+  font-family:var(--serif); font-size:15px; font-weight:900;
+  color:var(--gold-bright);
+  text-shadow:0 0 8px rgba(251,191,36,.85);
+  line-height:1;
+}
+.lantern-tassel{
+  position:absolute; top:46px; left:50%;
+  width:3px; height:14px;
+  background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+  transform:translateX(-50%); border-radius:2px;
+  box-shadow:0 0 6px rgba(251,191,36,.6);
+}
+.lantern-tassel::after{
+  content:''; position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
+  width:7px; height:9px;
+  background:radial-gradient(ellipse at 50% 30%, var(--gold-bright), var(--gold));
+  border-radius:50% 50% 60% 60%;
+}
+.firecracker{
+  width:18px; margin-top:10px; opacity:.85;
+  filter:drop-shadow(0 0 5px rgba(240,201,107,.35));
+}
+.firecracker svg{ width:100%; height:auto; display:block; }
+.fc-line{ stroke:var(--gold); stroke-width:1.3; fill:none; stroke-linecap:round; opacity:.7; }
+.fc-dot{ fill:var(--gold-bright); opacity:.85; filter:drop-shadow(0 0 3px rgba(240,201,107,.7)); }
+.fc-spark{ fill:var(--gold-bright); animation:sparkFade 2.4s ease-in-out infinite; }
+.fc-spark:nth-child(9){ animation-delay:0s; }
+.fc-spark:nth-child(10){ animation-delay:.6s; }
+.fc-spark:nth-child(11){ animation-delay:1.2s; }
+.fc-spark:nth-child(12){ animation-delay:1.8s; }
+@keyframes sparkFade{ 0%,100%{ opacity:.3 } 50%{ opacity:1 } }
+
+/* ══════════════════════════════════════════════════════════
+   08 · 今日主卡
+   ══════════════════════════════════════════════════════════ */
+.today{
+  --signal:var(--sig-green);
+  --signal-soft:var(--sig-green-soft);
+  --signal-tint:var(--sig-green-tint);
+  position:relative;
+  margin-top:14px;
+  padding:clamp(18px,3.4vw,30px) clamp(16px,3vw,32px) clamp(16px,3vw,26px);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  text-align:center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--signal-tint) 0%, transparent 62%),
+    var(--surface-panel);
+  border:1px solid var(--hairline);
+  box-shadow:var(--elv-1);
+  -webkit-backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+          backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+}
+.today::before{
+  content:''; position:absolute; top:0; left:14%; right:14%; height:1px; z-index:2;
+  background:linear-gradient(90deg, transparent, var(--signal), transparent);
+  opacity:.5;
+  animation:edgeBreath 4.2s ease-in-out infinite;
+}
+@keyframes edgeBreath{ 0%,100%{ opacity:.35 } 50%{ opacity:.8 } }
+.today-glow{
+  position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(ellipse 68% 58% at 50% 56%, var(--signal-soft) 0%, transparent 72%);
+  opacity:.42;
+  animation:glowBreath 4.2s ease-in-out infinite;
+}
+@keyframes glowBreath{ 0%,100%{ opacity:.32; transform:scale(.94) } 50%{ opacity:.6; transform:scale(1.06) } }
+html.perf-lite .today-glow,
+html.perf-lite .today::before{ animation:none; }
+
+.signal-tag{
+  position:relative; z-index:2;
+  display:inline-flex; align-items:center; gap:7px;
+  padding:4px 12px; border-radius:999px;
+  font-family:var(--mono); font-size:10px; font-weight:800; letter-spacing:.14em;
+  color:var(--signal);
+  background:var(--signal-soft);
+  border:1px solid var(--signal-soft);
+  text-transform:uppercase;
+}
+.signal-dot{
+  width:6px; height:6px; border-radius:50%; background:var(--signal);
+  box-shadow:0 0 0 3px var(--signal-soft), 0 0 8px var(--signal);
+  flex:0 0 auto;
+}
+@media (min-width:768px){ .signal-tag{ font-size:10.5px; } }
+
+.today-date{
+  position:relative; z-index:2;
+  margin-top:12px;
+  font-size:13.5px; font-weight:700; letter-spacing:.02em;
+  color:var(--txt-2); font-variant-numeric:tabular-nums;
+}
+@media (min-width:768px){ .today-date{ font-size:14.5px; margin-top:14px; } }
+
+.today-lunar{
+  position:relative; z-index:2;
+  margin-top:2px;
+  font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.08em;
+  color:var(--signal); opacity:.9;
+  min-height:1.2em;
+}
+.today-lunar:empty{ display:none; }
+
+.street-display{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  margin:clamp(8px,2vw,16px) 0 clamp(6px,1.6vw,12px);
+}
+.street-big{
+  font-family:var(--serif);
+  font-size:clamp(58px,17vw,92px);
+  font-weight:900;
+  letter-spacing:.04em;
+  line-height:1.04;
+  color:var(--signal);
+  text-shadow:0 0 40px var(--signal-soft);
+  will-change:transform;
+  animation:streetBreath 4.2s ease-in-out infinite;
+}
+@media (min-width:1024px){ .street-big{ font-size:clamp(80px,9vw,108px); } }
+@keyframes streetBreath{ 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.045) } }
+html.perf-lite .street-big{ animation:none; }
+
+.street-en{
+  font-family:var(--mono);
+  font-size:10px; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--signal); opacity:.75;
+}
+@media (min-width:768px){ .street-en{ font-size:11.5px; letter-spacing:.34em; } }
+
+.today-app{
+  position:relative; z-index:2;
+  margin-top:clamp(12px,2.4vw,20px);
+  padding-top:clamp(12px,2.4vw,18px);
+}
+.today-app::before{
+  content:''; position:absolute; left:50%; top:0; transform:translateX(-50%);
+  width:44px; height:1px;
+  background:linear-gradient(90deg, transparent, var(--line-2), transparent);
+}
+.app-btn{
+  position:relative;
+  display:flex; align-items:center; gap:12px;
+  width:100%; padding:12px 14px;
+  border-radius:var(--r-md);
+  color:#fff;
+  background:linear-gradient(135deg, var(--accent) 0%, #3b82f6 46%, var(--accent-2) 100%);
+  border:1px solid rgba(255,255,255,.26);
+  box-shadow:0 10px 26px -12px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.42);
+  overflow:hidden;
+  transition:transform .26s var(--ease-out), box-shadow .26s var(--ease), filter .26s var(--ease);
+}
+.app-btn::after{
+  content:''; position:absolute; top:0; left:-120%; width:55%; height:100%;
+  transform:skewX(-18deg);
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.30), transparent);
+  pointer-events:none;
+  transition:left 620ms var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .app-btn:hover{ filter:brightness(1.06); box-shadow:0 14px 32px -12px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.5); }
+  .app-btn:hover::after{ left:130%; }
+  .app-btn:hover .app-btn-arrow{ transform:translate(3px,-3px); }
+}
+.app-btn:active{ transform:scale(.988); }
+html.perf-lite .app-btn::after{ display:none; }
+.app-btn-icon{
+  flex:0 0 auto; width:34px; height:34px; border-radius:10px;
+  background:rgba(255,255,255,.20);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+  display:grid; place-items:center; font-size:16px;
+}
+.app-btn-text{ flex:1 1 auto; min-width:0; text-align:left; }
+.app-btn-title{ font-size:15px; font-weight:800; letter-spacing:.05em; line-height:1.3; }
+.app-btn-sub{
+  display:block; margin-top:3px;
+  font-size:10.5px; font-weight:600; opacity:.9; line-height:1.4;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.app-btn-arrow{
+  flex:0 0 auto; font-size:15px; font-weight:900; opacity:.92;
+  transition:transform .26s var(--ease);
+}
+
+/* ══════════════════════════════════════════════════════════
+   09 · 昨天 · 今天 · 明天
+   ══════════════════════════════════════════════════════════ */
+.week-strip{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:8px;
+  position:relative; z-index:1;
+}
+@media (min-width:768px){ .week-strip{ gap:12px; } }
+
+.week-item{
+  position:relative;
+  padding:12px 6px 11px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.14), rgba(255,255,255,.03));
+  text-align:center;
+  min-width:0;
+  transition:border-color .24s var(--ease), background .24s var(--ease);
+}
+html.dark .week-item{ background:linear-gradient(150deg, rgba(255,255,255,.07), rgba(255,255,255,.015)); }
+.week-item.is-today{
+  background:var(--sig-green-soft);
+  border-color:var(--sig-green);
+}
+.week-day{
+  font-family:var(--mono);
+  font-size:9.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--txt-3); margin-bottom:5px;
+}
+.week-item.is-today .week-day{ color:var(--sig-green); }
+.week-date{
+  font-size:12px; font-weight:700; color:var(--txt-2);
+  font-variant-numeric:tabular-nums; letter-spacing:-.01em;
+  margin-bottom:2px;
+}
+.week-lunar{
+  font-size:10px; color:var(--txt-3); font-weight:500;
+  margin-bottom:7px; min-height:1.2em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.week-street-cn{
+  font-size:14px; font-weight:800; color:var(--txt);
+  letter-spacing:.02em; line-height:1.2; margin-bottom:3px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.week-item.is-today .week-street-cn{ color:var(--sig-green); }
+.week-street-en{
+  font-family:var(--mono);
+  font-size:8px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--txt-3); opacity:.8; line-height:1;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.week-item.is-today .week-street-en{ color:var(--sig-green); opacity:.9; }
+@media (min-width:768px){
+  .week-item{ padding:16px 10px 14px; }
+  .week-day{ font-size:10.5px; }
+  .week-date{ font-size:13px; }
+  .week-lunar{ font-size:11px; }
+  .week-street-cn{ font-size:16px; }
+  .week-street-en{ font-size:9px; letter-spacing:.16em; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   10 · 双列区（查询 / 订阅）
+   ══════════════════════════════════════════════════════════ */
+.grid-2{ display:grid; gap:14px; align-items:start; }
+@media (min-width:1000px){ .grid-2{ grid-template-columns:1fr 1fr; gap:18px; } }
+.grid-2 .card{ margin-bottom:0; }
+.grid-2 .sec{ margin-top:0; }
+
+/* ══════════════════════════════════════════════════════════
+   11 · 表单 / 按钮
+   ══════════════════════════════════════════════════════════ */
+.field-label{
+  display:flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:10px; font-weight:800;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--txt-3);
+  margin-bottom:8px;
+}
+.field-label::after{
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg, var(--line), transparent);
+}
+
+.date-input{
+  width:100%;
+  padding:13px 16px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
+  color:var(--txt);
+  font-family:var(--mono);
+  font-size:15px; font-weight:700; letter-spacing:.06em;
+  text-align:center;
+  font-variant-numeric:tabular-nums;
+  -webkit-appearance:none; appearance:none;
+  outline:none;
+  margin-bottom:10px;
+  transition:border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+html.dark .date-input{ background:linear-gradient(150deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); }
+.date-input:focus-visible{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-ring);
+}
+.date-input::-webkit-calendar-picker-indicator{ cursor:pointer; opacity:.55; }
+html.dark .date-input::-webkit-calendar-picker-indicator{ filter:invert(1); opacity:.6; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  width:100%; padding:13px 14px;
+  border-radius:var(--r-md);
+  font-family:var(--sans);
+  font-size:14px; font-weight:800; letter-spacing:.04em;
+  transition:transform .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease), color .22s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:active{ transform:scale(.985); }
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 130%);
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 10px 26px -14px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.35);
+}
+@media (hover:hover) and (pointer:fine){ .btn-primary:hover{ filter:brightness(1.06); } }
+.btn-ghost{
+  color:var(--accent);
+  background:var(--accent-soft);
+  border:1px solid var(--line);
+}
+@media (hover:hover) and (pointer:fine){ .btn-ghost:hover{ border-color:var(--line-2); background:var(--accent-soft); } }
+.btn-success{
+  color:#fff;
+  background:linear-gradient(135deg, var(--sig-green) 0%, #0f9d58 120%);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 10px 26px -14px var(--sig-green-soft), inset 0 1px 0 rgba(255,255,255,.3);
+}
+@media (hover:hover) and (pointer:fine){ .btn-success:hover{ filter:brightness(1.07); } }
+.btn:disabled{ opacity:.65; cursor:not-allowed; filter:none !important; }
+
+.range-picker{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:6px;
+  margin-bottom:10px;
+}
+.range-btn{
+  padding:10px 2px;
+  border-radius:var(--r-sm);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+  color:var(--txt-2);
+  font-family:var(--mono);
+  font-size:12px; font-weight:700; letter-spacing:.04em;
+  transition:background .22s var(--ease), color .22s var(--ease), border-color .22s var(--ease);
+}
+html.dark .range-btn{ background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(255,255,255,.01)); }
+.range-btn.active{
+  background:var(--accent); border-color:var(--accent); color:#fff;
+  box-shadow:0 6px 16px -8px var(--accent-glow);
+}
+.range-btn:active{ transform:scale(.96); }
+
+.export-btns{ margin-bottom:8px; }
+
+.tip-fold{
+  margin-top:12px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+  overflow:hidden;
+  position:relative; z-index:1;
+}
+html.dark .tip-fold{ background:linear-gradient(150deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); }
+.tip-fold-summary{
+  display:flex; align-items:center; gap:8px;
+  padding:11px 13px;
+  cursor:pointer; list-style:none;
+  font-size:12.5px; font-weight:700; color:var(--txt-2);
+}
+.tip-fold-summary::-webkit-details-marker{ display:none; }
+.tip-fold-arrow{ margin-left:auto; font-size:11px; transition:transform .24s var(--ease); opacity:.6; }
+.tip-fold[open] .tip-fold-arrow{ transform:rotate(180deg); }
+.tip-body{
+  padding:0 13px 13px;
+  font-size:12px; line-height:1.75; color:var(--txt-2);
+}
+.tip-body p{ margin-bottom:9px; }
+.tip-body p:last-child{ margin-bottom:0; }
+.tip-body b{ color:var(--txt); font-weight:800; }
+
+/* ══════════════════════════════════════════════════════════
+   12 · 查询结果
+   ══════════════════════════════════════════════════════════ */
+.result-card{
+  --signal:var(--accent);
+  --signal-soft:var(--accent-soft);
+  --signal-tint:var(--accent-soft);
+  position:relative;
+  max-height:0; opacity:0;
+  padding:0 clamp(16px,3vw,26px);
+  margin:0;
+  border-radius:var(--r-lg);
+  border:1px solid transparent;
+  overflow:hidden;
+  transition:max-height .52s var(--ease-out), opacity .34s var(--ease),
+             padding .4s var(--ease), margin .4s var(--ease), border-color .3s var(--ease);
+}
+.result-card[data-signal="today"]{ --signal:var(--sig-green); --signal-soft:var(--sig-green-soft); --signal-tint:var(--sig-green-tint); }
+.result-card[data-signal="future"]{ --signal:var(--sig-amber); --signal-soft:var(--sig-amber-soft); --signal-tint:var(--sig-amber-tint); }
+.result-card[data-signal="past"]{ --signal:var(--sig-red); --signal-soft:var(--sig-red-soft); --signal-tint:var(--sig-red-tint); }
+.result-card.show{
+  max-height:1600px; opacity:1;
+  padding:clamp(20px,3.4vw,30px) clamp(16px,3vw,26px) clamp(16px,3vw,24px);
+  margin:14px 0;
+  border-color:var(--hairline);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--signal-tint) 0%, transparent 62%),
+    var(--surface-panel);
+  box-shadow:var(--elv-1);
+  -webkit-backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+          backdrop-filter:blur(var(--blur-m)) saturate(var(--sat-m));
+}
+.result-card.show::before{
+  content:''; position:absolute; top:0; left:14%; right:14%; height:1px;
+  background:linear-gradient(90deg, transparent, var(--signal), transparent);
+  opacity:.55; pointer-events:none;
+  animation:edgeBreath 4.2s ease-in-out infinite;
+}
+@media (min-width:1024px){ .result-card.show{ margin:18px 0; } }
+
+.result-glow{
+  position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(ellipse 68% 58% at 50% 55%, var(--signal-soft) 0%, transparent 72%);
+  opacity:.36;
+}
+.result-head{
+  position:relative; z-index:1;
+  display:flex; justify-content:center;
+  margin-bottom:12px;
+}
+.result-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:4px 13px; border-radius:999px;
+  font-family:var(--mono); font-size:10.5px; font-weight:800; letter-spacing:.14em;
+  color:var(--signal);
+  background:var(--signal-soft);
+  border:1px solid var(--signal-soft);
+  text-transform:uppercase;
+}
+.result-pill:empty{ display:none; }
+.result-date{
+  position:relative; z-index:1;
+  text-align:center;
+  font-size:13.5px; font-weight:700; color:var(--txt-2);
+  font-variant-numeric:tabular-nums;
+  margin-bottom:2px;
+}
+.result-lunar{
+  position:relative; z-index:1;
+  text-align:center;
+  font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.08em;
+  color:var(--signal); opacity:.9;
+  min-height:1.2em;
+  margin-bottom:6px;
+}
+.result-lunar:empty{ display:none; }
+.result-street-wrap{
+  position:relative; z-index:1;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  margin:6px 0 clamp(14px,2.6vw,20px);
+}
+.result-street{
+  font-family:var(--serif);
+  font-size:clamp(54px,15vw,84px);
+  font-weight:900; letter-spacing:.04em; line-height:1.04;
+  color:var(--signal);
+  text-shadow:0 0 36px var(--signal-soft);
+}
+@media (min-width:1024px){ .result-street{ font-size:clamp(72px,8vw,96px); } }
+.result-street-en{
+  font-family:var(--mono);
+  font-size:10px; font-weight:700; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--signal); opacity:.75;
+}
+.result-nav{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  margin-top:14px;
+}
+.result-nav button{
+  padding:11px 8px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+  color:var(--txt-2);
+  font-size:13px; font-weight:700;
+  transition:background .22s var(--ease), border-color .22s var(--ease), color .22s var(--ease);
+}
+html.dark .result-nav button{ background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(255,255,255,.01)); }
+@media (hover:hover) and (pointer:fine){
+  .result-nav button:hover{ background:var(--accent-soft); border-color:var(--line-2); color:var(--accent); }
+}
+.result-nav button:active{ transform:scale(.97); }
+.result-add{
+  position:relative; z-index:1;
+  margin-bottom:2px;
+  color:var(--signal);
+  background:var(--signal-soft);
+  border:1px dashed var(--signal);
+}
+@media (hover:hover) and (pointer:fine){
+  .result-add:hover{ background:var(--signal); color:#fff; border-style:solid; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   13 · 更多作品
+   ══════════════════════════════════════════════════════════ */
+.card-head{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:14px;
+  position:relative; z-index:1;
+}
+.card-title{
+  display:flex; align-items:center; gap:8px;
+  font-size:14.5px; font-weight:800; letter-spacing:.01em;
+  color:var(--txt);
+  min-width:0;
+}
+.card-title::before{
+  content:''; flex:0 0 auto;
+  width:3px; height:14px; border-radius:2px;
+  background:linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+.card-meta{
+  margin-left:auto;
+  font-family:var(--mono); font-size:9.5px; font-weight:800; letter-spacing:.14em;
+  color:var(--txt-3); text-transform:uppercase;
+  white-space:nowrap;
+}
+.link-grid{ list-style:none; display:grid; gap:8px; grid-template-columns:1fr 1fr; position:relative; z-index:1; }
+@media (min-width:640px){ .link-grid{ grid-template-columns:repeat(3,1fr); } }
+.link-item{
+  display:flex; align-items:center; gap:9px;
+  padding:12px 13px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:linear-gradient(150deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+  color:var(--txt);
+  font-size:12.5px; font-weight:700;
+  min-width:0;
+  transition:background .2s var(--ease), border-color .2s var(--ease), transform .18s var(--ease);
+}
+html.dark .link-item{ background:linear-gradient(150deg, rgba(255,255,255,.06), rgba(255,255,255,.012)); }
+.link-item:active{ background:var(--accent-soft); transform:scale(.98); }
+.link-ico{ font-size:15px; line-height:1; flex:0 0 auto; }
+.link-txt{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* ══════════════════════════════════════════════════════════
+   14 · 页脚
+   ══════════════════════════════════════════════════════════ */
+.footer{
+  margin-top:clamp(30px,5vw,56px);
+  padding:28px 0 44px;
+  border-top:1px solid var(--line);
+  display:flex; flex-direction:column; align-items:center; gap:18px;
+  text-align:center;
+}
+.uptime-title{
+  font-family:var(--mono); font-size:9.5px; font-weight:800;
+  letter-spacing:.24em; text-transform:uppercase;
+  color:var(--txt-3);
+  margin-bottom:9px;
+}
+.uptime-blocks{ display:flex; align-items:center; justify-content:center; gap:4px; }
+.time-block{ display:flex; align-items:baseline; gap:2px; }
+.time-num{
+  min-width:26px; text-align:center;
+  padding:3px 6px; border-radius:5px;
+  font-family:var(--mono); font-size:12.5px; font-weight:800;
+  font-variant-numeric:tabular-nums;
+  color:var(--txt);
+  background:var(--accent-soft);
+  border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 var(--glass-sheen);
+}
+.time-text{ font-size:10px; color:var(--txt-3); margin-right:2px; }
+@media (max-width:380px){
+  .time-num{ min-width:22px; padding:2px 4px; font-size:11.5px; }
+  .time-text{ font-size:9.5px; }
+}
+
+.badges{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+.badge{
+  display:inline-flex; align-items:stretch;
+  border-radius:6px; overflow:hidden;
+  font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.04em;
+  box-shadow:0 2px 8px -4px rgba(0,0,0,.35);
+  transition:transform .26s var(--ease);
+}
+.badge:hover{ transform:translateY(-2px); }
+.badge-l{
+  display:flex; align-items:center; gap:6px;
+  padding:4px 9px;
+  background:var(--badge-l-bg); color:var(--badge-l-fg);
+}
+.badge-l svg{ width:12px; height:12px; fill:currentColor; }
+.badge-r{ display:flex; align-items:center; padding:4px 9px; color:#fff; }
+.badge-r.dark-text{ color:#141c26; }
+.c-dark{ background:#2b3440; } .c-purple{ background:#5d5cde; } .c-yellow{ background:#f1e05a; }
+.c-red{ background:#e8524f; } .c-blue{ background:#2394d8; } .c-pink{ background:#d63c78; } .c-green{ background:#12a06f; }
+
+.footer-info{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  font-size:12px; color:var(--txt-3); line-height:1.7;
+}
+.footer-info a{ color:var(--txt-2); border-bottom:1px solid transparent; transition:.2s; }
+.footer-info a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+.divider{ margin:0 6px; opacity:.45; }
+.footer-copy{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:var(--txt-3); opacity:.75; }
+
+/* ══════════════════════════════════════════════════════════
+   15 · 回到顶部 / Toast（与导航站同一套浮层材质）
+   ══════════════════════════════════════════════════════════ */
+.back-top{
+  position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  z-index:100;
+  width:48px; height:48px; padding:0; border-radius:50%;
+  display:grid; place-items:center;
+  border:1px solid var(--hairline);
+  background:var(--surface-float);
+  box-shadow:var(--elv-3);
+  -webkit-backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
+          backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
+  color:var(--accent); cursor:pointer;
+  opacity:0; visibility:hidden;
+  transform:translateY(16px) scale(.8);
+  transition:opacity .3s var(--ease), transform .4s var(--ease-out), visibility .3s var(--ease), color .2s var(--ease);
+}
+.back-top::before{
+  content:''; position:absolute; inset:5px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, var(--accent-soft) 0%, transparent 72%);
+}
+.back-top .ring{
+  position:absolute; inset:0; width:100%; height:100%;
+  transform:rotate(-90deg); pointer-events:none;
+}
+.back-top .ring circle{ fill:none; stroke-width:2.2; }
+.back-top .ring-bg{ stroke:var(--accent-soft); }
+.back-top .ring-fg{ stroke:currentColor; stroke-linecap:round; }
+.back-top .arrow-up{
+  position:relative; z-index:1; width:18px; height:18px;
+  stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+  transition:transform .32s var(--ease);
+}
+.back-top.show{ opacity:1; visibility:visible; transform:translateY(0) scale(1); }
+@media (hover:hover) and (pointer:fine){
+  .back-top:hover{ transform:translateY(-2px) scale(1.05); }
+  .back-top:hover .arrow-up{ transform:translateY(-1.5px); }
+}
+.back-top:active{ transform:scale(.9); }
+@media (min-width:1024px){
+  .back-top{ right:32px; bottom:calc(28px + env(safe-area-inset-bottom,0px)); width:52px; height:52px; }
+}
+
+.toast{
+  position:fixed; left:50%; bottom:calc(84px + env(safe-area-inset-bottom,0px));
+  z-index:10000;
+  max-width:calc(100vw - 40px);
+  padding:10px 18px;
+  border-radius:var(--r-md);
+  border:1px solid var(--hairline);
+  background:var(--surface-float);
+  box-shadow:var(--elv-4);
+  -webkit-backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
+          backdrop-filter:blur(var(--blur-l)) saturate(var(--sat-l));
+  font-size:13px; font-weight:700; color:var(--txt);
+  text-align:center;
+  opacity:0; pointer-events:none;
+  transform:translate(-50%, 14px);
+  transition:opacity .26s var(--ease), transform .26s var(--ease);
+}
+.toast.show{ opacity:1; transform:translate(-50%, 0); }
+.toast.error{ color:var(--sig-red); border-color:var(--sig-red-soft); }
+
+/* ══════════════════════════════════════════════════════════
+   16 · 小屏微调 / 打印 / 动效降级
+   ══════════════════════════════════════════════════════════ */
+@media (max-width:400px){
+  .street-chip{ padding:7px 2px 6px 11px; }
+  .street-chip::before{ left:5px; width:4px; height:4px; }
+  .street-chip-cn{ font-size:10.5px; }
+  .street-chip-en{ display:none; }
+  .street-big{ font-size:clamp(52px,17vw,72px); }
+  .week-item{ padding:10px 4px 9px; }
+  .week-street-cn{ font-size:13px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .fx-aurora span, .fx-scan, .fx-cursor{ display:none; }
+}
+
+html.perf-lite .lantern,
+html.perf-lite .fc-spark,
+html.perf-lite .tb-orb{ animation:none; }
+
+@media print{
+  .fx, .fx-cursor, .topbar, .back-top, .toast, .skip-link, .deco,
+  .result-nav, .date-input, .btn, .week-strip{ display:none !important; }
+  body{ background:#fff; color:#000; }
+  .shell{ max-width:100%; padding:0; }
+  .glass, .today, .result-card.show{
+    box-shadow:none !important; border:1px solid #ccc !important;
+    background:#fff !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+    max-height:none !important; opacity:1 !important;
+  }
+  .today-glow, .result-glow{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<div class="fx" aria-hidden="true">
+  <div class="fx-aurora"><span></span><span></span><span></span></div>
+  <div class="fx-grid"></div>
+  <div class="fx-scan"></div>
+  <div class="fx-vignette"></div>
+</div>
+<div class="fx-cursor" id="cursorLight" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="tb-brand" href="https://duanaifeng.github.io/AFeng/" aria-label="返回 AiFeng 主页">
+      <span class="tb-orb"></span>
+      <span>赶集日历</span>
+    </a>
+    <span class="tb-sep" aria-hidden="true"></span>
+    <span class="tb-today">今日 <b id="tbToday">—</b></span>
+    <div class="tb-right">
+      <span class="tb-clock" id="tbClock">--:--:--</span>
+      <button class="tb-btn" id="themeBtn" type="button" aria-label="切换深色 / 浅色模式">
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <main id="main">
+
+    <header class="hero glass">
+      <div class="hud" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+      <div class="deco deco--left" aria-hidden="true">
+        <div class="lantern">
+          <span class="lantern-body"><span class="lantern-word">福</span></span>
+          <span class="lantern-tassel"></span>
+        </div>
+        <div class="firecracker">
+          <svg viewBox="0 0 24 100" fill="none">
+            <line class="fc-line" x1="12" y1="4" x2="12" y2="96"/>
+            <circle class="fc-dot" cx="12" cy="14" r="3.2"/><circle class="fc-dot" cx="12" cy="26" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="38" r="3.2"/><circle class="fc-dot" cx="12" cy="50" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="62" r="3.2"/><circle class="fc-dot" cx="12" cy="74" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="86" r="3.2"/>
+            <circle class="fc-spark" cx="4" cy="14" r="1.2"/><circle class="fc-spark" cx="4" cy="38" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="26" r="1.2"/><circle class="fc-spark" cx="20" cy="62" r="1.2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="deco deco--right" aria-hidden="true">
+        <div class="lantern">
+          <span class="lantern-body"><span class="lantern-word">春</span></span>
+          <span class="lantern-tassel"></span>
+        </div>
+        <div class="firecracker">
+          <svg viewBox="0 0 24 100" fill="none">
+            <line class="fc-line" x1="12" y1="4" x2="12" y2="96"/>
+            <circle class="fc-dot" cx="12" cy="14" r="3.2"/><circle class="fc-dot" cx="12" cy="26" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="38" r="3.2"/><circle class="fc-dot" cx="12" cy="50" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="62" r="3.2"/><circle class="fc-dot" cx="12" cy="74" r="3.2"/>
+            <circle class="fc-dot" cx="12" cy="86" r="3.2"/>
+            <circle class="fc-spark" cx="4" cy="14" r="1.2"/><circle class="fc-spark" cx="4" cy="38" r="1.2"/>
+            <circle class="fc-spark" cx="20" cy="26" r="1.2"/><circle class="fc-spark" cx="20" cy="62" r="1.2"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="brand-tag">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>XIYI · MARKET CALENDAR</span>
+        </div>
+        <h1 class="title-cn">西邑乡赶集日历</h1>
+        <p class="title-en">XIYI MARKET CALENDAR</p>
+        <ul class="street-chips" id="streetChips" aria-label="街道列表">
+          <li class="street-chip" data-street="西邑街"><span class="street-chip-cn">西邑街</span><span class="street-chip-en">XIYI</span></li>
+          <li class="street-chip" data-street="永信街"><span class="street-chip-cn">永信街</span><span class="street-chip-en">YONGXIN</span></li>
+          <li class="street-chip" data-street="羊邑街"><span class="street-chip-cn">羊邑街</span><span class="street-chip-en">YANGYI</span></li>
+          <li class="street-chip" data-street="丙麻街"><span class="street-chip-cn">丙麻街</span><span class="street-chip-en">BINGMA</span></li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="today" id="todayCard" aria-labelledby="todayTitle">
+      <div class="today-glow" aria-hidden="true"></div>
+      <div class="signal-tag">
+        <span class="signal-dot" aria-hidden="true"></span>
+        <span>今日赶集</span>
+      </div>
+      <h2 class="today-date" id="todayTitle"><time id="todayDate" datetime="">加载中…</time></h2>
+      <div class="today-lunar" id="todayLunar"></div>
+      <div class="street-display">
+        <div class="street-big" id="todayStreet">计算中…</div>
+        <div class="street-en" id="todayStreetEn"></div>
+      </div>
+      <div class="today-app">
+        <a class="app-btn" id="btnAppNav" href="https://duanaifeng.github.io/AFeng/daohang/?item=xiyi-ganji-rili" target="_blank" rel="noopener noreferrer">
+          <span class="app-btn-icon" aria-hidden="true">📲</span>
+          <span class="app-btn-text">
+            <span class="app-btn-title">装到手机上</span>
+            <span class="app-btn-sub">AiFeng 导航站内获取安装包</span>
+          </span>
+          <span class="app-btn-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="weekTitle">
+      <div class="sec-head">
+        <span class="sec-idx">01</span>
+        <h2 class="sec-title" id="weekTitle">本周街期</h2>
+        <span class="sec-line"></span>
+        <span class="sec-meta">昨天 · 今天 · 明天</span>
+      </div>
+      <div class="glass card">
+        <div class="week-strip" id="weekStrip" role="list" aria-label="昨天今天明天赶集日历"></div>
+      </div>
+    </section>
+
+    <div class="grid-2 sec">
+
+      <section aria-labelledby="queryTitle">
+        <div class="sec-head">
+          <span class="sec-idx">02</span>
+          <h2 class="sec-title" id="queryTitle">查询日期</h2>
+          <span class="sec-line"></span>
+          <span class="sec-meta">任意一天</span>
+        </div>
+        <div class="glass card">
+          <div class="field-label">Select Date</div>
+          <label class="visually-hidden" for="dateInput">选择查询日期</label>
+          <input class="date-input" id="dateInput" type="date" aria-label="选择查询日期">
+          <button class="btn btn-primary" id="btnQuery" type="button">查询这一天</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="exportTitle">
+        <div class="sec-head">
+          <span class="sec-idx">03</span>
+          <h2 class="sec-title" id="exportTitle">订阅到手机</h2>
+          <span class="sec-line"></span>
+          <span class="sec-meta">自动提醒</span>
+        </div>
+        <div class="glass card">
+          <div class="field-label">Subscribe Range</div>
+          <div class="range-picker" id="rangePicker" role="group" aria-label="选择订阅时长">
+            <button class="range-btn" type="button" data-years="1">1 年</button>
+            <button class="range-btn active" type="button" data-years="3">3 年</button>
+            <button class="range-btn" type="button" data-years="6">6 年</button>
+            <button class="range-btn" type="button" data-years="10">10 年</button>
+          </div>
+          <div class="export-btns">
+            <button class="btn btn-success" id="btnExportCal" type="button">📥 下载日历文件并订阅</button>
+          </div>
+          <button class="btn btn-ghost" id="btnCopyUrl" type="button">🔗 复制网址去浏览器打开</button>
+
+          <details class="tip-fold" id="tipFold">
+            <summary class="tip-fold-summary">
+              <span aria-hidden="true">📖</span><span>导入教程 &amp; 说明</span>
+              <span class="tip-fold-arrow" aria-hidden="true">▾</span>
+            </summary>
+            <div class="tip-body">
+              <p><b>🍎 苹果手机：</b>点击按钮下载后，直接点击下载好的文件，系统会自动弹窗，点"添加"即可。</p>
+              <p><b>🤖 安卓 / 鸿蒙：</b>下载后去【文件管理】→【下载】找到该文件，<b>点击它</b>，选择用"日历"打开即可导入。</p>
+              <p><b>⚠️ 微信 / QQ 里点了没反应？</b>请点【复制网址】，用手机自带浏览器（Safari / Chrome）粘贴访问后再下载。</p>
+              <p><b>🔔 两次提醒：</b>赶集<b>头天晚上 20:00</b> 提醒一次（可以提前准备），<b>当天早上 08:00</b> 再提醒一次（该出门啦）。</p>
+              <p><b>📆 订阅时长：</b>可选 1 / 3 / 6 / 10 年，<b>默认 3 年</b>，<b>从下载当天开始算</b>，到期前重新下载一次即可续上。</p>
+              <p><b>💡 重复导入：</b>文件内已做防重复标记，再次导入也不会导致日历重复错乱。</p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <section class="result-card" id="resultCard" data-signal="today" aria-live="polite" aria-atomic="true">
+      <div class="result-glow" aria-hidden="true"></div>
+      <div class="result-head">
+        <span class="result-pill" id="resultSignalPill">
+          <span class="signal-dot" aria-hidden="true"></span>
+          <span id="resultSignalText"></span>
+        </span>
+      </div>
+      <div class="result-date" id="resultDate"></div>
+      <div class="result-lunar" id="resultLunar"></div>
+      <div class="result-street-wrap">
+        <div class="result-street" id="resultStreet"></div>
+        <div class="result-street-en" id="resultStreetEn"></div>
+      </div>
+      <button class="btn result-add" id="btnAddSingleDay" type="button">
+        <span aria-hidden="true">➕</span> 只把这一天加入手机日历
+      </button>
+      <div class="result-nav">
+        <button type="button" id="btnPrevDay" aria-label="查询前一天">← 前一天</button>
+        <button type="button" id="btnNextDay" aria-label="查询后一天">后一天 →</button>
+      </div>
+    </section>
+
+    <section class="sec card glass" aria-labelledby="linksTitle">
+      <div class="card-head">
+        <h2 class="card-title" id="linksTitle">更多作品</h2>
+        <span class="card-meta">AiFeng</span>
+      </div>
+      <ul class="link-grid">
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">🏠</span><span class="link-txt">我的主页</span></a></li>
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">🔗</span><span class="link-txt">资源导航</span></a></li>
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/?item=wangluo-guanjia" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">📡</span><span class="link-txt">网络管家</span></a></li>
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/gongshi/" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">⏰</span><span class="link-txt">工时记账</span></a></li>
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/game/" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">🎮</span><span class="link-txt">怀旧游戏库</span></a></li>
+        <li><a class="link-item" href="https://duanaifeng.github.io/AFeng/daohang/?item=diannao-weihu-gongju" rel="noopener noreferrer"><span class="link-ico" aria-hidden="true">💻</span><span class="link-txt">电脑维护工具</span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <div class="uptime-title">Site Uptime · 本站已运行</div>
+      <div class="uptime-blocks">
+        <div class="time-block"><span class="time-num" id="upY">0</span><span class="time-text">年</span></div>
+        <div class="time-block"><span class="time-num" id="upM">0</span><span class="time-text">月</span></div>
+        <div class="time-block"><span class="time-num" id="upD">0</span><span class="time-text">日</span></div>
+        <div class="time-block"><span class="time-num" id="upH">00</span><span class="time-text">时</span></div>
+        <div class="time-block"><span class="time-num" id="upMin">00</span><span class="time-text">分</span></div>
+        <div class="time-block"><span class="time-num" id="upS">00</span><span class="time-text">秒</span></div>
+      </div>
+    </div>
+
+    <div class="badges">
+      <a href="https://github.com/duanaifeng/AFeng" target="_blank" rel="noopener noreferrer" class="badge">
+        <span class="badge-l">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub Pages
+        </span>
+        <span class="badge-r c-dark">已部署</span>
+      </a>
+      <span class="badge"><span class="badge-l">版本</span><span class="badge-r c-purple" id="footerVer">v4.0</span></span>
+      <span class="badge"><span class="badge-l">技术栈</span><span class="badge-r c-yellow dark-text">Vanilla JS</span></span>
+      <span class="badge"><span class="badge-l">框架</span><span class="badge-r c-red">零依赖</span></span>
+      <span class="badge"><span class="badge-l">体验</span><span class="badge-r c-blue">极速秒开</span></span>
+      <span class="badge"><span class="badge-l">协议</span><span class="badge-r c-pink">个人非营利</span></span>
+      <span class="badge"><span class="badge-l">隐私</span><span class="badge-r c-green">无广告无追踪</span></span>
+    </div>
+
+    <div class="footer-info">
+      <div>
+        Made by <a href="https://duanaifeng.github.io/AFeng/">AiFeng</a>
+        <span class="divider">·</span>
+        <a href="https://github.com/duanaifeng/AFeng" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span class="divider">·</span>
+        <a href="mailto:88061995@qq.com">88061995@qq.com</a>
+      </div>
+      <div class="footer-copy" id="footerCopy">© 2026 AI.FENG · ALL RIGHTS RESERVED</div>
+    </div>
+  </footer>
+</div>
+
+<button class="back-top" id="backTop" type="button" aria-label="回到顶部">
+  <svg class="ring" viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="ring-bg" cx="24" cy="24" r="21"/>
+    <circle class="ring-fg" cx="24" cy="24" r="21"/>
+  </svg>
+  <svg class="arrow-up" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 18.6V6.2"/>
+    <path d="M6.6 11.2 12 6.2l5.4 5"/>
+  </svg>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function (global) {
+  'use strict';
+
+  /* ══════════════════════════════════════════════════════
+     版本 / 常量
+     ══════════════════════════════════════════════════════ */
+  var APP_VERSION = '4.0';
+  var BJ_OFFSET = 8 * 3600 * 1000;      /* 北京时区固定 +08:00 */
+  var DAY_MS = 86400000;                /* 一天的毫秒数 */
+
+  var CFG = {
+    STREETS: [
+      { cn: '西邑街', en: 'XIYI' },
+      { cn: '永信街', en: 'YONGXIN' },
+      { cn: '羊邑街', en: 'YANGYI' },
+      { cn: '丙麻街', en: 'BINGMA' }
+    ],
+    /* 本站首次上线，同时是四街循环的基准日：2026-02-15 00:00 北京时间 */
+    SITE_START: '2026-02-15T00:00:00+08:00',
+    CYCLE: 4,
+    DATE_RANGE: { min: '2026-02-15', max: '2099-12-31' },
+    THEME_KEY: 'af-theme',
+    SCROLL_TOP_THRESHOLD: 320,
+    RING_RADIUS: 21
+  };
+
+  var SITE_START_MS = Date.parse(CFG.SITE_START);
+  var LAUNCH_BJ = new Date(SITE_START_MS + BJ_OFFSET);
+  /* 基准“日历日”（UTC 0 点表示），街期计算与 ICS 生成都用它，跨时区一致 */
+  var BASE_DAY_UTC = Date.UTC(LAUNCH_BJ.getUTCFullYear(), LAUNCH_BJ.getUTCMonth(), LAUNCH_BJ.getUTCDate());
+  var MAX_UTC = Date.UTC(2099, 11, 31, 15, 59, 59);
+
+  var WEEK_MAP = ['日', '一', '二', '三', '四', '五', '六'];
+
+  /* ══════════════════════════════════════════════════════
+     工具
+     ══════════════════════════════════════════════════════ */
+  var Utils = {
+    pad2: function (n) { return n < 10 ? '0' + n : '' + n; },
+
+    rafThrottle: function (fn) {
+      var ticking = false, lastArgs = null;
+      return function () {
+        lastArgs = arguments;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          try { fn.apply(null, lastArgs); } catch (e) {}
+        });
+      };
+    },
+
+    prefersReducedMotion: function () {
+      try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    },
+
+    isCoarse: function () {
+      try { return matchMedia('(pointer: coarse)').matches; } catch (e) { return false; }
+    },
+
+    isDateStr: function (s) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+      var p = s.split('-').map(Number);
+      var d = new Date(p[0], p[1] - 1, p[2]);
+      return d.getFullYear() === p[0] && d.getMonth() === p[1] - 1 && d.getDate() === p[2];
+    },
+
+    formatInputDate: function (d) {
+      return d.getFullYear() + '-' + Utils.pad2(d.getMonth() + 1) + '-' + Utils.pad2(d.getDate());
+    },
+
+    /* 本地日历日 → 以 UTC 0 点表示的“那一天”，用于跨时区一致的计算 */
+    dayUTC: function (d) { return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); },
+
+    /* UTC 毫秒 → iCalendar 紧凑日期 YYYYMMDD */
+    icsDate: function (ms) {
+      var d = new Date(ms);
+      return '' + d.getUTCFullYear() + Utils.pad2(d.getUTCMonth() + 1) + Utils.pad2(d.getUTCDate());
+    },
+
+    /* UTC 毫秒 → iCalendar 时间戳 YYYYMMDDTHHMMSSZ（DTSTAMP 用） */
+    icsStamp: function (ms) {
+      var d = new Date(ms);
+      return Utils.icsDate(ms) + 'T' + Utils.pad2(d.getUTCHours())
+        + Utils.pad2(d.getUTCMinutes()) + Utils.pad2(d.getUTCSeconds()) + 'Z';
+    },
+
+    /* UTF-8 字节数（用于 ICS 折行，避免切碎多字节字符） */
+    byteLen: function (ch) {
+      var c = ch.codePointAt(0);
+      if (c < 0x80) return 1;
+      if (c < 0x800) return 2;
+      if (c >= 0xD800 && c <= 0xDBFF) return 4;
+      return 3;
+    },
+
+    foldLine: function (line) {
+      var out = '', buf = '', len = 0;
+      var chars = Array.from(line);
+      for (var i = 0; i < chars.length; i++) {
+        var b = Utils.byteLen(chars[i]);
+        if (len + b > 73) { out += buf + '\r\n '; buf = ''; len = 0; }
+        buf += chars[i];
+        len += b;
+      }
+      return out + buf;
+    },
+
+    /* iCalendar TEXT 转义：反斜杠 / 分号 / 逗号 / 换行 */
+    icsText: function (v) {
+      return String(v == null ? '' : v)
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\r\n|\r|\n/g, '\\n');
+    },
+
+    copy: function (text) {
+      if (navigator.clipboard && global.isSecureContext) return navigator.clipboard.writeText(text);
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) return Promise.resolve();
+      } catch (e) {}
+      return Promise.reject(new Error('copy-failed'));
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     北京日历计算（运行时长 / 版权 / 时钟共用）
+     ══════════════════════════════════════════════════════ */
+  function bjParts(ms) {
+    var d = new Date(ms + BJ_OFFSET);
+    return {
+      y: d.getUTCFullYear(), m: d.getUTCMonth(), d: d.getUTCDate(),
+      h: d.getUTCHours(), mi: d.getUTCMinutes(), s: d.getUTCSeconds()
+    };
+  }
+
+  function daysInMonthUTC(y, m) {
+    return new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  }
+
+  /* 北京时间日历差：与时区无关，日字段在北京 0 点进位 */
+  function uptimeParts(startMs, endMs) {
+    var a = bjParts(startMs), b = bjParts(endMs);
+    var s = b.s - a.s, mi = b.mi - a.mi, h = b.h - a.h,
+        d = b.d - a.d, m = b.m - a.m, y = b.y - a.y;
+    if (s < 0) { s += 60; mi--; }
+    if (mi < 0) { mi += 60; h--; }
+    if (h < 0) { h += 24; d--; }
+    if (d < 0) {
+      m--;
+      if (m < 0) { m += 12; y--; }
+      d += daysInMonthUTC(b.y, b.m - 1);
+    }
+    if (m < 0) { m += 12; y--; }
+    return { y: y, m: m, d: d, h: h, mi: mi, s: s };
+  }
+
+  /* ══════════════════════════════════════════════════════
+     错误上报
+     ══════════════════════════════════════════════════════ */
+  var Reporter = (function () {
+    var el = null, timer = 0, count = 0;
+    function ensure() {
+      if (el || !document.body) return el;
+      el = document.createElement('div');
+      el.setAttribute('role', 'alert');
+      el.style.cssText = [
+        'position:fixed','left:50%','bottom:24px','transform:translateX(-50%)',
+        'z-index:2147483647','padding:11px 20px','border-radius:12px',
+        'background:#2160e8','color:#fff','font:600 13px/1.5 -apple-system,system-ui,"PingFang SC",sans-serif',
+        'box-shadow:0 14px 34px -12px rgba(33,96,232,.6)','max-width:88vw','text-align:center',
+        'pointer-events:none','opacity:0','transition:opacity .25s ease'
+      ].join(';');
+      document.body.appendChild(el);
+      return el;
+    }
+    function show(msg) {
+      if (count >= 4) return;
+      count++;
+      try {
+        var node = ensure();
+        if (!node) return;
+        node.textContent = String(msg || '');
+        node.style.opacity = '1';
+        clearTimeout(timer);
+        timer = setTimeout(function () { if (el) el.style.opacity = '0'; }, 4500);
+      } catch (e) {}
+    }
+    global.addEventListener('error', function (e) {
+      if (e && e.message) show('页面出错：' + e.message);
+    }, true);
+    global.addEventListener('unhandledrejection', function (e) {
+      var r = e && e.reason;
+      show('请求失败：' + ((r && r.message) || r || '未知错误'));
+    });
+    return { show: show };
+  })();
+
+  /* ══════════════════════════════════════════════════════
+     主题（手动优先，其次跟随系统）
+     ══════════════════════════════════════════════════════ */
+  var Theme = {
+    init: function () {
+      var btn = document.getElementById('themeBtn');
+      var self = this;
+
+      try {
+        var mq = matchMedia('(prefers-color-scheme: dark)');
+        var onSys = function (e) {
+          if (self.saved()) return;
+          document.documentElement.classList.toggle('dark', !!e.matches);
+          self.label(btn);
+        };
+        if (mq.addEventListener) mq.addEventListener('change', onSys);
+        else if (mq.addListener) mq.addListener(onSys);
+      } catch (e) {}
+
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var dark = document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem(CFG.THEME_KEY, dark ? 'dark' : 'light'); } catch (e) {}
+        self.label(btn);
+      });
+      this.label(btn);
+    },
+    saved: function () {
+      try { return localStorage.getItem(CFG.THEME_KEY); } catch (e) { return null; }
+    },
+    label: function (btn) {
+      if (!btn) return;
+      var dark = document.documentElement.classList.contains('dark');
+      btn.setAttribute('aria-label', dark ? '切换到浅色模式' : '切换到深色模式');
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     光标光晕
+     ══════════════════════════════════════════════════════ */
+  function initCursorLight() {
+    var el = document.getElementById('cursorLight');
+    if (!el) return;
+    if (window.__AF_LITE__ || Utils.isCoarse() || Utils.prefersReducedMotion()) { el.style.display = 'none'; return; }
+    var raf = 0, px = -9999, py = -9999;
+    function apply() { raf = 0; el.style.setProperty('--gx', px + 'px'); el.style.setProperty('--gy', py + 'px'); }
+    function onMove(e) { px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(apply); }
+    function onLeave() { px = -9999; py = -9999; if (!raf) raf = requestAnimationFrame(apply); }
+    document.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseleave', onLeave);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) onLeave(); });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     农历（1900–2100，INFO 表 201 项）
+     ══════════════════════════════════════════════════════ */
+  var Lunar = (function () {
+    var DAY_NAMES = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+    var MONTH_NAMES = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+    var INFO = [0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,0x0d520];
+
+    function leapMonth(y) { return INFO[y - 1900] & 0xf; }
+    function leapDays(y) { if (leapMonth(y)) return (INFO[y - 1900] & 0x10000) ? 30 : 29; return 0; }
+    function monthDays(y, m) { return (INFO[y - 1900] & (0x10000 >> m)) ? 30 : 29; }
+    function yearDays(y) {
+      var sum = 348;
+      for (var i = 0x8000; i > 0x8; i >>= 1) sum += (INFO[y - 1900] & i) ? 1 : 0;
+      return sum + leapDays(y);
+    }
+
+    function solarToLunar(date) {
+      try {
+        var base = Date.UTC(1900, 0, 31);
+        var target = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+        var offset = Math.round((target - base) / DAY_MS);
+        if (offset < 0 || offset > 80000) return null;
+        var year = 1900;
+        while (year < 2101 && offset > 0) {
+          var days = yearDays(year);
+          if (offset < days) break;
+          offset -= days;
+          year++;
+        }
+        var leap = leapMonth(year);
+        var months = [];
+        for (var m = 1; m <= 12; m++) {
+          months.push({ month: m, isLeap: false, days: monthDays(year, m) });
+          if (leap > 0 && m === leap) months.push({ month: m, isLeap: true, days: leapDays(year) });
+        }
+        for (var i = 0; i < months.length; i++) {
+          var item = months[i];
+          if (offset < item.days) {
+            return {
+              month: item.month,
+              day: offset + 1,
+              isLeap: item.isLeap,
+              monthName: (item.isLeap ? '闰' : '') + MONTH_NAMES[item.month - 1] + '月',
+              dayName: DAY_NAMES[offset] || ''
+            };
+          }
+          offset -= item.days;
+        }
+        return null;
+      } catch (e) { return null; }
+    }
+
+    function text(date) {
+      var l = solarToLunar(date);
+      if (!l) return '';
+      return '农历' + l.monthName + l.dayName;
+    }
+    function short(date) {
+      var l = solarToLunar(date);
+      if (!l) return '';
+      return l.dayName;
+    }
+    return { text: text, short: short };
+  })();
+
+  /* ══════════════════════════════════════════════════════
+     日历核心（四街循环）
+     ══════════════════════════════════════════════════════ */
+  var Calendar = {
+    /* 北京“今天”；设备时间异常（早于基准日 / 超过 2099）时回落基准日 */
+    beijingToday: function (d) {
+      var real = d || new Date();
+      var t = real.getTime();
+      if (!isFinite(t) || t < SITE_START_MS || t > MAX_UTC) t = SITE_START_MS;
+      var bj = new Date(t + BJ_OFFSET);
+      return new Date(bj.getUTCFullYear(), bj.getUTCMonth(), bj.getUTCDate());
+    },
+
+    /* 北京“今天”的日历日（UTC 0 点表示），ICS 导出起点用 */
+    todayDayUTC: function () { return Utils.dayUTC(this.beijingToday()); },
+
+    streetIndex: function (date) {
+      try {
+        var diff = Math.round((Utils.dayUTC(date) - BASE_DAY_UTC) / DAY_MS);
+        return ((diff % CFG.CYCLE) + CFG.CYCLE) % CFG.CYCLE;
+      } catch (e) { return 0; }
+    },
+    street: function (date) { return CFG.STREETS[this.streetIndex(date)]; },
+    weekday: function (date) { return '周' + WEEK_MAP[date.getDay()]; },
+    formatDate: function (date) {
+      return date.getFullYear() + '年' + Utils.pad2(date.getMonth() + 1) + '月' + Utils.pad2(date.getDate()) + '日';
+    },
+    addDays: function (date, n) { var d = new Date(date); d.setDate(d.getDate() + n); return d; },
+    daysBetween: function (a, b) { return Math.round((Utils.dayUTC(a) - Utils.dayUTC(b)) / DAY_MS); },
+
+    cardState: function (date) {
+      var diff = this.daysBetween(date, this.beijingToday());
+      if (diff === 0) return 'today';
+      return diff > 0 ? 'future' : 'past';
+    },
+    signalPill: function (state, diff) {
+      switch (state) {
+        case 'future': return '还有 ' + diff + ' 天开街';
+        case 'past':   return '已散场 ' + (-diff) + ' 天';
+        default:       return '';
+      }
+    },
+    resolveCardSignal: function (date) {
+      var state = this.cardState(date);
+      if (state === 'today') return { attr: 'today', pill: '今日赶集' };
+      return { attr: state, pill: this.signalPill(state, this.daysBetween(date, this.beijingToday())) };
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     状态 / DOM
+     ══════════════════════════════════════════════════════ */
+  var State = {
+    today: null,
+    currentResultDate: null,
+    inputAuto: true      /* 日期输入框是否仍由程序托管（用户手动改过后置 false） */
+  };
+  var ExportState = { years: 3 };
+  var DOM = {};
+
+  function cacheDom() {
+    DOM.todayDate        = document.getElementById('todayDate');
+    DOM.todayLunar       = document.getElementById('todayLunar');
+    DOM.todayStreet      = document.getElementById('todayStreet');
+    DOM.todayStreetEn    = document.getElementById('todayStreetEn');
+    DOM.weekStrip        = document.getElementById('weekStrip');
+    DOM.streetChips      = document.querySelectorAll('.street-chip');
+    DOM.btnExportCal     = document.getElementById('btnExportCal');
+    DOM.btnCopyUrl       = document.getElementById('btnCopyUrl');
+    DOM.dateInput        = document.getElementById('dateInput');
+    DOM.btnQuery         = document.getElementById('btnQuery');
+    DOM.resultCard       = document.getElementById('resultCard');
+    DOM.resultSignalText = document.getElementById('resultSignalText');
+    DOM.resultDate       = document.getElementById('resultDate');
+    DOM.resultLunar      = document.getElementById('resultLunar');
+    DOM.resultStreet     = document.getElementById('resultStreet');
+    DOM.resultStreetEn   = document.getElementById('resultStreetEn');
+    DOM.btnAddSingleDay  = document.getElementById('btnAddSingleDay');
+    DOM.btnPrevDay       = document.getElementById('btnPrevDay');
+    DOM.btnNextDay       = document.getElementById('btnNextDay');
+    DOM.backTop          = document.getElementById('backTop');
+    DOM.toast            = document.getElementById('toast');
+    DOM.tbToday          = document.getElementById('tbToday');
+    DOM.tbClock          = document.getElementById('tbClock');
+    DOM.footerVer        = document.getElementById('footerVer');
+    DOM.footerCopy       = document.getElementById('footerCopy');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     Toast
+     ══════════════════════════════════════════════════════ */
+  var Toast = (function () {
+    var timer = 0;
+    return {
+      show: function (msg, isError) {
+        var el = DOM.toast;
+        if (!el) return;
+        el.textContent = String(msg || '');
+        el.classList.toggle('error', !!isError);
+        el.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { el.classList.remove('show'); }, 2200);
+      }
+    };
+  })();
+
+  /* ══════════════════════════════════════════════════════
+     渲染
+     ══════════════════════════════════════════════════════ */
+  var Render = {
+    renderToday: function () {
+      try {
+        var today = Calendar.beijingToday();
+        State.today = today;
+        var street = Calendar.street(today);
+
+        if (DOM.todayDate) {
+          DOM.todayDate.textContent = Calendar.formatDate(today) + ' ' + Calendar.weekday(today);
+          DOM.todayDate.setAttribute('datetime', Utils.formatInputDate(today));
+        }
+        if (DOM.todayLunar) {
+          var lunar = Lunar.text(today);
+          DOM.todayLunar.textContent = lunar;
+          DOM.todayLunar.style.display = lunar ? '' : 'none';
+        }
+        if (DOM.todayStreet) DOM.todayStreet.textContent = street.cn;
+        if (DOM.todayStreetEn) DOM.todayStreetEn.textContent = street.en;
+        if (DOM.tbToday) DOM.tbToday.textContent = street.cn;
+
+        Array.prototype.forEach.call(DOM.streetChips, function (chip) {
+          chip.classList.toggle('active', chip.getAttribute('data-street') === street.cn);
+        });
+      } catch (e) { Reporter.show('日期计算异常'); }
+    },
+
+    renderWeekStrip: function () {
+      if (!DOM.weekStrip) return;
+      var today = State.today || Calendar.beijingToday();
+      while (DOM.weekStrip.firstChild) DOM.weekStrip.removeChild(DOM.weekStrip.firstChild);
+
+      for (var i = -1; i <= 1; i++) {
+        var d = Calendar.addDays(today, i);
+        var s = Calendar.street(d);
+        var isToday = i === 0;
+
+        var item = document.createElement('div');
+        item.className = 'week-item' + (isToday ? ' is-today' : '');
+        item.setAttribute('role', 'listitem');
+
+        var elDay = document.createElement('div');
+        elDay.className = 'week-day';
+        elDay.textContent = i === -1 ? '昨天' : i === 0 ? '今天' : '明天';
+
+        var elDate = document.createElement('div');
+        elDate.className = 'week-date';
+        elDate.textContent = Utils.pad2(d.getMonth() + 1) + '.' + Utils.pad2(d.getDate());
+
+        var elLunar = document.createElement('div');
+        elLunar.className = 'week-lunar';
+        elLunar.textContent = Lunar.short(d) || '—';
+
+        var elCn = document.createElement('div');
+        elCn.className = 'week-street-cn';
+        elCn.textContent = s.cn;
+
+        var elEn = document.createElement('div');
+        elEn.className = 'week-street-en';
+        elEn.textContent = s.en;
+
+        item.appendChild(elDay);
+        item.appendChild(elDate);
+        item.appendChild(elLunar);
+        item.appendChild(elCn);
+        item.appendChild(elEn);
+        DOM.weekStrip.appendChild(item);
+      }
+    },
+
+    renderLunar: function (el, date) {
+      if (!el) return;
+      var text = Lunar.text(date);
+      el.textContent = text;
+      el.style.display = text ? '' : 'none';
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     查询
+     ══════════════════════════════════════════════════════ */
+  var Query = {
+    showResult: function (date) {
+      if (!date || !(date instanceof Date) || isNaN(date.getTime())) { Reporter.show('无效的日期'); return; }
+      State.currentResultDate = date;
+
+      var s = Calendar.street(date);
+      var resolved = Calendar.resolveCardSignal(date);
+
+      if (DOM.resultCard) DOM.resultCard.setAttribute('data-signal', resolved.attr);
+      if (DOM.resultSignalText) DOM.resultSignalText.textContent = resolved.pill;
+      if (DOM.resultDate) DOM.resultDate.textContent = Calendar.formatDate(date) + ' ' + Calendar.weekday(date);
+      if (DOM.resultStreet) DOM.resultStreet.textContent = s.cn;
+      if (DOM.resultStreetEn) DOM.resultStreetEn.textContent = s.en;
+      Render.renderLunar(DOM.resultLunar, date);
+
+      if (!DOM.resultCard) return;
+      var alreadyOpen = DOM.resultCard.classList.contains('show');
+      if (alreadyOpen) { DOM.resultCard.classList.remove('show'); void DOM.resultCard.offsetWidth; }
+      DOM.resultCard.classList.add('show');
+
+      setTimeout(function () {
+        try {
+          DOM.resultCard.scrollIntoView({
+            behavior: Utils.prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'center'
+          });
+        } catch (e) {}
+      }, alreadyOpen ? 240 : 340);
+    },
+
+    /* 跨天时刷新“今日 / 还有 N 天 / 已散场 N 天”，避免挂着过期文案 */
+    refreshPill: function () {
+      if (!State.currentResultDate) return;
+      var resolved = Calendar.resolveCardSignal(State.currentResultDate);
+      if (DOM.resultCard) DOM.resultCard.setAttribute('data-signal', resolved.attr);
+      if (DOM.resultSignalText) DOM.resultSignalText.textContent = resolved.pill;
+    },
+
+    hideResult: function () {
+      if (DOM.resultCard) DOM.resultCard.classList.remove('show');
+      State.currentResultDate = null;
+    },
+
+    doQuery: function () {
+      var input = DOM.dateInput;
+      if (!input) return;
+      var val = input.value;
+      if (!val || !Utils.isDateStr(val)) { Toast.show('请选择有效日期', true); return; }
+      var p = val.split('-').map(Number);
+      var date = new Date(p[0], p[1] - 1, p[2]);
+      if (isNaN(date.getTime())) { Toast.show('日期无效', true); return; }
+      if (val < CFG.DATE_RANGE.min) { Toast.show('本站不支持，基准日为 2026 年 2 月 15 日', true); return; }
+      if (val > CFG.DATE_RANGE.max) { Toast.show('超出可查询范围', true); return; }
+      this.showResult(date);
+    },
+
+    shiftResult: function (delta) {
+      if (!State.currentResultDate) return;
+      var next = Calendar.addDays(State.currentResultDate, delta);
+      var nextKey = Utils.formatInputDate(next);
+      if (nextKey < CFG.DATE_RANGE.min) { Toast.show('本站不支持，基准日为 2026 年 2 月 15 日', true); return; }
+      if (nextKey > CFG.DATE_RANGE.max) { Toast.show('超出可查询范围', true); return; }
+      if (DOM.dateInput) { DOM.dateInput.value = nextKey; State.inputAuto = false; }
+      this.showResult(next);
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     回到顶部
+     ══════════════════════════════════════════════════════ */
+  var BackTop = {
+    init: function () {
+      var btn = DOM.backTop;
+      if (!btn) return;
+      var fg = btn.querySelector('.ring-fg');
+      var CIRC = 2 * Math.PI * CFG.RING_RADIUS;
+      if (fg) { fg.style.strokeDasharray = CIRC; fg.style.strokeDashoffset = CIRC; }
+
+      var onScroll = Utils.rafThrottle(function () {
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        var max = Math.max(1, (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight);
+        var p = Math.max(0, Math.min(1, y / max));
+        if (fg) fg.style.strokeDashoffset = CIRC * (1 - p);
+        btn.classList.toggle('show', y > CFG.SCROLL_TOP_THRESHOLD);
+      });
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      onScroll();
+
+      btn.addEventListener('click', function () {
+        try { window.scrollTo({ top: 0, behavior: Utils.prefersReducedMotion() ? 'auto' : 'smooth' }); }
+        catch (e) { window.scrollTo(0, 0); }
+      });
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     ICS 生成（起点＝今天，任何时区结果一致）
+     ══════════════════════════════════════════════════════ */
+  var ICSGenerator = {
+    generate: function (startMs, days) {
+      var count = Math.max(1, Math.floor(days));
+      var stamp = Utils.icsStamp(Date.now());
+
+      var lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Xiyi Ganji//Calendar//CN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:' + Utils.icsText('西邑乡赶集日历'),
+        'X-WR-CALDESC:' + Utils.icsText('永信街、羊邑街、丙麻街、西邑街，四天一循环'),
+        'X-WR-TIMEZONE:Asia/Shanghai'
+      ];
+
+      for (var i = 0; i < count; i++) {
+        var dayMs = startMs + i * DAY_MS;
+        var d = new Date(dayMs);
+        var s = Calendar.street(new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+        var dateStr = Utils.icsDate(dayMs);
+        var nextStr = Utils.icsDate(dayMs + DAY_MS);
+
+        lines.push('BEGIN:VEVENT');
+        lines.push('UID:' + dateStr + '-' + s.en + '@xiyi.ganji');
+        lines.push('DTSTAMP:' + stamp);
+        lines.push('DTSTART;VALUE=DATE:' + dateStr);
+        lines.push('DTEND;VALUE=DATE:' + nextStr);
+        lines.push('SUMMARY:' + Utils.icsText('赶集日 · ' + s.cn));
+        lines.push('LOCATION:' + Utils.icsText(s.cn));
+        lines.push('DESCRIPTION:' + Utils.icsText(
+          '地点：' + s.cn + '\n'
+          + '提醒：头天晚上 20:00、当天早上 08:00 各一次\n'
+          + '备注：西邑乡四天循环赶集，祝您赶集愉快！'
+        ));
+
+        /* 全天事件 DTSTART 为当天 00:00：-PT4H = 前一晚 20:00，PT8H = 当天 08:00 */
+        lines.push('BEGIN:VALARM');
+        lines.push('ACTION:DISPLAY');
+        lines.push('DESCRIPTION:' + Utils.icsText('明天赶集，地点：' + s.cn + '，记得提前准备'));
+        lines.push('TRIGGER:-PT4H');
+        lines.push('END:VALARM');
+
+        lines.push('BEGIN:VALARM');
+        lines.push('ACTION:DISPLAY');
+        lines.push('DESCRIPTION:' + Utils.icsText('今天赶集，出发去 ' + s.cn));
+        lines.push('TRIGGER:PT8H');
+        lines.push('END:VALARM');
+
+        lines.push('END:VEVENT');
+      }
+
+      lines.push('END:VCALENDAR');
+
+      /* 折行 + BOM：保证长中文 DESCRIPTION 不被截断或乱码 */
+      var content = '\ufeff' + lines.map(Utils.foldLine).join('\r\n') + '\r\n';
+      var blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = '西邑赶集_' + Utils.icsDate(startMs) + '_至_' + Utils.icsDate(startMs + (count - 1) * DAY_MS) + '.ics';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      /* 立即 revoke 会让部分浏览器中断下载，延后释放 */
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    },
+
+    exportRange: function (btn, years) {
+      if (!btn || btn.disabled) return;
+      var yrs = years || ExportState.years;
+
+      /* 从“今天”起算 N 年：整年推进，避免 365.25 的小数误差错开一天 */
+      var startMs = Calendar.todayDayUTC();
+      var end = new Date(startMs);
+      end.setUTCFullYear(end.getUTCFullYear() + yrs);
+      var days = Math.max(1, Math.round((end.getTime() - startMs) / DAY_MS));
+
+      var originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.textContent = '↻ 正在生成 ' + yrs + ' 年数据…';
+
+      setTimeout(function () {
+        try {
+          ICSGenerator.generate(startMs, days);
+          Toast.show('已生成 ' + yrs + ' 年日历，点击文件即可订阅');
+        } catch (e) {
+          Toast.show('生成失败，请换浏览器重试', true);
+        } finally {
+          setTimeout(function () { btn.disabled = false; btn.innerHTML = originalText; }, 600);
+        }
+      }, 60);
+    },
+
+    exportSingleDay: function () {
+      if (!State.currentResultDate) return;
+      try {
+        this.generate(Utils.dayUTC(State.currentResultDate), 1);
+        Toast.show('单日日历已生成，请查看下载');
+      } catch (e) { Toast.show('生成失败', true); }
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     订阅 / 导出绑定
+     ══════════════════════════════════════════════════════ */
+  var CalendarExport = {
+    init: function () {
+      if (DOM.btnExportCal) {
+        DOM.btnExportCal.addEventListener('click', function () {
+          ICSGenerator.exportRange(DOM.btnExportCal, ExportState.years);
+        });
+      }
+
+      var rangeBtns = document.querySelectorAll('.range-btn');
+      Array.prototype.forEach.call(rangeBtns, function (b) {
+        b.addEventListener('click', function () {
+          Array.prototype.forEach.call(rangeBtns, function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          ExportState.years = parseInt(b.getAttribute('data-years'), 10) || 3;
+        });
+      });
+
+      if (DOM.btnCopyUrl) {
+        DOM.btnCopyUrl.addEventListener('click', function () {
+          /* 实时取当前地址：文件放在 ganji/ 还是 ganji.html，复制出来的都对 */
+          var url = location.origin + location.pathname;
+          Utils.copy(url)
+            .then(function () { Toast.show('网址已复制，请去浏览器粘贴打开'); })
+            .catch(function () { try { prompt('请复制此网址到浏览器打开：', url); } catch (e) {} });
+        });
+      }
+
+      if (DOM.btnAddSingleDay) {
+        DOM.btnAddSingleDay.addEventListener('click', function () { ICSGenerator.exportSingleDay(); });
+      }
+    }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     URL 参数
+     ══════════════════════════════════════════════════════ */
+  function parseUrlDate() {
+    try {
+      var s = location.search || '';
+      var m = s.match(/[?&]date=(\d{4}-\d{2}-\d{2})/);
+      if (m && Utils.isDateStr(m[1]) && m[1] >= CFG.DATE_RANGE.min && m[1] <= CFG.DATE_RANGE.max) return m[1];
+    } catch (e) {}
+    return null;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     事件绑定
+     ══════════════════════════════════════════════════════ */
+  function bindEvents() {
+    if (DOM.btnQuery) DOM.btnQuery.addEventListener('click', function () { Query.doQuery(); });
+    if (DOM.btnPrevDay) DOM.btnPrevDay.addEventListener('click', function () { Query.shiftResult(-1); });
+    if (DOM.btnNextDay) DOM.btnNextDay.addEventListener('click', function () { Query.shiftResult(1); });
+
+    if (DOM.dateInput) {
+      DOM.dateInput.addEventListener('change', function (e) {
+        State.inputAuto = false;
+        var v = e.target.value;
+        if (!v) return;
+        var p = v.split('-').map(Number);
+        if (v >= CFG.DATE_RANGE.min && v <= CFG.DATE_RANGE.max) Query.showResult(new Date(p[0], p[1] - 1, p[2]));
+      });
+      DOM.dateInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); Query.doQuery(); }
+        if (e.key === 'Escape') { Query.hideResult(); }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      var active = document.activeElement;
+      var isTyping = /input|textarea|select/i.test((active && active.tagName) || '');
+      if (e.key === '/' && !isTyping) {
+        e.preventDefault();
+        if (DOM.dateInput && DOM.dateInput.focus) DOM.dateInput.focus();
+        return;
+      }
+      if (isTyping) return;
+      if (e.key === 'Escape') { Query.hideResult(); return; }
+      if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && DOM.resultCard && DOM.resultCard.classList.contains('show')) {
+        e.preventDefault();
+        Query.shiftResult(e.key === 'ArrowLeft' ? -1 : 1);
+      }
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     跨天：一个节拍同时驱动时钟 / 运行时长 / 日期翻页
+     ══════════════════════════════════════════════════════ */
+  var Clock = (function () {
+    var timer = 0, running = false, dayKey = '';
+
+    function dayKeyOf(now) { var p = bjParts(now); return p.y + '-' + p.m + '-' + p.d; }
+
+    function onNewDay(now) {
+      Render.renderToday();
+      Render.renderWeekStrip();
+      renderCopyright(now);
+      Query.refreshPill();
+
+      /* 用户没手动改过输入框时，日期框自动跟进到新的“今天” */
+      if (State.inputAuto && DOM.dateInput) DOM.dateInput.value = Utils.formatInputDate(Calendar.beijingToday());
+    }
+
+    function frame() {
+      var now = Date.now();
+      try {
+        renderClock(now);
+        renderUptime(now);
+        var k = dayKeyOf(now);
+        if (k !== dayKey) { dayKey = k; onNewDay(now); }
+      } catch (e) {}
+      timer = setTimeout(frame, 1000 - (now % 1000) + 8);
+    }
+
+    return {
+      start: function () { if (running) return; running = true; dayKey = ''; frame(); },
+      stop: function () { running = false; clearTimeout(timer); timer = 0; }
+    };
+  })();
+
+  /* ══════════════════════════════════════════════════════
+     顶栏时钟 / 运行时长 / 版权
+     ══════════════════════════════════════════════════════ */
+  function renderClock(now) {
+    if (!DOM.tbClock) return;
+    var p = bjParts(now);
+    DOM.tbClock.textContent = Utils.pad2(p.h) + ':' + Utils.pad2(p.mi) + ':' + Utils.pad2(p.s);
+  }
+
+  function renderUptime(now) {
+    var map = { upY: '0', upM: '0', upD: '0', upH: '00', upMin: '00', upS: '00' };
+
+    if (now >= SITE_START_MS) {
+      var p = uptimeParts(SITE_START_MS, now);
+      map = {
+        upY: String(p.y),
+        upM: String(p.m),
+        upD: String(p.d),
+        upH: Utils.pad2(p.h),
+        upMin: Utils.pad2(p.mi),
+        upS: Utils.pad2(p.s)
+      };
+    }
+
+    for (var id in map) {
+      if (!Object.prototype.hasOwnProperty.call(map, id)) continue;
+      var el = document.getElementById(id);
+      if (el) el.textContent = map[id];
+    }
+  }
+
+  function renderCopyright(now) {
+    if (!DOM.footerCopy) return;
+    var base = bjParts(SITE_START_MS).y;
+    var current = bjParts(now).y;
+    var range = current > base ? base + '~' + current : String(base);
+    DOM.footerCopy.textContent = '© ' + range + ' AI.FENG · ALL RIGHTS RESERVED';
+  }
+
+  /* ══════════════════════════════════════════════════════
+     启动
+     ══════════════════════════════════════════════════════ */
+  function boot() {
+    cacheDom();
+
+    try {
+      if (DOM.footerVer) DOM.footerVer.textContent = 'v' + APP_VERSION;
+
+      Theme.init();
+      initCursorLight();
+
+      State.today = Calendar.beijingToday();
+      Render.renderToday();
+      Render.renderWeekStrip();
+      CalendarExport.init();
+
+      if (DOM.dateInput) {
+        DOM.dateInput.min = CFG.DATE_RANGE.min;
+        DOM.dateInput.max = CFG.DATE_RANGE.max;
+
+        var urlDate = parseUrlDate();
+        DOM.dateInput.value = urlDate || Utils.formatInputDate(State.today);
+        State.inputAuto = !urlDate;
+
+        if (urlDate) {
+          var p = urlDate.split('-').map(Number);
+          setTimeout(function () { Query.showResult(new Date(p[0], p[1] - 1, p[2])); }, 400);
+        }
+      }
+
+      bindEvents();
+      BackTop.init();
+
+      var now = Date.now();
+      renderCopyright(now);
+      Clock.start();
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) Clock.stop();
+        else Clock.start();
+      });
+      global.addEventListener('pagehide', function () { Clock.stop(); });
+    } catch (e) {
+      Reporter.show('初始化异常：' + ((e && e.message) || e));
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+
+  global.__AF_GANJI__ = { version: APP_VERSION, siteStart: SITE_START_MS, baseDayUTC: BASE_DAY_UTC };
+})(window);
+</script>
+</body>
+</html>
